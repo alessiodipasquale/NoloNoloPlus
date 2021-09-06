@@ -4,7 +4,6 @@ const cors = require('cors');
 const path = require('path');
 const { errorHandler } = require('./errors');
 
-
 global.startDate = null;
 
 global.rootPath = path.join(__dirname,'..','..');
