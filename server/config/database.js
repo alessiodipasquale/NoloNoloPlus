@@ -1,17 +1,18 @@
 const mongoose =require('mongoose');
 
-const Test = require('../../models/test')
+const User = require('../../models/User')
 
 const initialize = async () => {
     console.log(process.env.DB_URI)
     await mongoose.connect(process.env.DB_URI);
 
-    const ao = {
-        name: "Alessio",
-        age: 20
+    const user = {
+        username: "Alessio",
+        password: "ciao",
+
     }
 
-    const response = await Test.create(ao);
+    const response = await User.create(user);
 }
 
 module.exports = { 
