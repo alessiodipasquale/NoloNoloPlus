@@ -102,3 +102,18 @@ dist
 
 # TernJS port file
 .tern-port
+
+
+public/front-office/dist
+public/front-office/dist-server
+public/front-office/tmp
+public/front-office/out-tsc
+
+public/front-office/node_modules
+public/front-office/package-lock.json
+
+
+
+
+
+
