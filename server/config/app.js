@@ -3,6 +3,7 @@ const http = require('http');
 const cors = require('cors');
 const path = require('path');
 const { errorHandler } = require('./errors');
+const router = require('./router');
 
 global.startDate = null;
 
@@ -32,6 +33,7 @@ const run = async () => {
         next();
       });
 
+    router.initialize(app);
    /* app.get('/', async function (req, res) { 
         console.log('arrivo')
         let sitename = req.hostname.split('.')[0]

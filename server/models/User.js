@@ -1,6 +1,6 @@
 const mongoose =require('mongoose');
 const bcrypt = require('bcrypt');
-const { auth } = require('../server/config/params')
+const { auth } = require('../config/params')
 
 const UserModel = new mongoose.Schema({
     username: {type: String, required: true}, 
@@ -21,8 +21,8 @@ UserModel.pre('save', function (next) {
 const User = mongoose.model('User', UserModel)
 
 User.getById = async (id) => {
-    const user = await User.findById(id)
-    return user.json
+    const user = await User.findById(id).select("-password -__v");
+    return user
 }
 
 module.exports = User

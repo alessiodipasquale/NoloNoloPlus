@@ -1,18 +1,11 @@
 const mongoose =require('mongoose');
-
-const User = require('../../models/User')
+const seed = require('../database/seed');
+const User = require('../models/User')
 
 const initialize = async () => {
-    console.log(process.env.DB_URI)
+    console.log("Inizializzo database, DB_URI: "+process.env.DB_URI)
     await mongoose.connect(process.env.DB_URI);
-
-    const user = {
-        username: "Alessio",
-        password: "ciao",
-
-    }
-
-    const response = await User.create(user);
+    if (global.config.seed) await seed()
 }
 
 module.exports = { 
