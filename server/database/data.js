@@ -2,6 +2,11 @@ const users = [
     {
         username: "Alessio2",
         password: "ciao",
+    },
+    {
+        username: "ao",
+        password: "ao",
+        role: "funzionario"
     }
 ];
 

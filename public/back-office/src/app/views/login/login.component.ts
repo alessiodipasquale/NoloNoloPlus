@@ -1,4 +1,5 @@
-import { LoginService } from './../../services/login.service';
+import { NotificationsService } from './../../services/notifications.service';
+import { LoginService } from '../../services/login.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,7 +9,8 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent { 
   constructor(private loginService: LoginService,
-              private router: Router) {}
+              private router: Router,
+              private notificationsService: NotificationsService) {}
 
   username='';
   password='';
@@ -16,7 +18,8 @@ export class LoginComponent {
   onLoginBtnPressed() {
     this.loginService.login(this.username, this.password)
     .then(() => {
+      this.notificationsService.success();
       this.router.navigate(['/dashboard'])
-    }).catch(err => console.log(err))
+    }).catch(err => this.notificationsService.error(err.statusText))
   }
 }

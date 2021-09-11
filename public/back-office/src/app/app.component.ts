@@ -3,11 +3,13 @@ import { Router, NavigationEnd } from '@angular/router';
 
 import { IconSetService } from '@coreui/icons-angular';
 import { freeSet } from '@coreui/icons';
+import 'style-loader!angular2-toaster/toaster.css';
 
 @Component({
   // tslint:disable-next-line
   selector: 'body',
-  template: '<router-outlet></router-outlet>',
+  template: `<toaster-container></toaster-container>
+  <router-outlet></router-outlet>`,
   providers: [IconSetService],
 })
 export class AppComponent implements OnInit {

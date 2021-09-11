@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const { auth } = require('../config/params')
 const _ = require('lodash');
 const jwt = require('jsonwebtoken');
-
+const { UnauthorizedError } = require('../config/errors')
 
 const UserModel = new mongoose.Schema({
     username: {type: String, required: true}, 
@@ -31,7 +31,7 @@ User.getById = async (id) => {
 User.getAuthToken = async (username, clearTextPassword) => {
     const user = await User.findOne({username: username});
 
-    if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
+    if (!user || user.role == "cliente" || !bcrypt.compareSync(clearTextPassword, user.password))
         throw UnauthorizedError;
 
     const payload = { type:'user', user: _.omit(user, ['password', '__v'])}
