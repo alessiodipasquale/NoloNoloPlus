@@ -21,7 +21,10 @@
     "polyfills.ts"
   ],
   "include": [
-    "**/*.d.ts"
+    "**/*.d.ts",
+    "src/app/pages/pages.module.ts",
+    "src/app/pages/pages.component.ts",
+    "src/app/pages/pages-routing.module.ts",
   ],
   "exclude": [
     "src/**/*.spec.ts",

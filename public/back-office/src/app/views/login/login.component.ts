@@ -1,5 +1,5 @@
 import { NotificationsService } from './../../services/notifications.service';
-import { LoginService } from '../../services/login.service';
+import { AuthService } from '../../services/auth.service';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: 'login.component.html'
 })
 export class LoginComponent { 
-  constructor(private loginService: LoginService,
+  constructor(private authService: AuthService,
               private router: Router,
               private notificationsService: NotificationsService) {}
 
@@ -16,10 +16,10 @@ export class LoginComponent {
   password='';
 
   onLoginBtnPressed() {
-    this.loginService.login(this.username, this.password)
+    this.authService.login(this.username, this.password)
     .then(() => {
       this.notificationsService.success();
-      this.router.navigate(['/dashboard'])
+      this.router.navigate(['/pages','dashboard'])
     }).catch(err => this.notificationsService.error(err.statusText))
   }
 }

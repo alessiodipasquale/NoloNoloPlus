@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class LoginService {
+export class AuthService {
 
   constructor(private http: HttpService,
               private tokenService: TokenService) { }
@@ -16,5 +16,9 @@ export class LoginService {
       console.log(response)
       this.tokenService.setToken(response.token)});
     return httpRequest;
+  }
+  
+  isAuthenticated(): boolean {
+    return this.tokenService.isTokenSet();
   }
 }
