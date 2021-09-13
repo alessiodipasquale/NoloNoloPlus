@@ -102,7 +102,9 @@
             },
             "assets": [
               "src/assets",
-              "src/favicon.ico"
+              "src/logoSmall.ico",
+              "src/Nuovo-progetto.ico"
+
             ]
           }
         },
