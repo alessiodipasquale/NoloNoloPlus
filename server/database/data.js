@@ -4,8 +4,8 @@ const users = [
         password: "ciao",
     },
     {
-        username: "ao",
-        password: "ao",
+        username: "admin",
+        password: "admin",
         role: "funzionario"
     }
 ];

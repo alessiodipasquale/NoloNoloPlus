@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
@@ -12,6 +13,7 @@ const PAGES_COMPONENTS = [
 
 @NgModule({
   imports: [
+    CommonModule,
     PagesRoutingModule,
     DashboardModule,
   ],

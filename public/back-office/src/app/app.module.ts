@@ -60,7 +60,6 @@ import { ToasterModule } from 'angular2-toaster';
     AppAsideModule,
     AppBreadcrumbModule.forRoot(),
     AppFooterModule,
-    ToasterModule.forRoot(),
     AppHeaderModule,
     AppSidebarModule,
     PerfectScrollbarModule,
@@ -71,6 +70,7 @@ import { ToasterModule } from 'angular2-toaster';
     IconSetModule.forRoot(),
     FormsModule,
     HttpClientModule,
+    ToasterModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetterFunction,
