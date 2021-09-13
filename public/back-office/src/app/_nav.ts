@@ -8,7 +8,7 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Utenti',
-    icon: 'cui-people',
+    icon: 'cil-people',
     url: '/pages/users/main-users'
   },
   {
