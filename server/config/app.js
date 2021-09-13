@@ -4,6 +4,8 @@ const cors = require('cors');
 const path = require('path');
 const { errorHandler } = require('./errors');
 const router = require('./router');
+const passport = require('passport');
+const passportJwtStrategy = require('./passportJwtStrategy');
 
 global.startDate = null;
 
@@ -33,7 +35,10 @@ const run = async () => {
         next();
       });
 
-    router.initialize(app);
+    passport.use(passportJwtStrategy);
+
+
+    router.initialize(app, passport);
    /* app.get('/', async function (req, res) { 
         console.log('arrivo')
         let sitename = req.hostname.split('.')[0]
