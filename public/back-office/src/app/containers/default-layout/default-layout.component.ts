@@ -1,3 +1,4 @@
+import { AuthService } from './../../services/auth.service';
 import {Component} from '@angular/core';
 import { navItems } from '../../_nav';
 
@@ -6,6 +7,9 @@ import { navItems } from '../../_nav';
   templateUrl: './default-layout.component.html'
 })
 export class DefaultLayoutComponent {
+
+  constructor(private authService: AuthService) {}
+
   public sidebarMinimized = false;
   public navItems = navItems;
 
@@ -13,5 +17,7 @@ export class DefaultLayoutComponent {
     this.sidebarMinimized = e;
   }
 
-  doLogout() {}
+  doLogout() {
+    this.authService.logout();
+  }
 }

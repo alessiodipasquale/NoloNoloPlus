@@ -12,6 +12,16 @@ const routes: Routes = [{
         canActivate: [AuthGuardService]
     },
     {
+      path: 'users',
+      loadChildren: () => import('./users/users.module').then(m => m.UsersModule),
+      canActivate: [AuthGuardService]
+    },
+    {
+      path: 'items',
+      loadChildren: () => import('./items/items.module').then(m => m.ItemsModule),
+      canActivate: [AuthGuardService]
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

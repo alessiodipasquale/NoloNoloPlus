@@ -18,7 +18,7 @@ const PAGES_COMPONENTS = [
     DashboardModule,
   ],
   declarations: [
-    ...PAGES_COMPONENTS
+    ...PAGES_COMPONENTS,
   ],
 })
 export class PagesModule {
