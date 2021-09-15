@@ -7,6 +7,7 @@ import { NgModule } from '@angular/core';
 import { MainUsersComponent } from './main-users/main-users.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { TableModule } from 'ngx-easy-table';
 
 const components = [
     UsersComponent,
@@ -20,7 +21,8 @@ const components = [
         ModalModule,
         FormsModule,
         CommonModule,
-        UsersRoutingModule
+        UsersRoutingModule,
+        TableModule
     ],
     declarations: [
         ...components,
