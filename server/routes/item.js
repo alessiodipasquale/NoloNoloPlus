@@ -9,6 +9,16 @@ const getItemById = async (req,res) => {
     }
 }
 
+const getItems = async (req,res) => {
+    try {
+        const items = await Item.find();
+        res.send(items);
+    } catch (err) {
+        res.handle(err);
+    }
+}
+
 module.exports = {
+    getItems,
     getItemById
 }

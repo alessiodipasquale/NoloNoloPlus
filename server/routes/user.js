@@ -9,6 +9,16 @@ const getUserById = async (req, res) =>  {
     }
 }
 
+const getUsers = async (req,res) => {
+    try {
+        const users = await User.find();
+        res.send(users);
+    } catch (err) {
+        res.handle(err);
+    }
+}
+
 module.exports = {
+    getUsers,
     getUserById
 }
