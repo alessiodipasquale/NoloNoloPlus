@@ -7,10 +7,10 @@ const router = {
         const auth = passport.authenticate('jwt', { session: false });
 
         app.post('/login',login)
-        app.get('/getUsers', auth, getUsers)
-        app.get('/getUsers/:id', auth, getUserById)
-        app.get('/getItems', auth, getItems)
-        app.get('/getItemById/:id', auth, getItemById)
+        app.get('/users', auth, getUsers)
+        app.get('/users/:id', auth, getUserById)
+        app.get('/items', auth, getItems)
+        app.get('/items/:id', auth, getItemById)
     }
 }
 

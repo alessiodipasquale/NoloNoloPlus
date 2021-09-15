@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const _ = require('lodash');
 
 const getUserById = async (req, res) =>  {
     try {
@@ -11,7 +12,7 @@ const getUserById = async (req, res) =>  {
 
 const getUsers = async (req,res) => {
     try {
-        const users = await User.find();
+        const users = await User.find().select(['-password','-__v'])
         res.send(users);
     } catch (err) {
         res.handle(err);

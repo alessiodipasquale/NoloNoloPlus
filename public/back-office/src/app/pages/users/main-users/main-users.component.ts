@@ -1,3 +1,5 @@
+import { Observable, from } from 'rxjs';
+import { UsersService } from './../../../services/users.service';
 import { ChangeDetectionStrategy, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { API, APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table';
 
@@ -9,26 +11,14 @@ import { API, APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-tab
 })
 export class MainUsersComponent implements OnInit {
 
+  constructor (private usersService:UsersService) {}
+
+  public data: Observable<any>; 
+
   public configuration: Config;
   public columns: Columns[];
   public innerWidth: number;
   public toggledRows = new Set<number>();
-
-  public data = [{
-    phone: '+1 (934) 551-2224',
-    age: 20,
-    address: { street: 'North street', number: 12 },
-    company: 'ZILLANET',
-    name: 'Valentine Webb',
-    isActive: false,
-  }, {
-    phone: '+1 (948) 460-3627',
-    age: 31,
-    address: { street: 'South street', number: 12 },
-    company: 'KNOWLYSIS',
-    name: 'Heidi Duncan',
-    isActive: true,
-  }];
 
   @ViewChild('table', { static: true }) table: APIDefinition;
 
@@ -44,6 +34,7 @@ export class MainUsersComponent implements OnInit {
     this.configuration.detailsTemplate = true;
     this.configuration.paginationRangeEnabled = false;
     this.checkView();
+    this.data = from(this.usersService.getUsers())
   }
 
 
@@ -55,16 +46,14 @@ export class MainUsersComponent implements OnInit {
     this.innerWidth = window.innerWidth;
     if (this.isMobile) {
       this.columns = [
-        { key: 'company', title: 'Company' },
+        { key: 'username', title: 'Username' },
         { key: '', title: 'Action' },
       ];
     } else {
       this.columns = [
-        { key: 'phone', title: 'Phone' },
-        { key: 'age', title: 'Age' },
-        { key: 'company', title: 'Company' },
-        { key: 'name', title: 'Name' },
-        { key: 'isActive', title: 'STATUS' },
+        { key: '_id', title: 'id' },
+        { key: 'username', title: 'Username' },
+        { key: 'role', title: 'Role' }
       ];
     }
   }
