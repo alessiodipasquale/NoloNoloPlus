@@ -26,7 +26,6 @@ const run = async () => {
     app.use(errorHandler());
     app.enable('trust proxy');
     app.use('/front-office', express.static(frontOfficePath));
-
     app.use('/back-office', express.static(backOfficePath));
 
     app.use(function(req, res, next) {
