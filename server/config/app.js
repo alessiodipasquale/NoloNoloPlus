@@ -10,8 +10,8 @@ const passportJwtStrategy = require('./passportJwtStrategy');
 global.startDate = null;
 
 global.rootPath = path.join(__dirname,'..','..');
-const distPath = path.join(global.rootPath,'out','dist');
-const backOfficePath = path.join(global.rootPath,'/public/back-office');
+const frontOfficePath = path.join(global.rootPath,'out','front-office-dist');
+const backOfficePath = path.join(global.rootPath,'out','back-office-dist');
 
 const port = process.env.PORT;
 
@@ -25,9 +25,9 @@ const run = async () => {
     }));
     app.use(errorHandler());
     app.enable('trust proxy');
-    app.use('/', express.static(distPath));
+    app.use('/front-office', express.static(frontOfficePath));
 
-    app.use('/backOfficePath', express.static(backOfficePath));
+    app.use('/back-office', express.static(backOfficePath));
 
     app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
