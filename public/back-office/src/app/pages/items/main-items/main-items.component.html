@@ -1,1 +1,67 @@
-<p>main-items works!</p>
+<div class="bg" style="background-color: white; padding: 3px; margin: 3px; border-radius: 3px;">
+    <ngx-table 
+        [configuration]="configuration"
+        [data]="data | async"
+        [columns]="columns"
+        #table
+        [detailsTemplate]="detailsTemplate"
+        >
+        <ng-template let-row let-index="index">
+            <td *ngIf="!isMobile">
+              {{ row._id }}
+            </td>
+            <td>
+              {{ row.name }}
+            </td>
+            <td *ngIf="!isMobile">
+              {{ row.description }}
+            </td>
+            <td *ngIf="!isMobile">
+                {{ row.price }}
+            </td>
+            <td *ngIf="!isMobile">
+                {{ row.state }}
+            </td>
+            <td *ngIf="!isMobile">
+                {{ row.rentCount }}
+            </td>
+            <td *ngIf="!isMobile">
+                <div class="circle"  style="font-size: 20px;" [style.color]="row.available ? 'green' : 'red'"> </div> 
+            </td>          
+            <td *ngIf="isMobile">
+              <button
+                class="btn btn-primary"
+                id="expandButton-{{ index }}"
+                (click)="onRowClickEvent($event, index)"
+              >
+                <i class="icon icon-arrow-left" *ngIf="!toggledRows.has(index)"></i>
+                <i class="icon icon-arrow-down" *ngIf="toggledRows.has(index)"></i>
+                Dettagli
+              </button>
+            </td>
+            <td *ngIf="!isMobile" >
+              <div class="btn btn-danger" (click)="deleteItem(row, index)">Elimina</div>
+            </td>
+          </ng-template>
+        </ngx-table>
+        <ng-template #detailsTemplate let-row>
+          <div>
+            <p><b>Id</b>: {{ row._id }}</p>
+            <p><b>Descrizione</b>: {{ row.description }}</p>
+            <p><b>Prezzo</b>: {{ row.price }}</p>
+            <p><b>Stato</b>: {{ row.state }}</p>
+            
+            
+            <p><b>Numero di affitti</b>: {{ row.rentCount }}</p>
+            <div style="display: flex; align-items: center;">
+                
+                <b>Disponibile</b>:            
+                <div class="circle" [style.color]="row.available ? 'green' : 'red'"></div>
+            </div>
+            
+            <div class="btn btn-danger" (click)="deleteItem(row, index)">Elimina</div>
+          </div>
+        </ng-template>
+    
+</div>
+      

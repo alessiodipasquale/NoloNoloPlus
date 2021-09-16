@@ -7,6 +7,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { TableModule } from 'ngx-easy-table';
 
 const components = [
   ItemsComponent,
@@ -21,6 +22,7 @@ const components = [
         FormsModule,
         CommonModule,
         ItemsRoutingModule,
+        TableModule
     ],
     declarations: [
         ...components,
