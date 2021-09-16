@@ -33,5 +33,25 @@ export class HttpService {
       options.headers = this.getHeaders();
     return this.http.get(environment.apiUrl + endPoint, options).toPromise();
   }
+  delete(endPoint: string, auth:boolean = true): Promise<any> {
+    const options: any = {};
+    if (auth)
+      options.headers = this.getHeaders();
+    return this.http.delete(environment.apiUrl + endPoint, options).toPromise();
+  }
+
+  patch(endPoint: string, data: any, auth:boolean = true): Promise<any> {
+    const options: any = {};
+    if (auth)
+      options.headers = this.getHeaders();
+    return this.http.patch(environment.apiUrl + endPoint,data, options).toPromise();
+  }
+
+  put(endPoint: string,data: any, auth:boolean = true): Promise<any> {
+    const options: any = {};
+    if (auth)
+      options.headers = this.getHeaders();
+    return this.http.put(environment.apiUrl + endPoint,data, options).toPromise();
+  }
 
 }

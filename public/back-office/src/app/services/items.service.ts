@@ -15,4 +15,8 @@ export class ItemsService {
     getItemById(id) {
         return this.http.get('/items/'+id);
     }
+
+    deleteItem(id) {
+        return this.http.delete('/items/'+id)
+    }
 }

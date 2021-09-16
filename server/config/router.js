@@ -1,6 +1,6 @@
 const { login } = require("../routes/auth");
-const { getItemById, getItems } = require("../routes/item");
-const { getUserById, getUsers } = require("../routes/user")
+const { getItemById, getItems, deleteItem } = require("../routes/item");
+const { getUserById, getUsers, deleteUser } = require("../routes/user")
 
 const router = {
     initialize: (app, passport) => {
@@ -9,7 +9,9 @@ const router = {
         app.post('/login',login)
         app.get('/users', auth, getUsers)
         app.get('/users/:id', auth, getUserById)
+        app.delete('/users/:id', auth, deleteUser)
         app.get('/items', auth, getItems)
+        app.delete('/items/:id', auth, deleteItem)
         app.get('/items/:id', auth, getItemById)
     }
 }

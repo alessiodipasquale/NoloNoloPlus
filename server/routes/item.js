@@ -18,7 +18,17 @@ const getItems = async (req,res) => {
     }
 }
 
+const deleteItem = async (req,res) => {
+    try {
+        const item = await Item.deleteOne({_id: req.params.id})
+        res.send();
+    } catch (err) {
+        res.handle(err);
+    }
+}
+
 module.exports = {
     getItems,
-    getItemById
+    getItemById,
+    deleteItem
 }

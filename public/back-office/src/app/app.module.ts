@@ -51,9 +51,12 @@ import { ChartsModule } from 'ng2-charts';
 import { HttpClientModule } from '@angular/common/http';
 import { ToasterModule } from 'angular2-toaster';
 import { TableModule } from 'ngx-easy-table';
+import { DeleteModalComponent } from './components/delete-modal/delete-modal.component';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 @NgModule({
   imports: [
+    ModalModule.forRoot(),
     BrowserModule,
     BrowserAnimationsModule,
     CommonModule,
@@ -87,7 +90,8 @@ import { TableModule } from 'ngx-easy-table';
     P404Component,
     P500Component,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    DeleteModalComponent
   ],
   providers: [
     {

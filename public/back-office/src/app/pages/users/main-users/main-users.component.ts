@@ -1,8 +1,10 @@
+import { NotificationsService } from './../../../services/notifications.service';
 import { Observable, from } from 'rxjs';
 import { UsersService } from './../../../services/users.service';
 import { ChangeDetectionStrategy, Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { API, APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-table';
-
+import { DeleteModalComponent } from '../../../components/delete-modal/delete-modal.component';
+import { BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-main-users',
   templateUrl: './main-users.component.html',
@@ -11,10 +13,11 @@ import { API, APIDefinition, Columns, Config, DefaultConfig } from 'ngx-easy-tab
 })
 export class MainUsersComponent implements OnInit {
 
-  constructor (private usersService:UsersService) {}
+  constructor (private usersService:UsersService,
+               private modalService: BsModalService,
+               private notificationsService: NotificationsService) {}
 
   public data: Observable<any>; 
-
   public configuration: Config;
   public columns: Columns[];
   public innerWidth: number;
@@ -47,13 +50,13 @@ export class MainUsersComponent implements OnInit {
     if (this.isMobile) {
       this.columns = [
         { key: 'username', title: 'Username' },
-        { key: '', title: 'Action' },
+        { key: '', title: 'Altro' },
       ];
     } else {
       this.columns = [
         { key: '_id', title: 'id' },
         { key: 'username', title: 'Username' },
-        { key: 'role', title: 'Role' }
+        { key: 'role', title: 'Ruolo' }
       ];
     }
   }
@@ -69,6 +72,20 @@ export class MainUsersComponent implements OnInit {
     } else {
       this.toggledRows.add(index);
     }
+  }
+
+  deleteUser(row, rowIndex) {
+    const modal = this.modalService.show(DeleteModalComponent);
+    (<DeleteModalComponent>modal.content).onClose.subscribe(result => {
+      if (result) {
+          this.usersService.deleteUser(row._id)
+          .then(() => {
+            modal.hide();
+            this.data = from(this.usersService.getUsers())
+            this.notificationsService.success();
+          }).catch(err => this.notificationsService.error())
+      } 
+    })
   }
 
 }

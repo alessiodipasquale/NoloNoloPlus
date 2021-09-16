@@ -27,12 +27,16 @@
                 Dettagli
               </button>
             </td>
+            <td *ngIf="!isMobile" >
+              <div class="btn btn-danger" (click)="deleteUser(row, index)">Elimina</div>
+            </td>
           </ng-template>
         </ngx-table>
         <ng-template #detailsTemplate let-row>
           <div>
-            <p>Id: {{ row._id }}</p>
-            Ruolo: {{ row.role }}
+            <p><b>Id</b>: {{ row._id }}</p>
+            <p><b>Ruolo</b>: {{ row.role }}</p>
+            <div class="btn btn-danger" (click)="deleteUser(row, index)">Elimina</div>
           </div>
         </ng-template>
     
