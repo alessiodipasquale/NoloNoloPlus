@@ -7,12 +7,8 @@ const _nav =  [
     name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon"/>,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    }
   },
-  {
+  /*{
     _tag: 'CSidebarNavTitle',
     _children: ['Theme']
   },
@@ -306,7 +302,7 @@ const _nav =  [
   {
     _tag: 'CSidebarNavDivider',
     className: 'm-2'
-  }
+  }*/
 ]
 
 export default _nav

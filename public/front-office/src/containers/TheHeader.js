@@ -14,6 +14,7 @@ import CIcon from '@coreui/icons-react'
 
 // routes config
 import routes from '../routes'
+import logo from '../assets/Logo.png'
 
 import { 
   TheHeaderDropdown
@@ -40,8 +41,8 @@ const TheHeader = () => {
         className="ml-md-3 d-lg-none"
         onClick={toggleSidebarMobile}
       />
-      <CHeaderBrand className="mx-auto d-lg-none" to="/">
-        <CIcon name="logo" height="48" alt="Logo"/>
+      <CHeaderBrand style={{position: 'absolute', left: 0, right: 0}}className="mx-auto mr-3 d-lg-none" to="/">
+        <CIcon src={logo} name="logo" height="50" alt="Logo"/>
       </CHeaderBrand>
 
 
