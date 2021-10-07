@@ -21,7 +21,6 @@ import CIcon from '@coreui/icons-react'
 
 import MainChartExample from '../charts/MainChartExample.js'
 import { BrowserView, MobileView } from 'react-device-detect'
-import styles from './style.module.css'; 
 
 
 const WidgetsDropdown = lazy(() => import('../widgets/WidgetsDropdown.js'))
@@ -70,7 +69,7 @@ const Dashboard = () => {
             categories.map(el => <CButton style={{margin: "2% 3% 2% 0"}} value={el} key={el} color="info">{el.name}</CButton>)
           }
         </CContainer>
-        <CContainer className={styles.hideScrollBar} style={{padding: "0 "}}>
+        <CContainer style={{padding: "0 "}}>
           {
             items.map(el => 
               <CContainer style={{display: "flex"}}>

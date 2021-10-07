@@ -25,8 +25,12 @@ const run = async () => {
     }));
     app.use(errorHandler());
     app.enable('trust proxy');
-    app.use('/front-office', express.static(frontOfficePath));
+
+    app.use('/', express.static(backOfficePath));
+
     app.use('/back-office', express.static(backOfficePath));
+
+    app.use('/front-office', express.static(frontOfficePath));
 
     app.use(function(req, res, next) {
         res.header("Access-Control-Allow-Origin", "*");
