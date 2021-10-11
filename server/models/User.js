@@ -31,7 +31,7 @@ User.getById = async (id) => {
 User.getAuthToken = async (username, clearTextPassword) => {
     const user = await User.findOne({username: username});
 
-    if (!user || user.role == "cliente" || !bcrypt.compareSync(clearTextPassword, user.password))
+    if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
         throw UnauthorizedError;
 
     const payload = { type:'user', user: _.omit(user, ['password', '__v'])}

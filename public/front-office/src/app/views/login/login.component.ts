@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent { 
   constructor(private authService: AuthService,
-              private router: Router,
+              public router: Router,
               private notificationsService: NotificationsService) {}
 
   username='';
@@ -18,7 +18,6 @@ export class LoginComponent {
   onLoginBtnPressed() {
     this.authService.login(this.username, this.password)
     .then(() => {
-      this.notificationsService.success();
       this.router.navigate(['/pages','dashboard'])
     }).catch(err => this.notificationsService.error(err.statusText))
   }

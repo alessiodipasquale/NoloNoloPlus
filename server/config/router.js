@@ -1,4 +1,4 @@
-const { login } = require("../routes/auth");
+const { loginFront, registerFront } = require("../routes/auth");
 const { getItemById, getItems, deleteItem } = require("../routes/item");
 const { getUserById, getUsers, deleteUser } = require("../routes/user")
 
@@ -6,7 +6,8 @@ const router = {
     initialize: (app, passport) => {
         const auth = passport.authenticate('jwt', { session: false });
 
-        app.post('/login',login)
+        app.post('/loginFront',loginFront)
+        app.post('/registerFront',registerFront)
         app.get('/users', auth, getUsers)
         app.get('/users/:id', auth, getUserById)
         app.delete('/users/:id', auth, deleteUser)

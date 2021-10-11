@@ -1,6 +1,6 @@
 const User = require("../models/User");
 
-const login = async (req, res) => {
+const loginFront = async (req, res) => {
     try {
         const username = req.body.username;
         const clearTextPassword = req.body.password;
@@ -11,6 +11,18 @@ const login = async (req, res) => {
     }
 }
 
+const registerFront = async (req,res) => {
+    try {
+        const username = req.body.username;
+        const clearTextPassword = req.body.password;
+        const user = await User.create({username: username, password: clearTextPassword, role: 'cliente'});
+        res.send();
+    } catch (err) {
+        res.handle(err)
+    }
+}
+
 module.exports = {
-    login
+    loginFront,
+    registerFront
 }

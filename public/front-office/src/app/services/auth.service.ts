@@ -13,11 +13,15 @@ export class AuthService {
               private router: Router) { }
 
   login(username, password): Promise<any> {
-    const httpRequest: Promise<any> = this.http.post('/login', {username, password}, false);
+    const httpRequest: Promise<any> = this.http.post('/loginFront', {username, password}, false);
     httpRequest.then((response: any) => {
       console.log(response)
       this.tokenService.setToken(response.token)});
     return httpRequest;
+  }
+
+  register(username, password): Promise<any> {
+    return this.http.post('/registerFront', {username, password});
   }
   
   isAuthenticated(): boolean {
