@@ -23,12 +23,12 @@
                 <img style="width: 100%;"[src]="item.imgSrc">
                 <div>
                     <p style="margin-bottom: 0; color: grey;" >Prezzo al giorno</p>
-                    <h2 style="font-weight: bold;">88,55 €</h2>
+                    <h2 style="font-weight: bold;">{{item.price}}€</h2>
                 </div>
             </div>
         </div>
     </div>
     <div class="card-footer">
-        <button class="btn btn-success btn-block">Vedi l'offerta</button>
+        <button class="btn btn-success btn-block" (click)="openItemSpec(item)">Vedi l'offerta</button>
     </div>
   </div>

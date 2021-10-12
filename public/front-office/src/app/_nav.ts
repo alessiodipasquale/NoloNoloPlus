@@ -10,10 +10,5 @@ export const navItems: INavData[] = [
     name: 'Utenti',
     icon: 'cil-people',
     url: '/pages/users/main-users'
-  },
-  {
-    name: 'Oggetti',
-    icon: 'cil-apps',
-    url: '/pages/items/main-items'
-   },
+  }
 ];

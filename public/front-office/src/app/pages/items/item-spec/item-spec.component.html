@@ -1,0 +1,47 @@
+<div class="animated fadeIn">
+    <button (click)="router.navigate(['/pages/dashboard'])" class="btn btn-link" style="padding-left: 0;">Torna ai risultati di ricerca</button>
+    <h2>La tua offerta</h2>
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6">
+                    <h5 class="card-title">{{item.name}}</h5>
+                    <ul style="padding-left: 15%;">
+                        <li *ngFor="let property of item.properties">{{property}}</li>
+                    </ul>
+                </div>
+                <div class="col-6" style="display: flex; justify-content: space-around; align-items: center; flex-direction: column;">
+                    <img style="width: 100%;"[src]="item.imgSrc">
+                    <div>
+                        <p style="margin-bottom: 0; color: grey;" >Prezzo al giorno</p>
+                        <h2 style="font-weight: bold;">{{item.price}} €</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div *ngIf="!checked" class="animated fadeIn">
+                <h3>Verifica disponibilità</h3>
+                <label for="date-input" class="pl-0 col-form-label">Data di inizio</label>
+                <input [(ngModel)]="startDate" id="date-input" type="date" name="date-input" placeholder="date" class="form-control">
+                <label  for="date-input" class="pl-0 col-form-label">Data di fine</label>
+                <input [(ngModel)]="endDate" id="date-input" type="date" name="date-input" placeholder="date" class="form-control">
+                <button class="btn btn-success btn-block mt-3" (click)="checkAvailability()">Verifica</button>
+            </div>
+            <div *ngIf="checked" class="animated fadeIn">
+                <h3 class="text-success">Buone Notizie!</h3>
+                <p>Il tuo oggetto è disponibile per quel periodo.</p>
+                <div style="display: flex; justify-content:space-between;">
+                <p>Prezzo per {{days}} giorni:</p>
+                <strong>{{this.finalPrice}}</strong>
+                </div>
+                <button class="btn btn-success btn-block" (click)="router.navigate(['/pages/dashboard'])">Prenota</button>
+            </div>
+
+        </div>
+        
+    </div>
+    
+</div>
