@@ -1,18 +1,18 @@
-const { User, Item } = require('./models');
+const { UserModel, ItemModel } = require('./models');
 const { users, items } = require('./data');
 const seed = async() => {
     console.log("Seeding...")
-    const usersCount = await User.collection.countDocuments({});
-    if( usersCount !== 0) User.collection.drop();
+    const usersCount = await UserModel.collection.countDocuments({});
+    if( usersCount !== 0) UserModel.collection.drop();
     const Users = [];
     for (let u of users) 
-        Users.push(User.create(u));
+        Users.push(UserModel.create(u));
 
-    const itemsCount = await Item.collection.countDocuments({});
-    if(itemsCount !== 0) Item.collection.drop();
+    const itemsCount = await ItemModel.collection.countDocuments({});
+    if(itemsCount !== 0) ItemModel.collection.drop();
     const Items = [];
     for (let i of items)
-        Items.push(Item.create(i));
+        Items.push(ItemModel.create(i));
 }
 
 module.exports = seed;

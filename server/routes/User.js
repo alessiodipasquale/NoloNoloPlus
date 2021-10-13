@@ -1,9 +1,9 @@
-const User = require("../models/User");
+const UserModel = require("../models/UserModel");
 const _ = require('lodash');
 
 const getUserById = async (req, res) =>  {
     try {
-        const user = await User.getById(req.params.id);
+        const user = await UserModel.getById(req.params.id);
         res.send(user);
     } catch (err) {
         res.handle(err);
@@ -12,7 +12,7 @@ const getUserById = async (req, res) =>  {
 
 const getUsers = async (req,res) => {
     try {
-        const users = await User.find().select(['-password','-__v'])
+        const users = await UserModel.find().select(['-password','-__v'])
         res.send(users);
     } catch (err) {
         res.handle(err);
@@ -22,7 +22,7 @@ const getUsers = async (req,res) => {
 
 const deleteUser = async (req,res) => {
     try {
-        const user = await User.deleteOne({_id: req.params.id})
+        const user = await UserModel.deleteOne({_id: req.params.id})
         res.send();
     } catch (err) {
         res.handle(err);

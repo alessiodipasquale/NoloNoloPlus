@@ -1,6 +1,6 @@
 const mongoose =require('mongoose');
 const seed = require('../database/seed');
-const User = require('../models/User')
+const UserModel = require('../models/UserModel')
 
 const initialize = async () => {
     console.log("Initializing database, DB_URI: "+process.env.DB_URI)

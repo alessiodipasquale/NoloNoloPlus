@@ -1,8 +1,8 @@
-const Item = require('../models/Item');
+const ItemModel = require('../models/ItemModel');
 
 const getItemById = async (req,res) => {
     try {
-        const item = await Item.findById(req.params.id);
+        const item = await ItemModel.findById(req.params.id);
         res.send(item);
     } catch (err) {
         res.handle(err);
@@ -11,7 +11,7 @@ const getItemById = async (req,res) => {
 
 const getItems = async (req,res) => {
     try {
-        const items = await Item.find();
+        const items = await ItemModel.find();
         res.send(items);
     } catch (err) {
         res.handle(err);
@@ -20,7 +20,7 @@ const getItems = async (req,res) => {
 
 const deleteItem = async (req,res) => {
     try {
-        const item = await Item.deleteOne({_id: req.params.id})
+        const item = await ItemModel.deleteOne({_id: req.params.id})
         res.send();
     } catch (err) {
         res.handle(err);

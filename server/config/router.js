@@ -1,6 +1,6 @@
-const { loginFront, registerFront } = require("../routes/auth");
-const { getItemById, getItems, deleteItem } = require("../routes/item");
-const { getUserById, getUsers, deleteUser } = require("../routes/user")
+const { loginFront, registerFront } = require("../routes/Auth");
+const { getItemById, getItems, deleteItem } = require("../routes/Item");
+const { getUserById, getUsers, deleteUser } = require("../routes/User")
 
 const router = {
     initialize: (app, passport) => {
