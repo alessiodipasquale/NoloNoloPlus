@@ -47,10 +47,12 @@ _UserModel.pre('save', function (next) {
 
 const UserModel = mongoose.model('User', _UserModel)
 
+/*
 UserModel.getById = async (id) => {
     const user = await UserModel.findById(id).select("-password -__v");
     return user
 }
+
 
 UserModel.getAuthToken = async (username, clearTextPassword) => {
     const user = await UserModel.findOne({username: username});
@@ -62,5 +64,6 @@ UserModel.getAuthToken = async (username, clearTextPassword) => {
     const token = jwt.sign(payload, process.env.JWT_SECRET).toString();
     return token;
 }
+*/
 
 module.exports = UserModel
