@@ -3,11 +3,22 @@ const _ = require('lodash');
 
 const getUserById = async (req, res) =>  {
     try {
-        const user = await UserModel.getById(req.params.id);
+        const user = await UserModel.findById(req.params.id).select("-password -__v");
         res.send(user);
     } catch (err) {
         res.handle(err);
     }
+}
+
+const getAuthToken = async (username, clearTextPassword) => {
+    const user = await UserModel.findOne({username: username});
+
+    if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
+        throw UnauthorizedError;
+
+    const payload = { type:'user', user: _.omit(user, ['password', '__v'])}
+    const token = jwt.sign(payload, process.env.JWT_SECRET).toString();
+    return token;
 }
 
 const getUsers = async (req,res) => {
@@ -18,7 +29,6 @@ const getUsers = async (req,res) => {
         res.handle(err);
     }
 }
-
 
 const deleteUser = async (req,res) => {
     try {
@@ -32,5 +42,6 @@ const deleteUser = async (req,res) => {
 module.exports = {
     getUsers,
     getUserById,
+    getAuthToken,
     deleteUser
 }

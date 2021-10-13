@@ -1,10 +1,11 @@
 const UserModel = require("../models/UserModel");
+const { getAuthToken } = require("./User");
 
 const loginFront = async (req, res) => {
     try {
         const username = req.body.username;
         const clearTextPassword = req.body.password;
-        const token = await UserModel.getAuthToken(username, clearTextPassword);
+        const token = await getAuthToken(username, clearTextPassword);
         res.send({token})
     } catch (err) {
         res.handle(err)
