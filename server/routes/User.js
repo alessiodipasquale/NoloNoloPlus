@@ -1,5 +1,10 @@
 const UserModel = require("../models/UserModel");
 const _ = require('lodash');
+const mongoose =require('mongoose');
+const bcrypt = require('bcrypt');
+const { auth } = require('../config/params')
+const jwt = require('jsonwebtoken');
+const { UnauthorizedError } = require('../config/errors')
 
 const getUserById = async (req, res) =>  {
     try {
