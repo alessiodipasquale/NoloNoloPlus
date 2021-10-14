@@ -1,18 +1,17 @@
 const ItemModel = require('../models/ItemModel');
-const {InventoryManager} = require('./InventoryManager');
 
-const getItemById = (req,res) => {
+const getItemById = async (req,res) => {
     try {
-        const item = InventoryManager.getItemById(req.params.id);
+        const item = await ItemModel.findById(req.params.id)
         res.send(item);
     } catch (err) {
         res.handle(err);
     }
 }
 
-const getItems = (req,res) => {
+const getItems = async (req,res) => {
     try {
-        const items = InventoryManager.getAllItems();
+        const items =  await ItemModel.find();
         res.send(items);
     } catch (err) {
         res.handle(err);
@@ -22,7 +21,6 @@ const getItems = (req,res) => {
 const deleteItem = async (req,res) => {
     try {
         const item = await ItemModel.deleteOne({_id: req.params.id})
-        InventoryManager.delete(item);
         res.send();
     } catch (err) {
         res.handle(err);
