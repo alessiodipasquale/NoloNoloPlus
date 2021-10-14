@@ -21,7 +21,6 @@ const items = [
         standardPrice: 15,
         state: 'ottimo',
         rentalDates: [],
-        category: 'cat1'
     }
 ];
 

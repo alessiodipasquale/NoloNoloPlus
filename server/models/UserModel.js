@@ -21,12 +21,9 @@ const _UserModel = new mongoose.Schema({
     loyaltyPoints: {type: Number, default: 0},
     lastVisit: {type: Date, default: Date.now},
     commentsFromOfficiers: {type: [String], required: false},
-    /*
-    aggiunta di oggetti e categorie di interesse per i consigli e le preferenze di noleggio
-    */
     favCategories:{
-        type: [String],
-        required: false
+        type: [Schema.Types.ObjectId],
+        ref: 'Category'
     },
     favItemsId:{
         type: [Schema.Types.ObjectId,],

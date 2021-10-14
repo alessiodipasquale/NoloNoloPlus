@@ -6,9 +6,8 @@ const _ItemModel = new mongoose.Schema({
     description: {type: String, required: true}, 
     standardPrice: { type: Number, required: true},
     category: {
-        type: String,
-        enum : ['cat1','cat2'],
-        required: true
+        type: Schema.Types.ObjectId,
+        ref: 'Category'
     },
     priceDetailsId: {
         type: Schema.Types.ObjectId,
@@ -22,9 +21,17 @@ const _ItemModel = new mongoose.Schema({
     },
     everBeenRented: {type: Boolean, default:false},
     rentalDates: {type: [Date], required: true},
-
     available: {type: Boolean, default: true},
-    rentCount: {type: Number, default: 0}
+    rentCount: {type: Number, default: 0},
+    kitItems: {
+        type: [Schema.Types.ObjectId],
+        ref: 'Item'
+    },
+    properties:{
+        type: [Schema.Types.ObjectId],
+        ref: 'Property'
+    }
+
 },  { collection: "Item"});
 
 const ItemModel = mongoose.model('Item', _ItemModel);
