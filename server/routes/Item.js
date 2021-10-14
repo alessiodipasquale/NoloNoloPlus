@@ -1,30 +1,20 @@
 const ItemModel = require('../models/ItemModel');
+const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
 
-const getItemById = async (req,res) => {
-    try {
-        const item = await ItemModel.findById(req.params.id)
-        res.send(item);
-    } catch (err) {
-        res.handle(err);
-    }
+const getItemById = async (id) => {
+    const item = await ItemModel.findById(id)
+    return item;
 }
 
-const getItems = async (req,res) => {
-    try {
-        const items =  await ItemModel.find();
-        res.send(items);
-    } catch (err) {
-        res.handle(err);
-    }
+const getItems = async () => {
+    const items =  await ItemModel.find();
+    return items;
 }
 
-const deleteItem = async (req,res) => {
-    try {
-        const item = await ItemModel.deleteOne({_id: req.params.id})
-        res.send();
-    } catch (err) {
-        res.handle(err);
-    }
+const deleteItem = async (id) => {
+    const item = await ItemModel.deleteOne({_id: id})
+    if(!item)
+        throw BadRequestError;
 }
 
 module.exports = {

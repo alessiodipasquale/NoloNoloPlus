@@ -1,26 +1,14 @@
 const UserModel = require("../models/UserModel");
 const { getAuthToken } = require("./User");
 
-const loginFront = async (req, res) => {
-    try {
-        const username = req.body.username;
-        const clearTextPassword = req.body.password;
-        const token = await getAuthToken(username, clearTextPassword);
-        res.send({token})
-    } catch (err) {
-        res.handle(err)
-    }
+const loginFront = async (username, clearTextPassword) => { //req.body.username / password
+    const token = await getAuthToken(username, clearTextPassword);
+    return {token};
 }
 
-const registerFront = async (req,res) => {
-    try {
-        const username = req.body.username;
-        const clearTextPassword = req.body.password;
-        const user = await UserModel.create({username: username, password: clearTextPassword, role: 'cliente'});
-        res.send();
-    } catch (err) {
-        res.handle(err)
-    }
+const registerFront = async (username, clearTextPassword) => {  //req.body.username / password
+    const user = await UserModel.create({username: username, password: clearTextPassword, role: 'cliente'});
+    return user;
 }
 
 module.exports = {

@@ -4,15 +4,11 @@ const mongoose =require('mongoose');
 const bcrypt = require('bcrypt');
 const { auth } = require('../config/params')
 const jwt = require('jsonwebtoken');
-const { UnauthorizedError } = require('../config/errors')
+const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
 
-const getUserById = async (req, res) =>  {
-    try {
-        const user = await UserModel.findById(req.params.id).select("-password -__v");
-        res.send(user);
-    } catch (err) {
-        res.handle(err);
-    }
+const getUserById = async (id) =>  {
+    const user = await UserModel.findById(id).select("-password -__v");
+    return user;
 }
 
 const getAuthToken = async (username, clearTextPassword) => {
@@ -26,27 +22,37 @@ const getAuthToken = async (username, clearTextPassword) => {
     return token;
 }
 
-const getUsers = async (req,res) => {
-    try {
-        const users = await UserModel.find().select(['-password','-__v'])
-        res.send(users);
-    } catch (err) {
-        res.handle(err);
-    }
+const getUsers = async () => {
+    const users = await UserModel.find().select(['-password','-__v'])
+    return users;
 }
 
-const deleteUser = async (req,res) => {
-    try {
-        const user = await UserModel.deleteOne({_id: req.params.id})
-        res.send();
-    } catch (err) {
-        res.handle(err);
-    }
+const deleteUser = async (id) => {
+    const user = await UserModel.deleteOne({_id: id})
+    if(!user)
+        throw BadRequestError;
+}
+
+const findUserByUsername = async (username) => {
+    const user = await UserModel.findOne({username: username});
+    return user;
+}
+
+const createUser = async (object) => {
+    if(!object.username || !object.password || !object.name || !object.surname)
+        throw BadRequestError;
+        
+    if (await findUserByUsername(object.username))
+        throw AlreadyExistsError;
+
+    const user = await UserModel.create(object);
+    return user;
 }
 
 module.exports = {
     getUsers,
     getUserById,
     getAuthToken,
-    deleteUser
+    deleteUser,
+    createUser
 }

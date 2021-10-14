@@ -1,30 +1,21 @@
 const PriceDetailsModel = require("../models/PriceDetailsModel");
+const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
 
-const getPriceDetailById = async (req,res) => {
-    try {
-        const priceDetail = await PriceDetailsModel.findById(req.params.id)
-        res.send(priceDetail);
-    } catch (err) {
-        res.handle(err);
-    }
+
+const getPriceDetailById = async (id) => {
+    const priceDetail = await PriceDetailsModel.findById(id)
+    return priceDetail;
 }
 
-const getPriceDetails = async (req,res) => {
-    try {
-        const priceDetails =  await PriceDetailsModel.find();
-        res.send(priceDetails);
-    } catch (err) {
-        res.handle(err);
-    }
+const getPriceDetails = async () => {
+    const priceDetails =  await PriceDetailsModel.find();
+    return priceDetails;
 }
 
-const deletePriceDetail = async (req,res) => {
-    try {
-        const priceDetail = await PriceDetailsModel.deleteOne({_id: req.params.id})
-        res.send();
-    } catch (err) {
-        res.handle(err);
-    }
+const deletePriceDetail = async (id) => {
+    const priceDetail = await PriceDetailsModel.deleteOne({_id: id})
+    if(!priceDetail)
+        throw BadRequestError;
 }
 
 module.exports = {

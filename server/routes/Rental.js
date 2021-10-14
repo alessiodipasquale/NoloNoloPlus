@@ -1,30 +1,21 @@
 const RentalModel = require("../models/RentalModel");
+const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
 
-const getRentalById = async (req,res) => {
-    try {
-        const rental = await RentalModel.findById(req.params.id)
-        res.send(rental);
-    } catch (err) {
-        res.handle(err);
-    }
+
+const getRentalById = async (id) => {
+    const rental = await RentalModel.findById(id)
+    return rental;
 }
 
 const getRentals = async (req,res) => {
-    try {
-        const rentals =  await RentalModel.find();
-        res.send(rentals);
-    } catch (err) {
-        res.handle(err);
-    }
+    const rentals =  await RentalModel.find();
+    return rentals;
 }
 
 const deleteRental = async (req,res) => {
-    try {
-        const rental = await RentalModel.deleteOne({_id: req.params.id})
-        res.send();
-    } catch (err) {
-        res.handle(err);
-    }
+    const rental = await RentalModel.deleteOne({_id: id})
+    if(!rental)
+        throw BadRequestError;
 }
 
 module.exports = {

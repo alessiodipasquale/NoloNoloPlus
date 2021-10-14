@@ -3,6 +3,7 @@ Error.prototype.is = function (err) {
 };
 
 const BadRequestError = new Error('BAD_REQUEST');
+const AlreadyExistsError = new Error('ALREADY_EXISTS');
 const UnauthorizedError = new Error('UNAUTHORIZED');
 const NotFoundError = new Error('NOT_FOUND');
 
@@ -16,6 +17,8 @@ const errorHandler = () => (req, res, next) => {
             res.status(401).send();
         else if (err.is(NotFoundError))
             res.status(404).send();
+        else if (err.is(AlreadyExistsError))
+            res.status(403).send();
         else
             res.status(500).send();
     };
@@ -26,5 +29,6 @@ module.exports = {
     BadRequestError,
     UnauthorizedError,
     NotFoundError,
+    AlreadyExistsError,
     errorHandler
 };

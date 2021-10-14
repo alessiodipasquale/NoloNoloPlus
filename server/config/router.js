@@ -1,42 +1,38 @@
-const { loginFront, registerFront } = require("../routes/Auth");
-const { getItemById, getItems, deleteItem } = require("../routes/Item");
-const { getUserById, getUsers, deleteUser } = require("../routes/User");
-const { getRentalById, getRentals, deleteRental } = require("../routes/Rental");
-const { getCertificationById, getCertifications, deleteCertification } = require("../routes/Certification");
-const { getPriceDetailById, getPriceDetails, deletePriceDetail } = require("../routes/PriceDetails");
+const { requestManager } = require('../routes/RequestsManager');
 
 const router = {
     initialize: (app, passport) => {
         const auth = passport.authenticate('jwt', { session: false });
 
         // Auth
-        app.post('/loginFront',loginFront)
-        app.post('/registerFront',registerFront)
+        app.post('/loginFront',(req, res) => { requestManager("loginFront", req, res); })
+        app.post('/registerFront',(req, res) => { requestManager("registerFront", req, res); })
 
         // User
-        app.get('/users', auth, getUsers)
-        app.get('/users/:id', auth, getUserById)
-        app.delete('/users/:id', auth, deleteUser)
+        app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
+        app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
+        app.delete('/users/:id', auth, (req, res) => { requestManager("deleteUser", req, res); })
+        app.post('/users',auth, (req, res) => { requestManager("createUser", req, res); })
 
         // Item
-        app.get('/items', auth, getItems)
-        app.delete('/items/:id', auth, deleteItem)
-        app.get('/items/:id', auth, getItemById)
+        app.get('/items', auth, (req, res) => { requestManager("getItems", req, res); })
+        app.delete('/items/:id', auth, (req, res) => { requestManager("deleteItem", req, res); })
+        app.get('/items/:id', auth, (req, res) => { requestManager("getItemById", req, res); })
 
         // Rental
-        app.get('/rentals', auth, getRentals)
-        app.delete('/rentals/:id', auth, deleteRental)
-        app.get('/rentals/:id', auth, getRentalById)
+        app.get('/rentals', auth, (req, res) => { requestManager("getRentals", req, res); })
+        app.delete('/rentals/:id', auth, (req, res) => { requestManager("deleteRental", req, res); })
+        app.get('/rentals/:id', auth, (req, res) => { requestManager("getRentalById", req, res); })
 
         // Certification
-        app.get('/certifications', auth, getCertifications)
-        app.delete('/certifications/:id', auth, deleteCertification)
-        app.get('/certifications/:id', auth, getCertificationById)
+        app.get('/certifications', auth, (req, res) => { requestManager("getCertifications", req, res); })
+        app.delete('/certifications/:id', auth, (req, res) => { requestManager("deleteCertification", req, res); })
+        app.get('/certifications/:id', auth, (req, res) => { requestManager("getCertificationById", req, res); })
 
         // Price details
-        app.get('/priceDetails', auth, getPriceDetails)
-        app.delete('/priceDetails/:id', auth, deletePriceDetail)
-        app.get('/priceDetails/:id', auth, getPriceDetailById)
+        app.get('/priceDetails', auth, (req, res) => { requestManager("getPriceDetails", req, res); })
+        app.delete('/priceDetails/:id', auth, (req, res) => { requestManager("deletePriceDetail", req, res); })
+        app.get('/priceDetails/:id', auth, (req, res) => { requestManager("getPriceDetailById", req, res); })
     }
 }
 
