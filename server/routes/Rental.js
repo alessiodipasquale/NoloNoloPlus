@@ -18,8 +18,17 @@ const deleteRental = async (req,res) => {
         throw BadRequestError;
 }
 
+const createRental = async (object) => {
+    if(!object.startDate || !object.endDate || !object.timeInMinutes)
+        throw BadRequestError;
+        
+    const rental = await RentalModel.create(object);
+    return rental;
+}
+
 module.exports = {
     getRentals,
     getRentalById,
+    createRental,
     deleteRental
 }

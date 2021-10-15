@@ -1,11 +1,11 @@
 const { loginFront, registerFront } = require("./Auth");
-const { getItemById, getItems, deleteItem } = require("./Item");
+const { getItemById, getItems, deleteItem, createItem } = require("./Item");
 const { getUserById, getUsers, deleteUser, createUser } = require("./User");
-const { getRentalById, getRentals, deleteRental } = require("./Rental");
-const { getCertificationById, getCertifications, deleteCertification } = require("./Certification");
-const { getPriceDetailById, getPriceDetails, deletePriceDetail } = require("./PriceDetails");
-const { getPropertyById, getProperties, deleteProperty } = require("./Property");
-const { getCategoryById, getCategories, deleteCategory } = require("./Category");
+const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
+const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
+const { getPriceDetailById, getPriceDetails, deletePriceDetail, createPriceDetail } = require("./PriceDetails");
+const { getPropertyById, getProperties, deleteProperty, createProperty } = require("./Property");
+const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
 
 const requestManager = async (reqName, req, res) => {
     
@@ -35,6 +35,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "deleteItem": {
                 await deleteItem(req.params.id);
+                break;
+            }
+            case "createItem": {
+                toReturn = await createItem(req.body);
                 break;
             }
 
@@ -69,6 +73,10 @@ const requestManager = async (reqName, req, res) => {
                 await deleteRental(req.params.id);
                 break;
             }
+            case "createRental": {
+                toReturn = await createRental(req.body);
+                break;
+            }
 
             ////////////////////////////////////////////////////////////////////////// Certification
             case "getCertificationById": {
@@ -81,6 +89,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "deleteCertification": {
                 await deleteCertification(req.params.id);
+                break;
+            }
+            case "createCertification": {
+                toReturn = await createCertification(req.body);
                 break;
             }
 
@@ -97,6 +109,10 @@ const requestManager = async (reqName, req, res) => {
                 await deletePriceDetail(req.params.id);
                 break;
             }
+            case "createPriceDetail": {
+                toReturn = await createPriceDetail(req.body);
+                break;
+            }
 
             ////////////////////////////////////////////////////////////////////////// Property
             case "getPropertyById": {
@@ -111,6 +127,10 @@ const requestManager = async (reqName, req, res) => {
                 await deleteProperty(req.params.id);
                 break;
             }
+            case "createProperty": {
+                toReturn = await createProperty(req.body);
+                break;
+            }
 
             ////////////////////////////////////////////////////////////////////////// Category
             case "getCategoryById": {
@@ -123,6 +143,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "deleteCategory": {
                 await deletePriceDetail(req.params.id);
+                break;
+            }
+            case "createCategory": {
+                toReturn = await createCategory(req.body);
                 break;
             }
 

@@ -17,8 +17,23 @@ const deleteItem = async (id) => {
         throw BadRequestError;
 }
 
+const findItemByName = async (name) => {
+    const item = await ItemModel.findOne({name: name});
+    return item;
+}
+
+const createItem = async (object) => {
+    if(!object.name || !object.description || !object.standardPrice || !object.state || !object.rentalDates)
+        throw BadRequestError;
+
+    const item = await ItemModel.create(object);
+    return item;
+}
+
 module.exports = {
     getItems,
     getItemById,
-    deleteItem
+    deleteItem,
+    findItemByName,
+    createItem
 }

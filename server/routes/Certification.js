@@ -18,8 +18,17 @@ const deleteCertification = async (id) => {
         throw BadRequestError;
 }
 
+const createCertification = async (object) => {
+    //if(!object.name || !object.description)
+    //    throw BadRequestError;
+        
+    const certification = await CertificationModel.create(object);
+    return certification;
+}
+
 module.exports = {
     getCertifications,
     getCertificationById,
+    createCertification,
     deleteCertification
 }

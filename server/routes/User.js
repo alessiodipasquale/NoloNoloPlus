@@ -54,5 +54,6 @@ module.exports = {
     getUserById,
     getAuthToken,
     deleteUser,
+    findUserByUsername,
     createUser
 }

@@ -18,8 +18,26 @@ const deleteProperty = async (id) => {
         throw BadRequestError;
 }
 
+const findPropertyByName = async (name) => {
+    const property = await PropertyModel.findOne({name: name});
+    return property;
+}
+
+const createProperty = async (object) => {
+    if(!object.name)
+        throw BadRequestError;
+        
+    if (await findPropertyByName(object.name))
+        throw AlreadyExistsError;
+
+    const property = await PropertyyModel.create(object);
+    return property;
+}
+
 module.exports = {
     getProperties,
     getPropertyById,
-    deleteProperty
+    deleteProperty,
+    findPropertyByName,
+    createProperty
 }

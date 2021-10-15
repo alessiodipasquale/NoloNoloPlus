@@ -18,8 +18,17 @@ const deletePriceDetail = async (id) => {
         throw BadRequestError;
 }
 
+const createPriceDetail = async (object) => {
+    //if(!object.name || !object.description)
+    //    throw BadRequestError;
+
+    const priceDetail = await PriceDetailsModel.create(object);
+    return priceDetail;
+}
+
 module.exports = {
     getPriceDetails,
     getPriceDetailById,
-    deletePriceDetail
+    deletePriceDetail,
+    createPriceDetail
 }

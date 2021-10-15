@@ -18,8 +18,26 @@ const deleteCategory = async (id) => {
         throw BadRequestError;
 }
 
+const findCategoryByName = async (name) => {
+    const category = await CategoryModel.findOne({name: name});
+    return category;
+}
+
+const createCategory = async (object) => {
+    if(!object.name || !object.description)
+        throw BadRequestError;
+        
+    if (await findCategoryByName(object.name))
+        throw AlreadyExistsError;
+
+    const category = await CategoryModel.create(object);
+    return category;
+}
+
 module.exports = {
     getCategories,
     getCategoryById,
-    deleteCategory
+    deleteCategory,
+    findCategoryByName,
+    createCategory
 }
