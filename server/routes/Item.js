@@ -1,5 +1,6 @@
 const ItemModel = require('../models/ItemModel');
-const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
+const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
+const { getCategoryById } = require('./Category');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -30,10 +31,21 @@ const createItem = async (object) => {
     return item;
 }
 
+const getItemsByCategoryId = async (id) => {
+    const items = [];
+    const category = await getCategoryById(id);
+    const itemIds = category.associatedItems;
+    for(var elem in itemIds) {
+        items.push(await getItemById(elem))
+    } 
+    return items;
+}
+
 module.exports = {
     getItems,
     getItemById,
     deleteItem,
     findItemByName,
-    createItem
+    createItem,
+    getItemsByCategoryId
 }

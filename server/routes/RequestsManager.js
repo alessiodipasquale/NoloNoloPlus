@@ -1,5 +1,5 @@
 const { loginFront, registerFront } = require("./Auth");
-const { getItemById, getItems, deleteItem, createItem } = require("./Item");
+const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId } = require("./Item");
 const { getUserById, getUsers, deleteUser, createUser } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
@@ -39,6 +39,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "createItem": {
                 toReturn = await createItem(req.body);
+                break;
+            }
+            case "getItemsByCategoryId": {
+                toReturn = await getItemsByCategoryId(req.params.id);
                 break;
             }
 
