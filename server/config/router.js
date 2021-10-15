@@ -33,6 +33,16 @@ const router = {
         app.get('/priceDetails', auth, (req, res) => { requestManager("getPriceDetails", req, res); })
         app.delete('/priceDetails/:id', auth, (req, res) => { requestManager("deletePriceDetail", req, res); })
         app.get('/priceDetails/:id', auth, (req, res) => { requestManager("getPriceDetailById", req, res); })
+
+        // Property
+        app.get('/properties', auth, (req, res) => { requestManager("getProperties", req, res); })
+        app.delete('/properties/:id', auth, (req, res) => { requestManager("deleteProperty", req, res); })
+        app.get('/properties/:id', auth, (req, res) => { requestManager("getPropertyById", req, res); })
+
+        // Category
+        app.get('/categories', auth, (req, res) => { requestManager("getCategories", req, res); })
+        app.delete('/categories/:id', auth, (req, res) => { requestManager("deleteCategory", req, res); })
+        app.get('/categories/:id', auth, (req, res) => { requestManager("getCategoryById", req, res); })
     }
 }
 
