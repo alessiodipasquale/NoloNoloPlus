@@ -1,34 +1,43 @@
 const mongoose =require('mongoose');
+const uniqid = require('uniqid');
 var Schema = mongoose.Schema;
 
 const _RentalModel = new mongoose.Schema({
+    _id: String,
     startDate: {type: Date, required:true},
     endDate: {type: Date, required:true},
     /*ricevuta...?*/
     clientId: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'User'
     },
     employerId: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'User'
     },
-    timeInMinutes: {type: Number, required:true},
+    timeInDays: {type: Number, required:true},
     rentalType:{
         type: String,
         enum: ['prenotazione','istantaneo']
     },
     /*ripetizione noleggio..?*/
     rentalCertification:{
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'Certification'
     },
     returnCertification:{
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'Certification'
     }
 
 },  { collection: "Rental"});
+
+_RentalModel.pre('save', function (next) {
+    const rental = this;
+    if (!rental._id)
+        rental._id = uniqid('id-');
+    next();
+});
 
 const RentalModel = mongoose.model('Rental', _RentalModel);
 

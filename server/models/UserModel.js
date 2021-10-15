@@ -1,4 +1,5 @@
 const mongoose =require('mongoose');
+const uniqid = require('uniqid');
 const bcrypt = require('bcrypt');
 const { auth } = require('../config/params')
 const _ = require('lodash');
@@ -8,6 +9,7 @@ const { UnauthorizedError } = require('../config/errors')
 var Schema = mongoose.Schema;
 
 const _UserModel = new mongoose.Schema({
+    _id: String,
     username: {type: String, required: true}, 
     password: {type: String, required: true},
     name: {type: String, required: true},
@@ -20,13 +22,17 @@ const _UserModel = new mongoose.Schema({
     address: {type: String, required: false},
     loyaltyPoints: {type: Number, default: 0},
     lastVisit: {type: Date, default: Date.now},
-    commentsFromOfficiers: {type: [String], required: false},
+    commentsFromOfficiers: {
+        type: String,
+        enum : ['bravo cliente','cliente cattivo'],
+        required: false
+    },
     favCategories:{
-        type: [Schema.Types.ObjectId],
+        type: [String],
         ref: 'Category'
     },
     favItemsId:{
-        type: [Schema.Types.ObjectId,],
+        type: [String,],
         ref: 'Item'
     },
     role: {
@@ -38,6 +44,8 @@ const _UserModel = new mongoose.Schema({
 
 _UserModel.pre('save', function (next) {
     const user = this;
+    if (!user._id)
+        user._id = uniqid('id-');
     user.password = bcrypt.hashSync(user.password, auth.saltRounds);
     next();
 });

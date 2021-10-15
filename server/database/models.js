@@ -3,11 +3,15 @@ const UserModel = require("../models/UserModel");
 const CertificationModel = require("../models/CertificationModel");
 const RentalModel = require("../models/RentalModel");
 const PriceDetailsModel = require("../models/PriceDetailsModel");
+const CategoryModel = require("../models/CategoryModel");
+const PropertyModel = require("../models/PropertyModel");
 
 module.exports = {
     ItemModel,
     UserModel,
     CertificationModel,
     RentalModel,
-    PriceDetailsModel
+    PriceDetailsModel,
+    CategoryModel,
+    PropertyModel
 }
