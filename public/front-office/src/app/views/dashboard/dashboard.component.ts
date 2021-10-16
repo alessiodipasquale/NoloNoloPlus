@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
 
   categories = [];
   selectedCategory = null;
-
+  allItems = true;
   items = [];
 
   ngOnInit(): void {
@@ -38,11 +38,21 @@ export class DashboardComponent implements OnInit {
   }
 
   selectCategory(category, index) {
+    this.allItems = false;
     console.log(index);
     this.selectedCategory = index;
     this.categoriesService.getItems(category._id)
     .then(items => {
       console.log(items);
+      this.items = items;
+    })
+  }
+
+  loadAllItems() {
+    this.allItems = true;
+    this.selectedCategory = null;
+    this.itemsService.getItems()
+    .then(items => {
       this.items = items;
     })
   }

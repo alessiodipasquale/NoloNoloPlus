@@ -7,6 +7,7 @@
 </div>
 
 <div style="overflow: scroll; display: flex; flex-direction: row;">
+    <button (click)="loadAllItems()" type="button" class="btn" style="padding: 2% 5%; margin-right: 2%;" [ngClass]="{'btn-primary': allItems, 'btn-light': !allItems}">Tutte</button>
     <button (click)="this.selectCategory(category, i)" *ngFor="let category of this.categories, let i = index" type="button" [ngClass]="{'btn-primary': selectedCategory === i, 'btn-light': selectedCategory !== i}" class="btn" style="padding: 2% 5%; margin-right: 2%;">{{category.name}}</button>
 </div>
 
