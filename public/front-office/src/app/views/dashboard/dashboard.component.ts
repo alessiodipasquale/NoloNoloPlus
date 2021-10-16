@@ -1,3 +1,5 @@
+import { CategoriesService } from './../../services/categories.service';
+import { ItemsService } from './../../services/items.service';
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
@@ -8,65 +10,40 @@ import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor(private router: Router) {}
+  constructor(private router: Router,
+              private itemsService: ItemsService,
+              private categoriesService: CategoriesService) {}
 
-  categories = [
-    {
-      name: "Auto"
-    },
-    {
-      name: "Moto"
-    },
-    {
-      name: "Appartamenti"
-    },
-    {
-      name: "Bricolage"
-    },
-    {
-      name: "Libri"
-    },
-    {
-      name: "Macchine agricole"
-    },
-  ];
-  selectedCategory = 0;
+  categories = [];
+  selectedCategory = null;
 
-  items = [
-    {
-      id: 1,
-      name: "Tesla Model 3",
-      price: "120",
-      imgSrc: "http://pngimg.com/uploads/tesla_car/tesla_car_PNG40.png",
-      properties: [
-        "5 posti", "Elettrica","Automatica","Chilometraggio illimitato"
-      ]
-    },
-    {
-      id: 2,
-      name: "Panda Nuova",
-      price: "120",
-      imgSrc: "https://cdn2.rcstatic.com/images/car_images/web/fiat/panda_lrg.jpg",
-      properties: [
-        "5 posti", "Elettrica","Automatica","Chilometraggio illimitato"
-      ]
-    },
-    {
-      id: 3,
-      name: "Pandarmato",
-      price: "120",
-      imgSrc: "https://foto1.newsauto.it/wp-content/uploads/2019/11/fiat-panda-4x4-gianni-agnelli-10.jpg",
-      properties: [
-        "Tanti posti", "Elettrica ma non troppo","Manualissima","Chilometraggio infinito"
-      ]
-    }
-  ]
+  items = [];
 
   ngOnInit(): void {
-    
+    this.itemsService.getItems()
+    .then(items => {
+      //console.log(items);
+      this.items = items
+    });
+
+    this.categoriesService.getCategories()
+    .then(categories => {
+      console.log(categories);
+      this.categories = categories;
+    })
   }
 
   openItemSpec(item) {
     this.router.navigate(['/pages/items','item-spec'], {state: {item: item}});
+  }
+
+  selectCategory(category, index) {
+    console.log(index);
+    this.selectedCategory = index;
+    this.categoriesService.getItems(category._id)
+    .then(items => {
+      console.log(items);
+      this.items = items;
+    })
   }
 }

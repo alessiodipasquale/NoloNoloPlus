@@ -4,6 +4,7 @@ const { getCategoryById } = require('./Category');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
+    console.log(item);
     return item;
 }
 
@@ -35,9 +36,11 @@ const getItemsByCategoryId = async (id) => {
     const items = [];
     const category = await getCategoryById(id);
     const itemIds = category.associatedItems;
-    for(var elem in itemIds) {
-        items.push(await getItemById(elem))
+    for(let elem of itemIds) {
+        const item = await getItemById(elem)
+        items.push(item);
     } 
+   // console.log(items);
     return items;
 }
 

@@ -24,12 +24,12 @@ const users = [
 const items = [
     {
         _id: "Item1",
-        name: "palla da basket",
-        description: "ao è tonda",
-        standardPrice: 15,
+        name: "Tesla Model 3",
+        description: "Macchina elettrica molto elettrica",
+        standardPrice: 120,
         category: ["Category1"],
         priceDetailsId: "PriceDetail1",
-        imgSrc: "https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png",
+        imgSrc: "http://pngimg.com/uploads/tesla_car/tesla_car_PNG40.png",
         state: 'ottimo',
         everBeenRented: false,
         rentalDates: [],
@@ -40,19 +40,19 @@ const items = [
     },
     {
         _id: "Item2",
-        name: "palla da calcio",
+        name: "Ducati Panigale",
         description: "ao è tonda",
-        standardPrice: 15,
-        category: ["Category1"],
+        standardPrice: 80,
+        category: ["Category2"],
         priceDetailsId: "PriceDetail1",
-        imgSrc: "https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png",
+        imgSrc: "https://www.sc-project.com/wp-content/uploads/2020/07/Ducati_Panigale-V4R_Completo_Replica_SBK_my2020_3-4Anteriore_960x720px.png",
         state: 'ottimo',
         everBeenRented: false,
         rentalDates: [],
         available: true,
         rentCount: 0,
         kitItems: ["Item1"],
-        properties: ["Property1"]
+        properties: ["Property2"]
     }
 
 ];
@@ -60,10 +60,17 @@ const items = [
 const categories = [
     {
         _id: "Category1",
-        name: "palle",
-        description: "so palle",
+        name: "Auto",
+        description: "Automobili",
         associatedItems: ["Item1"],
         associatedProperties: ["Property1"]
+    },
+    {
+        _id: "Category2",
+        name: "Moto",
+        description: "Moto",
+        associatedItems: ["Item2"],
+        associatedProperties: ["Property2"]
     }
 ];
 
@@ -102,10 +109,15 @@ const priceDetails = [
 const properties = [
     {
         _id: "Property1",
-        name: "Dimensione", 
-        value: 3, 
-        unitOfMeasure: "cm3",
-        associatedItems: ["Item1", "Item2"]
+        name: "Posti", 
+        value: 5, 
+        associatedItems: ["Item1"]
+    },
+    {
+        _id: "Property2",
+        name: "Motorizzazione", 
+        value: "Benzina", 
+        associatedItems: ["Item2"]
     }
 ];
 

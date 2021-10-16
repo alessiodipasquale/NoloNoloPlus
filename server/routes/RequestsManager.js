@@ -41,10 +41,6 @@ const requestManager = async (reqName, req, res) => {
                 toReturn = await createItem(req.body);
                 break;
             }
-            case "getItemsByCategoryId": {
-                toReturn = await getItemsByCategoryId(req.params.id);
-                break;
-            }
 
             ////////////////////////////////////////////////////////////////////////// User
             case "getUserById": {
@@ -155,10 +151,16 @@ const requestManager = async (reqName, req, res) => {
             }
 
 
+            case "getItemsByCategoryId": {
+                toReturn = await getItemsByCategoryId(req.params.categoryId);
+                break;
+            }
+
+
             default:
                 console.log("ti sei scordato di inserire un case");
         }
-        console.log(toReturn);
+        //console.log(toReturn);
         if(!toReturn) res.send();
         else res.send(toReturn);
     } catch(err) {

@@ -19,7 +19,6 @@ const router = {
         app.delete('/items/:id', auth, (req, res) => { requestManager("deleteItem", req, res); })
         app.get('/items/:id', auth, (req, res) => { requestManager("getItemById", req, res); })
         app.post('/items',auth, (req, res) => { requestManager("createItem", req, res); })
-        app.get('/items/findByCategoryId/:id', auth, (req, res) => { requestManager("getItemsByCategoryId", req, res); })
 
         // Rental
         app.get('/rentals', auth, (req, res) => { requestManager("getRentals", req, res); })
@@ -50,6 +49,8 @@ const router = {
         app.delete('/categories/:id', auth, (req, res) => { requestManager("deleteCategory", req, res); })
         app.get('/categories/:id', auth, (req, res) => { requestManager("getCategoryById", req, res); })
         app.post('/categories',auth, (req, res) => { requestManager("createCategory", req, res); })
+        app.get('/categories/:categoryId/items', auth, (req, res) => { requestManager("getItemsByCategoryId", req, res); })
+
     }
 }
 
