@@ -5,6 +5,7 @@ const { getRentalById, getRentals, deleteRental, createRental } = require("./Ren
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetailById, getPriceDetails, deletePriceDetail, createPriceDetail } = require("./PriceDetails");
 const { getPropertyById, getProperties, deleteProperty, createProperty } = require("./Property");
+const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue } = require("./PropertyValue");
 const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
 
 const requestManager = async (reqName, req, res) => {
@@ -129,6 +130,24 @@ const requestManager = async (reqName, req, res) => {
             }
             case "createProperty": {
                 toReturn = await createProperty(req.body);
+                break;
+            }
+
+            ////////////////////////////////////////////////////////////////////////// PropertyValue
+            case "getPropertyValueById": {
+                toReturn = await getPropertyValueById(req.params.id);
+                break;
+            }
+            case "getPropertyValues": {
+                toReturn = await getPropertyValues();
+                break;
+            }
+            case "deletePropertyValue": {
+                await deletePropertyValue(req.params.id);
+                break;
+            }
+            case "createPropertyValue": {
+                toReturn = await createPropertyValue(req.body);
                 break;
             }
 

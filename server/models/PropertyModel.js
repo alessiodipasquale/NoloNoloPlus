@@ -4,12 +4,10 @@ var Schema = mongoose.Schema
 
 const _PropertyModel = new mongoose.Schema({
     _id: String,
-    name: {type: String, required: true}, 
-    value: {type: String, required: false},
-    unitOfMeasure: {type: String, required: false}, 
-    associatedItems: {
+    name: {type: String, required: true},
+    associatedValues:{
         type: [String],
-        ref: "Item"
+        ref: "PropertyValue"
     }
 },  { collection: "Property"});
 

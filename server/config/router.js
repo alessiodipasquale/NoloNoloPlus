@@ -44,6 +44,12 @@ const router = {
         app.get('/properties/:id', auth, (req, res) => { requestManager("getPropertyById", req, res); })
         app.post('/properties',auth, (req, res) => { requestManager("createProperty", req, res); })
 
+        // PropertyValue
+        app.get('/propertyValues', auth, (req, res) => { requestManager("getPropertyValues", req, res); })
+        app.delete('/propertyValues/:id', auth, (req, res) => { requestManager("deletePropertyValue", req, res); })
+        app.get('/propertyValues/:id', auth, (req, res) => { requestManager("getPropertyValueById", req, res); })
+        app.post('/propertyValues',auth, (req, res) => { requestManager("createPropertyValue", req, res); })
+
         // Category
         app.get('/categories', auth, (req, res) => { requestManager("getCategories", req, res); })
         app.delete('/categories/:id', auth, (req, res) => { requestManager("deleteCategory", req, res); })
