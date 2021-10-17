@@ -6,12 +6,14 @@ const _PropertyValueModel = new mongoose.Schema({
     _id: String,
     associatedProperty: {
         type: String,
+        required: true,
         ref: "Property"
     },
     value: {type: String, default: null},
     unitOfMeasure: {type: String, required: false}, 
     associatedItems: {
         type: [String],
+        required: true,
         ref: "Item"
     }
 },  { collection: "PropertyValue"});

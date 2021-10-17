@@ -32,7 +32,7 @@ const _UserModel = new mongoose.Schema({
         ref: 'Category'
     },
     favItemsId:{
-        type: [String,],
+        type: [String],
         ref: 'Item'
     },
     role: {

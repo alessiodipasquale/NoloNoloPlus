@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const uniqid = require('uniqid');
-var Schema = mongoose.Schema
+var Schema = mongoose.Schema;
 
 const _ItemModel = new mongoose.Schema({
     _id: String,
@@ -9,10 +9,12 @@ const _ItemModel = new mongoose.Schema({
     standardPrice: { type: Number, required: true},
     category: {
         type: [String],
+        required: true,
         ref: 'Category'
     },
     priceDetailsId: {
         type: String,
+        required: true,
         ref: 'PriceDetails'
     },
     imgSrc: {type: String, default: "https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png"},
@@ -46,4 +48,3 @@ _ItemModel.pre('save', function (next) {
 const ItemModel = mongoose.model('Item', _ItemModel);
 
 module.exports = ItemModel;
-

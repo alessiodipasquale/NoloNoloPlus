@@ -6,18 +6,21 @@ const _CertificationModel = new mongoose.Schema({
     _id: String,
     rentalId: {
         type: String,
+        required: true,
         ref: 'Rental'
     },
     employerId: {
         type: String,
+        required: true,
         ref: 'User'
     },
     certificationType:{
         type: String,
+        required: true,
         enum: ['ritiro','riconsegna']
     },
     commentsFromEmployer: {type: String, required: false}
-        
+    
 },  { collection: "Certification"});
 
 _CertificationModel.pre('save', function (next) {

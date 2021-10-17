@@ -4,7 +4,6 @@ const { getCategoryById } = require('./Category');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
-    console.log(item);
     return item;
 }
 
@@ -39,9 +38,17 @@ const getItemsByCategoryId = async (id) => {
     for(let elem of itemIds) {
         const item = await getItemById(elem)
         items.push(item);
-    } 
-   // console.log(items);
+    }
     return items;
+}
+
+const updateItemRentalDates = async (opType, dates) => {
+    if(opType == "add"){
+
+    }
+    if(opType == "remove"){
+
+    }
 }
 
 module.exports = {

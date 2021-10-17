@@ -6,18 +6,21 @@ const _RentalModel = new mongoose.Schema({
     _id: String,
     startDate: {type: Date, required:true},
     endDate: {type: Date, required:true},
-    /*ricevuta...?*/
+
     clientId: {
         type: String,
+        required: true,
         ref: 'User'
     },
     employerId: {
         type: String,
+        required: true,
         ref: 'User'
     },
     timeInDays: {type: Number, required:true},
     rentalType:{
         type: String,
+        required: true,
         enum: ['prenotazione','istantaneo']
     },
     /*ripetizione noleggio..?*/
