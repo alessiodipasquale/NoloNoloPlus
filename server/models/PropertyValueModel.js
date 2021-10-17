@@ -22,3 +22,7 @@ _PropertyValueModel.pre('save', function (next) {
         propertyVal._id = uniqid('id-');
     next();
 });
+
+const PropertyValueModel = mongoose.model('PropertyValue', _PropertyValueModel);
+
+module.exports = PropertyValueModel;

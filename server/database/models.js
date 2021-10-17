@@ -5,6 +5,7 @@ const RentalModel = require("../models/RentalModel");
 const PriceDetailsModel = require("../models/PriceDetailsModel");
 const CategoryModel = require("../models/CategoryModel");
 const PropertyModel = require("../models/PropertyModel");
+const PropertyValueModel = require("../models/PropertyValueModel");
 
 module.exports = {
     ItemModel,
@@ -13,5 +14,6 @@ module.exports = {
     RentalModel,
     PriceDetailsModel,
     CategoryModel,
-    PropertyModel
+    PropertyModel,
+    PropertyValueModel
 }

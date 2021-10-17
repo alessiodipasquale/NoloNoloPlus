@@ -36,7 +36,7 @@ const items = [
         available: true,
         rentCount: 0,
         kitItems: ["Item2"],
-        properties: ["Property1"]
+        properties: ["Val1"]
     },
     {
         _id: "Item2",
@@ -52,7 +52,7 @@ const items = [
         available: true,
         rentCount: 0,
         kitItems: ["Item1"],
-        properties: ["Property2"]
+        properties: ["Val2"]
     }
 
 ];
@@ -110,14 +110,28 @@ const properties = [
     {
         _id: "Property1",
         name: "Posti", 
-        value: 5, 
-        associatedItems: ["Item1"]
+        associatedValues: ["Val1"]
     },
     {
         _id: "Property2",
-        name: "Motorizzazione", 
-        value: "Benzina", 
-        associatedItems: ["Item2"]
+        name: "Cilindrata", 
+        associatedItems: ["Val2"]
+    }
+];
+
+const propertyValues = [
+    {
+        _id: "Val1",
+        value: "5",
+        associatedItems: ["Item2"],
+        associatedProperty: "Property1"
+    },
+    {
+        _id: "Val2",
+        value: "1600",
+        unitOfMeasure: "cm3",
+        associatedItems: ["Item1"],
+        associatedProperty: "Property2"
     }
 ];
 
@@ -142,5 +156,6 @@ module.exports = {
     certifications,
     priceDetails,
     properties,
+    propertyValues,
     rentals
 }
