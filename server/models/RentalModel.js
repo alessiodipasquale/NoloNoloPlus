@@ -17,6 +17,11 @@ const _RentalModel = new mongoose.Schema({
         required: true,
         ref: 'User'
     },
+    itemId: {
+        type: [String],
+        required: true,
+        ref: 'Item'
+    },
     timeInDays: {type: Number, required:true},
     rentalType:{
         type: String,
