@@ -9,7 +9,7 @@ import 'style-loader!angular2-toaster/toaster.css';
   // tslint:disable-next-line
   selector: 'body',
   template: `<toaster-container></toaster-container>
-  <router-outlet></router-outlet>`,
+  <router-outlet ></router-outlet>`,
   providers: [IconSetService],
 })
 export class AppComponent implements OnInit {

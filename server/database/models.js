@@ -1,7 +1,19 @@
-const Item = require("../models/Item");
-const User = require("../models/User");
+const ItemModel = require("../models/ItemModel");
+const UserModel = require("../models/UserModel");
+const CertificationModel = require("../models/CertificationModel");
+const RentalModel = require("../models/RentalModel");
+const PriceDetailsModel = require("../models/PriceDetailsModel");
+const CategoryModel = require("../models/CategoryModel");
+const PropertyModel = require("../models/PropertyModel");
+const PropertyValueModel = require("../models/PropertyValueModel");
 
 module.exports = {
-    Item,
-    User
+    ItemModel,
+    UserModel,
+    CertificationModel,
+    RentalModel,
+    PriceDetailsModel,
+    CategoryModel,
+    PropertyModel,
+    PropertyValueModel
 }
