@@ -1,25 +1,27 @@
 <div class="animated fadeIn">
     <button (click)="router.navigate(['/pages/dashboard'])" class="btn btn-link" style="padding-left: 0;">Torna ai risultati di ricerca</button>
     <h2>La tua offerta</h2>
-    <div class="card mt-3">
+    <div class="card w-100 mt-3">
         <div class="card-body">
             <div class="row">
-                <div class="col-6">
-                    <h5 class="card-title">{{item.name}}</h5>
+                <div class="col-6" style="padding-left: 10px; padding-right: 10px;">
+                    <h5 class="card-title" >{{item.name}}</h5>
                     <ul style="padding-left: 15%;">
-                        <li *ngFor="let property of item.properties">{{property}}</li>
+                        <!--<li *ngFor="let property of item.properties">{{property}}</li>-->
+                        <li>{{item.category}}</li>
+                        <li>Stato: {{item.state}}</li>
                     </ul>
                 </div>
                 <div class="col-6" style="display: flex; justify-content: space-around; align-items: center; flex-direction: column;">
-                    <img style="width: 100%;"[src]="item.imgSrc">
+                    <img style="width: 100%; margin-bottom: 10px;"[src]="item.imgSrc">
                     <div>
                         <p style="margin-bottom: 0; color: grey;" >Prezzo al giorno</p>
-                        <h2 style="font-weight: bold;">{{item.price}} €</h2>
+                        <h2 style="font-weight: bold;">{{item.standardPrice}}€</h2>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+      </div>
     <div class="card">
         <div class="card-body">
             <div *ngIf="!checked" class="animated fadeIn">
@@ -37,7 +39,7 @@
                 <p>Prezzo per {{days}} giorni:</p>
                 <strong>{{this.finalPrice}}</strong>
                 </div>
-                <button class="btn btn-success btn-block" (click)="router.navigate(['/pages/dashboard'])">Prenota</button>
+                <button class="btn btn-success btn-block" (click)="rent()">Prenota</button>
             </div>
 
         </div>

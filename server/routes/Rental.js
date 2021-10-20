@@ -19,7 +19,7 @@ const deleteRental = async () => {
 }
 
 const createRental = async (object) => {
-    if(!object.startDate || !object.endDate || !object.timeInDays|| !object.clientId || !object.employerId || !object.rentalType)
+    if(!object.startDate || !object.endDate || !object.timeInDays|| !object.clientId /*|| !object.employerId*/ || !object.rentalType)
         throw BadRequestError;
     
     if(!checkIfAvailable(object))
@@ -36,7 +36,7 @@ const checkIfAvailable = async (object) => {
 
     const item = await getItemById(object.id);
     const start = new Date(object.startDate);
-    const end = new Date(object.startDate);
+    const end = new Date(object.endDate);
     var isOk = true;
     for(let e of item.rentalDates){
         const elem = new Date(e)

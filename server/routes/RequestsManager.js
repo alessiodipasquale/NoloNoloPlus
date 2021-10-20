@@ -11,6 +11,8 @@ const { getCategoryById, getCategories, deleteCategory, createCategory } = requi
 const requestManager = async (reqName, req, res) => {
     
     try {
+        //console.log(req.user.user._id)
+
         var toReturn = null;
         switch (reqName) {
 
