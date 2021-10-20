@@ -42,12 +42,30 @@ const getItemsByCategoryId = async (id) => {
     return items;
 }
 
-const updateItemRentalDates = async (opType, dates) => {
+const updateItemRentalDates = async (opType, dates, itemIds) => {
     if(opType == "add"){
-
+        for(var elem of itemIds){
+            const item = getItemById(elem);
+            var datesList = item.rentalDates;
+            for(var elem of dates)
+                datesList.push(elem);
+            ItemModel.updateOne({_id: elem},{ $set: { "rentalDates": datesList} });
+        }
     }
     if(opType == "remove"){
-
+        for(var elem of itemIds){
+            const item = getItemById(elem);
+            var datesList = item.rentalDates;
+            datesList.filter((date)=>{
+                var ok = true
+                for(var d in dates){
+                    if(d == date)
+                        ok = false;
+                }
+                return ok;
+            })
+            ItemModel.updateOne({_id: elem},{ $set: { "rentalDates": datesList} });
+        }
     }
 }
 
@@ -57,5 +75,6 @@ module.exports = {
     deleteItem,
     findItemByName,
     createItem,
-    getItemsByCategoryId
+    getItemsByCategoryId,
+    updateItemRentalDates
 }
