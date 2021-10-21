@@ -19,6 +19,7 @@ const router = {
         app.delete('/items/:id', auth, (req, res) => { requestManager("deleteItem", req, res); })
         app.get('/items/:id', auth, (req, res) => { requestManager("getItemById", req, res); })
         app.post('/items',auth, (req, res) => { requestManager("createItem", req, res); })
+        app.get('/items/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
 
         // Rental
         app.get('/rentals', auth, (req, res) => { requestManager("getRentals", req, res); })

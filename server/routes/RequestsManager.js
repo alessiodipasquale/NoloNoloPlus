@@ -1,5 +1,5 @@
 const { loginFront, registerFront } = require("./Auth");
-const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId } = require("./Item");
+const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable } = require("./Item");
 const { getUserById, getUsers, deleteUser, createUser } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
@@ -11,8 +11,6 @@ const { getCategoryById, getCategories, deleteCategory, createCategory } = requi
 const requestManager = async (reqName, req, res) => {
     
     try {
-        //console.log(req.user.user._id)
-
         var toReturn = null;
         switch (reqName) {
 
@@ -42,6 +40,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "createItem": {
                 toReturn = await createItem(req.body);
+                break;
+            }
+            case "checkIfAvailable": {
+                toReturn = await checkIfAvailable(req.body);
                 break;
             }
 
@@ -77,7 +79,7 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "createRental": {
-                toReturn = await createRental(req.body);
+                toReturn = await createRental(req.body,req.user.user._id);
                 break;
             }
 

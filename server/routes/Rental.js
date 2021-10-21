@@ -1,5 +1,5 @@
 const RentalModel = require("../models/RentalModel");
-const { getItemById, updateItemRentalDates } = require("../routes/Item"); 
+const { getItemById, updateItemRentalDates, checkIfAvailable } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
 
@@ -19,8 +19,8 @@ const deleteRental = async () => {
         throw BadRequestError;
 }
 
-const createRental = async (object) => {
-    if(!object.startDate || !object.endDate || !object.timeInDays|| !object.clientId /*|| !object.employerId*/ || !object.rentalType)
+const createRental = async (object, userId) => {
+    if(!object.startDate || !object.endDate || !object.timeInDays || !userId/*|| !object.clientId || !object.employerId*/ || !object.rentalType)
         throw BadRequestError;
     
     if(!checkIfAvailable(object))
@@ -32,32 +32,9 @@ const createRental = async (object) => {
     return rental;
 }
 
-const checkIfAvailable = async (object) => {
-    if(!object.startDate || !object.endDate || !object.ids)
-        throw BadRequestError;
-
-    const item = await getItemById(object.id);
-    const start = new Date(object.startDate);
-    const end = new Date(object.endDate);
-    var isOk = true;
-    for(var elem of object.ids){
-        const item = await getItemById(elem);
-        const start = new Date(object.startDate);
-        const end = new Date(object.startDate);
-        for(let e of item.rentalDates){
-            const elem = new Date(e)
-            if (elem >= start && elem <= end){
-                ok = false;
-                break;
-            }
-        }
-    }
-    return isOk;
-}
-
 module.exports = {
     getRentals,
     getRentalById,
     createRental,
-    deleteRental
+    deleteRental,
 }

@@ -69,6 +69,25 @@ const updateItemRentalDates = async (opType, dates, itemIds) => {
     }
 }
 
+const checkIfAvailable = async (object) => {
+    if(!object.startDate || !object.endDate || !object.ids)
+        throw BadRequestError;
+
+    var isOk = true;
+    for(var elem of object.ids){
+        const item = await getItemById(elem);
+        const start = new Date(object.startDate);
+        const end = new Date(object.endDate);
+        for(let e of item.rentalDates){
+            const elem = new Date(e)
+            if (elem >= start && elem <= end){
+                throw BadRequestError;
+            }
+        }
+    }
+    return isOk;
+}
+
 module.exports = {
     getItems,
     getItemById,
@@ -76,5 +95,6 @@ module.exports = {
     findItemByName,
     createItem,
     getItemsByCategoryId,
-    updateItemRentalDates
+    updateItemRentalDates,
+    checkIfAvailable
 }
