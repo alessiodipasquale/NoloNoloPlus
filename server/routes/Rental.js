@@ -20,15 +20,18 @@ const deleteRental = async () => {
 }
 
 const createRental = async (object, userId) => {
-    if(!object.startDate || !object.endDate || !object.timeInDays || !userId/*|| !object.clientId || !object.employerId*/ || !object.rentalType)
+    //console.log(object);
+    //console.log(userId);
+    if(!object.startDate || !object.endDate || !object.timeInDays || !userId || !userId || !object.objectId || !object.rentalType)
         throw BadRequestError;
     
     if(!checkIfAvailable(object))
         throw BadRequestError;
 
+    object.clientId = userId;
     const rental = await RentalModel.create(object);
     const dates = getDatesFromARange(object.startDate, object.endDate);
-    updateItemRentalDates("add", dates, itemIds)
+    updateItemRentalDates("add", dates, object.objectId)
     return rental;
 }
 

@@ -22,13 +22,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.itemsService.getItems()
     .then(items => {
-      //console.log(items);
+      console.log(items);
       this.items = items
     });
 
     this.categoriesService.getCategories()
     .then(categories => {
-      console.log(categories);
+      //console.log(categories);
       this.categories = categories;
     })
   }

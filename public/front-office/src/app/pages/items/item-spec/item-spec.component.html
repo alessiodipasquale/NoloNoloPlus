@@ -7,8 +7,8 @@
                 <div class="col-6" style="padding-left: 10px; padding-right: 10px;">
                     <h5 class="card-title" >{{item.name}}</h5>
                     <ul style="padding-left: 15%;">
-                        <!--<li *ngFor="let property of item.properties">{{property}}</li>-->
-                        <li>{{item.category}}</li>
+                        <li *ngFor="let property of item.properties">{{property.name}}: {{property.value}} {{property.unitOfMeasure ? property.unitOfMeasure : ''}}</li>
+                        <!--<li>{{item.category}}</li>-->
                         <li>Stato: {{item.state}}</li>
                     </ul>
                 </div>
@@ -36,7 +36,7 @@
                 <h3 class="text-success">Buone Notizie!</h3>
                 <p>Il tuo oggetto è disponibile per quel periodo.</p>
                 <div style="display: flex; justify-content:space-between;">
-                <p>Prezzo per {{days}} giorni:</p>
+                <p>Prezzo per {{days}} giorn{{days === 1 ? 'o':'i'}}:</p>
                 <strong>{{this.finalPrice}}</strong>
                 </div>
                 <button class="btn btn-success btn-block" (click)="rent()">Prenota</button>

@@ -41,15 +41,19 @@ export class ItemSpecComponent implements OnInit {
       this.notificationsService.error("Inserisci un periodo valido!")
     else {
       var Time = this.endDate.getTime() - this.startDate.getTime(); 
-      this.days = Time / (1000 * 3600 * 24);
-      console.log(this.days);
+      if (Time === 0) {
+        this.days = 1;
+      } else {
+        this.days = Time / (1000 * 3600 * 24);
+      }
+      //console.log(this.days);
       this.endDate = (this.endDate).toISOString().substring(0,10);;
       this.startDate = (this.startDate).toISOString().substring(0,10);
       //da aggiustare
       this.itemsService.checkIfAvailable(this.startDate,this.endDate,this.item._id)
       .then(() => {
         this.checked = true
-        this.finalPrice = this.item.price * this.days;
+        this.finalPrice = this.item.standardPrice * this.days;
       }).catch(err => {
         this.notificationsService.error("Non c'è disponiiblità per il periodo richiesto")
       })
@@ -60,6 +64,7 @@ export class ItemSpecComponent implements OnInit {
   rent(){
     this.rentalsService.createRental(this.startDate, this.endDate, this.item._id, this.days)
     .then(() => {
+      this.router.navigate(['/pages/dashboard']);
       this.notificationsService.success("Prenotazione riuscita con successo");
     }).catch(err => this.notificationsService.error(err))
   }

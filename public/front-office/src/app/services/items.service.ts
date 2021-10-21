@@ -17,7 +17,7 @@ export class ItemsService {
     }
 
     checkIfAvailable(startDate, endDate, objectId) {
-        return this.http.post('/items/'+objectId+'/checkAvailability', {startDate, endDate, objectId})
+        return this.http.post('/items/'+objectId+'/checkIfAvailable', {startDate, endDate, objectId})
     }
 
     deleteItem(id) {

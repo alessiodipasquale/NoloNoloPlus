@@ -17,8 +17,8 @@
             <div class="col-6" style="padding-left: 10px; padding-right: 10px;">
                 <h5 class="card-title" >{{item.name}}</h5>
                 <ul style="padding-left: 15%;">
-                    <!--<li *ngFor="let property of item.properties">{{property}}</li>-->
-                    <li>{{item.category}}</li>
+                    <li *ngFor="let property of item.properties">{{property.name}}: {{property.value}} {{property.unitOfMeasure ? property.unitOfMeasure : ''}}</li>
+                    <!--<li>{{item.category}}</li>-->
                     <li>Stato: {{item.state}}</li>
                 </ul>
             </div>

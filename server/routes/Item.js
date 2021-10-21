@@ -61,19 +61,20 @@ const getItemsByCategoryId = async (id) => {
     return items;
 }
 
-const updateItemRentalDates = async (opType, dates, itemIds) => {
+const updateItemRentalDates = async (opType, dates, objectId) => {
+    //console.log(dates, objectId)
     if(opType == "add"){
-        for(var elem of itemIds){
-            const item = getItemById(elem);
+        //for(var elem of itemIds){
+            const item = await getItemById(objectId);
             var datesList = item.rentalDates;
             for(var elem of dates)
                 datesList.push(elem);
-            ItemModel.updateOne({_id: elem},{ $set: { "rentalDates": datesList} });
-        }
+            await ItemModel.updateOne({_id: objectId},{ $set: { "rentalDates": datesList} });
+        //}
     }
     if(opType == "remove"){
-        for(var elem of itemIds){
-            const item = getItemById(elem);
+       // for(var elem of itemIds){
+            const item = await getItemById(objectId);
             var datesList = item.rentalDates;
             datesList.filter((date)=>{
                 var ok = true
@@ -83,18 +84,19 @@ const updateItemRentalDates = async (opType, dates, itemIds) => {
                 }
                 return ok;
             })
-            ItemModel.updateOne({_id: elem},{ $set: { "rentalDates": datesList} });
-        }
+            await ItemModel.updateOne({_id: objectId},{ $set: { "rentalDates": datesList} });
+        //}
     }
 }
 
 const checkIfAvailable = async (object) => {
-    if(!object.startDate || !object.endDate || !object.ids)
+    console.log(object)
+    if(!object.startDate || !object.endDate || !object.objectId)
         throw BadRequestError;
 
     var isOk = true;
-    for(var elem of object.ids){
-        const item = await getItemById(elem);
+   // for(var elem of object.itemIds){
+        const item = await getItemById(object.objectId);
         const start = new Date(object.startDate);
         const end = new Date(object.endDate);
         for(let e of item.rentalDates){
@@ -103,7 +105,7 @@ const checkIfAvailable = async (object) => {
                 throw BadRequestError;
             }
         }
-    }
+   // }
     return isOk;
 }
 

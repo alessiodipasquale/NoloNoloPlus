@@ -14,7 +14,6 @@ const _RentalModel = new mongoose.Schema({
     },
     employerId: {
         type: String,
-        required: true,
         ref: 'User'
     },
     itemId: {
