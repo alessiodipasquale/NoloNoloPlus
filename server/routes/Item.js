@@ -1,6 +1,8 @@
 const ItemModel = require('../models/ItemModel');
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getCategoryById } = require('./Category');
+const { getPropertyValueById } = require('./PropertyValue');
+const { getPropertyById } = require('./Property');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -8,8 +10,25 @@ const getItemById = async (id) => {
 }
 
 const getItems = async () => {
+    const toReturn = [];
     const items =  await ItemModel.find();
-    return items;
+    for(let item of items){
+        
+        const props = [];
+        for(let propId of item.properties){
+            const propVal = await getPropertyValueById(propId);
+            const prop = await getPropertyById(propVal.associatedProperty);
+            const name = prop.name;
+            const value = propVal.value;
+            const unitOfMeasure = propVal.unitOfMeasure;
+            props.push({name, value, unitOfMeasure});
+        }
+        let elem = JSON.stringify(item)
+        elem = JSON.parse(elem)
+        elem.properties = props;
+        toReturn.push(elem);
+    }
+    return toReturn;
 }
 
 const deleteItem = async (id) => {
