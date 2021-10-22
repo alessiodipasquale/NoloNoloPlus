@@ -1,15 +1,41 @@
 const KitModel = require("../models/KitModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
-
+const { getItemById } = require("./Item");
+const { getPropertyValueById } = require("./PropertyValue");
+const { getPropertyById } = require("./Property");
 
 const getKitById = async (id) => {
-    const kit = await KitModel.findById(id)
-    return kit;
+    const kit = await KitModel.findById(id);
+    for(let itemId of kit.items){
+        const item = await getItemById(itemId)
+        const props = [];
+        for(let propId of item.properties){
+            const propVal = await getPropertyValueById(propId);
+            const prop = await getPropertyById(propVal.associatedProperty);
+            const name = prop.name;
+            const value = propVal.value;
+            const unitOfMeasure = propVal.unitOfMeasure;
+            props.push({name, value, unitOfMeasure});
+        }
+        let it = JSON.stringify(item)
+        it = JSON.parse(it)
+        it.properties = props;
+        rentalItems.push(it);
+    }
+    elem = JSON.stringify(rental)
+    elem = JSON.parse(elem)
+    elem.items = rentalItems;
+    return elem;
 }
 
 const getKits = async () => {
     const kits =  await KitModel.find();
-    return kits;
+    toReturn = [];
+    for(let kit of kits){
+        const k = await getKitById(kit.id)
+        toReturn.push(k)
+    }
+    return toReturn;
 }
 
 const deleteKit = async (id) => {
@@ -19,9 +45,6 @@ const deleteKit = async (id) => {
 }
 
 const createKit = async (object) => {
-    //if(!object.name || !object.description)
-    //    throw BadRequestError;
-        
     const kit = await KitModel.create(object);
     return kit;
 }
