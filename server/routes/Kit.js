@@ -6,6 +6,7 @@ const { getPropertyById } = require("./Property");
 
 const getKitById = async (id) => {
     const kit = await KitModel.findById(id);
+    const kitItems = [];
     for(let itemId of kit.items){
         const item = await getItemById(itemId)
         const props = [];
@@ -20,11 +21,11 @@ const getKitById = async (id) => {
         let it = JSON.stringify(item)
         it = JSON.parse(it)
         it.properties = props;
-        rentalItems.push(it);
+        kitItems.push(it);
     }
-    elem = JSON.stringify(rental)
+    elem = JSON.stringify(kit)
     elem = JSON.parse(elem)
-    elem.items = rentalItems;
+    elem.items = kitItems;
     return elem;
 }
 

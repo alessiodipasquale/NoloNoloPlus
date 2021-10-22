@@ -44,6 +44,11 @@ const _RentalModel = new mongoose.Schema({
     returnCertification:{
         type: String,
         ref: 'Certification'
+    },
+    state: {
+        type: String,
+        enum: ['in corso', 'terminata', 'futura'],
+        required: true
     }
 
 },  { collection: "Rental"});

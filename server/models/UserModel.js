@@ -2,9 +2,6 @@ const mongoose =require('mongoose');
 const uniqid = require('uniqid');
 const bcrypt = require('bcrypt');
 const { auth } = require('../config/params')
-const _ = require('lodash');
-const jwt = require('jsonwebtoken');
-const { UnauthorizedError } = require('../config/errors')
 
 var Schema = mongoose.Schema;
 
@@ -56,24 +53,5 @@ _UserModel.pre('save', function (next) {
 });
 
 const UserModel = mongoose.model('User', _UserModel)
-
-/*
-UserModel.getById = async (id) => {
-    const user = await UserModel.findById(id).select("-password -__v");
-    return user
-}
-
-
-UserModel.getAuthToken = async (username, clearTextPassword) => {
-    const user = await UserModel.findOne({username: username});
-
-    if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
-        throw UnauthorizedError;
-
-    const payload = { type:'user', user: _.omit(user, ['password', '__v'])}
-    const token = jwt.sign(payload, process.env.JWT_SECRET).toString();
-    return token;
-}
-*/
 
 module.exports = UserModel

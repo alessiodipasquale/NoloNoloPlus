@@ -37,12 +37,44 @@ const items = [
         rentalDates: [],
         available: true,
         rentCount: 0,
-        kitIds: ["Kit1"],
+        kitIds: [],
         properties: ["Val1"]
     },
     {
         _id: "Item2",
         name: "Ducati Panigale",
+        description: "ao è tonda",
+        standardPrice: 80,
+        category: ["Category2"],
+        priceDetailsId: "PriceDetail1",
+        imgSrc: "https://www.sc-project.com/wp-content/uploads/2020/07/Ducati_Panigale-V4R_Completo_Replica_SBK_my2020_3-4Anteriore_960x720px.png",
+        state: 'ottimo',
+        everBeenRented: false,
+        rentalDates: [],
+        available: true,
+        rentCount: 0,
+        kitIds: [],
+        properties: ["Val2"]
+    },
+    {
+        _id: "Item3",
+        name: "Tesla Model S",
+        description: "Macchina elettrica molto elettrica",
+        standardPrice: 150,
+        category: ["Category1"],
+        priceDetailsId: "PriceDetail1",
+        imgSrc: "http://pngimg.com/uploads/tesla_car/tesla_car_PNG40.png",
+        state: 'ottimo',
+        everBeenRented: false,
+        rentalDates: [],
+        available: true,
+        rentCount: 0,
+        kitIds: ["Kit1"],
+        properties: ["Val1"]
+    },
+    {
+        _id: "Item4",
+        name: "Aprilia SR",
         description: "ao è tonda",
         standardPrice: 80,
         category: ["Category2"],
@@ -145,6 +177,7 @@ const rentals = [
         clientId: "User2",
         timeInDays: 10,
         itemId: "Item1",
+        state: 'terminata',
         rentalTarget: 'singolo',
         rentalType: 'istantaneo',
         rentalCertification: "Certification1",
@@ -153,9 +186,10 @@ const rentals = [
     {
         _id: "Rental2",
         startDate: new Date("<2021-10-05>"),
-        endDate: new Date("<2021-10-10>"),
+        endDate: new Date("<2023-10-10>"),
         clientId: "User2",
         timeInDays: 10,
+        state: 'terminata',
         kitId: "Kit1",
         rentalType: 'istantaneo',
         rentalTarget: 'kit',
@@ -172,7 +206,7 @@ const kits = [
         standardPrice: 300,
         category: ["Category1"],
         priceDetailsId: "PriceDetail1",
-        items: ["Item1", "Item2"]
+        items: ["Item3", "Item4"]
     }
 ];
 

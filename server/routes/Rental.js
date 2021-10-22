@@ -20,7 +20,7 @@ const deleteRental = async () => {
 }
 
 const createRental = async (object, userId) => {
-    if(!object.startDate || !object.endDate || !object.timeInDays || !object.rentalTarget || !userId  || !object.objectId || !object.rentalType)
+    if(!object.startDate || !object.state || !object.endDate || !object.timeInDays || !object.rentalTarget || !userId  || !object.objectId || !object.rentalType)
         throw BadRequestError;
     
     if(!checkIfAvailable(object))
@@ -33,9 +33,15 @@ const createRental = async (object, userId) => {
     return rental;
 }
 
+const changeRentalState = async (id, newState) => {
+    await RentalModel.updateOne({_id: id},{ $set: { "state": newState} });
+    return null;
+}
+
 module.exports = {
     getRentals,
     getRentalById,
     createRental,
     deleteRental,
+    changeRentalState
 }

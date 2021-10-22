@@ -1,8 +1,6 @@
 const UserModel = require("../models/UserModel");
 const _ = require('lodash');
-const mongoose =require('mongoose');
 const bcrypt = require('bcrypt');
-const { auth } = require('../config/params')
 const jwt = require('jsonwebtoken');
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getRentalById } = require("./Rental");
@@ -101,7 +99,7 @@ const getRentalsByUserId = async (userId) => {
             elem = JSON.stringify(rental)
             elem = JSON.parse(elem)
             elem.properties = props;
-            elem.item = rentalItems[0];
+            elem.items = rentalItems;
         }
         
         toReturn.push(elem);
