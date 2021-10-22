@@ -20,8 +20,31 @@ const requestManager = async (reqName, req, res) => {
 
                 break;
             }
+
             case "registerFront": {
                 toReturn = await registerFront(req.body.username, req.body.password)
+                break;
+            }
+
+            case "loginDashboard": {
+                toReturn = await loginDashboard(req.body.username, req.body.password)
+
+                break;
+            }
+
+            case "registerDashboard": {
+                toReturn = await registerDashboard(req.body.username, req.body.password)
+                break;
+            }
+
+            case "loginBack": {
+                toReturn = await loginBack(req.body.username, req.body.password)
+
+                break;
+            }
+
+            case "registerBack": {
+                toReturn = await registerBack(req.body.username, req.body.password)
                 break;
             }
 

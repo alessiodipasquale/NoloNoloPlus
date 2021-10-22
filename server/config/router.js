@@ -7,6 +7,10 @@ const router = {
         // Auth
         app.post('/loginFront',(req, res) => { requestManager("loginFront", req, res); })
         app.post('/registerFront',(req, res) => { requestManager("registerFront", req, res); })
+        app.post('/loginDashboard',(req, res) => { requestManager("loginDashboard", req, res); })
+        app.post('/registerDashboard',(req, res) => { requestManager("registerDashboard", req, res); })
+        app.post('/loginBack',(req, res) => { requestManager("loginDashboard", req, res); })
+        app.post('/registerBack',(req, res) => { requestManager("registerDashboard", req, res); })
 
         // User
         app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
