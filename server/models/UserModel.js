@@ -40,6 +40,11 @@ const _UserModel = new mongoose.Schema({
         enum : ['cliente','funzionario','manager'],
         default: 'cliente'
     },
+    rentals: {
+        type: [String],
+        ref: 'Rental',
+        default: []
+    }
 }, { collection: "User"});
 
 _UserModel.pre('save', function (next) {

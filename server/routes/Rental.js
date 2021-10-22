@@ -20,9 +20,7 @@ const deleteRental = async () => {
 }
 
 const createRental = async (object, userId) => {
-    //console.log(object);
-    //console.log(userId);
-    if(!object.startDate || !object.endDate || !object.timeInDays || !userId || !userId || !object.objectId || !object.rentalType)
+    if(!object.startDate || !object.endDate || !object.timeInDays || !userId  || !object.objectId || !object.rentalType)
         throw BadRequestError;
     
     if(!checkIfAvailable(object))

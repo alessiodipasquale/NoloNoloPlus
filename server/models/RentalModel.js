@@ -21,11 +21,21 @@ const _RentalModel = new mongoose.Schema({
         required: true,
         ref: 'Item'
     },
+    kit: {
+        type: String,
+        ref: 'Kit'
+    },
     timeInDays: {type: Number, required:true},
     rentalType:{
         type: String,
         required: true,
         enum: ['prenotazione','istantaneo']
+    },
+    rentalTarget:{
+        type: String,
+        required: true,
+        enum: ['singolo','kit'],
+        default: 'singolo'
     },
     /*ripetizione noleggio..?*/
     rentalCertification:{

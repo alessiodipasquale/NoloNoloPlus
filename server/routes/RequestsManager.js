@@ -1,6 +1,6 @@
-const { loginFront, registerFront } = require("./Auth");
+const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack } = require("./Auth");
 const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable } = require("./Item");
-const { getUserById, getUsers, deleteUser, createUser } = require("./User");
+const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetailById, getPriceDetails, deletePriceDetail, createPriceDetail } = require("./PriceDetails");
@@ -13,7 +13,6 @@ const requestManager = async (reqName, req, res) => {
     try {
         var toReturn = null;
         switch (reqName) {
-
             ////////////////////////////////////////////////////////////////////////// Auth
             case "loginFront": {
                 toReturn = await loginFront(req.body.username, req.body.password)
@@ -85,6 +84,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "createUser": {
                 toReturn = await createUser(req.body);
+                break;
+            }
+            case "getRentalsByUserId": {
+                toReturn = await getRentalsByUserId(req.user.user._id);
                 break;
             }
 
@@ -195,7 +198,6 @@ const requestManager = async (reqName, req, res) => {
                 toReturn = await createCategory(req.body);
                 break;
             }
-
 
             case "getItemsByCategoryId": {
                 toReturn = await getItemsByCategoryId(req.params.categoryId);

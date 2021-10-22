@@ -9,6 +9,7 @@ const users = [
         address: "Via Massarenti 470",
         commentsFromOfficiers: 'cliente cattivo',
         favItemsId: [],
+        rentals: ["Rental1"],
         role: 'cliente'
     },
     {
@@ -17,6 +18,7 @@ const users = [
         password: "admin",
         name: "admin",
         surname: "admin",
+        rentals: ["Rental1"],
         role: "funzionario"
     }
 ];
@@ -143,6 +145,7 @@ const rentals = [
         clientId: "User2",
         employerId: "User1",
         timeInDays: 10,
+        itemId: "Item1",
         rentalType: 'istantaneo',
         rentalCertification: "Certification1",
         returnCertification: "Certification2"

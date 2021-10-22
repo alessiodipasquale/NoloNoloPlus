@@ -9,14 +9,15 @@ const router = {
         app.post('/registerFront',(req, res) => { requestManager("registerFront", req, res); })
         app.post('/loginDashboard',(req, res) => { requestManager("loginDashboard", req, res); })
         app.post('/registerDashboard',(req, res) => { requestManager("registerDashboard", req, res); })
-        app.post('/loginBack',(req, res) => { requestManager("loginDashboard", req, res); })
-        app.post('/registerBack',(req, res) => { requestManager("registerDashboard", req, res); })
+        app.post('/loginBack',(req, res) => { requestManager("loginBack", req, res); })
+        app.post('/registerBack',(req, res) => { requestManager("registerBack", req, res); })
 
         // User
         app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
         app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
         app.delete('/users/:id', auth, (req, res) => { requestManager("deleteUser", req, res); })
         app.post('/users',auth, (req, res) => { requestManager("createUser", req, res); })
+        app.get('/users/:userId/rentals',auth, (req, res) => { requestManager("getRentalsByUserId", req, res); })
 
         // Item
         app.get('/items', auth, (req, res) => { requestManager("getItems", req, res); })

@@ -51,30 +51,45 @@ const createItem = async (object) => {
 }
 
 const getItemsByCategoryId = async (id) => {
-    const items = [];
+    const toReturn = [];
     const category = await getCategoryById(id);
     const itemIds = category.associatedItems;
-    for(let elem of itemIds) {
-        const item = await getItemById(elem)
-        items.push(item);
+    for(let itemId of itemIds) {
+        const item = await getItemById(itemId);
+        //items.push(item);
+        const props = [];
+        for(let propId of item.properties){
+            const propVal = await getPropertyValueById(propId);
+            const prop = await getPropertyById(propVal.associatedProperty);
+            const name = prop.name;
+            const value = propVal.value;
+            const unitOfMeasure = propVal.unitOfMeasure;
+            props.push({name, value, unitOfMeasure});
+        }
+        let elem = JSON.stringify(item)
+        elem = JSON.parse(elem)
+        elem.properties = props;
+        toReturn.push(elem);
     }
-    return items;
+    return toReturn;
 }
 
 const updateItemRentalDates = async (opType, dates, objectId) => {
-    //console.log(dates, objectId)
+    if(!objectId.isArray())
+        objectId = [objectId];
+
     if(opType == "add"){
-        //for(var elem of itemIds){
-            const item = await getItemById(objectId);
+        for(var elem of objectId){
+            const item = await getItemById(elem);
             var datesList = item.rentalDates;
             for(var elem of dates)
                 datesList.push(elem);
-            await ItemModel.updateOne({_id: objectId},{ $set: { "rentalDates": datesList} });
-        //}
+            await ItemModel.updateOne({_id: elem},{ $set: { "rentalDates": datesList} });
+        }
     }
     if(opType == "remove"){
-       // for(var elem of itemIds){
-            const item = await getItemById(objectId);
+        for(var elem of objectId){
+            const item = await getItemById(elem);
             var datesList = item.rentalDates;
             datesList.filter((date)=>{
                 var ok = true
@@ -84,8 +99,8 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
                 }
                 return ok;
             })
-            await ItemModel.updateOne({_id: objectId},{ $set: { "rentalDates": datesList} });
-        //}
+            await ItemModel.updateOne({_id: elem},{ $set: { "rentalDates": datesList} });
+        }
     }
 }
 
@@ -93,10 +108,13 @@ const checkIfAvailable = async (object) => {
     console.log(object)
     if(!object.startDate || !object.endDate || !object.objectId)
         throw BadRequestError;
+    
+    if(!object.objectId.isArray())
+        object.objectId = [object.objectId];
 
     var isOk = true;
-   // for(var elem of object.itemIds){
-        const item = await getItemById(object.objectId);
+    for(var elem of object.objectId){
+        const item = await getItemById(elem);
         const start = new Date(object.startDate);
         const end = new Date(object.endDate);
         for(let e of item.rentalDates){
@@ -105,7 +123,7 @@ const checkIfAvailable = async (object) => {
                 throw BadRequestError;
             }
         }
-   // }
+    }
     return isOk;
 }
 
