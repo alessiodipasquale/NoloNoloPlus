@@ -75,7 +75,7 @@ const getItemsByCategoryId = async (id) => {
 }
 
 const updateItemRentalDates = async (opType, dates, objectId) => {
-    if(!objectId.isArray())
+    if(!Array.isArray(objectId))
         objectId = [objectId];
 
     if(opType == "add"){
@@ -109,7 +109,7 @@ const checkIfAvailable = async (object) => {
     if(!object.startDate || !object.endDate || !object.objectId)
         throw BadRequestError;
     
-    if(!object.objectId.isArray())
+    if(!Array.isArray(object.objectId))
         object.objectId = [object.objectId];
 
     var isOk = true;
