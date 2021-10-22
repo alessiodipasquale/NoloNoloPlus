@@ -27,9 +27,9 @@ const _ItemModel = new mongoose.Schema({
     rentalDates: {type: [Date], required: true},
     available: {type: Boolean, default: true},
     rentCount: {type: Number, default: 0},
-    kitItems: {
+    kitIds: {
         type: [String],
-        ref: 'Item'
+        ref: 'Kit'
     },
     properties:{
         type: [String],

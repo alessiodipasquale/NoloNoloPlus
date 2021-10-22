@@ -6,6 +6,7 @@ const PriceDetailsModel = require("../models/PriceDetailsModel");
 const CategoryModel = require("../models/CategoryModel");
 const PropertyModel = require("../models/PropertyModel");
 const PropertyValueModel = require("../models/PropertyValueModel");
+const KitModel = require("../models/KitModel");
 
 module.exports = {
     ItemModel,
@@ -15,5 +16,6 @@ module.exports = {
     PriceDetailsModel,
     CategoryModel,
     PropertyModel,
-    PropertyValueModel
+    PropertyValueModel,
+    KitModel
 }

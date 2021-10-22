@@ -63,6 +63,12 @@ const router = {
         app.post('/categories',auth, (req, res) => { requestManager("createCategory", req, res); })
         app.get('/categories/:categoryId/items', auth, (req, res) => { requestManager("getItemsByCategoryId", req, res); })
 
+        // Kit
+        app.get('/kits', auth, (req, res) => { requestManager("getKits", req, res); })
+        app.delete('/kits/:id', auth, (req, res) => { requestManager("deleteKit", req, res); })
+        app.get('/kits/:id', auth, (req, res) => { requestManager("getKitById", req, res); })
+        app.post('/kits',auth, (req, res) => { requestManager("createKit", req, res); })
+
     }
 }
 

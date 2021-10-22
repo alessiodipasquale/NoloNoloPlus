@@ -21,7 +21,7 @@ const _RentalModel = new mongoose.Schema({
         required: true,
         ref: 'Item'
     },
-    kit: {
+    kitId: {
         type: String,
         ref: 'Kit'
     },
@@ -37,7 +37,6 @@ const _RentalModel = new mongoose.Schema({
         enum: ['singolo','kit'],
         default: 'singolo'
     },
-    /*ripetizione noleggio..?*/
     rentalCertification:{
         type: String,
         ref: 'Certification'

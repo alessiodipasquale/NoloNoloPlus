@@ -7,6 +7,8 @@ const { getPriceDetailById, getPriceDetails, deletePriceDetail, createPriceDetai
 const { getPropertyById, getProperties, deleteProperty, createProperty } = require("./Property");
 const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue } = require("./PropertyValue");
 const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
+const { getKitById, getKits, deleteKit, createKit } = require("./Kit");
+
 
 const requestManager = async (reqName, req, res) => {
     
@@ -191,7 +193,7 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteCategory": {
-                await deletePriceDetail(req.params.id);
+                await deleteCategory(req.params.id);
                 break;
             }
             case "createCategory": {
@@ -203,7 +205,23 @@ const requestManager = async (reqName, req, res) => {
                 toReturn = await getItemsByCategoryId(req.params.categoryId);
                 break;
             }
-
+            ////////////////////////////////////////////////////////////////////////// Kit
+            case "getKitById": {
+                toReturn = await getKitById(req.params.id);
+                break;
+            }
+            case "getKits": {
+                toReturn = await getKits();
+                break;
+            }
+            case "deleteKit": {
+                await deleteKit(req.params.id);
+                break;
+            }
+            case "createKit": {
+                toReturn = await createKit(req.body);
+                break;
+            }
 
             default:
                 console.log("ti sei scordato di inserire un case");

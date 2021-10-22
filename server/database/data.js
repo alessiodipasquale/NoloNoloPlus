@@ -9,7 +9,7 @@ const users = [
         address: "Via Massarenti 470",
         commentsFromOfficiers: 'cliente cattivo',
         favItemsId: [],
-        rentals: ["Rental1"],
+        rentals: ["Rental1", "Rental2"],
         role: 'cliente'
     },
     {
@@ -18,7 +18,7 @@ const users = [
         password: "admin",
         name: "admin",
         surname: "admin",
-        rentals: ["Rental1"],
+        rentals: ["Rental1", "Rental2"],
         role: "funzionario"
     }
 ];
@@ -37,7 +37,7 @@ const items = [
         rentalDates: [],
         available: true,
         rentCount: 0,
-        kitItems: ["Item2"],
+        kitIds: ["Kit1"],
         properties: ["Val1"]
     },
     {
@@ -53,7 +53,7 @@ const items = [
         rentalDates: [],
         available: true,
         rentCount: 0,
-        kitItems: ["Item1"],
+        kitIds: ["Kit1"],
         properties: ["Val2"]
     }
 
@@ -143,12 +143,36 @@ const rentals = [
         startDate: new Date("<2021-10-01>"),
         endDate: new Date("<2021-10-02>"),
         clientId: "User2",
-        employerId: "User1",
         timeInDays: 10,
         itemId: "Item1",
+        rentalTarget: 'singolo',
         rentalType: 'istantaneo',
         rentalCertification: "Certification1",
         returnCertification: "Certification2"
+    },
+    {
+        _id: "Rental2",
+        startDate: new Date("<2021-10-05>"),
+        endDate: new Date("<2021-10-10>"),
+        clientId: "User2",
+        timeInDays: 10,
+        kitId: "Kit1",
+        rentalType: 'istantaneo',
+        rentalTarget: 'kit',
+        rentalCertification: "Certification1",
+        returnCertification: "Certification2"
+    }
+];
+
+const kits = [
+    {
+        _id: "Kit1",
+        name: "Kit 1", 
+        description: "Kit 1", 
+        standardPrice: 300,
+        category: ["Category1"],
+        priceDetailsId: "PriceDetail1",
+        items: ["Item1", "Item2"]
     }
 ];
 
@@ -160,5 +184,6 @@ module.exports = {
     priceDetails,
     properties,
     propertyValues,
-    rentals
+    rentals,
+    kits
 }
