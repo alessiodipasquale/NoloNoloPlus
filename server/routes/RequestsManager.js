@@ -1,6 +1,6 @@
 const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack } = require("./Auth");
 const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable } = require("./Item");
-const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId } = require("./User");
+const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetailById, getPriceDetails, deletePriceDetail, createPriceDetail } = require("./PriceDetails");
@@ -86,6 +86,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "createUser": {
                 toReturn = await createUser(req.body);
+                break;
+            }
+            case "editUser": {
+                toReturn = await editUser(req.user.user._id,req.body);
                 break;
             }
             case "getRentalsByUserId": {

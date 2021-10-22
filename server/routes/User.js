@@ -52,6 +52,22 @@ const createUser = async (object) => {
     return user;
 }
 
+const editUser = async (userId, object) => {
+    /*username, name, surname, favPaymentMethod (carta, alla consegna), address */
+    if(object.name)
+        await UserModel.updateOne({_id: userId},{ $set: { "name": object.name} });
+    if(object.username)
+        await UserModel.updateOne({_id: userId},{ $set: { "name": object.username} });
+    if(object.surname)
+        await UserModel.updateOne({_id: userId},{ $set: { "name": object.surname} });
+    if(object.address)
+        await UserModel.updateOne({_id: userId},{ $set: { "name": object.address} });
+
+    if(object.favPaymentMethod && (object.favPaymentMethod == 'carta' || object.favPaymentMethod == 'alla consegna'))
+        await UserModel.updateOne({_id: userId},{ $set: { "name": object.favPaymentMethod} });
+    return null;
+}
+
 const getRentalsByUserId = async (userId) => {
     const toReturn = [];
     const user = await getUserById(userId);
@@ -114,5 +130,6 @@ module.exports = {
     deleteUser,
     findUserByUsername,
     createUser,
-    getRentalsByUserId
+    getRentalsByUserId,
+    editUser
 }

@@ -17,6 +17,7 @@ const router = {
         app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
         app.delete('/users/:id', auth, (req, res) => { requestManager("deleteUser", req, res); })
         app.post('/users',auth, (req, res) => { requestManager("createUser", req, res); })
+        app.put('/users',auth, (req, res) => { requestManager("editUser", req, res); })
         app.get('/users/:userId/rentals',auth, (req, res) => { requestManager("getRentalsByUserId", req, res); })
 
         // Item
