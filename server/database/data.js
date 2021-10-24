@@ -96,14 +96,14 @@ const categories = [
         _id: "Category1",
         name: "Auto",
         description: "Automobili",
-        associatedItems: ["Item1"],
+        associatedItems: ["Item1","Item3"],
         associatedProperties: ["Property1"]
     },
     {
         _id: "Category2",
         name: "Moto",
         description: "Moto",
-        associatedItems: ["Item2"],
+        associatedItems: ["Item2","Item4"],
         associatedProperties: ["Property2"]
     }
 ];
@@ -201,8 +201,8 @@ const rentals = [
 const kits = [
     {
         _id: "Kit1",
-        name: "Kit 1", 
-        description: "Kit 1", 
+        name: "Pacchetto Auto e Moto", 
+        description: "Pacchetto contenente una Tesla Model 3 e un Aprilia SR", 
         standardPrice: 300,
         category: ["Category1"],
         priceDetailsId: "PriceDetail1",

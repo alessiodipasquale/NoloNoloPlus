@@ -17,6 +17,11 @@ const routes: Routes = [{
       canActivate: [AuthGuardService]
     },
     {
+      path: 'kits',
+      loadChildren: () => import('./kits/kits.module').then(m=> m.KitsModule),
+      canActivate: [AuthGuardService]
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

@@ -17,7 +17,7 @@ export class RentalsService {
     }
 
     createRental(startDate, endDate, objectId, timeInDays) {
-        return this.http.post('/rentals', {startDate, endDate, objectId, timeInDays,rentalType:"prenotazione"})
+        return this.http.post('/rentals', {startDate, endDate, objectId, timeInDays,rentalType:"prenotazione",rentalTarget:'singolo',state:'futura'})
     }
 
     deleteItem(id) {

@@ -1,3 +1,4 @@
+import { KitsService } from './../../services/kits.service';
 import { CategoriesService } from './../../services/categories.service';
 import { ItemsService } from './../../services/items.service';
 import { Router } from '@angular/router';
@@ -12,12 +13,15 @@ export class DashboardComponent implements OnInit {
 
   constructor(private router: Router,
               private itemsService: ItemsService,
-              private categoriesService: CategoriesService) {}
+              private categoriesService: CategoriesService,
+              private kitsService: KitsService) {}
 
   categories = [];
   selectedCategory = null;
   allItems = true;
   items = [];
+  areItems = true;
+  kits;
 
   ngOnInit(): void {
     this.itemsService.getItems()
@@ -38,6 +42,7 @@ export class DashboardComponent implements OnInit {
   }
 
   selectCategory(category, index) {
+    this.areItems = true;
     this.allItems = false;
     console.log(index);
     this.selectedCategory = index;
@@ -49,11 +54,27 @@ export class DashboardComponent implements OnInit {
   }
 
   loadAllItems() {
+    this.areItems = true;
     this.allItems = true;
     this.selectedCategory = null;
     this.itemsService.getItems()
     .then(items => {
       this.items = items;
     })
+  }
+
+  loadKits() {
+    this.allItems = false;
+    this.areItems = false;
+    this.selectedCategory = null;
+    this.kitsService.getKits()
+    .then(kits => {
+      console.log(kits);
+      this.kits = kits;
+    })
+  }
+
+  openKitSpec(kit) {
+    this.router.navigate(['/pages/kits','kit-spec'], {state: {kit: kit}});
   }
 }
