@@ -16,11 +16,15 @@ export class KitsService {
         return this.http.get('/Kits/'+id);
     }
 
-    checkIfAvailable(startDate, endDate, kitId) {
-        return this.http.post('/Kits/'+kitId+'/checkIfAvailable', {startDate, endDate, kitId})
+    checkIfAvailable(startDate, endDate,kitId, objectId) {
+        return this.http.post('/Kits/'+kitId+'/checkIfAvailable', {startDate, endDate, objectId})
     }
 
     deleteKit(id) {
         return this.http.delete('/Kits/'+id)
+    }
+
+    createRental() {
+        
     }
 }

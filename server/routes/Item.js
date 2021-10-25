@@ -78,13 +78,21 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
     if(!Array.isArray(objectId))
         objectId = [objectId];
 
+
     if(opType == "add"){
-        for(var elem of objectId){
-            const item = await getItemById(elem);
+        for(var id of objectId){
+            const item = await getItemById(id);
             var datesList = item.rentalDates;
-            for(var elem of dates)
+
+            if(!Array.isArray(dates))
+                dates = [dates];
+
+            for(var elem of dates){
                 datesList.push(elem);
-            await ItemModel.updateOne({_id: elem},{ $set: { "rentalDates": datesList} });
+            }
+
+            console.log(id)
+            await ItemModel.updateOne({_id: id},{ $set: { "rentalDates": datesList} });
         }
     }
     if(opType == "remove"){
@@ -105,7 +113,7 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
 }
 
 const checkIfAvailable = async (object) => {
-    console.log(object)
+    //console.log(object)
     if(!object.startDate || !object.endDate || !object.objectId)
         throw BadRequestError;
     

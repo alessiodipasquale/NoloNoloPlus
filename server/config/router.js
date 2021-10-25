@@ -69,6 +69,8 @@ const router = {
         app.delete('/kits/:id', auth, (req, res) => { requestManager("deleteKit", req, res); })
         app.get('/kits/:id', auth, (req, res) => { requestManager("getKitById", req, res); })
         app.post('/kits',auth, (req, res) => { requestManager("createKit", req, res); })
+        app.post('/kits/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
+
 
     }
 }
