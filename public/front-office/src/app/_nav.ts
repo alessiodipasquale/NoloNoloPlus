@@ -4,6 +4,11 @@ export const navItems: INavData[] = [
   {
     name: 'Dashboard',
     url: '/pages/dashboard',
-    icon: 'icon-speedometer',
+    icon: 'icon-speedometer'
+  },
+  {
+    name: 'Prenotazioni',
+    url: 'pages/rentals/rentals-list',
+    icon: 'cil-cart'
   }
 ];

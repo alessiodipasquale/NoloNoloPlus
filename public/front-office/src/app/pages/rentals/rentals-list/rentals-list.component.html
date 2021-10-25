@@ -1,0 +1,26 @@
+<div class="animated fadeIn">
+    <h3 class="mt-3">Le tue prenotazioni</h3>
+
+    <div class="mt-3"></div>
+    <div class="card" *ngFor="let rental of rentals">
+        <div class="card-body">      
+            <div class="row">
+                <div class="col-5">
+                    
+                    <div *ngIf="rental.items.length == 1">
+                        <img style="width: 100%; margin-bottom: 10px;"[src]="rental.items[0].imgSrc">
+                    </div>
+                    
+                    <div *ngIf="rental.items.length != 1" style="display: flex;">
+                        <img style="width: 40px;"*ngFor="let item of rental.items" [src]="item.imgSrc">
+                    </div>
+
+                </div>
+                <div class="col-7" style="display: flex; justify-content: center; align-items: center;">
+                    <h5 class="card-title" >Nome</h5>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+</div>

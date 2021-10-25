@@ -8,8 +8,8 @@ export class RentalsService {
 
     constructor(public http: HttpService) { }
 
-    getRentals() {
-        return this.http.get('/rentals');
+    getUserRentals(userId) {
+        return this.http.get('/users/'+userId+'/rentals');
     }
 
     getRentalById(id) {

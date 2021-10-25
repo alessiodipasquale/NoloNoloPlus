@@ -71,6 +71,7 @@ const editUser = async (userId, object) => {
 const getRentalsByUserId = async (userId) => {
     const toReturn = [];
     const user = await getUserById(userId);
+    console.log(user.rentals);
     const rentals = user.rentals;
     for(let rentalId of rentals){
         const rentalItems = [];

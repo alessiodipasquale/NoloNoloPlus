@@ -22,6 +22,11 @@ const routes: Routes = [{
       canActivate: [AuthGuardService]
     },
     {
+      path: 'rentals',
+      loadChildren: () => import('./rentals/rentals.module').then(m=> m.RentalsModule),
+      canActivate: [AuthGuardService]
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

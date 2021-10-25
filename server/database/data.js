@@ -9,7 +9,7 @@ const users = [
         address: "Via Massarenti 470",
         commentsFromOfficiers: 'cliente cattivo',
         favItemsId: [],
-        rentals: ["Rental1", "Rental2"],
+        rentals: [],
         role: 'cliente'
     },
     {
@@ -174,7 +174,7 @@ const rentals = [
         _id: "Rental1",
         startDate: new Date("<2021-10-01>"),
         endDate: new Date("<2021-10-02>"),
-        clientId: "User2",
+        clientId: "User1",
         timeInDays: 10,
         itemId: "Item1",
         state: 'terminata',
@@ -187,7 +187,7 @@ const rentals = [
         _id: "Rental2",
         startDate: new Date("<2021-10-05>"),
         endDate: new Date("<2023-10-10>"),
-        clientId: "User2",
+        clientId: "User1",
         timeInDays: 10,
         state: 'terminata',
         kitId: "Kit1",
