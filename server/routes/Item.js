@@ -183,6 +183,22 @@ const getReviewsByItemId = async (itemId) => {
     return toReturn;
 }
 
+const calculatePrice = async (object) =>{
+    if(!object.startDate || !object.endDate || !object.objectId)
+        throw BadRequestError;
+    //noleggio per oltre una settimana -> priceDetail.longUsageDiscountMultiplier
+    //controllo punti fedeltà -> priceDetail.fidelityPriceMultiplier
+    //se è nei preferiti -> priceDetail.discountMultiplier
+    //priceDetail.new_state
+    //priceDetail.verygood_state
+    //priceDetail.good_state
+    //priceDetail.worn_state
+    //priceDetail.veryworn_state
+    //priceDetail.unusable_state
+
+
+}
+
 module.exports = {
     getItems,
     getItemById,
@@ -193,5 +209,6 @@ module.exports = {
     updateItemRentalDates,
     checkIfAvailable,
     associateToItem,
-    getReviewsByItemId
+    getReviewsByItemId,
+    calculatePrice
 }

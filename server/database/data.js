@@ -30,7 +30,6 @@ const items = [
         description: "Macchina elettrica molto elettrica",
         standardPrice: 120,
         category: ["Category1"],
-        priceDetailsId: "PriceDetail1",
         imgSrc: "http://pngimg.com/uploads/tesla_car/tesla_car_PNG40.png",
         state: 'ottimo',
         everBeenRented: false,
@@ -46,7 +45,6 @@ const items = [
         description: "ao è tonda",
         standardPrice: 80,
         category: ["Category2"],
-        priceDetailsId: "PriceDetail1",
         imgSrc: "https://www.sc-project.com/wp-content/uploads/2020/07/Ducati_Panigale-V4R_Completo_Replica_SBK_my2020_3-4Anteriore_960x720px.png",
         state: 'ottimo',
         everBeenRented: false,
@@ -62,7 +60,6 @@ const items = [
         description: "Macchina elettrica molto elettrica",
         standardPrice: 150,
         category: ["Category1"],
-        priceDetailsId: "PriceDetail1",
         imgSrc: "https://tesla-cdn.thron.com/delivery/public/image/tesla/195458a0-ff67-488c-b972-14d23d2c42fb/bvlatuR/std/1200x630/ms-homepage-social",
         state: 'ottimo',
         everBeenRented: false,
@@ -78,7 +75,6 @@ const items = [
         description: "ao è tonda",
         standardPrice: 80,
         category: ["Category2"],
-        priceDetailsId: "PriceDetail1",
         imgSrc: "https://cdn.autoportal.com/bp-v3/img/models/33/6/sr_150b2.jpg",
         state: 'ottimo',
         everBeenRented: false,
@@ -128,7 +124,6 @@ const certifications = [
 const priceDetails = [
     {
         _id:"PriceDetail1",
-        itemsId: ["Item1", "Item2"],
         longUsageDiscountMultiplier: 1,
         fidelityPriceMultiplier: 1,
         new_state: 1, 
@@ -205,7 +200,6 @@ const kits = [
         description: "Pacchetto contenente una Tesla Model 3 e un Aprilia SR", 
         standardPrice: 300,
         category: ["Category1"],
-        priceDetailsId: "PriceDetail1",
         items: ["Item3", "Item4"]
     }
 ];

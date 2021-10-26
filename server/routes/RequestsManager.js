@@ -3,7 +3,7 @@ const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, che
 const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
-const { getPriceDetailById, getPriceDetails, deletePriceDetail, createPriceDetail } = require("./PriceDetails");
+const { getPriceDetail} = require("./PriceDetails");
 const { getPropertyById, getProperties, deleteProperty, createProperty } = require("./Property");
 const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue } = require("./PropertyValue");
 const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
@@ -143,23 +143,10 @@ const requestManager = async (reqName, req, res) => {
             }
 
             ////////////////////////////////////////////////////////////////////////// Price detail
-            case "getPriceDetailById": {
-                toReturn = await getPriceDetailById(req.params.id);
+            case "getPriceDetail": {
+                toReturn = await getPriceDetail();
                 break;
             }
-            case "getPriceDetails": {
-                toReturn = await getPriceDetails();
-                break;
-            }
-            case "deletePriceDetail": {
-                await deletePriceDetail(req.params.id);
-                break;
-            }
-            case "createPriceDetail": {
-                toReturn = await createPriceDetail(req.body);
-                break;
-            }
-
             ////////////////////////////////////////////////////////////////////////// Property
             case "getPropertyById": {
                 toReturn = await getPropertyById(req.params.id);

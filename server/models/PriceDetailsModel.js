@@ -4,11 +4,7 @@ var Schema = mongoose.Schema;
 
 const _PriceDetailsModel = new mongoose.Schema({
     _id: String,
-    itemsId: {
-        type: [String],
-        ref: 'Item'
-    },
-    longUsageDiscountMultiplier: { type: Number, required: false},
+    longUsageDiscountMultiplier: { type: Number, required: false},   //higher than a week
     fidelityPriceMultiplier: {type: Number, required: false},
     new_state: {type: Number, required: false}, 
     verygood_state: {type: Number, required: false}, 

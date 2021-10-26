@@ -16,11 +16,6 @@ const _ItemModel = new mongoose.Schema({
         type: String,
         required: false
     },
-    priceDetailsId: {
-        type: String,
-        required: true,
-        ref: 'PriceDetails'
-    },
     imgSrc: {type: String, default: "https://adriaticaindustriale.it/wp-content/uploads/2020/02/not-found.png"},
     state: {
         type: String,

@@ -12,11 +12,6 @@ const _KitModel = new mongoose.Schema({
         required: true,
         ref: 'Category'
     },
-    priceDetailsId: {
-        type: String,
-        required: true,
-        ref: 'PriceDetails'
-    },
     available: {type: Boolean, default: true},
     items: {
         type: [String],
