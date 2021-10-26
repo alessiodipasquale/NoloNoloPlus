@@ -1,6 +1,6 @@
 const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack } = require("./Auth");
-const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable } = require("./Item");
-const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser } = require("./User");
+const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId } = require("./Item");
+const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetailById, getPriceDetails, deletePriceDetail, createPriceDetail } = require("./PriceDetails");
@@ -9,7 +9,7 @@ const { getPropertyValueById, getPropertyValues, deletePropertyValue, createProp
 const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
 const { getKitById, getKits, deleteKit, createKit } = require("./Kit");
 const { getReviewById, getReviews, deleteReview, createReview } = require("./Review");
-
+const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
     
@@ -71,6 +71,10 @@ const requestManager = async (reqName, req, res) => {
                 toReturn = await checkIfAvailable(req.body);
                 break;
             }
+            case "getReviewsByItemId": {
+                toReturn = await getReviewsByItemId(req.params.id);
+                break;
+            }
 
             ////////////////////////////////////////////////////////////////////////// User
             case "getUserById": {
@@ -95,6 +99,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "getRentalsByUserId": {
                 toReturn = await getRentalsByUserId(req.user.user._id);
+                break;
+            }
+            case "getReviewsByUserId": {
+                toReturn = await getReviewsByUserId(req.user.user._id);
                 break;
             }
 
@@ -242,6 +250,24 @@ const requestManager = async (reqName, req, res) => {
             }
             case "createReview": {
                 toReturn = await createReview(req.body,req.user.user._id);
+                break;
+            }
+
+            ////////////////////////////////////////////////////////////////////////// Group
+            case "getGroupById": {
+                toReturn = await getGroupById(req.params.id);
+                break;
+            }
+            case "getGroups": {
+                toReturn = await getGroups();
+                break;
+            }
+            case "deleteGroup": {
+                await deleteGroup(req.params.id);
+                break;
+            }
+            case "createGroup": {
+                toReturn = await createGroup(req.body);
                 break;
             }
 

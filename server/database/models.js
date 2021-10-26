@@ -7,6 +7,8 @@ const CategoryModel = require("../models/CategoryModel");
 const PropertyModel = require("../models/PropertyModel");
 const PropertyValueModel = require("../models/PropertyValueModel");
 const KitModel = require("../models/KitModel");
+const ReviewModel = require("../models/ReviewModel");
+const GroupModel = require("../models/GroupModel");
 
 module.exports = {
     ItemModel,
@@ -17,5 +19,7 @@ module.exports = {
     CategoryModel,
     PropertyModel,
     PropertyValueModel,
-    KitModel
+    KitModel,
+    GroupModel,
+    ReviewModel
 }

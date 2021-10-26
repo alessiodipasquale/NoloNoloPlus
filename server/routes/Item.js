@@ -3,6 +3,7 @@ const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../c
 const { getCategoryById } = require('./Category');
 const { getPropertyValueById } = require('./PropertyValue');
 const { getPropertyById } = require('./Property');
+const { getUserById } = require('./User');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -108,7 +109,6 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
 }
 
 const checkIfAvailable = async (object) => {
-    //console.log(object)
     if(!object.startDate || !object.endDate || !object.objectId)
         throw BadRequestError;
     
@@ -130,6 +130,39 @@ const checkIfAvailable = async (object) => {
     return isOk;
 }
 
+const associateToItem = async (type, toModify, value, itemId) => {
+    const user = await getItemById(itemId);
+    if(type == "array") {
+        let elem = JSON.stringify(user);
+        elem = JSON.parse(elem);
+        switch (toModify) {
+            case "reviews": {
+                let reviews = elem.reviews;
+                reviews.push(value);
+                await ItemModel.updateOne({_id: itemId},{ $set: { "reviews": reviews} });
+                break;
+            }
+        }
+    }/* else {
+
+    }*/
+}
+
+const getReviewsByItemId = async (itemId) => {
+    toReturn = [];
+    const item = await getItemById(itemId);
+    const reviews = item.reviews;
+    for(let reviewId of reviews) {
+        const review = await ReviewModel.findOne({_id: reviewId});
+        const user = await getUserById(review.itemId);
+        let rev = JSON.stringify(review)
+        rev = JSON.parse(rev)
+        rev.user = user;
+        toReturn.push(rev);        
+    }
+    return toReturn;
+}
+
 module.exports = {
     getItems,
     getItemById,
@@ -138,5 +171,7 @@ module.exports = {
     createItem,
     getItemsByCategoryId,
     updateItemRentalDates,
-    checkIfAvailable
+    checkIfAvailable,
+    associateToItem,
+    getReviewsByItemId
 }

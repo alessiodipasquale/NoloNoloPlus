@@ -82,10 +82,31 @@ const associateToUser = async (type, toModify, value, userId) => {
                 await UserModel.updateOne({_id: userId},{ $set: { "rentals": rentals} });
                 break;
             }
+            case "reviews": {
+                let reviews = elem.reviews;
+                reviews.push(value);
+                await UserModel.updateOne({_id: userId},{ $set: { "reviews": reviews} });
+                break;
+            }
         }
     }/* else {
 
     }*/
+}
+
+const getReviewsByUserId = async (userId) => {
+    toReturn = [];
+    const user = await getUserById(userId);
+    const reviews = user.reviews;
+    for(let reviewId of reviews) {
+        const review = await ReviewModel.findOne({_id: reviewId});
+        const item = await getItemById(review.itemId);
+        let rev = JSON.stringify(review)
+        rev = JSON.parse(rev)
+        rev.item = item;
+        toReturn.push(rev);        
+    }
+    return toReturn;
 }
 
 const getRentalsByUserId = async (userId) => {
@@ -160,4 +181,5 @@ module.exports = {
     getRentalsByUserId,
     editUser,
     associateToUser,
+    getReviewsByUserId
 }

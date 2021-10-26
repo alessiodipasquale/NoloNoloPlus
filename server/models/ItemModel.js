@@ -12,6 +12,10 @@ const _ItemModel = new mongoose.Schema({
         required: true,
         ref: 'Category'
     },
+    groupId: {
+        type: String,
+        required: false
+    },
     priceDetailsId: {
         type: String,
         required: true,

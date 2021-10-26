@@ -1,5 +1,7 @@
 const ReviewModel = require("../models/ReviewModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
+const { associateToUser } = require("./User");
+const { associateToItem } = require("./Item");
 
 const getReviewById = async (id) => {
     const review = await ReviewModel.findById(id)
@@ -18,11 +20,12 @@ const deleteReview = async () => {
 }
 
 const createReview = async (object, userId) => {
-    if(!object.start || !object.itemId)
+    if(!object.stars || !object.itemId)
         throw BadRequestError;
     object.clientId = userId;
     const review = await RentalModel.create(object);
-    // TODO: add id to item and user
+    await associateToUser("array","reviews",review._id,userId);
+    await associateToItem("array","reviews",review._id,object.itemId);
     return review;
 }
 

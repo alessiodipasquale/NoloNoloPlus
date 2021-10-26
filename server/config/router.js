@@ -19,6 +19,7 @@ const router = {
         app.post('/users',auth, (req, res) => { requestManager("createUser", req, res); })
         app.put('/users',auth, (req, res) => { requestManager("editUser", req, res); })
         app.get('/users/:userId/rentals',auth, (req, res) => { requestManager("getRentalsByUserId", req, res); })
+        app.get('/users/:id/getReviewsByUserId', auth, (req, res) => { requestManager("getReviewsByUserId", req, res); })
 
         // Item
         app.get('/items', auth, (req, res) => { requestManager("getItems", req, res); })
@@ -26,6 +27,7 @@ const router = {
         app.get('/items/:id', auth, (req, res) => { requestManager("getItemById", req, res); })
         app.post('/items',auth, (req, res) => { requestManager("createItem", req, res); })
         app.post('/items/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
+        app.get('/items/:id/getReviewsByItemId', auth, (req, res) => { requestManager("getReviewsByItemId", req, res); })
 
         // Rental
         app.get('/rentals', auth, (req, res) => { requestManager("getRentals", req, res); })
@@ -77,6 +79,11 @@ const router = {
         app.get('/reviews/:id', auth, (req, res) => { requestManager("getReviewById", req, res); })
         app.post('/reviews',auth, (req, res) => { requestManager("createReview", req, res); })
 
+        // Group
+        app.get('/groups', auth, (req, res) => { requestManager("getGroups", req, res); })
+        app.delete('/groups/:id', auth, (req, res) => { requestManager("deleteGroup", req, res); })
+        app.get('/groups/:id', auth, (req, res) => { requestManager("getGroupById", req, res); })
+        app.post('/groups',auth, (req, res) => { requestManager("createGroup", req, res); })
     }
 }
 
