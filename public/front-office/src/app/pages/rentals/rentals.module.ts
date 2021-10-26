@@ -1,3 +1,4 @@
+import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { RentalsRoutingModule } from './rentals-routing.module';
 import { RentalsComponent } from './rentals.component';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +19,8 @@ const components = [
         FormsModule,
         CommonModule,
         RentalsRoutingModule,
-        TableModule
+        TableModule,
+        CarouselModule.forRoot()
     ],
     declarations: [
         ...components,

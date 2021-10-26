@@ -11,7 +11,7 @@ const initialize = async () => {
         env,
         swagger: !!env,
         force: false,
-        seed: true,
+        seed: false,
         log: !!env
     };
 };

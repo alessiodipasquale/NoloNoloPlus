@@ -59,11 +59,13 @@ export class KitSpecComponent implements OnInit {
   }
 
   rent(){
-    /*this.kitsService.createRental(this.startDate, this.endDate, this.item._id, this.days)
+    const itemIds = this.kit.items.map(item => item._id);
+
+    this.kitsService.createRental(this.startDate, this.endDate, this.days, itemIds, this.kit._id)
     .then(() => {
       this.router.navigate(['/pages/dashboard']);
       this.notificationsService.success("Prenotazione riuscita con successo");
-    }).catch(err => this.notificationsService.error(err))*/
+    }).catch(err => this.notificationsService.error(err))
   }
 
 }

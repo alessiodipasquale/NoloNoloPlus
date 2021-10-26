@@ -24,7 +24,7 @@ export class KitsService {
         return this.http.delete('/Kits/'+id)
     }
 
-    createRental() {
-        
+    createRental(startDate, endDate, timeInDays, objectId, kitId) {
+        return this.http.post('/rentals', {startDate, endDate, timeInDays, objectId, rentalType:"prenotazione",rentalTarget: 'kit',state:'futura', kitId});
     }
 }

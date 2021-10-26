@@ -121,7 +121,7 @@ const getRentalsByUserId = async (userId) => {
             elem.kit = kitJson;
             elem.items = rentalItems;
         }else{
-            console.log("rental: ", rental);
+           // console.log("rental: ", rental);
             const item = await getItemById(rental.itemId)
             const props = [];
             for(let propId of item.properties){
