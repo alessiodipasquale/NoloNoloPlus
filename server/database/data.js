@@ -124,14 +124,13 @@ const certifications = [
 const priceDetails = [
     {
         _id:"PriceDetail1",
-        longUsageDiscountMultiplier: 1,
-        fidelityPriceMultiplier: 1,
-        new_state: 1, 
-        verygood_state: 1, 
-        good_state: 1,
-        worn_state: 1,
-        veryworn_state: 1,
-        unusable_state: 1
+        longUsageDiscountMultiplier: 0.95,
+        fidelityPriceMultiplier: 0.95,
+        verygood_state: 0.95, 
+        good_state: 0.9,
+        worn_state: 0.8,
+        veryworn_state: 0.5,
+        unusable_state: 0.4
     }
 ];
 

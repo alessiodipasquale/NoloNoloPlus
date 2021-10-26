@@ -4,6 +4,7 @@ const { getCategoryById } = require('./Category');
 const { getPropertyValueById } = require('./PropertyValue');
 const { getPropertyById } = require('./Property');
 const { getUserById } = require('./User');
+const { getPriceDetail } = require('./PriceDetails');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -174,7 +175,7 @@ const getReviewsByItemId = async (itemId) => {
     const reviews = item.reviews;
     for(let reviewId of reviews) {
         const review = await ReviewModel.findOne({_id: reviewId});
-        const user = await getUserById(review.itemId);
+        const user = await getUserById(review.clientId);
         let rev = JSON.stringify(review)
         rev = JSON.parse(rev)
         rev.user = user;
@@ -183,21 +184,93 @@ const getReviewsByItemId = async (itemId) => {
     return toReturn;
 }
 
-const calculatePrice = async (object) =>{
-    if(!object.startDate || !object.endDate || !object.objectId)
+const calculatePriceforItem = async (object,itemId, userId) =>{
+    if(!object.startDate || !object.endDate || !itemId || !userId)
         throw BadRequestError;
+
+    const item = await getItemById(itemId);
+    const user = await getUserById(userId);
+    const priceDetail = await getPriceDetail();
+
+    let toReturn = {};
+    let finalPrice = item.standardPrice;
+    let discounted = 0;
+    const receipt = [];
+    receipt.push("Costo giornaliero: "+finalPrice+"€");
+
+    const start = new Date(object.startDate);
+    const end = new Date(object.endDate);
+    const diffTime = Math.abs(end - start);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    finalPrice = diffDays * finalPrice;
+    receipt.push("Costo non scontato per l'inter€o periodo: "+finalPrice+"€");
+
     //noleggio per oltre una settimana -> priceDetail.longUsageDiscountMultiplier
-    //controllo punti fedeltà -> priceDetail.fidelityPriceMultiplier
+    if(diffDays >= 7){
+        discounted = applyDiscount(finalPrice, priceDetail.longUsageDiscountMultiplier);
+        receipt.push("Prezzo scontato per prenotazione lunga: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+        finalPrice = discounted;
+    }
+
+    //controllo punti fedeltà 
+    if(user.loyaltyPoints >= 50000){
+        discounted = finalPrice / 2;
+    }else{
+        discounted = finalPrice - (finalPrice / 100 * (user.loyaltyPoints/1000))
+    }
+    receipt.push("Prezzo scontato per punti fedeltà: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+    finalPrice = discounted;
+    
     //se è nei preferiti -> priceDetail.discountMultiplier
-    //priceDetail.new_state
-    //priceDetail.verygood_state
-    //priceDetail.good_state
-    //priceDetail.worn_state
-    //priceDetail.veryworn_state
-    //priceDetail.unusable_state
+    if(user.favItemsId.includes(item._id)){
+        discounted = applyDiscount(finalPrice,priceDetail.fidelityPriceMultiplier);
+        receipt.push("Prezzo scontato per ripetizione di noleggio: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+    }
 
+    //stato dell'oggetto
+    switch(item.state){
+        case "ottimo":{
+            discounted = applyDiscount(finalPrice,priceDetail.new_state);
+            receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+            break;
+        }
+        case "buono":{
+            discounted = applyDiscount(finalPrice,priceDetail.verygood_state);
+            receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+            finalPrice = discounted;
+            break;
+        }
+        case "usurato":{
+            discounted = applyDiscount(finalPrice,priceDetail.good_state);
+            receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+            finalPrice = discounted;
+            break;
+        }
+        case "molto usurato":{
+            discounted = applyDiscount(finalPrice,priceDetail.worn_state);
+            receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+            finalPrice = discounted;
+            break;
+        }
+        case "inutilizzabile":{
+            discounted = applyDiscount(finalPrice,priceDetail.unusable_state);
+            receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+            finalPrice = discounted;
+            break;
+        }
+    }
 
+    toReturn.finalPrice = finalPrice;
+    toReturn.receipt = receipt;
+    return toReturn;
 }
+
+const applyDiscount = (price, multiplier) => {
+    return price * multiplier;
+}
+
+
 
 module.exports = {
     getItems,
@@ -210,5 +283,5 @@ module.exports = {
     checkIfAvailable,
     associateToItem,
     getReviewsByItemId,
-    calculatePrice
+    calculatePriceforItem
 }

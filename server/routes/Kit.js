@@ -50,9 +50,34 @@ const createKit = async (object) => {
     return kit;
 }
 
+const calculatePriceforKit = async (object,kitId,userId) =>{
+    if(!object.startDate || !object.endDate || !kitId || !userId)
+        throw BadRequestError;
+
+    const kit = await getKitById(kitId);
+
+    let toReturn = {};
+    const partialPrices = [];
+    let finalKitPrice = 0;
+    const kitreceipt = [];
+
+    for(itemId of kit.items){
+        const fullPriceForItem = calculatePriceforItem(object, itemId, userId);
+        partialPrices.push(fullPriceForItem);
+        kitreceipt.push("Prezzo calcolato per l'oggetto con id "+itemId+": "+fullPriceForItem.finalPrice );
+        finalKitPrice += fullPriceForItem.finalPrice;
+    }
+
+    toReturn.finalKitPrice = finalKitPrice;
+    toReturn.partialPrices = partialPrices;
+    toReturn.kitReceipt = kitReceipt;
+    return toReturn;
+}
+
 module.exports = {
     getKits,
     getKitById,
     createKit,
-    deleteKit
+    deleteKit,
+    calculatePriceforKit
 }

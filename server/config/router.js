@@ -28,6 +28,8 @@ const router = {
         app.post('/items',auth, (req, res) => { requestManager("createItem", req, res); })
         app.post('/items/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
         app.get('/items/:id/getReviewsByItemId', auth, (req, res) => { requestManager("getReviewsByItemId", req, res); })
+        app.post('/items/:itemId/calculatePrice',auth, (req, res) => { requestManager("calculatePriceforItem", req, res); })
+
 
         // Rental
         app.get('/rentals', auth, (req, res) => { requestManager("getRentals", req, res); })
@@ -72,6 +74,8 @@ const router = {
         app.get('/kits/:id', auth, (req, res) => { requestManager("getKitById", req, res); })
         app.post('/kits',auth, (req, res) => { requestManager("createKit", req, res); })
         app.post('/kits/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
+        app.post('/kits/:kitId/calculatePrice',auth, (req, res) => { requestManager("calculatePriceforKit", req, res); })
+
 
         // Kit
         app.get('/reviews', auth, (req, res) => { requestManager("getReviews", req, res); })

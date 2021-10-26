@@ -1,5 +1,5 @@
 const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack } = require("./Auth");
-const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId } = require("./Item");
+const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId, calculatePriceforItem } = require("./Item");
 const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
@@ -7,7 +7,7 @@ const { getPriceDetail} = require("./PriceDetails");
 const { getPropertyById, getProperties, deleteProperty, createProperty } = require("./Property");
 const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue } = require("./PropertyValue");
 const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
-const { getKitById, getKits, deleteKit, createKit } = require("./Kit");
+const { getKitById, getKits, deleteKit, createKit, calculatePriceforKit } = require("./Kit");
 const { getReviewById, getReviews, deleteReview, createReview } = require("./Review");
 const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
 
@@ -73,6 +73,10 @@ const requestManager = async (reqName, req, res) => {
             }
             case "getReviewsByItemId": {
                 toReturn = await getReviewsByItemId(req.params.id);
+                break;
+            }
+            case "calculatePriceforItem": {
+                toReturn = await calculatePriceforItem(req.body,req.params.id, req.user.user._id);
                 break;
             }
 
@@ -222,6 +226,11 @@ const requestManager = async (reqName, req, res) => {
                 toReturn = await createKit(req.body);
                 break;
             }
+            case "calculatePriceforKit": {
+                toReturn = await calculatePriceforKit(req.body,req.params.id, req.user.user._id);
+                break;
+            }
+
             ////////////////////////////////////////////////////////////////////////// Review
             case "getReviewById": {
                 toReturn = await getReviewById(req.params.id);
