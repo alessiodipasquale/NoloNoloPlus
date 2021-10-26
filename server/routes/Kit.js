@@ -1,6 +1,6 @@
 const KitModel = require("../models/KitModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
-const { getItemById } = require("./Item");
+const { getItemById, calculatePriceforItem } = require("./Item");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 
