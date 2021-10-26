@@ -68,6 +68,24 @@ const editUser = async (userId, object) => {
     return null;
 }
 
+const associateToUser = async (type, toModify, value, userId) => {
+    const user = await getUserById(userId);
+    if(type == "array") {
+        let elem = JSON.stringify(user);
+        elem = JSON.parse(elem);
+        switch (toModify) {
+            case "rentals": {
+                let rentals = elem.rentals;
+                rentals.push(value);
+                await UserModel.updateOne({_id: userId},{ $set: { "rentals": rentals} });
+                break;
+            }
+        }
+    }/* else {
+
+    }*/
+}
+
 const getRentalsByUserId = async (userId) => {
     const toReturn = [];
     const user = await getUserById(userId);
@@ -95,8 +113,11 @@ const getRentalsByUserId = async (userId) => {
                 it.properties = props;
                 rentalItems.push(it);
             }
+            let kitJson = JSON.stringify(kit)
+            kitJson = JSON.parse(kitJson)
             elem = JSON.stringify(rental)
             elem = JSON.parse(elem)
+            elem.kit = kitJson;
             elem.items = rentalItems;
         }else{
             const item = await getItemById(rental.itemId)
@@ -124,6 +145,9 @@ const getRentalsByUserId = async (userId) => {
     return toReturn;
 }
 
+
+
+
 module.exports = {
     getUsers,
     getUserById,
@@ -132,5 +156,6 @@ module.exports = {
     findUserByUsername,
     createUser,
     getRentalsByUserId,
-    editUser
+    editUser,
+    associateToUser,
 }

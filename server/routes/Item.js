@@ -91,7 +91,6 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
                 datesList.push(elem);
             }
 
-            console.log(id)
             await ItemModel.updateOne({_id: id},{ $set: { "rentalDates": datesList} });
         }
     }

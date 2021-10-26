@@ -41,6 +41,11 @@ const _UserModel = new mongoose.Schema({
         type: [String],
         ref: 'Rental',
         default: []
+    },
+    reviews: {
+        type: [String],
+        ref: 'Review',
+        default: []
     }
 }, { collection: "User"});
 

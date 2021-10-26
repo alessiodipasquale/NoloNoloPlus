@@ -8,6 +8,7 @@ const { getPropertyById, getProperties, deleteProperty, createProperty } = requi
 const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue } = require("./PropertyValue");
 const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
 const { getKitById, getKits, deleteKit, createKit } = require("./Kit");
+const { getReviewById, getReviews, deleteReview, createReview } = require("./Review");
 
 
 const requestManager = async (reqName, req, res) => {
@@ -224,6 +225,23 @@ const requestManager = async (reqName, req, res) => {
             }
             case "createKit": {
                 toReturn = await createKit(req.body);
+                break;
+            }
+            ////////////////////////////////////////////////////////////////////////// Review
+            case "getReviewById": {
+                toReturn = await getReviewById(req.params.id);
+                break;
+            }
+            case "getReviews": {
+                toReturn = await getReviews();
+                break;
+            }
+            case "deleteReview": {
+                await deleteReview(req.params.id);
+                break;
+            }
+            case "createReview": {
+                toReturn = await createReview(req.body,req.user.user._id);
                 break;
             }
 

@@ -2,6 +2,7 @@ const RentalModel = require("../models/RentalModel");
 const { getItemById, updateItemRentalDates, checkIfAvailable } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
+const { associateToUser } = require("../routes/User");
 
 const getRentalById = async (id) => {
     const rental = await RentalModel.findById(id)
@@ -20,6 +21,7 @@ const deleteRental = async () => {
 }
 
 const createRental = async (object, userId) => {
+    // TODO trasferire state e target in back
     if(!object.startDate || !object.state || !object.endDate || !object.timeInDays || !object.rentalTarget || !userId  || !object.objectId || !object.rentalType)
         throw BadRequestError;
     
@@ -29,7 +31,8 @@ const createRental = async (object, userId) => {
     object.clientId = userId;
     const rental = await RentalModel.create(object);
     const dates = getDatesFromARange(object.startDate, object.endDate);
-    await updateItemRentalDates("add", dates, object.objectId)
+    await updateItemRentalDates("add", dates, object.objectId);
+    await associateToUser("array", "rentals", rental._id, userId);
     return rental;
 }
 
