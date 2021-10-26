@@ -10,9 +10,25 @@ const getItemById = async (id) => {
     return item;
 }
 
+const filterGroups = (arrayOfItems) => {
+    const toReturn = [];
+    const groups = [];
+    for(let item of arrayOfItems){
+        if(item.groupId){
+            if(!groups.includes(item.groupId)){
+                groups.push(item.groupId);
+                toReturn.push(item);
+            }
+        }else{
+            toReturn.push(item)
+        }
+    }
+}
+
 const getItems = async () => {
     const toReturn = [];
     const items =  await ItemModel.find();
+    items = filterGroups(items);
     for(let item of items){
         
         const props = [];
@@ -55,9 +71,13 @@ const getItemsByCategoryId = async (id) => {
     const toReturn = [];
     const category = await getCategoryById(id);
     const itemIds = category.associatedItems;
+    const items = [];
     for(let itemId of itemIds) {
         const item = await getItemById(itemId);
-        //items.push(item);
+        items.push(item);
+    }
+    items = filterGroups(items);
+    for(let item of items) {
         const props = [];
         for(let propId of item.properties){
             const propVal = await getPropertyValueById(propId);
