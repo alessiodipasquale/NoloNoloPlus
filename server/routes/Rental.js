@@ -27,8 +27,11 @@ const createRental = async (object, userId) => {
     
     if(!checkIfAvailable(object))
         throw BadRequestError;
-
+    if(!Array.isArray(object.objectId))
+        object.objectId = [object.objectId]
+    
     object.clientId = userId;
+    object.itemId = object.objectId;
     const rental = await RentalModel.create(object);
     const dates = getDatesFromARange(object.startDate, object.endDate);
     await updateItemRentalDates("add", dates, object.objectId);

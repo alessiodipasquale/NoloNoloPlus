@@ -1,9 +1,11 @@
 const UserModel = require("../models/UserModel");
+const RentalModel = require("../models/RentalModel");
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { getRentalById } = require("./Rental");
+//const { getRentalById } = require("./Rental");
+
 const { getItemById } = require("./Item");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
@@ -89,12 +91,11 @@ const associateToUser = async (type, toModify, value, userId) => {
 const getRentalsByUserId = async (userId) => {
     const toReturn = [];
     const user = await getUserById(userId);
-    console.log(user.rentals);
     const rentals = user.rentals;
     for(let rentalId of rentals){
         const rentalItems = [];
         let elem
-        const rental = await getRentalById(rentalId);
+        const rental = await RentalModel.findOne({_id: rentalId})//getRentalById(rentalId);
         if(rental.rentalTarget == 'kit'){
             const kit = await getKitById(rental.kitId)
             for(let itemId of kit.items){
@@ -120,6 +121,7 @@ const getRentalsByUserId = async (userId) => {
             elem.kit = kitJson;
             elem.items = rentalItems;
         }else{
+            console.log("rental: ", rental);
             const item = await getItemById(rental.itemId)
             const props = [];
             for(let propId of item.properties){
@@ -131,7 +133,7 @@ const getRentalsByUserId = async (userId) => {
                 props.push({name, value, unitOfMeasure});
             }
             let it = JSON.stringify(item)
-            it = JSON.parse(it)
+            it = JSON.parse(it);
             it.properties = props;
             rentalItems.push(it);
             elem = JSON.stringify(rental)

@@ -75,10 +75,6 @@ const getItemsByCategoryId = async (id) => {
 }
 
 const updateItemRentalDates = async (opType, dates, objectId) => {
-    if(!Array.isArray(objectId))
-        objectId = [objectId];
-
-
     if(opType == "add"){
         for(var id of objectId){
             const item = await getItemById(id);
