@@ -124,7 +124,7 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "createRental": {
-                toReturn = await createRental(req.body,req.user.user._id);
+                toReturn = await createRental(req.body,req.user.user._id, req.user.user.role);
                 break;
             }
 

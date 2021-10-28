@@ -12,7 +12,8 @@ const initialize = async () => {
         swagger: !!env,
         force: false,
         seed: true,
-        log: !!env
+        log: !!env,
+        favouritesTreshold: 4
     };
 };
 

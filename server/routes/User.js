@@ -88,6 +88,14 @@ const associateToUser = async (type, toModify, value, userId) => {
                 await UserModel.updateOne({_id: userId},{ $set: { "reviews": reviews} });
                 break;
             }
+            case "favItemsId": {
+                let favItemsId = elem.favItemsId;
+                if(!favItemsId.includes(value)){
+                    favItemsId.push(value);
+                    await UserModel.updateOne({_id: userId},{ $set: { "favItemsId": favItemsId} });
+                }
+                break;
+            }
         }
     }/* else {
 

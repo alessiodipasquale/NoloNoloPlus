@@ -24,11 +24,12 @@ const filterGroups = (arrayOfItems) => {
             toReturn.push(item)
         }
     }
+    return toReturn;
 }
 
 const getItems = async () => {
     const toReturn = [];
-    const items =  await ItemModel.find();
+    let items =  await ItemModel.find();
     items = filterGroups(items);
     for(let item of items){
         
