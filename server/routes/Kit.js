@@ -1,8 +1,9 @@
 const KitModel = require("../models/KitModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
-const { getItemById, calculatePriceforItem } = require("./Item");
+const { getItemById, calculatePriceforItem, associateToItem } = require("./Item");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
+const { arrayUnion } = require("../utils/UtilityFuctions");
 
 const getKitById = async (id) => {
     const kit = await KitModel.findById(id);
@@ -46,7 +47,19 @@ const deleteKit = async (id) => {
 }
 
 const createKit = async (object) => {
+    if(!object.name || !object.description || !object.standardPrice || !object.items)
+        throw BadRequestError;
+
+    let allCategories = [];
+    for(let itId of object.items){
+        const item = await getItemById(itId);
+        allCategories = arrayUnion(item.category, allCategories);
+    }
+    object.category = allCategories;
     const kit = await KitModel.create(object);
+    for(let itId of object.items){
+        await associateToItem("array", "kits", kit._id, itId);
+    }
     return kit;
 }
 

@@ -52,7 +52,8 @@ const items = [
         available: true,
         rentCount: 0,
         kits: [],
-        properties: ["Val2"]
+        properties: ["Val2"],
+        //groupId: "Group1"
     },
     {
         _id: "Item3",
@@ -82,7 +83,8 @@ const items = [
         available: true,
         rentCount: 0,
         kits: ["Kit1"],
-        properties: ["Val2"]
+        properties: ["Val2"],
+        //groupId: "Group1"
     }
 
 ];

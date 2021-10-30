@@ -9,12 +9,13 @@ const _CategoryModel = new mongoose.Schema({
     associatedItems: {
         type: [String],
         ref: "Item",
-        required: true
+        default: []
     },
     associatedProperties: {
         type: [String],
         required: true,
-        ref: "Property"
+        ref: "Property",
+        default: []
     }
 },  { collection: "Category"});
 

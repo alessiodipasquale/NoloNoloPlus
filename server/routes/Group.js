@@ -1,5 +1,6 @@
 const GroupModel = require("../models/GroupModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
+const { associateToItem, getItemById } = require("./Item");
 
 const getGroupById = async (id) => {
     const group = await GroupModel.findById(id)
@@ -20,7 +21,17 @@ const deleteGroup = async () => {
 const createGroup = async (object) => {
     if(!object.items || !object.name)
         throw BadRequestError;
+
+    for(let itId of object.items){
+        const item = await getItemById(itId);
+        if(item.groupId)
+            throw BadRequestError;
+    }
+
     const group = await RentalModel.create(object);
+    for(let itId of object.items){
+        await associateToItem("single", "groupId", group._id, itId )
+    }
     return group;
 }
 
