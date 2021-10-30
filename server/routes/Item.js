@@ -1,4 +1,5 @@
 const ItemModel = require('../models/ItemModel');
+const UserModel = require('../models/UserModel')
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getCategoryById, associateToCategory } = require('./Category');
 const { getPropertyValueById } = require('./PropertyValue');
@@ -205,7 +206,7 @@ const getReviewsByItemId = async (itemId) => {
     const reviews = item.reviews;
     for(let reviewId of reviews) {
         const review = await ReviewModel.findOne({_id: reviewId});
-        const user = await getUserById(review.clientId);
+        const user = await UserModel.findById(review.clientId).select("-password -__v")
         let rev = JSON.stringify(review)
         rev = JSON.parse(rev)
         rev.user = user;
@@ -219,7 +220,7 @@ const calculatePriceforItem = async (object,itemId, userId) =>{
         throw BadRequestError;
 
     const item = await getItemById(itemId);
-    const user = await getUserById(userId);
+    const user = await UserModel.findById(userId).select("-password -__v")
     const priceDetail = await getPriceDetail();
 
     let toReturn = {};
@@ -234,7 +235,7 @@ const calculatePriceforItem = async (object,itemId, userId) =>{
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
     finalPrice = diffDays * finalPrice;
-    receipt.push("Costo non scontato per l'inter€o periodo: "+finalPrice+"€");
+    receipt.push("Costo non scontato per l'intero periodo: "+finalPrice+"€");
 
     //noleggio per oltre una settimana -> priceDetail.longUsageDiscountMultiplier
     if(diffDays >= 7){
@@ -261,24 +262,25 @@ const calculatePriceforItem = async (object,itemId, userId) =>{
     //stato dell'oggetto
     switch(item.state){
         case "ottimo":{
-            discounted = applyDiscount(finalPrice,priceDetail.new_state);
-            receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
-            break;
-        }
-        case "buono":{
             discounted = applyDiscount(finalPrice,priceDetail.verygood_state);
             receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
             finalPrice = discounted;
             break;
         }
-        case "usurato":{
+        case "buono":{
             discounted = applyDiscount(finalPrice,priceDetail.good_state);
             receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
             finalPrice = discounted;
             break;
         }
-        case "molto usurato":{
+        case "usurato":{
             discounted = applyDiscount(finalPrice,priceDetail.worn_state);
+            receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+            finalPrice = discounted;
+            break;
+        }
+        case "molto usurato":{
+            discounted = applyDiscount(finalPrice,priceDetail.veryworn_state);
             receipt.push("Prezzo scontato per stato dell'oggetto: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
             finalPrice = discounted;
             break;

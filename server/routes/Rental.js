@@ -1,9 +1,9 @@
 const RentalModel = require("../models/RentalModel");
-const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem } = require("../routes/Item"); 
+const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem, calculatePriceforItem } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
 const { associateToUser, getUserById} = require("../routes/User");
-const { getKitById } = require("./Kit");
+const { getKitById, calculatePriceforKit } = require("./Kit");
 
 const getRentalById = async (id) => {
     const rental = await RentalModel.findById(id)
@@ -49,7 +49,16 @@ const createRental = async (object, userId, role) => {
     object.clientId = userId;
     object.itemId = object.objectId;
 
-    //price and receipt
+    if(object.rentalTarget == 'kit'){
+        const price = await calculatePriceforKit({startDate: object.startDate, endDate: object.endDate},object.kitId,userId)
+        object.finalPrice = price.finalKitPrice;
+        object.receipt = price.kitReceipt;
+        object.partialPrices = price.partialPrices;
+    }else{
+        const price = await calculatePriceforItem({startDate: object.startDate, endDate: object.endDate},object.itemId[0],userId)
+        object.finalPrice = price.finalPrice;
+        object.receipt = price.receipt;
+    }
 
     const rental = await RentalModel.create(object);
     const dates = getDatesFromARange(object.startDate, object.endDate);
@@ -121,4 +130,5 @@ module.exports = {
     createRental,
     deleteRental,
     changeRentalState,
+    associateToRental
 }
