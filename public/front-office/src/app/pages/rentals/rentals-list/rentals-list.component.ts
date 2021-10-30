@@ -2,6 +2,7 @@ import { CarouselConfig } from 'ngx-bootstrap/carousel';
 import { TokenService } from './../../../services/token.service';
 import { RentalsService } from './../../../services/rentalsService.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-rentals-list',
@@ -14,7 +15,8 @@ import { Component, OnInit } from '@angular/core';
 export class RentalsListComponent implements OnInit {
 
   constructor(private rentalsService: RentalsService,
-              private tokenService: TokenService) { }
+              private tokenService: TokenService,
+              private router: Router) { }
 
   rentals;
 
@@ -30,7 +32,10 @@ export class RentalsListComponent implements OnInit {
       this.rentals = rentals;
       console.log(rentals);
     })
-   
+  }
+
+  openSpecRental(rental) {
+    this.router.navigate(['/pages/rentals','rental-spec'], {state: {rental: rental}});
   }
 
 }

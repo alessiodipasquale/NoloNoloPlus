@@ -1,0 +1,85 @@
+<div class="animated fadeIn">
+    <button (click)="router.navigate(['/pages/rentals','rentals-list'])" class="btn btn-link" style="padding-left: 0;">Torna alle tue prenotazioni</button>
+    <div class="row">
+        <div class="col-9">
+            <h2>La tua prenotazione</h2>
+        </div>
+        <div class="col-3" style="display: flex; align-items: center;justify-content: center;">
+            <span *ngIf="rental.state == 'terminata'" class="badge badge-danger">Concluso</span>
+            <span *ngIf="rental.state == 'futura'" class="badge badge-success">Prenotata</span>
+            <span *ngIf="rental.state == 'in corso'" class="badge badge-warning">In corso</span>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Data di inizio prenotazione
+                </div>
+                <div class="card-body">
+                    {{rental.startDate}}
+                </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Data di fine prenotazione
+                </div>
+                <div class="card-body">
+                    {{rental.endDate}}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card w-100 mt-3">
+        <div class="card-body" *ngFor="let item of rental.items">
+            <div class="row">
+                <div class="col-6" style="padding-left: 10px; padding-right: 10px;">
+                    <h5 class="card-title" >{{item.name}}</h5>
+                    <ul style="padding-left: 15%;">
+                        <li *ngFor="let property of item.properties">{{property.name}}: {{property.value}} {{property.unitOfMeasure ? property.unitOfMeasure : ''}}</li>
+                        <!--<li>{{item.category}}</li>-->
+                        <li>Stato: {{item.state}}</li>
+                    </ul>
+                </div>
+                <div class="col-6" style="display: flex; justify-content: space-around; align-items: center; flex-direction: column;">
+                    <img style="width: 100%;"[src]="item.imgSrc">
+                </div>
+            </div>
+        </div>
+      </div>
+    
+      <div class="card">
+          <div class="card-header">
+              Prezzo 
+          </div>
+          <div class="card-body" style="display: flex;align-items: center;justify-content: center;">
+              <h3>{{rental.price ? rental.price : 0}}€</h3>
+          </div>
+      </div>
+
+      <button class="btn btn-block btn-primary mb-3" *ngIf="rental.state == 'terminata'" (click)="openReviewModal()">Lascia una recensione</button>
+    
+</div>
+
+<div bsModal #reviewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-primary" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Modal title</h4>
+          <button type="button" class="close" (click)="reviewModal.hide()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>One fine body&hellip;</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="reviewModal.hide()">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->

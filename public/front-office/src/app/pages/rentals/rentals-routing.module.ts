@@ -1,3 +1,4 @@
+import { RentalSpecComponent } from './rental-spec/rental-spec.component';
 import { RentalsListComponent } from './rentals-list/rentals-list.component';
 import { RentalsComponent } from './rentals.component';
 import { NgModule } from '@angular/core';
@@ -10,6 +11,10 @@ const routes: Routes = [{
     {
         path: 'rentals-list',
         component: RentalsListComponent,
+    },
+    {
+        path: 'rental-spec',
+        component: RentalSpecComponent
     }
     ]
 }];

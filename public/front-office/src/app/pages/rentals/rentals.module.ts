@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { TableModule } from 'ngx-easy-table';
 import { RentalsListComponent } from './rentals-list/rentals-list.component';
+import { RentalSpecComponent } from './rental-spec/rental-spec.component';
 
 const components = [
     RentalsComponent,
@@ -20,10 +21,11 @@ const components = [
         CommonModule,
         RentalsRoutingModule,
         TableModule,
-        CarouselModule.forRoot()
+        CarouselModule.forRoot(),
     ],
     declarations: [
         ...components,
+        RentalSpecComponent,
     ]
 })
 
