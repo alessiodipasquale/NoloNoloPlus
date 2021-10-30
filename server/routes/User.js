@@ -22,7 +22,9 @@ const getAuthToken = async (username, clearTextPassword) => {
     if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
         throw UnauthorizedError;
 
-    const payload = { type:'user', user: _.omit(user, ['password', '__v'])}
+    let usr = JSON.stringify(user)
+    usr = JSON.parse(usr)
+    const payload = { type:'user', user: _.omit(usr, ['password', '__v'])}
     const token = jwt.sign(payload, process.env.JWT_SECRET).toString();
     return token;
 }

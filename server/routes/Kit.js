@@ -85,6 +85,8 @@ const calculatePriceforKit = async (object,kitId,userId) =>{
         kitReceipt.push("Prezzo calcolato per l'oggetto con id "+itemId+": "+fullPriceForItem.finalPrice );
         finalKitPrice += fullPriceForItem.finalPrice;
     }
+    kitReceipt.push("Alla somma viene applicato uno sconto del "+ global.config.kitDiscount+ "% per aver acquistato un kit");
+    finalKitPrice = finalKitPrice - (finalKitPrice/100 * global.config.kitDiscount)
 
     toReturn.finalKitPrice = finalKitPrice;
     toReturn.partialPrices = partialPrices;

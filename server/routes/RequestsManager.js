@@ -13,7 +13,6 @@ const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group")
 
 const requestManager = async (reqName, req, res) => {
     //TODO: fix restitution of price and properties in getRentals  //partially fixed?
-    //TODO: fix password in jwt
     //TODO: fix price for unauthenticated users
     //TODO: pass reviews in items in /users/id/rentals
     //TODO: add editing endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
