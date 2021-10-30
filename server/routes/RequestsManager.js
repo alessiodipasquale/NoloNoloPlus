@@ -13,6 +13,7 @@ const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group")
 
 const requestManager = async (reqName, req, res) => {
     //TODO: add editing endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
+    //TODO: deleting endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
     try {
         var toReturn = null;
         switch (reqName) {
