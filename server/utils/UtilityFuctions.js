@@ -11,6 +11,15 @@ const getDatesFromARange = (start, end) => {
     return dates;
 }
 
+const arrayUnion = (src, dest) => {
+    for(let elem of src){
+        if(!dest.include(elem))
+            dest.push(elem)
+    }
+    return dest;
+}
+
 module.exports = {
-    getDatesFromARange
+    getDatesFromARange,
+    arrayUnion
 }

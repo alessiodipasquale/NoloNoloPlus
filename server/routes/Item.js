@@ -183,10 +183,20 @@ const associateToItem = async (type, toModify, value, itemId) => {
                 await ItemModel.updateOne({_id: itemId},{ $set: { "reviews": reviews} });
                 break;
             }
+            case "kits": {
+                let kits = elem.kits;
+                kits.push(value);
+                await ItemModel.updateOne({_id: itemId},{ $set: { "kits": kits} });
+                break;
+            }
         }
-    }/* else {
-
-    }*/
+    } else {
+        switch (toModify) {
+            case "groupId": {
+                await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": value} });
+            }
+        }
+    }
 }
 
 const getReviewsByItemId = async (itemId) => {
