@@ -77,7 +77,7 @@ const calculatePriceforKit = async (object,kitId,userId) =>{
     for(let itemId of kit.items){
         itemId = itemId._id;
         let rec = []
-        rec.push("Resoconto item con id"+itemId)
+        rec.push("Resoconto item con id "+itemId)
         const fullPriceForItem = await calculatePriceforItem(object, itemId, userId);
         for(let e of fullPriceForItem.receipt)
             rec.push(e);
