@@ -12,7 +12,9 @@ const { getReviewById, getReviews, deleteReview, createReview } = require("./Rev
 const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
-    
+    //TODO: Fix all creations. Remaining: category, kit, review, group
+    //TODO: add favourite categories
+    //TODO: add editing endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
     try {
         var toReturn = null;
         switch (reqName) {
@@ -24,7 +26,7 @@ const requestManager = async (reqName, req, res) => {
             }
 
             case "registerFront": {
-                toReturn = await registerFront(req.body.username, req.body.password)
+                toReturn = await registerFront(req.body)
                 break;
             }
 
@@ -35,7 +37,7 @@ const requestManager = async (reqName, req, res) => {
             }
 
             case "registerDashboard": {
-                toReturn = await registerDashboard(req.body.username, req.body.password)
+                toReturn = await registerDashboard(req.body)
                 break;
             }
 
@@ -46,7 +48,7 @@ const requestManager = async (reqName, req, res) => {
             }
 
             case "registerBack": {
-                toReturn = await registerBack(req.body.username, req.body.password)
+                toReturn = await registerBack(req.body)
                 break;
             }
 

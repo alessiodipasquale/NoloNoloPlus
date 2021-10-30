@@ -7,7 +7,8 @@ const _PropertyModel = new mongoose.Schema({
     name: {type: String, required: true},
     associatedValues:{
         type: [String],
-        ref: "PropertyValue"
+        ref: "PropertyValue",
+        default: []
     }
 },  { collection: "Property"});
 

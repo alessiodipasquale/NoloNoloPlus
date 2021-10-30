@@ -36,7 +36,7 @@ const items = [
         rentalDates: [],
         available: true,
         rentCount: 0,
-        kitIds: [],
+        kits: [],
         properties: ["Val1"]
     },
     {
@@ -51,7 +51,7 @@ const items = [
         rentalDates: [],
         available: true,
         rentCount: 0,
-        kitIds: [],
+        kits: [],
         properties: ["Val2"]
     },
     {
@@ -66,7 +66,7 @@ const items = [
         rentalDates: [],
         available: true,
         rentCount: 0,
-        kitIds: ["Kit1"],
+        kits: ["Kit1"],
         properties: ["Val1"]
     },
     {
@@ -81,7 +81,7 @@ const items = [
         rentalDates: [],
         available: true,
         rentCount: 0,
-        kitIds: ["Kit1"],
+        kits: ["Kit1"],
         properties: ["Val2"]
     }
 

@@ -34,10 +34,29 @@ const createCategory = async (object) => {
     return category;
 }
 
+const associateToCategory = async (type, toModify, value, catId) => {
+    const category = await getCategoryById(catId);
+    if(type == "array") {
+        let elem = JSON.stringify(category);
+        elem = JSON.parse(elem);
+        switch (toModify) {
+            case "associatedItems": {
+                let associatedItems = elem.associatedItems;
+                associatedItems.push(value);
+                await CategoryModel.updateOne({_id: catId},{ $set: { "associatedItems": associatedItems} });
+                break;
+            }
+        }
+    }/* else {
+
+    }*/
+}
+
 module.exports = {
     getCategories,
     getCategoryById,
     deleteCategory,
     findCategoryByName,
-    createCategory
+    createCategory,
+    associateToCategory
 }

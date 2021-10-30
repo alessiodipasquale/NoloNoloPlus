@@ -1,10 +1,11 @@
 const ItemModel = require('../models/ItemModel');
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { getCategoryById } = require('./Category');
+const { getCategoryById, associateToCategory } = require('./Category');
 const { getPropertyValueById } = require('./PropertyValue');
 const { getPropertyById } = require('./Property');
 const { getUserById } = require('./User');
 const { getPriceDetail } = require('./PriceDetails');
+const { associateToPropertyValue } = require('./PropertyValue')
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -62,10 +63,28 @@ const findItemByName = async (name) => {
 }
 
 const createItem = async (object) => {
-    if(!object.name || !object.description || !object.standardPrice || !object.state || !object.rentalDates)
+    if(!object.name || !object.description || !object.standardPrice || !object.state || !object.category  || !object.imgSrc)
         throw BadRequestError;
 
+    //category
+    if(!Array.isArray(object.category))
+        object.category = [object.category]
+    //properties
+    if(object.properties){
+        if(!Array.isArray(object.properties))
+            object.properties = [object.properties]
+    }else object.properties = [];
+    
     const item = await ItemModel.create(object);
+
+    for(let cat of object.category){
+        await associateToCategory("array", "associatedItems",item._id, cat);
+    }
+    for(let prop of object.properties){
+        await associateToPropertyValue("array", "associatedItems",item._id, prop);
+    }
+    
+
     return item;
 }
 
@@ -153,9 +172,9 @@ const checkIfAvailable = async (object) => {
 }
 
 const associateToItem = async (type, toModify, value, itemId) => {
-    const user = await getItemById(itemId);
+    const item = await getItemById(itemId);
     if(type == "array") {
-        let elem = JSON.stringify(user);
+        let elem = JSON.stringify(item);
         elem = JSON.parse(elem);
         switch (toModify) {
             case "reviews": {

@@ -30,14 +30,32 @@ const createProperty = async (object) => {
     if (await findPropertyByName(object.name))
         throw AlreadyExistsError;
 
-    const property = await PropertyyModel.create(object);
+    const property = await PropertyModel.create(object);
     return property;
 }
+
+const associateToProperty = async (type, toModify, value, pId) => {
+    const p = await getItemById(pId);
+    if(type == "array") {
+        let elem = JSON.stringify(p);
+        elem = JSON.parse(elem);
+        switch (toModify) {
+            case "associatedValues": {
+                let associatedValues = elem.associatedValues;
+                associatedValues.push(value);
+                await PropertyModel.updateOne({_id: pId},{ $set: { "associatedValues": associatedValues} });
+                break;
+            }
+        }
+    }
+}
+
 
 module.exports = {
     getProperties,
     getPropertyById,
     deleteProperty,
     findPropertyByName,
-    createProperty
+    createProperty,
+    associateToProperty
 }

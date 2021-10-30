@@ -47,7 +47,7 @@ const _RentalModel = new mongoose.Schema({
     },
     state: {
         type: String,
-        enum: ['in corso', 'terminata', 'futura'],
+        enum: ['in corso', 'terminata', 'futura', 'non completabile'],
         required: true
     }
 
