@@ -49,6 +49,8 @@ const createRental = async (object, userId, role) => {
     object.clientId = userId;
     object.itemId = object.objectId;
 
+    //price and receipt
+
     const rental = await RentalModel.create(object);
     const dates = getDatesFromARange(object.startDate, object.endDate);
     object.timeInDays = dates.length;

@@ -49,6 +49,15 @@ const _RentalModel = new mongoose.Schema({
         type: String,
         enum: ['in corso', 'terminata', 'futura', 'non completabile'],
         required: true
+    },
+    finalPrice: {
+        type: Number,
+        required:true
+    },
+    receipt: {
+        type: [String],
+        required:true,
+        default: []
     }
 
 },  { collection: "Rental"});
