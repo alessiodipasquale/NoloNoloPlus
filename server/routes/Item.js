@@ -92,7 +92,7 @@ const getItemsByCategoryId = async (id) => {
     const toReturn = [];
     const category = await getCategoryById(id);
     const itemIds = category.associatedItems;
-    const items = [];
+    let items = [];
     for(let itemId of itemIds) {
         const item = await getItemById(itemId);
         items.push(item);
