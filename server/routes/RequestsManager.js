@@ -232,7 +232,9 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "calculatePriceforKit": {
-                toReturn = await calculatePriceforKit(req.body,req.params.id, req.user.user._id);
+                if(req.user)
+                    toReturn = await calculatePriceforKit(req.body,req.params.id, req.user.user._id);
+                else toReturn = await calculatePriceforKit(req.body,req.params.id, null);
                 break;
             }
 
