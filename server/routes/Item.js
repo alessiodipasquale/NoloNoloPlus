@@ -300,6 +300,10 @@ const applyDiscount = (price, multiplier) => {
     return price * multiplier;
 }
 
+const getCategoriesByItem = async (id) => {
+    const item = await ItemModel.findById(id);
+    return item.category;
+}
 
 
 module.exports = {
@@ -313,5 +317,6 @@ module.exports = {
     checkIfAvailable,
     associateToItem,
     getReviewsByItemId,
-    calculatePriceforItem
+    calculatePriceforItem,
+    getCategoriesByItem
 }

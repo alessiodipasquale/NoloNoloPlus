@@ -12,9 +12,10 @@ const { getReviewById, getReviews, deleteReview, createReview } = require("./Rev
 const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
-    //TODO: Fix all creations. Remaining: group
-    //TODO: add favourite categories
-    //TODO: find items by keyword
+    //TODO: fix restitution of price and properties in getRentals
+    //TODO: fix password in jwt
+    //TODO: fix price for unauthenticated users
+    //TODO: pass reviews in items in /users/id/rentals
     //TODO: add editing endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
     try {
         var toReturn = null;

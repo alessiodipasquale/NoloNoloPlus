@@ -96,6 +96,14 @@ const associateToUser = async (type, toModify, value, userId) => {
                 }
                 break;
             }
+            case "favCategories": {
+                let favCategories = elem.favCategories;
+                if(!favCategories.includes(value)){
+                    favCategories.push(value);
+                    await UserModel.updateOne({_id: userId},{ $set: { "favCategories": favCategories} });
+                }
+                break;
+            }
         }
     }/* else {
 

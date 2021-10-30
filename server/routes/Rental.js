@@ -1,5 +1,5 @@
 const RentalModel = require("../models/RentalModel");
-const { getItemById, updateItemRentalDates, checkIfAvailable } = require("../routes/Item"); 
+const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
 const { associateToUser, getUserById} = require("../routes/User");
@@ -55,8 +55,14 @@ const createRental = async (object, userId, role) => {
     await updateItemRentalDates("add", dates, object.objectId);
     await associateToUser("array", "rentals", rental._id, userId);
     for(let id of object.objectId){
-        if(await countSpecifiedPurchase(userId, id) >= global.config.favouritesTreshold)  
-            await associateToUser("array", "favItemsId", id, userId);  
+        if(await countSpecifiedPurchase(userId, id) >= global.config.favouritesTreshold){
+            await associateToUser("array", "favItemsId", id, userId);
+            const categories = await getCategoriesByItem(id);
+            for(let cat of categories){
+                await associateToUser("array", "favCategories", cat, userId);
+            }
+        }  
+              
     }
     return rental;
 }
@@ -83,6 +89,28 @@ const countSpecifiedPurchase = async (userId, itemId) => {
         }
     }
     return count+1;
+}
+
+const associateToRental = async (type, toModify, value, rentalId) => {
+    const rental = await getRentalById(rentalId);
+    if(type == "array") {
+        let elem = JSON.stringify(rental);
+        elem = JSON.parse(elem);
+        switch (toModify) {
+        }
+    } else {
+        switch (toModify) {
+            case "rentalCertification": {
+                await RentalModel.updateOne({_id: rentalId},{ $set: { "groupId": value} });
+            }
+            case "returnCertification": {
+                await RentalModel.updateOne({_id: rentalId},{ $set: { "returnCertification": value} });
+            }
+            case "employerId": {
+                await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": value} });
+            }
+        }
+    }
 }
 
 module.exports = {

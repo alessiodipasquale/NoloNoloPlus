@@ -26,11 +26,13 @@ const _UserModel = new mongoose.Schema({
     },
     favCategories:{
         type: [String],
-        ref: 'Category'
+        ref: 'Category',
+        default: []
     },
     favItemsId:{
         type: [String],
-        ref: 'Item'
+        ref: 'Item',
+        default: []
     },
     role: {
         type: String,
