@@ -4,7 +4,6 @@ const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../c
 const { getCategoryById, associateToCategory } = require('./Category');
 const { getPropertyValueById } = require('./PropertyValue');
 const { getPropertyById } = require('./Property');
-const { getUserById } = require('./User');
 const { getPriceDetail } = require('./PriceDetails');
 const { associateToPropertyValue } = require('./PropertyValue')
 
@@ -216,11 +215,10 @@ const getReviewsByItemId = async (itemId) => {
 }
 
 const calculatePriceforItem = async (object,itemId, userId) =>{
-    if(!object.startDate || !object.endDate || !itemId || !userId)
+    if(!object.startDate || !object.endDate || !itemId)
         throw BadRequestError;
 
     const item = await getItemById(itemId);
-    const user = await UserModel.findById(userId).select("-password -__v")
     const priceDetail = await getPriceDetail();
 
     let toReturn = {};
@@ -237,26 +235,29 @@ const calculatePriceforItem = async (object,itemId, userId) =>{
     finalPrice = diffDays * finalPrice;
     receipt.push("Costo non scontato per l'intero periodo: "+finalPrice+"€");
 
-    //noleggio per oltre una settimana -> priceDetail.longUsageDiscountMultiplier
-    if(diffDays >= 7){
-        discounted = applyDiscount(finalPrice, priceDetail.longUsageDiscountMultiplier);
-        receipt.push("Prezzo scontato per prenotazione lunga: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
-        finalPrice = discounted;
-    }
+    if(userId != null){
+        const user = await UserModel.findById(userId).select("-password -__v")
+        //noleggio per oltre una settimana -> priceDetail.longUsageDiscountMultiplier
+        if(diffDays >= 7){
+            discounted = applyDiscount(finalPrice, priceDetail.longUsageDiscountMultiplier);
+            receipt.push("Prezzo scontato per prenotazione lunga: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+            finalPrice = discounted;
+        }
 
-    //controllo punti fedeltà 
-    if(user.loyaltyPoints >= 50000){
-        discounted = finalPrice / 2;
-    }else{
-        discounted = finalPrice - (finalPrice / 100 * (user.loyaltyPoints/1000))
-    }
-    receipt.push("Prezzo scontato per punti fedeltà: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
-    finalPrice = discounted;
+        //controllo punti fedeltà 
+        if(user.loyaltyPoints >= 50000){
+            discounted = finalPrice / 2;
+        }else{
+            discounted = finalPrice - (finalPrice / 100 * (user.loyaltyPoints/1000))
+        }
+        receipt.push("Prezzo scontato per punti fedeltà: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+        finalPrice = discounted;   
     
-    //se è nei preferiti -> priceDetail.discountMultiplier
-    if(user.favItemsId.includes(item._id)){
-        discounted = applyDiscount(finalPrice,priceDetail.fidelityPriceMultiplier);
-        receipt.push("Prezzo scontato per ripetizione di noleggio: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+        //se è nei preferiti -> priceDetail.discountMultiplier
+        if(user.favItemsId.includes(item._id)){
+            discounted = applyDiscount(finalPrice,priceDetail.fidelityPriceMultiplier);
+            receipt.push("Prezzo scontato per ripetizione di noleggio: "+discounted+"€, sconto applicato di "+(finalPrice-discounted)+"€");
+        }
     }
 
     //stato dell'oggetto

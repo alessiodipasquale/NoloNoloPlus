@@ -79,7 +79,9 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "calculatePriceforItem": {
-                toReturn = await calculatePriceforItem(req.body,req.params.id, req.user.user._id);
+                if(req.user)
+                    toReturn = await calculatePriceforItem(req.body,req.params.id, req.user.user._id);
+                else toReturn = await calculatePriceforItem(req.body,req.params.id, null);
                 break;
             }
 
