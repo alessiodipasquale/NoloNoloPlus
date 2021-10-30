@@ -1,15 +1,15 @@
 const UserModel = require("../models/UserModel");
 const RentalModel = require("../models/RentalModel");
+const ReviewModel = require("../models/ReviewModel");
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-//const { getRentalById } = require("./Rental");
-
 const { getItemById } = require("./Item");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 const { getKitById } = require("./Kit");
+
 
 const getUserById = async (id) =>  {
     const user = await UserModel.findById(id).select("-password -__v");
@@ -171,13 +171,18 @@ const getRentalsByUserId = async (userId) => {
                 const unitOfMeasure = propVal.unitOfMeasure;                    
                 props.push({name, value, unitOfMeasure});
             }
+            const revs = [];
+            for(let revId of item.reviews){
+                const review = await ReviewModel.findOne({_id: revId});
+                revs.push(review);
+            }
             let it = JSON.stringify(item)
             it = JSON.parse(it);
+            it.reviews = revs;
             it.properties = props;
             rentalItems.push(it);
             elem = JSON.stringify(rental)
             elem = JSON.parse(elem)
-            elem.properties = props;
             elem.items = rentalItems;
         }
         
