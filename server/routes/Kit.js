@@ -72,14 +72,21 @@ const calculatePriceforKit = async (object,kitId,userId) =>{
     let toReturn = {};
     const partialPrices = [];
     let finalKitPrice = 0;
-    const kitreceipt = [];
+    const kitReceipt = [];
 
-    for(itemId of kit.items){
-        const fullPriceForItem = calculatePriceforItem(object, itemId, userId);
-        partialPrices.push(fullPriceForItem);
-        kitreceipt.push("Prezzo calcolato per l'oggetto con id "+itemId+": "+fullPriceForItem.finalPrice );
+    for(let itemId of kit.items){
+        itemId = itemId._id;
+        let rec = []
+        rec.push("Resoconto item con id "+itemId)
+        const fullPriceForItem = await calculatePriceforItem(object, itemId, userId);
+        for(let e of fullPriceForItem.receipt)
+            rec.push(e);
+        partialPrices.push(rec);
+        kitReceipt.push("Prezzo calcolato per l'oggetto con id "+itemId+": "+fullPriceForItem.finalPrice );
         finalKitPrice += fullPriceForItem.finalPrice;
     }
+    kitReceipt.push("Alla somma viene applicato uno sconto del "+ global.config.kitDiscount+ "% per aver acquistato un kit");
+    finalKitPrice = finalKitPrice - (finalKitPrice/100 * global.config.kitDiscount)
 
     toReturn.finalKitPrice = finalKitPrice;
     toReturn.partialPrices = partialPrices;

@@ -23,4 +23,8 @@ export class RentalsService {
     deleteItem(id) {
         return this.http.delete('/items/'+id)
     }
+
+    publishReview(stars , comment, itemId) {
+        return this.http.post('/reviews', {stars, comment, itemId});
+    }
 }

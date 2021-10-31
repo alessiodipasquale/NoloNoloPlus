@@ -22,13 +22,13 @@ const router = {
         app.get('/users/:id/getReviewsByUserId', auth, (req, res) => { requestManager("getReviewsByUserId", req, res); })
 
         // Item
-        app.get('/items', auth, (req, res) => { requestManager("getItems", req, res); })
+        /**/app.get('/items', auth, (req, res) => { requestManager("getItems", req, res); })
         app.delete('/items/:id', auth, (req, res) => { requestManager("deleteItem", req, res); })
-        app.get('/items/:id', auth, (req, res) => { requestManager("getItemById", req, res); })
+        /**/app.get('/items/:id', auth, (req, res) => { requestManager("getItemById", req, res); })
         app.post('/items',auth, (req, res) => { requestManager("createItem", req, res); })
         app.post('/items/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
-        app.get('/items/:id/getReviewsByItemId', auth, (req, res) => { requestManager("getReviewsByItemId", req, res); })
-        app.post('/items/:itemId/calculatePrice',auth, (req, res) => { requestManager("calculatePriceforItem", req, res); })
+        /**/app.get('/items/:id/getReviewsByItemId', auth, (req, res) => { requestManager("getReviewsByItemId", req, res); })
+        /**/app.post('/items/:itemId/calculatePrice',auth, (req, res) => { requestManager("calculatePriceforItem", req, res); })
 
 
         // Rental
@@ -43,50 +43,43 @@ const router = {
         app.get('/certifications/:id', auth, (req, res) => { requestManager("getCertificationById", req, res); })
         app.post('/certifications',auth, (req, res) => { requestManager("createCertification", req, res); })
 
-        // Price details
-        app.get('/priceDetails', auth, (req, res) => { requestManager("getPriceDetails", req, res); })
-        app.delete('/priceDetails/:id', auth, (req, res) => { requestManager("deletePriceDetail", req, res); })
-        app.get('/priceDetails/:id', auth, (req, res) => { requestManager("getPriceDetailById", req, res); })
-        app.post('/priceDetails',auth, (req, res) => { requestManager("createPriceDetail", req, res); })
-
         // Property
-        app.get('/properties', auth, (req, res) => { requestManager("getProperties", req, res); })
+        /**/app.get('/properties', auth, (req, res) => { requestManager("getProperties", req, res); })
         app.delete('/properties/:id', auth, (req, res) => { requestManager("deleteProperty", req, res); })
-        app.get('/properties/:id', auth, (req, res) => { requestManager("getPropertyById", req, res); })
+        /**/app.get('/properties/:id', auth, (req, res) => { requestManager("getPropertyById", req, res); })
         app.post('/properties',auth, (req, res) => { requestManager("createProperty", req, res); })
 
         // PropertyValue
-        app.get('/propertyValues', auth, (req, res) => { requestManager("getPropertyValues", req, res); })
+        /**/app.get('/propertyValues', auth, (req, res) => { requestManager("getPropertyValues", req, res); })
         app.delete('/propertyValues/:id', auth, (req, res) => { requestManager("deletePropertyValue", req, res); })
-        app.get('/propertyValues/:id', auth, (req, res) => { requestManager("getPropertyValueById", req, res); })
+        /**/app.get('/propertyValues/:id', auth, (req, res) => { requestManager("getPropertyValueById", req, res); })
         app.post('/propertyValues',auth, (req, res) => { requestManager("createPropertyValue", req, res); })
 
         // Category
-        app.get('/categories', auth, (req, res) => { requestManager("getCategories", req, res); })
+        /**/app.get('/categories', auth, (req, res) => { requestManager("getCategories", req, res); })
         app.delete('/categories/:id', auth, (req, res) => { requestManager("deleteCategory", req, res); })
-        app.get('/categories/:id', auth, (req, res) => { requestManager("getCategoryById", req, res); })
+        /**/app.get('/categories/:id', auth, (req, res) => { requestManager("getCategoryById", req, res); })
         app.post('/categories',auth, (req, res) => { requestManager("createCategory", req, res); })
-        app.get('/categories/:categoryId/items', auth, (req, res) => { requestManager("getItemsByCategoryId", req, res); })
+        /**/app.get('/categories/:categoryId/items', auth, (req, res) => { requestManager("getItemsByCategoryId", req, res); })
 
         // Kit
-        app.get('/kits', auth, (req, res) => { requestManager("getKits", req, res); })
+        /**/app.get('/kits', auth, (req, res) => { requestManager("getKits", req, res); })
         app.delete('/kits/:id', auth, (req, res) => { requestManager("deleteKit", req, res); })
-        app.get('/kits/:id', auth, (req, res) => { requestManager("getKitById", req, res); })
+        /**/app.get('/kits/:id', auth, (req, res) => { requestManager("getKitById", req, res); })
         app.post('/kits',auth, (req, res) => { requestManager("createKit", req, res); })
         app.post('/kits/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
-        app.post('/kits/:kitId/calculatePrice',auth, (req, res) => { requestManager("calculatePriceforKit", req, res); })
-
+        /**/app.post('/kits/:kitId/calculatePrice',auth, (req, res) => { requestManager("calculatePriceforKit", req, res); })
 
         // Kit
-        app.get('/reviews', auth, (req, res) => { requestManager("getReviews", req, res); })
+        /**/app.get('/reviews', auth, (req, res) => { requestManager("getReviews", req, res); })
         app.delete('/reviews/:id', auth, (req, res) => { requestManager("deleteReview", req, res); })
-        app.get('/reviews/:id', auth, (req, res) => { requestManager("getReviewById", req, res); })
+        /**/app.get('/reviews/:id', auth, (req, res) => { requestManager("getReviewById", req, res); })
         app.post('/reviews',auth, (req, res) => { requestManager("createReview", req, res); })
 
         // Group
-        app.get('/groups', auth, (req, res) => { requestManager("getGroups", req, res); })
+        /**/app.get('/groups', auth, (req, res) => { requestManager("getGroups", req, res); })
         app.delete('/groups/:id', auth, (req, res) => { requestManager("deleteGroup", req, res); })
-        app.get('/groups/:id', auth, (req, res) => { requestManager("getGroupById", req, res); })
+        /**/app.get('/groups/:id', auth, (req, res) => { requestManager("getGroupById", req, res); })
         app.post('/groups',auth, (req, res) => { requestManager("createGroup", req, res); })
     }
 }

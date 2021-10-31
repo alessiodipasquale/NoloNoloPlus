@@ -12,10 +12,8 @@ const { getReviewById, getReviews, deleteReview, createReview } = require("./Rev
 const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
-    //TODO: Fix all creations. Remaining: group
-    //TODO: add favourite categories
-    //TODO: find items by keyword
     //TODO: add editing endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
+    //TODO: deleting endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
     try {
         var toReturn = null;
         switch (reqName) {
@@ -79,7 +77,9 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "calculatePriceforItem": {
-                toReturn = await calculatePriceforItem(req.body,req.params.id, req.user.user._id);
+                if(req.user)
+                    toReturn = await calculatePriceforItem(req.body,req.params.id, req.user.user._id);
+                else toReturn = await calculatePriceforItem(req.body,req.params.id, null);
                 break;
             }
 
@@ -230,7 +230,9 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "calculatePriceforKit": {
-                toReturn = await calculatePriceforKit(req.body,req.params.id, req.user.user._id);
+                if(req.user)
+                    toReturn = await calculatePriceforKit(req.body,req.params.id, req.user.user._id);
+                else toReturn = await calculatePriceforKit(req.body,req.params.id, null);
                 break;
             }
 
