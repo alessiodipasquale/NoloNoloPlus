@@ -13,7 +13,7 @@ const getReviews = async () => {
     return reviews;
 }
 
-const deleteReview = async () => {
+const deleteReview = async (id) => {
     const review = await ReviewModel.deleteOne({_id: id})
     if(!review)
         throw BadRequestError;

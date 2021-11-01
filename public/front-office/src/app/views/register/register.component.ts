@@ -12,13 +12,15 @@ export class RegisterComponent {
   password= '';
   repeat= '';
   username= '';
+  name:'';
+  surname:'';
 
   constructor(private authService: AuthService,
               private notificationsService: NotificationsService,
               public router: Router) {}
 
   register() {
-    this.authService.register(this.username, this.password)
+    this.authService.register(this.username, this.password, this.name, this.surname)
     .then(() => {
       this.notificationsService.success('Registrazione completata! Accedi');
       this.router.navigate(['/login']);
