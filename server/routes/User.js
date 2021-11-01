@@ -61,14 +61,14 @@ const editUser = async (userId, object) => {
     if(object.name)
         await UserModel.updateOne({_id: userId},{ $set: { "name": object.name} });
     if(object.username)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.username} });
+        await UserModel.updateOne({_id: userId},{ $set: { "username": object.username} });
     if(object.surname)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.surname} });
+        await UserModel.updateOne({_id: userId},{ $set: { "surname": object.surname} });
     if(object.address)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.address} });
+        await UserModel.updateOne({_id: userId},{ $set: { "address": object.address} });
 
     if(object.favPaymentMethod && (object.favPaymentMethod == 'carta' || object.favPaymentMethod == 'alla consegna'))
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.favPaymentMethod} });
+        await UserModel.updateOne({_id: userId},{ $set: { "favPaymentMethod": object.favPaymentMethod} });
     return null;
 }
 
