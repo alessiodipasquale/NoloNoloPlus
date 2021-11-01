@@ -58,14 +58,15 @@ const editCategory = async (catId, object) => {
         await CategoryModel.updateOne({_id: catId},{ $set: { "name": object.name} });
     if(object.description)
         await CategoryModel.updateOne({_id: catId},{ $set: { "description": object.description} });
-    if(object.items)
-        const category = getCategoryById(catId);
+    if(object.items){
+        const category = await getCategoryById(catId);
         let elem = JSON.stringify(category);
         elem = JSON.parse(elem);
         let oldAssociatedItems = elem.associatedItems;
         //TODO: cascade modify category id into items
         //TODO: modify property associated
         await CategoryModel.updateOne({_id: catId},{ $set: { "associatedItems": object.items} });
+    }
     return null;
 }
 
