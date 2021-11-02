@@ -70,6 +70,18 @@ const editCategory = async (catId, object) => {
     return null;
 }
 
+const deleteAssociationToCategory = async (categoryId, toDelete) => {
+    const category = await getCategoryById(categoryId);
+    let elem = JSON.stringify(category);
+    elem = JSON.parse(elem);
+
+    let associatedItems = elem.associatedItems.filter(e => e != toDelete)
+    await CategoryModel.updateOne({_id: categoryId},{ $set: { "associatedItems": associatedItems} }); 
+
+    let associatedProperties = elem.associatedProperties.filter(e => e != toDelete)
+    await CategoryModel.updateOne({_id: categoryId},{ $set: { "associatedProperties": associatedProperties} }); 
+}
+
 module.exports = {
     getCategories,
     getCategoryById,
@@ -77,5 +89,6 @@ module.exports = {
     findCategoryByName,
     createCategory,
     associateToCategory,
-    editCategory
+    editCategory,
+    deleteAssociationToCategory
 }
