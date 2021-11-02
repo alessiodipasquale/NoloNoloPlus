@@ -7,7 +7,7 @@ const { getPriceDetail} = require("./PriceDetails");
 const { getPropertyById, getProperties, deleteProperty, createProperty } = require("./Property");
 const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue } = require("./PropertyValue");
 const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
-const { getKitById, getKits, deleteKit, createKit, calculatePriceforKit } = require("./Kit");
+const { getKitById, getKits, deleteKit, createKit, calculatePriceforKit, getReviewsByKitId } = require("./Kit");
 const { getReviewById, getReviews, deleteReview, createReview } = require("./Review");
 const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
 
@@ -235,6 +235,10 @@ const requestManager = async (reqName, req, res) => {
                 if(req.user)
                     toReturn = await calculatePriceforKit(req.body,req.params.id, req.user.user._id);
                 else toReturn = await calculatePriceforKit(req.body,req.params.id, null);
+                break;
+            }
+            case "getReviewsByKitId": {
+                toReturn = await getReviewsByKitId(req.params.id);
                 break;
             }
 

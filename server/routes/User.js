@@ -148,9 +148,16 @@ const getRentalsByUserId = async (userId) => {
                     const unitOfMeasure = propVal.unitOfMeasure;
                     props.push({name, value, unitOfMeasure});
                 }
+                const revs = [];
+                for(let revId of item.reviews){
+                    const review = await ReviewModel.findOne({_id: revId});
+                    if(review.clientId == userId)
+                        revs.push(review);
+                }
                 let it = JSON.stringify(item)
                 it = JSON.parse(it)
                 it.properties = props;
+                it.reviews = revs;
                 rentalItems.push(it);
             }
             let kitJson = JSON.stringify(kit)
@@ -174,7 +181,8 @@ const getRentalsByUserId = async (userId) => {
             const revs = [];
             for(let revId of item.reviews){
                 const review = await ReviewModel.findOne({_id: revId});
-                revs.push(review);
+                if(review.clientId == userId)
+                    revs.push(review);
             }
             let it = JSON.stringify(item)
             it = JSON.parse(it);

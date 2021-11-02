@@ -1,5 +1,6 @@
 const ItemModel = require('../models/ItemModel');
 const UserModel = require('../models/UserModel')
+const ReviewModel = require('../models/ReviewModel');
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getCategoryById, associateToCategory } = require('./Category');
 const { getPropertyValueById } = require('./PropertyValue');
@@ -304,7 +305,7 @@ const applyDiscount = (price, multiplier) => {
 }
 
 const getCategoriesByItem = async (id) => {
-    const item = await ItemModel.findById(id);
+    const item = await getItemById(id);
     return item.category;
 }
 
