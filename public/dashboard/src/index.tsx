@@ -4,8 +4,9 @@ import ReactDOM from "react-dom"
 import { App } from "./App"
 import reportWebVitals from "./reportWebVitals"
 import * as serviceWorker from "./serviceWorker"
+import path from 'path'
 
-require('dotenv').config()
+console.log(process.env)
 
 ReactDOM.render(
   <React.StrictMode>

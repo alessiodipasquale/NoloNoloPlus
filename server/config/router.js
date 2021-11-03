@@ -69,8 +69,9 @@ const router = {
         app.post('/kits',auth, (req, res) => { requestManager("createKit", req, res); })
         app.post('/kits/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
         /**/app.post('/kits/:kitId/calculatePrice',auth, (req, res) => { requestManager("calculatePriceforKit", req, res); })
+        /**/app.get('/kits/:id/getReviewsByKitId', auth, (req, res) => { requestManager("getReviewsByKitId", req, res); })
 
-        // Kit
+        // Review
         /**/app.get('/reviews', auth, (req, res) => { requestManager("getReviews", req, res); })
         app.delete('/reviews/:id', auth, (req, res) => { requestManager("deleteReview", req, res); })
         /**/app.get('/reviews/:id', auth, (req, res) => { requestManager("getReviewById", req, res); })

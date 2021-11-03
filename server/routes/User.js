@@ -61,14 +61,14 @@ const editUser = async (userId, object) => {
     if(object.name)
         await UserModel.updateOne({_id: userId},{ $set: { "name": object.name} });
     if(object.username)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.username} });
+        await UserModel.updateOne({_id: userId},{ $set: { "username": object.username} });
     if(object.surname)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.surname} });
+        await UserModel.updateOne({_id: userId},{ $set: { "surname": object.surname} });
     if(object.address)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.address} });
+        await UserModel.updateOne({_id: userId},{ $set: { "address": object.address} });
 
     if(object.favPaymentMethod && (object.favPaymentMethod == 'carta' || object.favPaymentMethod == 'alla consegna'))
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.favPaymentMethod} });
+        await UserModel.updateOne({_id: userId},{ $set: { "favPaymentMethod": object.favPaymentMethod} });
     return null;
 }
 
@@ -148,9 +148,16 @@ const getRentalsByUserId = async (userId) => {
                     const unitOfMeasure = propVal.unitOfMeasure;
                     props.push({name, value, unitOfMeasure});
                 }
+                const revs = [];
+                for(let revId of item.reviews){
+                    const review = await ReviewModel.findOne({_id: revId});
+                    if(review.clientId == userId)
+                        revs.push(review);
+                }
                 let it = JSON.stringify(item)
                 it = JSON.parse(it)
                 it.properties = props;
+                it.reviews = revs;
                 rentalItems.push(it);
             }
             let kitJson = JSON.stringify(kit)
@@ -174,7 +181,8 @@ const getRentalsByUserId = async (userId) => {
             const revs = [];
             for(let revId of item.reviews){
                 const review = await ReviewModel.findOne({_id: revId});
-                revs.push(review);
+                if(review.clientId == userId)
+                    revs.push(review);
             }
             let it = JSON.stringify(item)
             it = JSON.parse(it);

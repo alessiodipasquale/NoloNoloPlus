@@ -1,6 +1,6 @@
 const KitModel = require("../models/KitModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
-const { getItemById, calculatePriceforItem, associateToItem } = require("./Item");
+const { getItemById, calculatePriceforItem, associateToItem, getReviewsByItemId } = require("./Item");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 const { arrayUnion } = require("../utils/UtilityFuctions");
@@ -94,10 +94,21 @@ const calculatePriceforKit = async (object,kitId,userId) =>{
     return toReturn;
 }
 
+const getReviewsByKitId = async (id) => {
+    const kit = await getKitById(id);
+    const toReturn = []
+    for(let itemId of kit.items){
+        const rev = await getReviewsByItemId(itemId)
+        toReturn.push({itemId: itemId, reviews: rev})
+    }
+    return toReturn;
+}
+
 module.exports = {
     getKits,
     getKitById,
     createKit,
     deleteKit,
-    calculatePriceforKit
+    calculatePriceforKit,
+    getReviewsByKitId
 }

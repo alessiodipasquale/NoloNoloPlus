@@ -1,3 +1,4 @@
+import { ReviewsService } from './../../../services/reviews.service';
 import { RentalsService } from './../../../services/rentalsService.service';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +15,8 @@ export class RentalSpecComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               public router: Router,
               private rentalsService: RentalsService,
-              private notificationsService: NotificationsService) { }
+              private notificationsService: NotificationsService,
+              private reviewService: ReviewsService) { }
 
   @ViewChild('reviewModal') public reviewModal: ModalDirective;
 
@@ -40,7 +42,7 @@ export class RentalSpecComponent implements OnInit {
   }
 
   sendReview() {
-    this.rentalsService.publishReview(this.review, this.reviewText, this.selectedItem._id)
+    this.reviewService.publishReview(this.review, this.reviewText, this.selectedItem._id)
     .then(review => {
       let item = this.rental.items.filter(item => item._id = this.selectedItem._id);
       item[0].reviews.push(review);
@@ -49,4 +51,11 @@ export class RentalSpecComponent implements OnInit {
     })
   }
 
+  deleteReview(review, reviews) {
+    this.reviewService.deleteReview(review._id)
+    .then(() => {
+      reviews = reviews.map(rev => rev._id != review._id)
+      this.notificationsService.success();
+    })
+  }
 }

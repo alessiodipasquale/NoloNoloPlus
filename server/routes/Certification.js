@@ -33,9 +33,19 @@ const createCertification = async (object, employerId) => {
     return certification;
 }
 
+const deleteAssociationToCertification = async (certificationId, toDelete) => {
+    const certification = await getCategoryById(certificationId);
+    let elem = JSON.stringify(certification);
+    elem = JSON.parse(elem);
+
+    if (elem.employerId == toDelete) await CertificationModel.updateOne({_id: certificationId},{ $set: { "employerId": null} }); 
+    if (elem.rentalId == toDelete) await CertificationModel.updateOne({_id: certificationId},{ $set: { "rentalId": null} }); 
+}
+
 module.exports = {
     getCertifications,
     getCertificationById,
     createCertification,
-    deleteCertification
+    deleteCertification,
+    deleteAssociationToCertification
 }

@@ -6,12 +6,7 @@ import { Formik, Form, Field, useField, ErrorMessage, FormikProps} from 'formik'
 import React, { MutableRefObject, useRef, useState } from "react";
 import * as Yup from "yup"
 import path from 'path'
-
-
-const admin = {
-    user: 'test',
-    password: '123',
-}
+import { consoleTestResultHandler } from "tslint/lib/test";
 
 
 export default function LoginForm() {
@@ -20,19 +15,19 @@ export default function LoginForm() {
     //const [user, setUser] = useState({name: '', password: ''})
 
 
-    function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
-        if (form.current == null) 
-            return;
-        let formData = new FormData(form.current);
-        console.log(formData)
-        fetch(path.join(process.env.PUBLIC_URL, "dashboardLogin"), {
-            method: 'POST',
-            body: new FormData(form.current)})
-            .then(res => {
-                localStorage.setItem("token", JSON.stringify(res))
-                return res;
-            })
+    function handleSubmit(values, formik) {
+        console.log(JSON.stringify(values))
+        formik.setSubmitting(false)
+        fetch("loginDashboard", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(values)
+        })
+        .then(res => res.json())
+        .then(json => localStorage.setItem('token', json.token))
+        
     }
 
 
@@ -49,13 +44,13 @@ export default function LoginForm() {
                 password: Yup.string()
                 .required("Required")
             })}
-            onSubmit={handleSubmit}
+            onSubmit={(values, formik) => handleSubmit(values, formik)}
             >
                 {(formProps: FormikProps<any>) => (
                     <Form>
                         <VStack >
                             <Field name="username">
-                                {({ field, form }: {} ) => (
+                                {({ field, form } ) => (
                                     <FormControl 
                                     isInvalid={form.touched.username &&form.errors.username}>
                                         <FormLabel> Username or Email</FormLabel>
@@ -69,7 +64,7 @@ export default function LoginForm() {
                                     <FormControl 
                                     isInvalid={form.touched.password &&form.errors.password}>
                                         <FormLabel>Password</FormLabel>
-                                        <Input {...field} id="password" />
+                                        <Input {...field} id="password" type="password"/>
                                         <FormErrorMessage>{form.errors.password}</FormErrorMessage>
                                     </FormControl>
                                 )}
