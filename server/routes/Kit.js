@@ -1,6 +1,6 @@
 const KitModel = require("../models/KitModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
-const { getItemById, calculatePriceforItem, associateToItem } = require("./Item");
+const { getItemById, calculatePriceforItem, associateToItem, getReviewsByItemId } = require("./Item");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 const { arrayUnion } = require("../utils/UtilityFuctions");
@@ -72,18 +72,35 @@ const calculatePriceforKit = async (object,kitId,userId) =>{
     let toReturn = {};
     const partialPrices = [];
     let finalKitPrice = 0;
-    const kitreceipt = [];
+    const kitReceipt = [];
 
-    for(itemId of kit.items){
-        const fullPriceForItem = calculatePriceforItem(object, itemId, userId);
-        partialPrices.push(fullPriceForItem);
-        kitreceipt.push("Prezzo calcolato per l'oggetto con id "+itemId+": "+fullPriceForItem.finalPrice );
+    for(let itemId of kit.items){
+        itemId = itemId._id;
+        let rec = []
+        rec.push("Resoconto item con id "+itemId)
+        const fullPriceForItem = await calculatePriceforItem(object, itemId, userId);
+        for(let e of fullPriceForItem.receipt)
+            rec.push(e);
+        partialPrices.push(rec);
+        kitReceipt.push("Prezzo calcolato per l'oggetto con id "+itemId+": "+fullPriceForItem.finalPrice );
         finalKitPrice += fullPriceForItem.finalPrice;
     }
+    kitReceipt.push("Alla somma viene applicato uno sconto del "+ global.config.kitDiscount+ "% per aver acquistato un kit");
+    finalKitPrice = finalKitPrice - (finalKitPrice/100 * global.config.kitDiscount)
 
     toReturn.finalKitPrice = finalKitPrice;
     toReturn.partialPrices = partialPrices;
     toReturn.kitReceipt = kitReceipt;
+    return toReturn;
+}
+
+const getReviewsByKitId = async (id) => {
+    const kit = await getKitById(id);
+    const toReturn = []
+    for(let itemId of kit.items){
+        const rev = await getReviewsByItemId(itemId)
+        toReturn.push({itemId: itemId, reviews: rev})
+    }
     return toReturn;
 }
 
@@ -92,5 +109,6 @@ module.exports = {
     getKitById,
     createKit,
     deleteKit,
-    calculatePriceforKit
+    calculatePriceforKit,
+    getReviewsByKitId
 }

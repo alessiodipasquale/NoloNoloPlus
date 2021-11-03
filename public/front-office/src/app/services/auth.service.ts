@@ -20,8 +20,8 @@ export class AuthService {
     return httpRequest;
   }
 
-  register(username, password): Promise<any> {
-    return this.http.post('/registerFront', {username, password});
+  register(username, clearTextPassword, name, surname): Promise<any> {
+    return this.http.post('/registerFront', {username, clearTextPassword, name, surname});
   }
   
   isAuthenticated(): boolean {

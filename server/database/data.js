@@ -177,7 +177,8 @@ const rentals = [
         rentalTarget: 'singolo',
         rentalType: 'istantaneo',
         rentalCertification: "Certification1",
-        returnCertification: "Certification2"
+        returnCertification: "Certification2",
+        finalPrice: 1000
     },
     {
         _id: "Rental2",
@@ -190,7 +191,8 @@ const rentals = [
         rentalType: 'istantaneo',
         rentalTarget: 'kit',
         rentalCertification: "Certification1",
-        returnCertification: "Certification2"
+        returnCertification: "Certification2",
+        finalPrice: 1200
     }
 ];
 

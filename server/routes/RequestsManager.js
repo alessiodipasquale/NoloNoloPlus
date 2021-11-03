@@ -7,15 +7,15 @@ const { getPriceDetail} = require("./PriceDetails");
 const { getPropertyById, getProperties, deleteProperty, createProperty } = require("./Property");
 const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue } = require("./PropertyValue");
 const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
-const { getKitById, getKits, deleteKit, createKit, calculatePriceforKit } = require("./Kit");
+const { getKitById, getKits, deleteKit, createKit, calculatePriceforKit, getReviewsByKitId } = require("./Kit");
 const { getReviewById, getReviews, deleteReview, createReview } = require("./Review");
 const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
-    //TODO: Fix all creations. Remaining: group
-    //TODO: add favourite categories
-    //TODO: find items by keyword
     //TODO: add editing endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
+    //TODO: deleting endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
+        //May be necessari a global deleting manager to avoid from create circuar dependencies
+    //TODO: associateProperties to categories passing from items
     try {
         var toReturn = null;
         switch (reqName) {
@@ -79,7 +79,9 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "calculatePriceforItem": {
-                toReturn = await calculatePriceforItem(req.body,req.params.id, req.user.user._id);
+                if(req.user)
+                    toReturn = await calculatePriceforItem(req.body,req.params.id, req.user.user._id);
+                else toReturn = await calculatePriceforItem(req.body,req.params.id, null);
                 break;
             }
 
@@ -230,7 +232,13 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "calculatePriceforKit": {
-                toReturn = await calculatePriceforKit(req.body,req.params.id, req.user.user._id);
+                if(req.user)
+                    toReturn = await calculatePriceforKit(req.body,req.params.id, req.user.user._id);
+                else toReturn = await calculatePriceforKit(req.body,req.params.id, null);
+                break;
+            }
+            case "getReviewsByKitId": {
+                toReturn = await getReviewsByKitId(req.params.id);
                 break;
             }
 

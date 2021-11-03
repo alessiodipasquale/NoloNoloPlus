@@ -52,11 +52,43 @@ const associateToCategory = async (type, toModify, value, catId) => {
     }*/
 }
 
+const editCategory = async (catId, object) => {
+    /*username, name, surname, favPaymentMethod (carta, alla consegna), address */
+    if(object.name)
+        await CategoryModel.updateOne({_id: catId},{ $set: { "name": object.name} });
+    if(object.description)
+        await CategoryModel.updateOne({_id: catId},{ $set: { "description": object.description} });
+    if(object.items){
+        const category = await getCategoryById(catId);
+        let elem = JSON.stringify(category);
+        elem = JSON.parse(elem);
+        let oldAssociatedItems = elem.associatedItems;
+        //TODO: cascade modify category id into items
+        //TODO: modify property associated
+        await CategoryModel.updateOne({_id: catId},{ $set: { "associatedItems": object.items} });
+    }
+    return null;
+}
+
+const deleteAssociationToCategory = async (categoryId, toDelete) => {
+    const category = await getCategoryById(categoryId);
+    let elem = JSON.stringify(category);
+    elem = JSON.parse(elem);
+
+    let associatedItems = elem.associatedItems.filter(e => e != toDelete)
+    await CategoryModel.updateOne({_id: categoryId},{ $set: { "associatedItems": associatedItems} }); 
+
+    let associatedProperties = elem.associatedProperties.filter(e => e != toDelete)
+    await CategoryModel.updateOne({_id: categoryId},{ $set: { "associatedProperties": associatedProperties} }); 
+}
+
 module.exports = {
     getCategories,
     getCategoryById,
     deleteCategory,
     findCategoryByName,
     createCategory,
-    associateToCategory
+    associateToCategory,
+    editCategory,
+    deleteAssociationToCategory
 }

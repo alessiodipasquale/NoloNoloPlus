@@ -1,15 +1,15 @@
 const UserModel = require("../models/UserModel");
 const RentalModel = require("../models/RentalModel");
+const ReviewModel = require("../models/ReviewModel");
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-//const { getRentalById } = require("./Rental");
-
 const { getItemById } = require("./Item");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 const { getKitById } = require("./Kit");
+
 
 const getUserById = async (id) =>  {
     const user = await UserModel.findById(id).select("-password -__v");
@@ -22,7 +22,9 @@ const getAuthToken = async (username, clearTextPassword) => {
     if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
         throw UnauthorizedError;
 
-    const payload = { type:'user', user: _.omit(user, ['password', '__v'])}
+    let usr = JSON.stringify(user)
+    usr = JSON.parse(usr)
+    const payload = { type:'user', user: _.omit(usr, ['password', '__v'])}
     const token = jwt.sign(payload, process.env.JWT_SECRET).toString();
     return token;
 }
@@ -59,14 +61,14 @@ const editUser = async (userId, object) => {
     if(object.name)
         await UserModel.updateOne({_id: userId},{ $set: { "name": object.name} });
     if(object.username)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.username} });
+        await UserModel.updateOne({_id: userId},{ $set: { "username": object.username} });
     if(object.surname)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.surname} });
+        await UserModel.updateOne({_id: userId},{ $set: { "surname": object.surname} });
     if(object.address)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.address} });
+        await UserModel.updateOne({_id: userId},{ $set: { "address": object.address} });
 
     if(object.favPaymentMethod && (object.favPaymentMethod == 'carta' || object.favPaymentMethod == 'alla consegna'))
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.favPaymentMethod} });
+        await UserModel.updateOne({_id: userId},{ $set: { "favPaymentMethod": object.favPaymentMethod} });
     return null;
 }
 
@@ -93,6 +95,14 @@ const associateToUser = async (type, toModify, value, userId) => {
                 if(!favItemsId.includes(value)){
                     favItemsId.push(value);
                     await UserModel.updateOne({_id: userId},{ $set: { "favItemsId": favItemsId} });
+                }
+                break;
+            }
+            case "favCategories": {
+                let favCategories = elem.favCategories;
+                if(!favCategories.includes(value)){
+                    favCategories.push(value);
+                    await UserModel.updateOne({_id: userId},{ $set: { "favCategories": favCategories} });
                 }
                 break;
             }
@@ -138,9 +148,16 @@ const getRentalsByUserId = async (userId) => {
                     const unitOfMeasure = propVal.unitOfMeasure;
                     props.push({name, value, unitOfMeasure});
                 }
+                const revs = [];
+                for(let revId of item.reviews){
+                    const review = await ReviewModel.findOne({_id: revId});
+                    if(review.clientId == userId)
+                        revs.push(review);
+                }
                 let it = JSON.stringify(item)
                 it = JSON.parse(it)
                 it.properties = props;
+                it.reviews = revs;
                 rentalItems.push(it);
             }
             let kitJson = JSON.stringify(kit)
@@ -161,13 +178,19 @@ const getRentalsByUserId = async (userId) => {
                 const unitOfMeasure = propVal.unitOfMeasure;                    
                 props.push({name, value, unitOfMeasure});
             }
+            const revs = [];
+            for(let revId of item.reviews){
+                const review = await ReviewModel.findOne({_id: revId});
+                if(review.clientId == userId)
+                    revs.push(review);
+            }
             let it = JSON.stringify(item)
             it = JSON.parse(it);
+            it.reviews = revs;
             it.properties = props;
             rentalItems.push(it);
             elem = JSON.stringify(rental)
             elem = JSON.parse(elem)
-            elem.properties = props;
             elem.items = rentalItems;
         }
         
