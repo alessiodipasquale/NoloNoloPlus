@@ -75,8 +75,8 @@ const associateToItem = async (type, toModify, value, itemId) => {
     }
 }
 
-const deleteAssociationToItem= async (itemId, toDelete) => {
-    const item = await ItemModel.findOne(itemId);
+const deleteAssociationToItem = async (itemId, toDelete) => {
+    const item = await ItemModel.findOne({_id: itemId});
     let elem = JSON.stringify(item);
     elem = JSON.parse(elem);
 

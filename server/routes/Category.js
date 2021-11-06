@@ -1,6 +1,7 @@
 const CategoryModel = require("../models/CategoryModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const {associateToItem}  = require("./associations/AssociationManager");
+const {associateToItem, deleteAssociationToItem}  = require("./associations/AssociationManager");
+
 
 const getCategoryById = async (id) => {
     const category = await CategoryModel.findById(id)
