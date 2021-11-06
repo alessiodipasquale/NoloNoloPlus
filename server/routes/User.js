@@ -205,16 +205,16 @@ const deleteAssociationToUser = async (userId, toDelete) => {
     elem = JSON.parse(elem);
 
     let favCategories = elem.favCategories.filter(e => e != toDelete)
-    await ReviewModel.updateOne({_id: userId},{ $set: { "favCategories": favCategories} });
+    await UserModel.updateOne({_id: userId},{ $set: { "favCategories": favCategories} });
 
     let favItemsId = elem.favItemsId.filter(e => e != toDelete)
-    await ReviewModel.updateOne({_id: userId},{ $set: { "favItemsId": favItemsId} });
+    await UserModel.updateOne({_id: userId},{ $set: { "favItemsId": favItemsId} });
 
     let rentals = elem.rentals.filter(e => e != toDelete)
-    await ReviewModel.updateOne({_id: userId},{ $set: { "rentals": rentals} });
+    await UserModel.updateOne({_id: userId},{ $set: { "rentals": rentals} });
 
     let reviews = elem.reviews.filter(e => e != toDelete)
-    await ReviewModel.updateOne({_id: userId},{ $set: { "reviews": reviews} });
+    await UserModel.updateOne({_id: userId},{ $set: { "reviews": reviews} });
 }
 
 
