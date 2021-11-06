@@ -19,6 +19,7 @@ const _CertificationModel = new mongoose.Schema({
         required: true,
         enum: ['ritiro','riconsegna']
     },
+    certificationDate: {type: Date, default: new Date()},
     commentsFromEmployer: {type: String, required: false}
     
 },  { collection: "Certification"});

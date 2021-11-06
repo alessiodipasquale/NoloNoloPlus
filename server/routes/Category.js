@@ -36,7 +36,6 @@ const createCategory = async (object) => {
 }
 
 const editCategory = async (catId, object) => {
-    /*username, name, surname, favPaymentMethod (carta, alla consegna), address */
     if(object.name)
         await CategoryModel.updateOne({_id: catId},{ $set: { "name": object.name} });
     if(object.description)

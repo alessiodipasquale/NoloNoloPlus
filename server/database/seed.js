@@ -1,4 +1,4 @@
-const { UserModel, ItemModel, CategoryModel, CertificationModel, PriceDetailsModel, PropertyModel, KitModel, RentalModel, PropertyValueModel } = require('./models');
+const { UserModel, ItemModel, CategoryModel, CertificationModel, PriceDetailsModel, PropertyModel,ReviewModel, KitModel, RentalModel, PropertyValueModel, GroupModel } = require('./models');
 const { users, items, categories, certifications, priceDetails, properties, rentals, propertyValues, kits } = require('./data');
 const seed = async() => {
     console.log("Seeding...")
@@ -65,6 +65,14 @@ const seed = async() => {
     const Kits = [];
     for (let ki of kits) 
         Kits.push(await KitModel.create(ki));
+    
+    // Review
+    const ReviewsCount = await ReviewModel.collection.countDocuments({});
+    if( ReviewsCount !== 0) await ReviewModel.collection.drop();
+
+    // Group
+    const GroupsCount = await GroupModel.collection.countDocuments({});
+    if( GroupsCount !== 0) await GroupModel.collection.drop();
 }
 
 module.exports = seed;

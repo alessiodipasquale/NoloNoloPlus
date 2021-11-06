@@ -5,9 +5,9 @@ const CategoryModel = require("../models/CategoryModel");
 const PropertyModel = require("../models/PropertyModel");
 const PropertyValueModel = require("../models/PropertyValueModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { associateToCategory } = require('./associations/AssociationManager');
+const { associateToCategory, associateToGroup, associateToPropertyValue, deleteAssociationToGroup, deleteAssociationToCategory  } = require('./associations/AssociationManager');
+const { deleteAssociationToKit, associateToKit,deleteAssociationToProperty  } = require('./associations/AssociationManager')
 const { getPriceDetail } = require('./PriceDetails');
-const { associateToPropertyValue } = require('./associations/AssociationManager')
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -85,8 +85,6 @@ const createItem = async (object) => {
     for(let prop of object.properties){
         await associateToPropertyValue("array", "associatedItems",item._id, prop);
     }
-    
-
     return item;
 }
 
@@ -316,7 +314,71 @@ const getCategoriesByItem = async (id) => {
     return item.category;
 }
 
-
+const editItem = async (itemId, object) => {
+    if(object.name)
+        await ItemModel.updateOne({_id: itemId},{ $set: { "name": object.name} });
+    if(object.description)
+        await ItemModel.updateOne({_id: itemId},{ $set: { "description": object.description} });
+    if(object.standardPrice)
+        await ItemModel.updateOne({_id: itemId},{ $set: { "standardPrice": object.standardPrice} });
+    if(object.imgSrc)
+        await ItemModel.updateOne({_id: itemId},{ $set: { "imgSrc": object.imgSrc} });
+    if(object.state)
+        await ItemModel.updateOne({_id: itemId},{ $set: { "state": object.state} });
+    if(object.groupId) {
+        const item = await getItemById(itemId);
+        if(item.groupId != null)
+            deleteAssociationToGroup(item.groupId, itemId)
+        await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": object.groupId} });
+        associateToGroup("array", "items", itemId, object.groupId);
+    }
+    if(object.category){
+        const item = await getItemById(itemId);
+        let elem = JSON.stringify(item);
+        elem = JSON.parse(elem);
+        let oldAssociated = elem.category;
+        let toRemove = oldAssociated.filter(x => !object.category.includes(x));
+        let toAdd = object.category.filter(x => !oldAssociated.includes(x));
+        for(let elem of toRemove){
+            deleteAssociationToCategory(elem,itemId)
+        }
+        for(let elem of toAdd){
+            associateToCategory("array", "category", itemId, elem);
+        }
+        await ItemModel.updateOne({_id: itemId},{ $set: { "category": object.category} });
+    }
+    if(object.kits){
+        const item = await getItemById(itemId);
+        let elem = JSON.stringify(item);
+        elem = JSON.parse(elem);
+        let oldAssociated = elem.kits;
+        let toRemove = oldAssociated.filter(x => !object.kits.includes(x));
+        let toAdd = object.kits.filter(x => !oldAssociated.includes(x));
+        for(let elem of toRemove){
+            deleteAssociationToKit(elem,itemId)
+        }
+        for(let elem of toAdd){
+            associateToKit("array", "kits", itemId, elem);
+        }
+        await ItemModel.updateOne({_id: itemId},{ $set: { "kits": object.kits} });
+    }
+    if(object.properties){
+        const item = await getItemById(itemId);
+        let elem = JSON.stringify(item);
+        elem = JSON.parse(elem);
+        let oldAssociated = elem.properties;
+        let toRemove = oldAssociated.filter(x => !object.properties.includes(x));
+        let toAdd = object.properties.filter(x => !oldAssociated.includes(x));
+        for(let elem of toRemove){
+            deleteAssociationToProperty(elem,itemId)
+        }
+        for(let elem of toAdd){
+            associateToProperty("array", "properties", itemId, elem);
+        }
+        await ItemModel.updateOne({_id: itemId},{ $set: { "properties": object.properties} });
+    }
+    return null;
+}
 
 module.exports = {
     getItems,
@@ -331,4 +393,5 @@ module.exports = {
     getReviewsByItemId,
     calculatePriceforItem,
     getCategoriesByItem,
+    editItem
 }

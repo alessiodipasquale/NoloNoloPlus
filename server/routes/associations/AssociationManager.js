@@ -117,8 +117,23 @@ const deleteAssociationToGroup = async (groupId, toDelete) => {
     await GroupModel.updateOne({_id: groupId},{ $set: { "items": items} });
 }
 
+const associateToGroup = async (type, toModify, value, groupId) => {
+    const group = await GroupModel.findOne({_id: groupId});
+    if(type == "array") {
+        let elem = JSON.stringify(group);
+        elem = JSON.parse(elem);
+        switch (toModify) {
+            case "items": {
+                let items = elem.items;
+                items.push(value);
+                await GroupModel.updateOne({_id: groupId},{ $set: { "items": items} });
+                break;
+            }
+        }
+    }
+}
 
-/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////// Kit
 
 const deleteAssociationToKit = async (kitId, toDelete) => {
     const kit = await KitModel.findOne({_id: kitId});
@@ -132,7 +147,23 @@ const deleteAssociationToKit = async (kitId, toDelete) => {
     await KitModel.updateOne({_id: kitId},{ $set: { "items": items} });
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
+const associateToKit = async (type, toModify, value, kitId) => {
+    const kit = await KitModel.findOne({_id: kitId});
+    if(type == "array") {
+        let elem = JSON.stringify(kit);
+        elem = JSON.parse(elem);
+        switch (toModify) {
+            case "items": {
+                let items = elem.items;
+                items.push(value);
+                await KitModel.updateOne({_id: kitId},{ $set: { "items": items} });
+                break;
+            }
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////////// Prop
 
 const deleteAssociationToProperty = async (propId, toDelete) => {
     const prop = await PropertyModel.findOne({_id: propId});
@@ -159,7 +190,7 @@ const associateToProperty = async (type, toModify, value, pId) => {
     }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////// Prop val
 
 
 const associateToPropertyValue = async (type, toModify, value, pvId) => {
@@ -193,7 +224,7 @@ const deleteAssociationToPropertyValue = async (propId, toDelete) => {
 }
 
 
-/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////// Rental
 
 const associateToRental = async (type, toModify, value, rentalId) => {
     const rental = await RentalModel.findOne({_id: rentalId});
@@ -236,7 +267,7 @@ const deleteAssociationToRental = async (rentalId, toDelete) => {
     await RentalModel.updateOne({_id: rentalId},{ $set: { "itemId": itemId} });
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////// Review
 
 const deleteAssociationToReview = async (revId, toDelete) => {
     const review = await ReviewModel.findOne({_id: revId});
@@ -248,7 +279,7 @@ const deleteAssociationToReview = async (revId, toDelete) => {
 
 }
 
-/////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////// User
 
 const deleteAssociationToUser = async (userId, toDelete) => {
     const user = await UserModel.findById(userId).select("-password -__v");
@@ -316,18 +347,29 @@ const associateToUser = async (type, toModify, value, userId) => {
 module.exports = {
     associateToCategory,
     deleteAssociationToCategory,
+
     associateToItem,
     deleteAssociationToItem,
+
     deleteAssociationToCertification,
+
     deleteAssociationToGroup,
+    associateToGroup,
+
     deleteAssociationToKit,
+    associateToKit,
+
     deleteAssociationToProperty,
     associateToProperty,
+
     deleteAssociationToPropertyValue,
     associateToPropertyValue,
+
     deleteAssociationToRental,
     associateToRental,
+
     deleteAssociationToReview,
+
     deleteAssociationToUser,
-    associateToUser
+    associateToUser,
 }

@@ -23,6 +23,7 @@ const deleteRental = async () => {
 }
 
 const createRental = async (object, userId, role) => {
+    //TODO Item ever been rented, rent count, etc...
     if(!object.startDate || !object.endDate || !userId  || !object.objectId)
         throw BadRequestError;
 
