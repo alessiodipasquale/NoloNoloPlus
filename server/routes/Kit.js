@@ -105,7 +105,31 @@ const getReviewsByKitId = async (id) => {
     return toReturn;
 }
 
-
+const editKit = async (kitId, object) => {
+    if(object.name)
+        await KitModel.updateOne({_id: kitId},{ $set: { "name": object.name} });
+    if(object.description)
+        await KitModel.updateOne({_id: kitId},{ $set: { "description": object.description} });
+    if(object.standardPrice)
+        await KitModel.updateOne({_id: kitId},{ $set: { "standardPrice": object.standardPrice} });
+    if(object.items){
+        //TODO complete
+        const kit = await getKitById(kitId);
+        let elem = JSON.stringify(kit);
+        elem = JSON.parse(elem);
+        let oldAssociated = elem.items;
+        let toRemove = oldAssociated.filter(x => !object.items.includes(x));
+        let toAdd = object.items.filter(x => !oldAssociated.includes(x));
+        for(let elem of toRemove){
+            deleteAssociationToProperty(elem,itemId)
+        }
+        for(let elem of toAdd){
+            associateToProperty("array", "properties", itemId, elem);
+        }
+        await ItemModel.updateOne({_id: itemId},{ $set: { "properties": object.properties} });
+    }
+    return null;
+}
 
 module.exports = {
     getKits,
@@ -114,4 +138,5 @@ module.exports = {
     deleteKit,
     calculatePriceforKit,
     getReviewsByKitId,
+    editKit
 }
