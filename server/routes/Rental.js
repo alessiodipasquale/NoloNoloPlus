@@ -1,8 +1,9 @@
 const RentalModel = require("../models/RentalModel");
+const UserModel = require('../models/UserModel')
 const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem, calculatePriceforItem } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
-const { associateToUser, getUserById} = require("../routes/User");
+const { associateToUser } = require("./associations/AssociationManager");
 const { getKitById, calculatePriceforKit } = require("./Kit");
 
 const getRentalById = async (id) => {
@@ -84,7 +85,7 @@ const changeRentalState = async (id, newState) => {
 }
 
 const countSpecifiedPurchase = async (userId, itemId) => {
-    const user = await getUserById(userId);
+    const user = await UserModel.findById(userId).select("-password -__v");
     let count = 0;
     for(let elem of user.rentals){
         const rental = await getRentalById(elem);
@@ -102,46 +103,7 @@ const countSpecifiedPurchase = async (userId, itemId) => {
     return count+1;
 }
 
-const associateToRental = async (type, toModify, value, rentalId) => {
-    const rental = await getRentalById(rentalId);
-    if(type == "array") {
-        let elem = JSON.stringify(rental);
-        elem = JSON.parse(elem);
-        switch (toModify) {
-        }
-    } else {
-        switch (toModify) {
-            case "rentalCertification": {
-                await RentalModel.updateOne({_id: rentalId},{ $set: { "groupId": value} });
-            }
-            case "returnCertification": {
-                await RentalModel.updateOne({_id: rentalId},{ $set: { "returnCertification": value} });
-            }
-            case "employerId": {
-                await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": value} });
-            }
-        }
-    }
-}
 
-const deleteAssociationToRental = async (rentalId, toDelete) => {
-    const rental = await getRentalById(rentalId);
-    let elem = JSON.stringify(rental);
-    elem = JSON.parse(elem);
-
-    if (elem.clientId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "clientId": null} }); 
-
-    if (elem.employerId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": null} }); 
-
-    if (elem.kitId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "kitId": null} }); 
-
-    if (elem.rentalCertification == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "rentalCertification": null} }); 
-
-    if (elem.returnCertification == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "returnCertification": null} }); 
-
-    let itemId = elem.itemId.filter(e => e != toDelete)
-    await RentalModel.updateOne({_id: rentalId},{ $set: { "itemId": itemId} });
-}
 
 module.exports = {
     getRentals,
@@ -149,6 +111,4 @@ module.exports = {
     createRental,
     deleteRental,
     changeRentalState,
-    associateToRental,
-    deleteAssociationToRental
 }

@@ -34,31 +34,6 @@ const createProperty = async (object) => {
     return property;
 }
 
-const associateToProperty = async (type, toModify, value, pId) => {
-    const p = await getItemById(pId);
-    if(type == "array") {
-        let elem = JSON.stringify(p);
-        elem = JSON.parse(elem);
-        switch (toModify) {
-            case "associatedValues": {
-                let associatedValues = elem.associatedValues;
-                associatedValues.push(value);
-                await PropertyModel.updateOne({_id: pId},{ $set: { "associatedValues": associatedValues} });
-                break;
-            }
-        }
-    }
-}
-
-const deleteAssociationToProperty = async (propId, toDelete) => {
-    const prop = await getPropertyById(propId);
-    let elem = JSON.stringify(prop);
-    elem = JSON.parse(elem);
-
-    let associatedValues = elem.associatedValues.filter(e => e != toDelete)
-    await PropertyModel.updateOne({_id: propId},{ $set: { "associatedValues": associatedValues} });
-}
-
 
 module.exports = {
     getProperties,
@@ -66,6 +41,4 @@ module.exports = {
     deleteProperty,
     findPropertyByName,
     createProperty,
-    associateToProperty,
-    deleteAssociationToProperty
 }

@@ -1,6 +1,6 @@
 const GroupModel = require("../models/GroupModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { associateToItem, getItemById } = require("./Item");
+const { associateToItem } = require("./associations/AssociationManager");
 
 const getGroupById = async (id) => {
     const group = await GroupModel.findById(id)
@@ -28,27 +28,17 @@ const createGroup = async (object) => {
             throw BadRequestError;
     }
 
-    const group = await RentalModel.create(object);
+    const group = await GroupModel.create(object);
     for(let itId of object.items){
         await associateToItem("single", "groupId", group._id, itId )
     }
     return group;
 }
 
-const deleteAssociationToGroup = async (groupId, toDelete) => {
-    const group = await getGroupById(groupId);
-    let elem = JSON.stringify(group);
-    elem = JSON.parse(elem);
-    
-    let items = elem.items.filter(e => e != toDelete)
-    await GroupModel.updateOne({_id: groupId},{ $set: { "items": items} });
-}
 
 module.exports = {
     getGroups,
     getGroupById,
     createGroup,
-    deleteGroup,
-    deleteAssociationToGroup
-    
+    deleteGroup    
 }

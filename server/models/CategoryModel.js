@@ -10,12 +10,6 @@ const _CategoryModel = new mongoose.Schema({
         type: [String],
         ref: "Item",
         default: []
-    },
-    associatedProperties: {
-        type: [String],
-        required: true,
-        ref: "Property",
-        default: []
     }
 },  { collection: "Category"});
 

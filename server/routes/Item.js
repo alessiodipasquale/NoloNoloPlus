@@ -1,12 +1,13 @@
 const ItemModel = require('../models/ItemModel');
 const UserModel = require('../models/UserModel')
 const ReviewModel = require('../models/ReviewModel');
+const CategoryModel = require("../models/CategoryModel");
+const PropertyModel = require("../models/PropertyModel");
+const PropertyValueModel = require("../models/PropertyValueModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { getCategoryById, associateToCategory } = require('./Category');
-const { getPropertyValueById } = require('./PropertyValue');
-const { getPropertyById } = require('./Property');
+const { associateToCategory } = require('./associations/AssociationManager');
 const { getPriceDetail } = require('./PriceDetails');
-const { associateToPropertyValue } = require('./PropertyValue')
+const { associateToPropertyValue } = require('./associations/AssociationManager')
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -37,8 +38,8 @@ const getItems = async () => {
         
         const props = [];
         for(let propId of item.properties){
-            const propVal = await getPropertyValueById(propId);
-            const prop = await getPropertyById(propVal.associatedProperty);
+            const propVal = await PropertyValueModel.findOne({_id: propId});
+            const prop = await PropertyModel.findOne({_id: propVal.associatedProperty});
             const name = prop.name;
             const value = propVal.value;
             const unitOfMeasure = propVal.unitOfMeasure;
@@ -91,7 +92,7 @@ const createItem = async (object) => {
 
 const getItemsByCategoryId = async (id) => {
     const toReturn = [];
-    const category = await getCategoryById(id);
+    const category = await CategoryModel.findOne({_id: id});
     const itemIds = category.associatedItems;
     let items = [];
     for(let itemId of itemIds) {
@@ -102,8 +103,8 @@ const getItemsByCategoryId = async (id) => {
     for(let item of items) {
         const props = [];
         for(let propId of item.properties){
-            const propVal = await getPropertyValueById(propId);
-            const prop = await getPropertyById(propVal.associatedProperty);
+            const propVal = await PropertyValueModel.findOne({_id: propId});
+            const prop = await PropertyModel.findOne({_id: propVal.associatedProperty});
             const name = prop.name;
             const value = propVal.value;
             const unitOfMeasure = propVal.unitOfMeasure;
@@ -188,6 +189,12 @@ const associateToItem = async (type, toModify, value, itemId) => {
                 let kits = elem.kits;
                 kits.push(value);
                 await ItemModel.updateOne({_id: itemId},{ $set: { "kits": kits} });
+                break;
+            }
+            case "category": {
+                let cat = elem.category;
+                cat.push(value);
+                await ItemModel.updateOne({_id: itemId},{ $set: { "category": cat} });
                 break;
             }
         }
@@ -309,26 +316,6 @@ const getCategoriesByItem = async (id) => {
     return item.category;
 }
 
-const deleteAssociationToItem= async (itemId, toDelete) => {
-    const item = await getItemById(itemId);
-    let elem = JSON.stringify(item);
-    elem = JSON.parse(elem);
-
-    if (elem.groupId == toDelete) await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": null} }); 
-
-    let category = elem.category.filter(e => e != toDelete)
-    await ItemModel.updateOne({_id: itemId},{ $set: { "category": category} });
-
-    let kits = elem.kits.filter(e => e != toDelete)
-    await ItemModel.updateOne({_id: itemId},{ $set: { "kits": kits} });
-
-    let properties = elem.properties.filter(e => e != toDelete)
-    await ItemModel.updateOne({_id: itemId},{ $set: { "properties": properties} });
-
-    let reviews = elem.reviews.filter(e => e != toDelete)
-    await ItemModel.updateOne({_id: itemId},{ $set: { "reviews": reviews} });
-}
-
 
 
 module.exports = {
@@ -344,5 +331,4 @@ module.exports = {
     getReviewsByItemId,
     calculatePriceforItem,
     getCategoriesByItem,
-    deleteAssociationToItem
 }

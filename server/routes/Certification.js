@@ -1,6 +1,6 @@
 const CertificationModel = require("../models/CertificationModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
-const { associateToRental } = require('./Rental')
+const { associateToRental } = require('./associations/AssociationManager')
 
 const getCertificationById = async (id) => {
     const cert = await CertificationModel.findById(id)
@@ -33,19 +33,9 @@ const createCertification = async (object, employerId) => {
     return certification;
 }
 
-const deleteAssociationToCertification = async (certificationId, toDelete) => {
-    const certification = await getCertificationById(certificationId);
-    let elem = JSON.stringify(certification);
-    elem = JSON.parse(elem);
-
-    if (elem.employerId == toDelete) await CertificationModel.updateOne({_id: certificationId},{ $set: { "employerId": null} }); 
-    if (elem.rentalId == toDelete) await CertificationModel.updateOne({_id: certificationId},{ $set: { "rentalId": null} }); 
-}
-
 module.exports = {
     getCertifications,
     getCertificationById,
     createCertification,
     deleteCertification,
-    deleteAssociationToCertification
 }

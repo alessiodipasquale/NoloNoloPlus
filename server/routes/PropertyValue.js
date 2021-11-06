@@ -1,6 +1,6 @@
 const PropertyValueModel = require("../models/PropertyValueModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { associateToProperty } = require("./Property");
+const { associateToProperty } = require("./associations/AssociationManager");
 
 
 const getPropertyValueById = async (id) => {
@@ -32,41 +32,9 @@ const createPropertyValue = async (object) => {
     return propertyVal;
 }
 
-const associateToPropertyValue = async (type, toModify, value, pvId) => {
-    const pv = await getItemById(pvId);
-    if(type == "array") {
-        let elem = JSON.stringify(pv);
-        elem = JSON.parse(elem);
-        switch (toModify) {
-            case "associatedItems": {
-                let associatedItems = elem.associatedItems;
-                associatedItems.push(value);
-                await PropertyValueModel.updateOne({_id: pvId},{ $set: { "associatedItems": associatedItems} });
-                break;
-            }
-        }
-    }/* else {
-
-    }*/
-}
-
-const deleteAssociationToPropertyValue = async (propId, toDelete) => {
-    const prop = await getPropertyValueById(propId);
-    let elem = JSON.stringify(prop);
-    elem = JSON.parse(elem);
-
-    if (elem.associatedProperty == toDelete){} //TODO: delete 
-
-    let associatedItems = elem.associatedItems.filter(e => e != toDelete)
-    await PropertyValueModel.updateOne({_id: propId},{ $set: { "associatedItems": associatedItems} });
-
-}
-
 module.exports = {
     getPropertyValues,
     getPropertyValueById,
     deletePropertyValue,
     createPropertyValue,
-    associateToPropertyValue,
-    deleteAssociationToPropertyValue
 }

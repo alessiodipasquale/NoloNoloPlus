@@ -1,6 +1,6 @@
 const CategoryModel = require("../models/CategoryModel");
-const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
-
+const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
+const {associateToItem}  = require("./associations/AssociationManager");
 
 const getCategoryById = async (id) => {
     const category = await CategoryModel.findById(id)
@@ -34,24 +34,6 @@ const createCategory = async (object) => {
     return category;
 }
 
-const associateToCategory = async (type, toModify, value, catId) => {
-    const category = await getCategoryById(catId);
-    if(type == "array") {
-        let elem = JSON.stringify(category);
-        elem = JSON.parse(elem);
-        switch (toModify) {
-            case "associatedItems": {
-                let associatedItems = elem.associatedItems;
-                associatedItems.push(value);
-                await CategoryModel.updateOne({_id: catId},{ $set: { "associatedItems": associatedItems} });
-                break;
-            }
-        }
-    }/* else {
-
-    }*/
-}
-
 const editCategory = async (catId, object) => {
     /*username, name, surname, favPaymentMethod (carta, alla consegna), address */
     if(object.name)
@@ -63,23 +45,17 @@ const editCategory = async (catId, object) => {
         let elem = JSON.stringify(category);
         elem = JSON.parse(elem);
         let oldAssociatedItems = elem.associatedItems;
-        //TODO: cascade modify category id into items
-        //TODO: modify property associated
+        let toRemove = oldAssociatedItems.filter(x => !object.items.includes(x));
+        let toAdd = object.items.filter(x => !oldAssociatedItems.includes(x));
+        for(let elem of toRemove){
+            deleteAssociationToItem(elem,catId)
+        }
+        for(let elem of toAdd){
+            associateToItem("array", "category", catId, elem);
+        }
         await CategoryModel.updateOne({_id: catId},{ $set: { "associatedItems": object.items} });
     }
     return null;
-}
-
-const deleteAssociationToCategory = async (categoryId, toDelete) => {
-    const category = await getCategoryById(categoryId);
-    let elem = JSON.stringify(category);
-    elem = JSON.parse(elem);
-
-    let associatedItems = elem.associatedItems.filter(e => e != toDelete)
-    await CategoryModel.updateOne({_id: categoryId},{ $set: { "associatedItems": associatedItems} }); 
-
-    let associatedProperties = elem.associatedProperties.filter(e => e != toDelete)
-    await CategoryModel.updateOne({_id: categoryId},{ $set: { "associatedProperties": associatedProperties} }); 
 }
 
 module.exports = {
@@ -88,7 +64,5 @@ module.exports = {
     deleteCategory,
     findCategoryByName,
     createCategory,
-    associateToCategory,
     editCategory,
-    deleteAssociationToCategory
 }

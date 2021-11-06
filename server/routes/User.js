@@ -1,6 +1,7 @@
 const UserModel = require("../models/UserModel");
 const RentalModel = require("../models/RentalModel");
 const ReviewModel = require("../models/ReviewModel");
+const KitModel = require("../models/KitModel");
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
@@ -72,46 +73,6 @@ const editUser = async (userId, object) => {
     return null;
 }
 
-const associateToUser = async (type, toModify, value, userId) => {
-    const user = await getUserById(userId);
-    if(type == "array") {
-        let elem = JSON.stringify(user);
-        elem = JSON.parse(elem);
-        switch (toModify) {
-            case "rentals": {
-                let rentals = elem.rentals;
-                rentals.push(value);
-                await UserModel.updateOne({_id: userId},{ $set: { "rentals": rentals} });
-                break;
-            }
-            case "reviews": {
-                let reviews = elem.reviews;
-                reviews.push(value);
-                await UserModel.updateOne({_id: userId},{ $set: { "reviews": reviews} });
-                break;
-            }
-            case "favItemsId": {
-                let favItemsId = elem.favItemsId;
-                if(!favItemsId.includes(value)){
-                    favItemsId.push(value);
-                    await UserModel.updateOne({_id: userId},{ $set: { "favItemsId": favItemsId} });
-                }
-                break;
-            }
-            case "favCategories": {
-                let favCategories = elem.favCategories;
-                if(!favCategories.includes(value)){
-                    favCategories.push(value);
-                    await UserModel.updateOne({_id: userId},{ $set: { "favCategories": favCategories} });
-                }
-                break;
-            }
-        }
-    }/* else {
-
-    }*/
-}
-
 const getReviewsByUserId = async (userId) => {
     toReturn = [];
     const user = await getUserById(userId);
@@ -136,7 +97,7 @@ const getRentalsByUserId = async (userId) => {
         let elem
         const rental = await RentalModel.findOne({_id: rentalId})//getRentalById(rentalId);
         if(rental.rentalTarget == 'kit'){
-            const kit = await getKitById(rental.kitId)
+            const kit = await KitModel.findById(rental.kitId);
             for(let itemId of kit.items){
                 const item = await getItemById(itemId)
                 const props = [];
@@ -199,23 +160,7 @@ const getRentalsByUserId = async (userId) => {
     return toReturn;
 }
 
-const deleteAssociationToUser = async (userId, toDelete) => {
-    const user = await getUserById(userId);
-    let elem = JSON.stringify(user);
-    elem = JSON.parse(elem);
 
-    let favCategories = elem.favCategories.filter(e => e != toDelete)
-    await UserModel.updateOne({_id: userId},{ $set: { "favCategories": favCategories} });
-
-    let favItemsId = elem.favItemsId.filter(e => e != toDelete)
-    await UserModel.updateOne({_id: userId},{ $set: { "favItemsId": favItemsId} });
-
-    let rentals = elem.rentals.filter(e => e != toDelete)
-    await UserModel.updateOne({_id: userId},{ $set: { "rentals": rentals} });
-
-    let reviews = elem.reviews.filter(e => e != toDelete)
-    await UserModel.updateOne({_id: userId},{ $set: { "reviews": reviews} });
-}
 
 
 module.exports = {
@@ -227,7 +172,5 @@ module.exports = {
     createUser,
     getRentalsByUserId,
     editUser,
-    associateToUser,
     getReviewsByUserId,
-    deleteAssociationToUser
 }

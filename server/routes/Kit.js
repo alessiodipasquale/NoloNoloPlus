@@ -1,6 +1,7 @@
 const KitModel = require("../models/KitModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
-const { getItemById, calculatePriceforItem, associateToItem, getReviewsByItemId } = require("./Item");
+const { getItemById, calculatePriceforItem, getReviewsByItemId } = require("./Item");
+const { associateToItem } = require("./associations/AssociationManager");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 const { arrayUnion } = require("../utils/UtilityFuctions");
@@ -104,17 +105,7 @@ const getReviewsByKitId = async (id) => {
     return toReturn;
 }
 
-const deleteAssociationToKit = async (kitId, toDelete) => {
-    const kit = await getKitById(itemId);
-    let elem = JSON.stringify(kit);
-    elem = JSON.parse(elem);
 
-    let category = elem.category.filter(e => e != toDelete)
-    await KitModel.updateOne({_id: kitId},{ $set: { "category": category} });
-
-    let items = elem.items.filter(e => e != toDelete)
-    await KitModel.updateOne({_id: kitId},{ $set: { "items": items} });
-}
 
 module.exports = {
     getKits,
@@ -123,5 +114,4 @@ module.exports = {
     deleteKit,
     calculatePriceforKit,
     getReviewsByKitId,
-    deleteAssociationToKit
 }
