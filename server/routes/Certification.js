@@ -34,7 +34,7 @@ const createCertification = async (object, employerId) => {
 }
 
 const deleteAssociationToCertification = async (certificationId, toDelete) => {
-    const certification = await getCategoryById(certificationId);
+    const certification = await getCertificationById(certificationId);
     let elem = JSON.stringify(certification);
     elem = JSON.parse(elem);
 

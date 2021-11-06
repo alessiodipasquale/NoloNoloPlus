@@ -309,6 +309,27 @@ const getCategoriesByItem = async (id) => {
     return item.category;
 }
 
+const deleteAssociationToItem= async (itemId, toDelete) => {
+    const item = await getItemById(itemId);
+    let elem = JSON.stringify(item);
+    elem = JSON.parse(elem);
+
+    if (elem.groupId == toDelete) await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": null} }); 
+
+    let category = elem.category.filter(e => e != toDelete)
+    await ItemModel.updateOne({_id: itemId},{ $set: { "category": category} });
+
+    let kits = elem.kits.filter(e => e != toDelete)
+    await ItemModel.updateOne({_id: itemId},{ $set: { "kits": kits} });
+
+    let properties = elem.properties.filter(e => e != toDelete)
+    await ItemModel.updateOne({_id: itemId},{ $set: { "properties": properties} });
+
+    let reviews = elem.reviews.filter(e => e != toDelete)
+    await ItemModel.updateOne({_id: itemId},{ $set: { "reviews": reviews} });
+}
+
+
 
 module.exports = {
     getItems,
@@ -322,5 +343,6 @@ module.exports = {
     associateToItem,
     getReviewsByItemId,
     calculatePriceforItem,
-    getCategoriesByItem
+    getCategoriesByItem,
+    deleteAssociationToItem
 }

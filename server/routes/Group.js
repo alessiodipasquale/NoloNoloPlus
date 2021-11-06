@@ -35,9 +35,20 @@ const createGroup = async (object) => {
     return group;
 }
 
+const deleteAssociationToGroup = async (groupId, toDelete) => {
+    const group = await getGroupById(groupId);
+    let elem = JSON.stringify(group);
+    elem = JSON.parse(elem);
+    
+    let items = elem.items.filter(e => e != toDelete)
+    await GroupModel.updateOne({_id: groupId},{ $set: { "items": items} });
+}
+
 module.exports = {
     getGroups,
     getGroupById,
     createGroup,
     deleteGroup,
+    deleteAssociationToGroup
+    
 }

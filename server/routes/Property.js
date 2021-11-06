@@ -50,6 +50,15 @@ const associateToProperty = async (type, toModify, value, pId) => {
     }
 }
 
+const deleteAssociationToProperty = async (propId, toDelete) => {
+    const prop = await getPropertyById(propId);
+    let elem = JSON.stringify(prop);
+    elem = JSON.parse(elem);
+
+    let associatedValues = elem.associatedValues.filter(e => e != toDelete)
+    await PropertyModel.updateOne({_id: propId},{ $set: { "associatedValues": associatedValues} });
+}
+
 
 module.exports = {
     getProperties,
@@ -57,5 +66,6 @@ module.exports = {
     deleteProperty,
     findPropertyByName,
     createProperty,
-    associateToProperty
+    associateToProperty,
+    deleteAssociationToProperty
 }

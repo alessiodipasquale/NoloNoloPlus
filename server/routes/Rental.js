@@ -124,11 +124,31 @@ const associateToRental = async (type, toModify, value, rentalId) => {
     }
 }
 
+const deleteAssociationToRental = async (rentalId, toDelete) => {
+    const rental = await getRentalById(rentalId);
+    let elem = JSON.stringify(rental);
+    elem = JSON.parse(elem);
+
+    if (elem.clientId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "clientId": null} }); 
+
+    if (elem.employerId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": null} }); 
+
+    if (elem.kitId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "kitId": null} }); 
+
+    if (elem.rentalCertification == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "rentalCertification": null} }); 
+
+    if (elem.returnCertification == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "returnCertification": null} }); 
+
+    let itemId = elem.itemId.filter(e => e != toDelete)
+    await RentalModel.updateOne({_id: rentalId},{ $set: { "itemId": itemId} });
+}
+
 module.exports = {
     getRentals,
     getRentalById,
     createRental,
     deleteRental,
     changeRentalState,
-    associateToRental
+    associateToRental,
+    deleteAssociationToRental
 }

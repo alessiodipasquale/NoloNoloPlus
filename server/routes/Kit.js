@@ -104,11 +104,24 @@ const getReviewsByKitId = async (id) => {
     return toReturn;
 }
 
+const deleteAssociationToKit = async (kitId, toDelete) => {
+    const kit = await getKitById(itemId);
+    let elem = JSON.stringify(kit);
+    elem = JSON.parse(elem);
+
+    let category = elem.category.filter(e => e != toDelete)
+    await KitModel.updateOne({_id: kitId},{ $set: { "category": category} });
+
+    let items = elem.items.filter(e => e != toDelete)
+    await KitModel.updateOne({_id: kitId},{ $set: { "items": items} });
+}
+
 module.exports = {
     getKits,
     getKitById,
     createKit,
     deleteKit,
     calculatePriceforKit,
-    getReviewsByKitId
+    getReviewsByKitId,
+    deleteAssociationToKit
 }

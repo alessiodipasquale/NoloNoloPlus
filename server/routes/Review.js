@@ -29,9 +29,20 @@ const createReview = async (object, userId) => {
     return review;
 }
 
+const deleteAssociationToReview = async (revId, toDelete) => {
+    const review = await getReviewById(revId);
+    let elem = JSON.stringify(review);
+    elem = JSON.parse(elem);
+
+    if (elem.clientId == toDelete) await ReviewModel.updateOne({_id: revId},{ $set: { "clientId": null} }); 
+    if (elem.itemId == toDelete){}  //TODO: delete
+
+}
+
 module.exports = {
     getReviews,
     getReviewById,
     createReview,
     deleteReview,
+    deleteAssociationToReview
 }
