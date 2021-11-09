@@ -13,6 +13,10 @@ const getProperties = async () => {
 }
 
 const deleteProperty = async (id) => {
+    const functionalObj = {
+        associatedValues: [],
+    }
+    await editProperty(id, functionalObj);
     const property = await PropertyModel.deleteOne({_id: id})
     if(!property)
         throw BadRequestError;

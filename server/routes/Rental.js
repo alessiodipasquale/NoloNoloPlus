@@ -17,6 +17,13 @@ const getRentals = async () => {
 }
 
 const deleteRental = async () => {
+    const functionalObj = {
+        clientId: "toDelete",
+        employerId: "toDelete",
+        kitId: "toDelete",
+        itemId: []
+    }
+    await editRental(id, functionalObj);
     const rental = await RentalModel.deleteOne({_id: id})
     if(!rental)
         throw BadRequestError;
@@ -120,22 +127,28 @@ const editRental = async (rentalId, object) => {
         const rental = await getRentalById(rentalId);
         if(rental.clientId != null)
             deleteAssociationToUser(item.clientId, rentalId)
-        await RentalModel.updateOne({_id: rentalId},{ $set: { "clientId": object.clientId} });
-        associateToUser("array", "items", rentalId, object.clientId);
+        if(object.clientId != "toDelete") {
+            await RentalModel.updateOne({_id: rentalId},{ $set: { "clientId": object.clientId} });
+            associateToUser("array", "items", rentalId, object.clientId);
+        }
     }
     if(object.employerId) {
         const rental = await getRentalById(rentalId);
         if(rental.employerId != null)
             deleteAssociationToUser(item.employerId, rentalId)
-        await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": object.employerId} });
-        associateToUser("array", "items", rentalId, object.employerId);
+        if(object.employerId != "toDelete") {
+            await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": object.employerId} });
+            associateToUser("array", "items", rentalId, object.employerId);
+        }
     }
     if(object.kitId) {
         const rental = await getRentalById(rentalId);
         if(rental.kitId != null)
             deleteAssociationToKit(item.kitId, rentalId)
-        await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": object.kitId} });
-        associateToKit("array", "items", rentalId, object.kitId);
+        if(object.kitId != "toDelete") {
+            await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": object.kitId} });
+            associateToKit("array", "items", rentalId, object.kitId);
+        }
     }
     if(object.itemId){
         const rental = await getRentalById(rentalId);

@@ -42,6 +42,10 @@ const getKits = async () => {
 }
 
 const deleteKit = async (id) => {
+    const functionalObj = {
+        items: []
+    }
+    await editKit(id, functionalObj);
     const kit = await KitModel.deleteOne({_id: id})
     if(!kit)
         throw BadRequestError;

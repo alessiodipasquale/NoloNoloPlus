@@ -12,7 +12,11 @@ const getGroups = async () => {
     return groups;
 }
 
-const deleteGroup = async () => {
+const deleteGroup = async (id) => {
+    const functionalObj = {
+        items: []
+    }
+    await editGroup(id, functionalObj);
     const group = await GroupModel.deleteOne({_id: id})
     if(!group)
         throw BadRequestError;

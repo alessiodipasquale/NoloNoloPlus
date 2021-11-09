@@ -11,6 +11,7 @@ const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 const { getKitById } = require("./Kit");
 
+//TODO verify if user deletion is needed
 
 const getUserById = async (id) =>  {
     const user = await UserModel.findById(id).select("-password -__v");

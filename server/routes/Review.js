@@ -14,6 +14,11 @@ const getReviews = async () => {
 }
 
 const deleteReview = async (id) => {
+    const functionalObj = {
+        itemId: "toDelete",
+        clientId: "toDelete",
+    }
+    await editReview(id, functionalObj);
     const review = await ReviewModel.deleteOne({_id: id})
     if(!review)
         throw BadRequestError;
@@ -38,15 +43,19 @@ const editReview = async (revId, object) => {
         const review = await getReviewById(revId);
         if(review.clientId != null)
             deleteAssociationToUser(review.clientId, revId)
-        await ReviewModel.updateOne({_id: revId},{ $set: { "clientId": object.clientId} });
-        associateToUser("array", "reviews", revId, object.clientId);
+        if(object.clientId != "toDelete") {
+            await ReviewModel.updateOne({_id: revId},{ $set: { "clientId": object.clientId} });
+            associateToUser("array", "reviews", revId, object.clientId);
+        }
     }
     if(object.itemId) {
         const review = await getReviewById(revId);
         if(review.itemId != null)
             deleteAssociationToItem(review.itemId, revId)
-        await ReviewModel.updateOne({_id: revId},{ $set: { "itemId": object.itemId} });
-        associateToItem("array", "items", revId, object.itemId);
+        if(object.itemId != "toDelete") {
+            await ReviewModel.updateOne({_id: revId},{ $set: { "itemId": object.itemId} });
+            associateToItem("array", "items", revId, object.itemId);
+        }
     }    
     return null;
 }

@@ -14,6 +14,10 @@ const getCategories = async () => {
 }
 
 const deleteCategory = async (id) => {
+    const functionalObj = {
+        items: []
+    }
+    await editCategory(id, functionalObj);
     const category = await CategoryModel.deleteOne({_id: id})
     if(!category)
         throw BadRequestError;

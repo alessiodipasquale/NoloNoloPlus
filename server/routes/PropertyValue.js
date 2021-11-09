@@ -14,6 +14,11 @@ const getPropertyValues = async () => {
 }
 
 const deletePropertyValue = async (id) => {
+    const functionalObj = {
+        associatedProperty: "toDelete",
+        associatedItems: []
+    }
+    await editPropertyValue(id, functionalObj);
     const propertyVal = await PropertyValueModel.deleteOne({_id: id})
     if(!propertyVal)
         throw BadRequestError;
@@ -42,8 +47,10 @@ const editPropertyValue = async (propValId, object) => {
         const propertyValue = await getPropertyValueById(propValId);
         if(propertyValue.associatedProperty != null)
             deleteAssociationToProperty(propertyValue.associatedProperty, propValId)
-        await PropertyValueModel.updateOne({_id: propValId},{ $set: { "associatedProperty": object.associatedProperty} });
-        associateToProperty("array", "associatedValues", propValId, object.associatedProperty);
+        if(object.associateToProperty != "toDelete") {
+            await PropertyValueModel.updateOne({_id: propValId},{ $set: { "associatedProperty": object.associatedProperty} });
+            associateToProperty("array", "associatedValues", propValId, object.associatedProperty);
+        }
     }
     
     if(object.associatedItems){

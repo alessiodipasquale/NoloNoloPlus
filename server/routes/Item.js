@@ -54,6 +54,13 @@ const getItems = async () => {
 }
 
 const deleteItem = async (id) => {
+    const functionalObj = {
+        groupId: "toDelete",
+        category: [],
+        kits: [],
+        properties: []
+    }
+    await editItem(id, functionalObj);
     const item = await ItemModel.deleteOne({_id: id})
     if(!item)
         throw BadRequestError;
@@ -329,8 +336,10 @@ const editItem = async (itemId, object) => {
         const item = await getItemById(itemId);
         if(item.groupId != null)
             deleteAssociationToGroup(item.groupId, itemId)
-        await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": object.groupId} });
-        associateToGroup("array", "items", itemId, object.groupId);
+        if(object.groupId != "toDelete"){
+            await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": object.groupId} });
+            associateToGroup("array", "items", itemId, object.groupId);
+        }
     }
     if(object.category){
         const item = await getItemById(itemId);
