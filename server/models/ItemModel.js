@@ -33,7 +33,7 @@ const _ItemModel = new mongoose.Schema({
     },
     properties:{
         type: [String],
-        ref: 'Property'
+        ref: 'PropertyValue'
     },
     reviews: {
         type: [String],

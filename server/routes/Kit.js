@@ -1,7 +1,7 @@
 const KitModel = require("../models/KitModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
 const { getItemById, calculatePriceforItem, getReviewsByItemId } = require("./Item");
-const { associateToItem } = require("./associations/AssociationManager");
+const { associateToItem, deleteAssociationToItem } = require("./associations/AssociationManager");
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 const { arrayUnion } = require("../utils/UtilityFuctions");
@@ -113,7 +113,6 @@ const editKit = async (kitId, object) => {
     if(object.standardPrice)
         await KitModel.updateOne({_id: kitId},{ $set: { "standardPrice": object.standardPrice} });
     if(object.items){
-        //TODO complete
         const kit = await getKitById(kitId);
         let elem = JSON.stringify(kit);
         elem = JSON.parse(elem);
@@ -121,12 +120,12 @@ const editKit = async (kitId, object) => {
         let toRemove = oldAssociated.filter(x => !object.items.includes(x));
         let toAdd = object.items.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
-            deleteAssociationToProperty(elem,itemId)
+            deleteAssociationToItem(elem,kitId)
         }
         for(let elem of toAdd){
-            associateToProperty("array", "properties", itemId, elem);
+            associateToItem("array", "kits", kitId, elem);
         }
-        await ItemModel.updateOne({_id: itemId},{ $set: { "properties": object.properties} });
+        await KitModel.updateOne({_id: kitId},{ $set: { "items": object.items} });
     }
     return null;
 }

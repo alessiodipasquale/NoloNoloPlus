@@ -7,6 +7,12 @@ const getPriceDetail = async () => {
     return priceDetail;
 }
 
+const editPriceDetail = async (object) => {
+    const pd = await PriceDetailsModel.find();
+    await PriceDetailsModel.updateOne({_id: pd[0]._id},{ $set: {"a":object/*TODO: for all attributes*/}});
+}
+
 module.exports = {
     getPriceDetail,
+    editPriceDetail
 }
