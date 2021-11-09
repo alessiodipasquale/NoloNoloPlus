@@ -39,6 +39,11 @@ const _ItemModel = new mongoose.Schema({
         type: [String],
         ref: 'Review',
         default: []
+    },
+    rentals: {
+        type: [String],
+        ref: 'Rental',
+        default: []
     }
 
 },  { collection: "Item"});

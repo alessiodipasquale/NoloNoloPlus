@@ -10,6 +10,8 @@ const RentalModel = require('../../models/RentalModel');
 const CertificationModel = require('../../models/CertificationModel');
 /* Necessary to avoid circular dependencies */
 
+//TODO: verify all association creation functions 
+
 ///////////////////////////////////////////////////////////////////////////// Category
 
 const deleteAssociationToCategory = async (categoryId, toDelete) => {

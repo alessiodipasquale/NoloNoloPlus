@@ -104,6 +104,56 @@ const countSpecifiedPurchase = async (userId, itemId) => {
     return count+1;
 }
 
+const editRental = async (rentalId, object) => {
+    /*if(object.startDate)
+        await RentalModel.updateOne({_id: rentalId},{ $set: { "startDate": object.startDate} });*/
+    /*if(object.endDate)
+        await RentalModel.updateOne({_id: rentalId},{ $set: { "endDate": object.endDate} });*/
+    if(object.rentalType)
+        await RentalModel.updateOne({_id: rentalId},{ $set: { "rentalType": object.rentalType} });
+    if(object.rentalTarget)
+        await RentalModel.updateOne({_id: rentalId},{ $set: { "rentalTarget": object.rentalTarget} });
+    if(object.state)
+        await RentalModel.updateOne({_id: rentalId},{ $set: { "state": object.state} }); 
+    
+    if(object.clientId) {
+        const rental = await getRentalById(rentalId);
+        if(rental.clientId != null)
+            deleteAssociationToUser(item.clientId, rentalId)
+        await RentalModel.updateOne({_id: rentalId},{ $set: { "clientId": object.clientId} });
+        associateToUser("array", "items", rentalId, object.clientId);
+    }
+    if(object.employerId) {
+        const rental = await getRentalById(rentalId);
+        if(rental.employerId != null)
+            deleteAssociationToUser(item.employerId, rentalId)
+        await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": object.employerId} });
+        associateToUser("array", "items", rentalId, object.employerId);
+    }
+    if(object.kitId) {
+        const rental = await getRentalById(rentalId);
+        if(rental.kitId != null)
+            deleteAssociationToKit(item.kitId, rentalId)
+        await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": object.kitId} });
+        associateToKit("array", "items", rentalId, object.kitId);
+    }
+    if(object.itemId){
+        const rental = await getRentalById(rentalId);
+        let elem = JSON.stringify(rental);
+        elem = JSON.parse(elem);
+        let oldAssociated = elem.itemId;
+        let toRemove = oldAssociated.filter(x => !object.itemId.includes(x));
+        let toAdd = object.itemId.filter(x => !oldAssociated.includes(x));
+        for(let elem of toRemove){
+            deleteAssociationToItem(elem,rentalId)
+        }
+        for(let elem of toAdd){
+            associateToItem("array", "rentals", rentalId, elem);
+        }
+        await KitModel.updateOne({_id: rentalId},{ $set: { "itemId": object.itemId} });
+    }
+    return null;
+}
 
 
 module.exports = {
@@ -112,4 +162,5 @@ module.exports = {
     createRental,
     deleteRental,
     changeRentalState,
+    editRental
 }

@@ -160,9 +160,6 @@ const getRentalsByUserId = async (userId) => {
     return toReturn;
 }
 
-
-
-
 module.exports = {
     getUsers,
     getUserById,

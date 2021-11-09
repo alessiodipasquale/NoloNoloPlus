@@ -16,7 +16,7 @@ const _RentalModel = new mongoose.Schema({
         type: String,
         ref: 'User'
     },
-    itemId: {
+    itemId: {               //
         type: [String],
         required: true,
         ref: 'Item'
@@ -63,8 +63,6 @@ const _RentalModel = new mongoose.Schema({
         type: [[String]],
         required: false
     }
-
-
 },  { collection: "Rental"});
 
 _RentalModel.pre('save', function (next) {
