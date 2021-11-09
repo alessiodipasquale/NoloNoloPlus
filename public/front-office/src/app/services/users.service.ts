@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { NotificationsService } from './notifications.service';
+import { TokenService } from './token.service';
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 
@@ -6,17 +9,35 @@ import { HttpService } from './http.service';
 })
 export class UsersService {
 
-    constructor(public http: HttpService) { }
+    constructor(public http: HttpService,
+                private tokenService: TokenService,
+                private notificationsService: NotificationsService,
+                private router: Router) { }
 
     getUsers() {
-        return this.http.get('/users');
+        if (this.tokenService.isTokenSet())  
+            return this.http.get('/users');
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }    
     }
 
     getUserById(id) {
-        return this.http.get('/users/'+id);
+        if (this.tokenService.isTokenSet())  
+            return this.http.get('/users/'+id);
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }  
     }
 
     deleteUser(id) {
-        return this.http.delete('/users/'+id)
+        if (this.tokenService.isTokenSet())  
+            return this.http.delete('/users/'+id)
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }    
     }
 }

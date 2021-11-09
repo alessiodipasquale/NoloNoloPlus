@@ -9,6 +9,8 @@ export const navItems: INavData[] = [
   {
     name: 'Prenotazioni',
     url: 'pages/rentals/rentals-list',
-    icon: 'cil-cart'
+    icon: 'cil-cart',
   }
 ];
+
+export const whitelistedElements = ['Prenotazioni']

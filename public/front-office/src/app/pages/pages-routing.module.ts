@@ -9,22 +9,18 @@ const routes: Routes = [{
     children: [{
         path: 'dashboard',
         component: DashboardComponent,
-        canActivate: [AuthGuardService]
     },
     {
       path: 'items',
       loadChildren: () => import('./items/items.module').then(m => m.ItemsModule),
-      canActivate: [AuthGuardService]
     },
     {
       path: 'kits',
       loadChildren: () => import('./kits/kits.module').then(m=> m.KitsModule),
-      canActivate: [AuthGuardService]
     },
     {
       path: 'rentals',
       loadChildren: () => import('./rentals/rentals.module').then(m=> m.RentalsModule),
-      canActivate: [AuthGuardService]
     },
     {
       path: '',

@@ -38,7 +38,6 @@ export const routes: Routes = [
       {
         path: 'pages',
         loadChildren: () => import('./pages/pages.module').then(p => p.PagesModule),
-        canActivate: [AuthGuardService]
       },
     ]     
   }

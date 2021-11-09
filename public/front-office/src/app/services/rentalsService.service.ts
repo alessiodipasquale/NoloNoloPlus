@@ -1,3 +1,6 @@
+import { Router } from '@angular/router';
+import { NotificationsService } from './notifications.service';
+import { TokenService } from './token.service';
 import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 
@@ -6,21 +9,44 @@ import { HttpService } from './http.service';
 })
 export class RentalsService {
 
-    constructor(public http: HttpService) { }
+    constructor(public http: HttpService,
+                private tokenService: TokenService,
+                private notificationsService: NotificationsService,
+                private router: Router) { }
 
     getUserRentals(userId) {
-        return this.http.get('/users/'+userId+'/rentals');
+        if (this.tokenService.isTokenSet())  
+            return this.http.get('/users/'+userId+'/rentals');
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }    
     }
 
     getRentalById(id) {
-        return this.http.get('/rentals/'+id);
+        if (this.tokenService.isTokenSet())  
+            return this.http.get('/rentals/'+id);
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }   
     }
 
     createRental(startDate, endDate, objectId, timeInDays) {
-        return this.http.post('/rentals', {startDate, endDate, objectId, timeInDays,rentalType:"prenotazione",rentalTarget:'singolo',state:'futura'})
+        if (this.tokenService.isTokenSet())  
+            return this.http.post('/rentals', {startDate, endDate, objectId, timeInDays,rentalType:"prenotazione",rentalTarget:'singolo',state:'futura'})
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }
     }
 
     deleteItem(id) {
-        return this.http.delete('/items/'+id)
+        if (this.tokenService.isTokenSet())  
+            return this.http.delete('/items/'+id)
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }    
     }
 }
