@@ -23,6 +23,10 @@ const routes: Routes = [{
       loadChildren: () => import('./rentals/rentals.module').then(m=> m.RentalsModule),
     },
     {
+      path: 'profiles',
+      loadChildren: () => import('./profiles/profiles.module').then(m => m.ProfilesModule),
+    },
+    {
       path: '',
       redirectTo: 'dashboard',
       pathMatch: 'full',

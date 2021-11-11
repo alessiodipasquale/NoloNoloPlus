@@ -40,4 +40,13 @@ export class UsersService {
             this.router.navigate(['/login']);
         }    
     }
+
+    editUser(user) {
+        if (this.tokenService.isTokenSet())  
+            return this.http.put('/users', user)
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }    
+    }
 }

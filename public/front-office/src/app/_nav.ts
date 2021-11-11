@@ -10,7 +10,12 @@ export const navItems: INavData[] = [
     name: 'Prenotazioni',
     url: 'pages/rentals/rentals-list',
     icon: 'cil-cart',
+  },
+  {
+    name: 'Profilo',
+    url: 'pages/profiles/edit-profile',
+    icon: 'cil-user'
   }
 ];
 
-export const whitelistedElements = ['Prenotazioni']
+export const blacklistedElements = ['Prenotazioni','Profilo']

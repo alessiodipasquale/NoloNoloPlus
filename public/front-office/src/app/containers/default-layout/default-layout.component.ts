@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { whitelistedElements } from './../../_nav';
+import { blacklistedElements } from './../../_nav';
 import { TokenService } from './../../services/token.service';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
@@ -17,18 +17,19 @@ export class DefaultLayoutComponent implements OnInit {
 
   public sidebarMinimized = false;
   public navItems = navItems;
-  public whitelistedElements = whitelistedElements;
+  public blacklistedElements = blacklistedElements;
 
   ngOnInit() {
-    if(!this.tokenService.isTokenSet()) {
+    /*if(!this.tokenService.isTokenSet()) {
       this.navItems.forEach((item, index )=> {
-        this.whitelistedElements.forEach(name => {
-          if (item.name == name) {
+        this.blacklistedElements.forEach(name => {
+          console.log(item.name + ' '+name)
+          if (item.name === name) {
             this.navItems.splice(index, 1)
           }
         })  
       })
-    }
+    }*/
   }
 
   toggleMinimize(e) {
@@ -40,6 +41,7 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   goLogin() {
+    console.log('vado in login')
     this.router.navigate(['/login']);
   }
 }
