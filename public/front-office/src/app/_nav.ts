@@ -15,7 +15,7 @@ export const navItems: INavData[] = [
     name: 'Profilo',
     url: 'pages/profiles/edit-profile',
     icon: 'cil-user'
-  }
+  },
 ];
 
 export const blacklistedElements = ['Prenotazioni','Profilo']

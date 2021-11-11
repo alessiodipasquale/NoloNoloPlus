@@ -1,3 +1,4 @@
+import { TokenService } from './../../../services/token.service';
 import { KitsService } from './../../../services/kits.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
@@ -13,7 +14,8 @@ export class KitSpecComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute,
               public router:Router,
               private notificationsService: NotificationsService,
-              private kitsService: KitsService) { }
+              private kitsService: KitsService,
+              public tokenService: TokenService) { }
 
   kit;
   checked = false;
@@ -66,6 +68,10 @@ export class KitSpecComponent implements OnInit {
       this.router.navigate(['/pages/dashboard']);
       this.notificationsService.success("Prenotazione riuscita con successo");
     }).catch(err => this.notificationsService.error(err))
+  }
+
+  goLogin() {
+    this.router.navigate(['/login'])
   }
 
 }

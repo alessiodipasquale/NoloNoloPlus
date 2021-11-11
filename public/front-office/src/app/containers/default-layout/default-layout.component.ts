@@ -20,16 +20,19 @@ export class DefaultLayoutComponent implements OnInit {
   public blacklistedElements = blacklistedElements;
 
   ngOnInit() {
-    /*if(!this.tokenService.isTokenSet()) {
+    console.log(this.navItems);
+    if(!this.tokenService.isTokenSet()) {
       this.navItems.forEach((item, index )=> {
+
         this.blacklistedElements.forEach(name => {
-          console.log(item.name + ' '+name)
           if (item.name === name) {
-            this.navItems.splice(index, 1)
+            this.navItems.splice(index)
           }
+          
+
         })  
       })
-    }*/
+    }
   }
 
   toggleMinimize(e) {
@@ -41,7 +44,6 @@ export class DefaultLayoutComponent implements OnInit {
   }
 
   goLogin() {
-    console.log('vado in login')
     this.router.navigate(['/login']);
   }
 }

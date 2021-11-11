@@ -1,3 +1,4 @@
+import { TokenService } from './../../../services/token.service';
 import { RentalsService } from './../../../services/rentalsService.service';
 import { ItemsService } from './../../../services/items.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +16,8 @@ export class ItemSpecComponent implements OnInit {
               public router:Router,
               private notificationsService: NotificationsService,
               private itemsService: ItemsService,
-              private rentalsService: RentalsService) { }
+              private rentalsService: RentalsService,
+              public tokenService: TokenService) { }
 
   item;
   checked = false;
@@ -67,5 +69,9 @@ export class ItemSpecComponent implements OnInit {
       this.router.navigate(['/pages/dashboard']);
       this.notificationsService.success("Prenotazione riuscita con successo");
     }).catch(err => this.notificationsService.error(err))
+  }
+
+  goLogin() {
+    this.router.navigate(['/login'])
   }
 }

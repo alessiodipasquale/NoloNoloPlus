@@ -22,7 +22,7 @@
             </div>
         </div>
       </div>
-    <div class="card">
+    <div class="card" *ngIf="tokenService.isTokenSet()">
         <div class="card-body">
             <div *ngIf="!checked" class="animated fadeIn">
                 <h3>Verifica disponibilità</h3>
@@ -44,6 +44,16 @@
 
         </div>
         
+    </div>
+
+    <div class="card card-accent-warning" *ngIf="!tokenService.isTokenSet()">
+        <div class="card-header"> Attenzione </div>
+        <div class="card-body">
+                Per visualizzare le date disponibili per il noleggio devi essere loggato.
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-primary btn-block" id="login" name="login" (click)="goLogin()">Effettua il login</button>
+        </div>
     </div>
     
 </div>

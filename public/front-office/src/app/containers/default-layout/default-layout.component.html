@@ -11,7 +11,7 @@
   <ul class="nav navbar-nav ml-auto">
     <li class="nav-item px-3">
       <a *ngIf="tokenService.isTokenSet()" (click)="doLogout()"class="nav-link" href="#">Logout</a>
-      <a *ngIf="!tokenService.isTokenSet()" (click)="goLogin()"class="nav-link" href="#">Accedi</a>
+      <a *ngIf="!tokenService.isTokenSet()"class="nav-link" href="#/login">Accedi</a>
     </li>
   </ul>
 </app-header>
