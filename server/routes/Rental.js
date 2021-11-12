@@ -31,6 +31,8 @@ const deleteRental = async () => {
 
 const createRental = async (object, userId, role) => {
     //TODO Item ever been rented, rent count, etc...
+    //TODO add to rentals in user both for client and employer
+    //TODO add to rentals in both Item and Kit
     if(!object.startDate || !object.endDate || !userId  || !object.objectId)
         throw BadRequestError;
 
@@ -112,49 +114,46 @@ const countSpecifiedPurchase = async (userId, itemId) => {
 }
 
 const editRental = async (rentalId, object) => {
+    const rental = await getRentalById(rentalId);
+    let secureObject = JSON.stringify(rental);
+    secureObject = JSON.parse(secureObject);
     /*if(object.startDate)
         await RentalModel.updateOne({_id: rentalId},{ $set: { "startDate": object.startDate} });*/
     /*if(object.endDate)
         await RentalModel.updateOne({_id: rentalId},{ $set: { "endDate": object.endDate} });*/
     if(object.rentalType)
-        await RentalModel.updateOne({_id: rentalId},{ $set: { "rentalType": object.rentalType} });
+        secureObject.rentalType = object.rentalType;
     if(object.rentalTarget)
-        await RentalModel.updateOne({_id: rentalId},{ $set: { "rentalTarget": object.rentalTarget} });
+        secureObject.rentalTarget = object.rentalTarget;
     if(object.state)
-        await RentalModel.updateOne({_id: rentalId},{ $set: { "state": object.state} }); 
+        secureObject.state = object.state
     
     if(object.clientId) {
-        const rental = await getRentalById(rentalId);
-        if(rental.clientId != null)
-            deleteAssociationToUser(item.clientId, rentalId)
+        if(secureObject.clientId != null)
+            deleteAssociationToUser(secureObject.clientId, rentalId)
         if(object.clientId != "toDelete") {
-            await RentalModel.updateOne({_id: rentalId},{ $set: { "clientId": object.clientId} });
-            associateToUser("array", "items", rentalId, object.clientId);
+            secureObject.clientId = object.clientId;
+            associateToUser("array", "rentals", rentalId, object.clientId);
         }
     }
     if(object.employerId) {
-        const rental = await getRentalById(rentalId);
-        if(rental.employerId != null)
-            deleteAssociationToUser(item.employerId, rentalId)
+        if(secureObject.employerId != null)
+            deleteAssociationToUser(secureObject.employerId, rentalId)
         if(object.employerId != "toDelete") {
-            await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": object.employerId} });
-            associateToUser("array", "items", rentalId, object.employerId);
+            secureObject.employerId = object.employerId;
+            associateToUser("array", "rentals", rentalId, object.employerId);
         }
     }
     if(object.kitId) {
-        const rental = await getRentalById(rentalId);
-        if(rental.kitId != null)
-            deleteAssociationToKit(item.kitId, rentalId)
+        if(secureObject.kitId != null)
+            deleteAssociationToKit(secureObject.kitId, rentalId)
         if(object.kitId != "toDelete") {
-            await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": object.kitId} });
-            associateToKit("array", "items", rentalId, object.kitId);
+            secureObject.kitId = object.kitId
+            associateToKit("array", "rentals", rentalId, object.kitId);
         }
     }
     if(object.itemId){
-        const rental = await getRentalById(rentalId);
-        let elem = JSON.stringify(rental);
-        elem = JSON.parse(elem);
-        let oldAssociated = elem.itemId;
+        let oldAssociated = secureObject.itemId;
         let toRemove = oldAssociated.filter(x => !object.itemId.includes(x));
         let toAdd = object.itemId.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
@@ -163,8 +162,9 @@ const editRental = async (rentalId, object) => {
         for(let elem of toAdd){
             associateToItem("array", "rentals", rentalId, elem);
         }
-        await KitModel.updateOne({_id: rentalId},{ $set: { "itemId": object.itemId} });
+        secureObject.itemId = object.itemId
     }
+    await RentalModel.updateOne({_id: rentalId},secureObject);
     return null;
 }
 

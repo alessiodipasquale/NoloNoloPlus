@@ -110,17 +110,18 @@ const getReviewsByKitId = async (id) => {
 }
 
 const editKit = async (kitId, object) => {
+    const kit = await getKitById(kitId);
+    let secureObject = JSON.stringify(kit);
+    secureObject = JSON.parse(secureObject);
+
     if(object.name)
-        await KitModel.updateOne({_id: kitId},{ $set: { "name": object.name} });
+        secureObject.name = object.name; 
     if(object.description)
-        await KitModel.updateOne({_id: kitId},{ $set: { "description": object.description} });
+        secureObject.description = object.description; 
     if(object.standardPrice)
-        await KitModel.updateOne({_id: kitId},{ $set: { "standardPrice": object.standardPrice} });
+        secureObject.standardPrice = object.standardPrice; 
     if(object.items){
-        const kit = await getKitById(kitId);
-        let elem = JSON.stringify(kit);
-        elem = JSON.parse(elem);
-        let oldAssociated = elem.items;
+        let oldAssociated = secureObject.items;
         let toRemove = oldAssociated.filter(x => !object.items.includes(x));
         let toAdd = object.items.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
@@ -129,8 +130,9 @@ const editKit = async (kitId, object) => {
         for(let elem of toAdd){
             associateToItem("array", "kits", kitId, elem);
         }
-        await KitModel.updateOne({_id: kitId},{ $set: { "items": object.items} });
+        secureObject.items = object.items; 
     }
+    await KitModel.updateOne({_id: kitId},secureObject);
     return null;
 }
 

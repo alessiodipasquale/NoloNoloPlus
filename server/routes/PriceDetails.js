@@ -9,7 +9,7 @@ const getPriceDetail = async () => {
 
 const editPriceDetail = async (object) => {
     const pd = await PriceDetailsModel.find();
-    await PriceDetailsModel.updateOne({_id: pd[0]._id},{ $set: {"a":object/*TODO: for all attributes*/}});
+    await PriceDetailsModel.updateOne({_id: pd[0]._id},object);
 }
 
 module.exports = {

@@ -67,11 +67,24 @@ const associateToItem = async (type, toModify, value, itemId) => {
                 await ItemModel.updateOne({_id: itemId},{ $set: { "category": cat} });
                 break;
             }
+            case "rentals": {
+                let rentals = elem.rentals;
+                rentals.push(value);
+                await ItemModel.updateOne({_id: itemId},{ $set: { "rentals": rentals} });
+                break;
+            }
+            case "properties": {
+                let properties = elem.properties;
+                properties.push(value);
+                await ItemModel.updateOne({_id: itemId},{ $set: { "properties": properties} });
+                break;
+            }
         }
     } else {
         switch (toModify) {
             case "groupId": {
                 await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": value} });
+                break;
             }
         }
     }
@@ -161,6 +174,12 @@ const associateToKit = async (type, toModify, value, kitId) => {
                 await KitModel.updateOne({_id: kitId},{ $set: { "items": items} });
                 break;
             }
+            case "rentals": {
+                let rentals = elem. rentals;
+                rentals.push(value);
+                await KitModel.updateOne({_id: kitId},{ $set: { "rentals": items} });
+                break;
+            }
         }
     }
 }
@@ -208,9 +227,14 @@ const associateToPropertyValue = async (type, toModify, value, pvId) => {
                 break;
             }
         }
-    }/* else {
-
-    }*/
+    }else {
+        switch (toModify) {
+            case "associatedProperty": {
+                await PropertyValueModel.updateOne({_id: pvId},{ $set: { "associatedProperty": value} });
+                break;
+            }
+        }
+    }
 }
 
 const deleteAssociationToPropertyValue = async (propId, toDelete) => {
@@ -239,12 +263,15 @@ const associateToRental = async (type, toModify, value, rentalId) => {
         switch (toModify) {
             case "rentalCertification": {
                 await RentalModel.updateOne({_id: rentalId},{ $set: { "groupId": value} });
+                break;
             }
             case "returnCertification": {
                 await RentalModel.updateOne({_id: rentalId},{ $set: { "returnCertification": value} });
+                break;
             }
             case "employerId": {
                 await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": value} });
+                break;
             }
         }
     }

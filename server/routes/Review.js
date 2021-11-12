@@ -1,7 +1,6 @@
 const ReviewModel = require("../models/ReviewModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { associateToUser } = require("./associations/AssociationManager");
-const { associateToItem } = require("./associations/AssociationManager");
+const { associateToUser,associateToItem } = require("./associations/AssociationManager");
 
 const getReviewById = async (id) => {
     const review = await ReviewModel.findById(id)
@@ -35,28 +34,31 @@ const createReview = async (object, userId) => {
 }
 
 const editReview = async (revId, object) => {
+    const review = await getRentalById(revId);
+    let secureObject = JSON.stringify(review);
+    secureObject = JSON.parse(secureObject);
+
     if(object.stars)
-        await ReviewModel.updateOne({_id: kitId},{ $set: { "name": object.name} });
+        secureObject.start = object.stars;
     if(object.comment)
-        await ReviewModel.updateOne({_id: kitId},{ $set: { "description": object.description} });
+        secureObject.comment = object.comment;
     if(object.clientId) {
-        const review = await getReviewById(revId);
-        if(review.clientId != null)
-            deleteAssociationToUser(review.clientId, revId)
+        if(secureObject.clientId != null)
+            deleteAssociationToUser(secureObject.clientId, revId)
         if(object.clientId != "toDelete") {
-            await ReviewModel.updateOne({_id: revId},{ $set: { "clientId": object.clientId} });
+            secureObject.clientId = object.clientId;
             associateToUser("array", "reviews", revId, object.clientId);
         }
     }
     if(object.itemId) {
-        const review = await getReviewById(revId);
-        if(review.itemId != null)
-            deleteAssociationToItem(review.itemId, revId)
+        if(secureObject.itemId != null)
+            deleteAssociationToItem(secureObject.itemId, revId)
         if(object.itemId != "toDelete") {
-            await ReviewModel.updateOne({_id: revId},{ $set: { "itemId": object.itemId} });
-            associateToItem("array", "items", revId, object.itemId);
+            secureObject.itemId = object.itemId;
+            associateToItem("array", "reviews", revId, object.itemId);
         }
     }    
+    await ReviewModel.updateOne({_id: revId},secureObject);
     return null;
 }
 

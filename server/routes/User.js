@@ -59,18 +59,22 @@ const createUser = async (object) => {
 }
 
 const editUser = async (userId, object) => {
-    /*username, name, surname, favPaymentMethod (carta, alla consegna), address */
+    const user = await getUserById(userId);
+    let secureObject = JSON.stringify(user);
+    secureObject = JSON.parse(secureObject)
+    
     if(object.name)
-        await UserModel.updateOne({_id: userId},{ $set: { "name": object.name} });
+        secureObject.name = object.name;
     if(object.username)
-        await UserModel.updateOne({_id: userId},{ $set: { "username": object.username} });
+        secureObject.username = object.name;
     if(object.surname)
-        await UserModel.updateOne({_id: userId},{ $set: { "surname": object.surname} });
+        secureObject.surname = object.surname;
     if(object.address)
-        await UserModel.updateOne({_id: userId},{ $set: { "address": object.address} });
-
+        secureObject.address = object.address;
     if(object.favPaymentMethod && (object.favPaymentMethod == 'carta' || object.favPaymentMethod == 'alla consegna'))
-        await UserModel.updateOne({_id: userId},{ $set: { "favPaymentMethod": object.favPaymentMethod} });
+        secureObject.favPaymentMethod = object.favPaymentMethod;
+        
+    await UserModel.updateOne({_id: userId},secureObject);
     return null;
 }
 

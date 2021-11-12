@@ -38,26 +38,26 @@ const createPropertyValue = async (object) => {
 }
 
 const editPropertyValue = async (propValId, object) => {
+    const propertyValue = await getPropertyValueById(propValId);
+    let secureObject = JSON.stringify(propertyValue);
+    secureObject = JSON.parse(secureObject);
+
     if(object.value)
-        await PropertyValueModel.updateOne({_id: propValId},{ $set: { "value": object.value} });
+        secureObject.value = object.value;
     if(object.unitOfMeasure)
-        await PropertyValueModel.updateOne({_id: propValId},{ $set: { "unitOfMeasure": object.unitOfMeasure} });
+        secureObject.unitOfMeasure = object.unitOfMeasure
     
     if(object.associatedProperty) {
-        const propertyValue = await getPropertyValueById(propValId);
-        if(propertyValue.associatedProperty != null)
-            deleteAssociationToProperty(propertyValue.associatedProperty, propValId)
-        if(object.associateToProperty != "toDelete") {
-            await PropertyValueModel.updateOne({_id: propValId},{ $set: { "associatedProperty": object.associatedProperty} });
+        if(secureObject.associatedProperty != null)
+            deleteAssociationToProperty(secureObject.associatedProperty, propValId)
+        if(object.associatedProperty != "toDelete") {
+            secureObject.associatedProperty = object.associatedProperty
             associateToProperty("array", "associatedValues", propValId, object.associatedProperty);
         }
     }
     
     if(object.associatedItems){
-        const propertyValue = await getPropertyValueById(propValId);
-        let elem = JSON.stringify(propertyValue);
-        elem = JSON.parse(elem);
-        let oldAssociated = elem.associatedItems;
+        let oldAssociated = secureObject.associatedItems;
         let toRemove = oldAssociated.filter(x => !object.associatedItems.includes(x));
         let toAdd = object.associatedItems.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
@@ -66,8 +66,9 @@ const editPropertyValue = async (propValId, object) => {
         for(let elem of toAdd){
             associateToItem("array", "properties", propValId, elem);
         }
-        await PropertyValueModel.updateOne({_id: propValId},{ $set: { "associatedItems": object.associatedItems} });
+        secureObject.associatedItems = object.associatedItems;
     }
+    await PropertyValueModel.updateOne({_id: propValId},secureObject);
     return null;
 }
 

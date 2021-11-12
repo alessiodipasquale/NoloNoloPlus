@@ -39,23 +39,25 @@ const createProperty = async (object) => {
 }
 
 const editProperty = async (propId, object) => {
+    const property = await getPropertyById(propId);
+    let secureObject = JSON.stringify(property);
+    secureObject = JSON.parse(secureObject);
+
     if(object.name)
-        await PropertyModel.updateOne({_id: propId},{ $set: { "name": object.name} });
+        secureObject.name = object.name;
     if(object.associatedValues){
-        const property = await getPropertyById(propId);
-        let elem = JSON.stringify(property);
-        elem = JSON.parse(elem);
-        let oldAssociated = elem.associatedValues;
+        let oldAssociated = secureObject.associatedValues;
         let toRemove = oldAssociated.filter(x => !object.associatedValues.includes(x));
         let toAdd = object.associatedValues.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
             deleteAssociationToPropertyValue(elem,propId)
         }
         for(let elem of toAdd){
-            associateToPropertyValue("array", "associatedValues", propId, elem);
+            associateToPropertyValue("single", "associatedProperty", propId, elem);
         }
-        await PropertyModel.updateOne({_id: propId},{ $set: { "associatedValues": object.associatedValues} });
+        secureObject.associatedValues = object.associatedValues;
     }
+    await PropertyModel.updateOne({_id: propId},secureObject);
     return null;
 }
 

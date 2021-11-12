@@ -177,41 +177,6 @@ const checkIfAvailable = async (object) => {
     }
     return isOk;
 }
-
-const associateToItem = async (type, toModify, value, itemId) => {
-    const item = await getItemById(itemId);
-    if(type == "array") {
-        let elem = JSON.stringify(item);
-        elem = JSON.parse(elem);
-        switch (toModify) {
-            case "reviews": {
-                let reviews = elem.reviews;
-                reviews.push(value);
-                await ItemModel.updateOne({_id: itemId},{ $set: { "reviews": reviews} });
-                break;
-            }
-            case "kits": {
-                let kits = elem.kits;
-                kits.push(value);
-                await ItemModel.updateOne({_id: itemId},{ $set: { "kits": kits} });
-                break;
-            }
-            case "category": {
-                let cat = elem.category;
-                cat.push(value);
-                await ItemModel.updateOne({_id: itemId},{ $set: { "category": cat} });
-                break;
-            }
-        }
-    } else {
-        switch (toModify) {
-            case "groupId": {
-                await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": value} });
-            }
-        }
-    }
-}
-
 const getReviewsByItemId = async (itemId) => {
     toReturn = [];
     const item = await getItemById(itemId);
@@ -322,70 +287,65 @@ const getCategoriesByItem = async (id) => {
 }
 
 const editItem = async (itemId, object) => {
+    const item = await getItemById(itemId);
+    let secureObject = JSON.stringify(item);
+    secureObject = JSON.parse(secureObject);
+
     if(object.name)
-        await ItemModel.updateOne({_id: itemId},{ $set: { "name": object.name} });
+        secureObject.name = object.name;
     if(object.description)
-        await ItemModel.updateOne({_id: itemId},{ $set: { "description": object.description} });
+        secureObject.description = object.description;   
     if(object.standardPrice)
-        await ItemModel.updateOne({_id: itemId},{ $set: { "standardPrice": object.standardPrice} });
+        secureObject.standardPrice = object.standardPrice;
     if(object.imgSrc)
-        await ItemModel.updateOne({_id: itemId},{ $set: { "imgSrc": object.imgSrc} });
+        secureObject.imgSrc = object.imgSrc;
     if(object.state)
-        await ItemModel.updateOne({_id: itemId},{ $set: { "state": object.state} });
+        secureObject.state = object.state;
     if(object.groupId) {
-        const item = await getItemById(itemId);
-        if(item.groupId != null)
-            deleteAssociationToGroup(item.groupId, itemId)
+        if(secureObject.groupId != null)
+            deleteAssociationToGroup(secureObject.groupId, itemId)
         if(object.groupId != "toDelete"){
-            await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": object.groupId} });
+            secureObject.groupId = object.groupId;
             associateToGroup("array", "items", itemId, object.groupId);
         }
     }
     if(object.category){
-        const item = await getItemById(itemId);
-        let elem = JSON.stringify(item);
-        elem = JSON.parse(elem);
-        let oldAssociated = elem.category;
+        let oldAssociated = secureObject.category;
         let toRemove = oldAssociated.filter(x => !object.category.includes(x));
         let toAdd = object.category.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
             deleteAssociationToCategory(elem,itemId)
         }
         for(let elem of toAdd){
-            associateToCategory("array", "category", itemId, elem);
+            associateToCategory("array", "associatedItems", itemId, elem);
         }
-        await ItemModel.updateOne({_id: itemId},{ $set: { "category": object.category} });
+        secureObject.category = object.category;
     }
     if(object.kits){
-        const item = await getItemById(itemId);
-        let elem = JSON.stringify(item);
-        elem = JSON.parse(elem);
-        let oldAssociated = elem.kits;
+        let oldAssociated = secureObject.kits;
         let toRemove = oldAssociated.filter(x => !object.kits.includes(x));
         let toAdd = object.kits.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
             deleteAssociationToKit(elem,itemId)
         }
         for(let elem of toAdd){
-            associateToKit("array", "kits", itemId, elem);
+            associateToKit("array", "items", itemId, elem);
         }
-        await ItemModel.updateOne({_id: itemId},{ $set: { "kits": object.kits} });
+        secureObject.kits = object.kits;
     }
     if(object.properties){
-        const item = await getItemById(itemId);
-        let elem = JSON.stringify(item);
-        elem = JSON.parse(elem);
-        let oldAssociated = elem.properties;
+        let oldAssociated = secureObject.properties;
         let toRemove = oldAssociated.filter(x => !object.properties.includes(x));
         let toAdd = object.properties.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
             deleteAssociationToProperty(elem,itemId)
         }
         for(let elem of toAdd){
-            associateToProperty("array", "properties", itemId, elem);
+            associateToPropertyValue("array", "associatedItems", itemId, elem);
         }
-        await ItemModel.updateOne({_id: itemId},{ $set: { "properties": object.properties} });
+        secureObject.properties = object.properties;
     }
+    await ItemModel.updateOne({_id: itemId},secureObject);
     return null;
 }
 
@@ -398,7 +358,6 @@ module.exports = {
     getItemsByCategoryId,
     updateItemRentalDates,
     checkIfAvailable,
-    associateToItem,
     getReviewsByItemId,
     calculatePriceforItem,
     getCategoriesByItem,

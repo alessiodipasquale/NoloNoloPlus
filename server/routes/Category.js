@@ -40,15 +40,16 @@ const createCategory = async (object) => {
 }
 
 const editCategory = async (catId, object) => {
+    const category = await getCategoryById(catId);
+    let secureObject = JSON.stringify(category);
+    secureObject = JSON.parse(secureObject);
+    
     if(object.name)
-        await CategoryModel.updateOne({_id: catId},{ $set: { "name": object.name} });
+        secureObject.name = object.name;
     if(object.description)
-        await CategoryModel.updateOne({_id: catId},{ $set: { "description": object.description} });
+        secureObject.description = object.description;
     if(object.items){
-        const category = await getCategoryById(catId);
-        let elem = JSON.stringify(category);
-        elem = JSON.parse(elem);
-        let oldAssociatedItems = elem.associatedItems;
+        let oldAssociatedItems = secureObject.associatedItems;
         let toRemove = oldAssociatedItems.filter(x => !object.items.includes(x));
         let toAdd = object.items.filter(x => !oldAssociatedItems.includes(x));
         for(let elem of toRemove){
@@ -57,8 +58,9 @@ const editCategory = async (catId, object) => {
         for(let elem of toAdd){
             associateToItem("array", "category", catId, elem);
         }
-        await CategoryModel.updateOne({_id: catId},{ $set: { "associatedItems": object.items} });
+        secureObject.associatedItems = object.items;
     }
+    await CategoryModel.updateOne({_id: catId},secureObject);
     return null;
 }
 

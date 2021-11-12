@@ -17,6 +17,11 @@ const _KitModel = new mongoose.Schema({
         type: [String],
         ref: 'Item'
     },
+    rentals: {
+        type: [String],
+        ref: 'Rental',
+        default: []
+    }
 },  { collection: "Kit"});
 
 _KitModel.pre('save', function (next) {
