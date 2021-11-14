@@ -349,6 +349,17 @@ const editItem = async (itemId, object) => {
     return null;
 }
 
+const updateRentalsCount = async (itemId) => {
+    const item = await getItemById(itemId);
+    let obj = JSON.stringify(item);
+    obj = JSON.parse(obj);
+    if(obj.rentCount == 0){
+        obj.everBeenRented = true;
+    }
+    obj.rentCount = obj.rentCount + 1;
+    await ItemModel.updateOne({_id: itemId},obj);
+}
+
 module.exports = {
     getItems,
     getItemById,
@@ -361,5 +372,6 @@ module.exports = {
     getReviewsByItemId,
     calculatePriceforItem,
     getCategoriesByItem,
-    editItem
+    editItem,
+    updateRentalsCount
 }

@@ -12,9 +12,6 @@ const { getReviewById, getReviews, deleteReview, createReview } = require("./Rev
 const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
-    //TODO: add editing endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
-    //TODO: deleting endpoint for all. Remaining: item, rental, certification, pricDet, prop, propVal, category, kit, review, group 
-        //May be necessari a global deleting manager to avoid from create circuar dependencies
     //TODO: associateProperties to categories passing from items
     try {
         var toReturn = null;

@@ -1,7 +1,7 @@
 const users = [
     {
         _id: "User2",
-        username: "Alessio",
+        username: "alessio",
         password: "ciao",
         name: "Alessio",
         surname: "Di Pasquale",

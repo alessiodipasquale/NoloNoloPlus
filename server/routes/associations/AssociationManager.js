@@ -8,9 +8,8 @@ const KitModel = require('../../models/KitModel');
 const GroupModel = require('../../models/GroupModel');
 const RentalModel = require('../../models/RentalModel');
 const CertificationModel = require('../../models/CertificationModel');
-/* Necessary to avoid circular dependencies */
 
-//TODO: verify all association creation functions 
+/* Necessary to avoid circular dependencies */
 
 ///////////////////////////////////////////////////////////////////////////// Category
 

@@ -3,8 +3,10 @@ const UserModel = require('../models/UserModel')
 const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem, calculatePriceforItem } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
-const { associateToUser } = require("./associations/AssociationManager");
+const { associateToUser, associateToKit, associateToItem } = require("./associations/AssociationManager");
 const { getKitById, calculatePriceforKit } = require("./Kit");
+const { createCertification } = require("./Certification");
+const { updateRentalsCount } = require("./Item");
 
 const getRentalById = async (id) => {
     const rental = await RentalModel.findById(id)
@@ -30,9 +32,11 @@ const deleteRental = async () => {
 }
 
 const createRental = async (object, userId, role) => {
+    /*
+    Important note: userId is related to the user that make the request.
+    If an employer create a rental for one user the clientId must be passed in the object    
+    */
     //TODO Item ever been rented, rent count, etc...
-    //TODO add to rentals in user both for client and employer
-    //TODO add to rentals in both Item and Kit
     if(!object.startDate || !object.endDate || !userId  || !object.objectId)
         throw BadRequestError;
 
@@ -57,7 +61,8 @@ const createRental = async (object, userId, role) => {
     if(!Array.isArray(object.objectId))
         object.objectId = [object.objectId]
     
-    object.clientId = userId;
+    if(role == 'cliente')
+        object.clientId = userId;
     object.itemId = object.objectId;
 
     if(object.rentalTarget == 'kit'){
@@ -75,17 +80,25 @@ const createRental = async (object, userId, role) => {
     const dates = getDatesFromARange(object.startDate, object.endDate);
     object.timeInDays = dates.length;
     await updateItemRentalDates("add", dates, object.objectId);
-    await associateToUser("array", "rentals", rental._id, userId);
+    await associateToUser("array", "rentals", rental._id, object.clientId);
     for(let id of object.objectId){
-        if(await countSpecifiedPurchase(userId, id) >= global.config.favouritesTreshold){
-            await associateToUser("array", "favItemsId", id, userId);
+        if(await countSpecifiedPurchase(object.clientId, id) >= global.config.favouritesTreshold){
+            await associateToUser("array", "favItemsId", id, object.clientId);
             const categories = await getCategoriesByItem(id);
             for(let cat of categories){
-                await associateToUser("array", "favCategories", cat, userId);
+                await associateToUser("array", "favCategories", cat, object.clientId);
             }
-        }  
-              
+        }        
+        await associateToItem("array","rentals",rental._id,id);
+        await updateRentalsCount(id);
     }
+    if(object.rentalType == "istantaneo"){  //if the employer create an instant rental for one user, the certification is automatically given
+        await createCertification({rentalId: rental._id, certificationType: 'ritiro'},object.employerId) 
+    }
+    if(object.rentalTarget == 'kit'){
+        await associateToKit("array","rentals",rental._id,object.kitId);
+    }
+
     return rental;
 }
 
