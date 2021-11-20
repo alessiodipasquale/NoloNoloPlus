@@ -15,15 +15,11 @@ import NavItem from "./components/Navbar/NavItem"
 import {ViewIcon} from "@chakra-ui/icons" 
 import Sidebar from "./components/Navbar/Navbar"
 import NavbarItems from "./components/Navbar/SidebarData";
-
+import EmployeesTable from "./components/employees/GenericTable";
 
 export const App = () => (
   
   <ChakraProvider>
-    <Router>
-      <LoginForm/>
-      <Switch>
-      </Switch>
-    </Router>
+    <EmployeesTable />
   </ChakraProvider>
 )
