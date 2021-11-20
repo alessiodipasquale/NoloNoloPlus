@@ -40,6 +40,7 @@ const requestManager = async (reqName, req, res) => {
             }
 
             case "loginBack": {
+                console.log(req.body);
                 toReturn = await loginBack(req.body.username, req.body.password)
 
                 break;
