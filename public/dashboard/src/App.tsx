@@ -3,23 +3,19 @@ import {
   ChakraProvider,
 } from "@chakra-ui/react"
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import EmployeeHistory from "./components/employees/EmployeeHistory";
+import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
 
-import LoginForm from "./components/LoginForm"
-import NavItem from "./components/Navbar/NavItem"
-import {ViewIcon} from "@chakra-ui/icons" 
-import Sidebar from "./components/Navbar/Navbar"
-import NavbarItems from "./components/Navbar/SidebarData";
-import EmployeesTable from "./components/employees/GenericTable";
+
+
 
 export const App = () => (
-  
-  <ChakraProvider>
-    <EmployeesTable />
-  </ChakraProvider>
+  <>
+      <nav>
+        <Link to="/clients">Clients</Link>
+        <Link to="/inventory" >Inventory</Link>
+        <Link to="/employees" >Employees</Link>
+      </nav>
+      <Outlet />
+  </>
 )
