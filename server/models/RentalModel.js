@@ -62,6 +62,10 @@ const _RentalModel = new mongoose.Schema({
     partialPrices: {
         type: [[String]],
         required: false
+    },
+    notes: {
+        type: String,
+        required: false
     }
 },  { collection: "Rental"});
 
