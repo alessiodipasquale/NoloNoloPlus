@@ -2,27 +2,9 @@ import React, { useMemo } from "react";
 import { useEffect, useState } from "react";
 import GenericTable from "../GenericTable";
 
-export default function EmployeeHistory({ employeeId } : {employeeId: string}) {
+export default function EmployeeHistory({ employeeId, isLoading, data } : {employeeId: string, isLoading: boolean, data: any }) {
     
-    const [rentals, setRentals] = useState(null)
-    const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        fetch(`users/${employeeId}/rentals`, {
-            headers: {
-                authorization: "bearer " + process.env.REACT_APP_TOKEN
-            }
-        })
-        .then((res) => {
-            return res.json();
-        })
-        .then(json => {
-            setRentals(json); //TODO: define type for database objects
-            setIsLoading(false)
-            return json;
-        })
-        .then(json => console.log(json))
-    }, [employeeId])
+    
 
     const columns = useMemo(() => [
         {
@@ -30,16 +12,28 @@ export default function EmployeeHistory({ employeeId } : {employeeId: string}) {
             accessor: "_id"
         },
         {
-            Header: "start date",
-            accessor: "startDate"
+            Header: "client id",
+            accessor: "clientId"
         },
         {
-            Header: "end date",
-            accessor: "endDate"
+            Header: "item id",
+            accessor: "itemId"
         },
+        // {
+        //     Header: "start date",
+        //     accessor: "startDate"
+        // },
+        // {
+        //     Header: "end date",
+        //     accessor: "endDate"
+        // },
         {
             Header: "status",
             accessor: "state"
+        },
+        {
+            Header: "final price",
+            accessor: "finalPrice"
         }
     ], []);
 
@@ -49,6 +43,6 @@ export default function EmployeeHistory({ employeeId } : {employeeId: string}) {
         isLoading ? <p>loading</p> :  //TODO loading animation
         <GenericTable 
         columns={columns} 
-        data={rentals} />
+        data={data} />
     )
 }

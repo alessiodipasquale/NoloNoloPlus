@@ -18,6 +18,8 @@ function GenericTable({columns, data, caption, footer} : {columns: Column[], dat
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data }, useSortBy);
 
+  
+
   return (
     <Table {...getTableProps()} variant="simple">
       <TableCaption>{caption}</TableCaption>

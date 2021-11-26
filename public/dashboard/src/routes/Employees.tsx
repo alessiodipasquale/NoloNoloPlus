@@ -1,9 +1,10 @@
 import React from 'react'
+import EmployeeDetails from '../components/employees/EmployeeDetails'
 import EmployeeHistory from '../components/employees/EmployeeHistory'
 
 function Employees() {
     return (
-        <EmployeeHistory employeeId="User1" />
+        <EmployeeDetails employeeId="User1"/>
     )
 }
 
