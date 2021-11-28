@@ -4,7 +4,7 @@ function doLogin() {
         .done((res) => {
             localStorage.setItem("token", res.token);
             window.location.pathname = "back-office/layout/layout.html"
-        })
+        }).catch(err => alert("Credenziali errate."))
       } else {
         alert("Inserisci dati validi.");
       }

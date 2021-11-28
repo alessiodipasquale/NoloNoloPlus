@@ -1,28 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" style="width: 100%;height: 100%;">
 <head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link href="./layout.css" rel="stylesheet">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link href="./layout.css" rel="stylesheet">    
 </head>
 <body>
 
-    <div class="wrapper">
+    <div class="wrappers">
         <!--Top menu -->
-        <div class="sidebar">
+        <div class="sideBar">
             <div class="image" style="display: flex; justify-content: center;">
                 <img src="../assets/Logo.png" style="width: 70%;">
             </div>
            
             <ul id="menuItems">
                 <li>
-                    <a href="#" class="active" id="homeBtn" name="home">
+                    <a href="#" class="active" id="dashboardBtn" name="dashboard">
                         <span class="icon"><i class="fas fa-home"></i></span>
-                        <span class="item">Home</span>
+                        <span class="item">Dashboard</span>
                     </a>
                 </li>
                 <li>
@@ -44,7 +45,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" id="categoriesBtn" name="cateogories">
+                    <a href="#" id="categoriesBtn" name="categories">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
                         <span class="item">Categories</span>
                     </a>
@@ -62,14 +63,21 @@
                     </a>
                 </li>
             </ul>
+
+            <a href="#" id="logoutBtn" name="logout" style="display: block; padding: 13px 30px; color: white; position: fixed; bottom: 2%; cursor: pointer;">
+                <span class="item"> Logout </span>
+            </a>
         </div>
 
-        <div id="content" style="position: fixed; left: 226px; width: 100%; height: 100%;">
+        <div id="content" style="position: absolute; left: 226px; width: 88%; height: 100%; padding: 1%;">
             Loading..
         </div>
         
     </div>
+    
+    <script src="../services/http-service.js"></script>
     <script src="./layout.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

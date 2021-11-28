@@ -48,6 +48,7 @@ const findUserByUsername = async (username) => {
 }
 
 const createUser = async (object) => {
+    console.log(object);
     if(!object.username || !object.password || !object.name || !object.surname)
         throw BadRequestError;
         

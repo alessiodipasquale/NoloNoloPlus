@@ -17,9 +17,14 @@ function httpGet(endPoint, auth) {
 }
 
 function httpPost(endPoint, data, auth) {
-    console.log('arrivo')
-    const options  = {};
+    let options;
     if(auth)
-        options.headers = getHeaders();
-    return $.post('http://'+document.location.host+'/'+endPoint, data, options);
+        options = getHeaders();
+    console.log(options);
+
+    return $.ajax({
+        url:'http://'+document.location.host+'/'+endPoint,
+        type:'post',
+        data: data,
+        headers: options});
 }

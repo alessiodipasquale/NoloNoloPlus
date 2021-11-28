@@ -3,7 +3,7 @@ const { requestManager } = require('../routes/RequestsManager');
 const router = {
     initialize: (app, passport) => {
         const auth = passport.authenticate('jwt', { session: false });
-
+        
         // Auth
         app.post('/loginFront',(req, res) => { requestManager("loginFront", req, res); })
         app.post('/registerFront',(req, res) => { requestManager("registerFront", req, res); })
@@ -16,7 +16,7 @@ const router = {
         app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
         app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
         app.delete('/users/:id', auth, (req, res) => { requestManager("deleteUser", req, res); })
-        app.post('/users',auth, (req, res) => { requestManager("createUser", req, res); })
+        app.post('/users', auth, (req, res) => { requestManager("createUser", req, res); })
         app.put('/users',auth, (req, res) => { requestManager("editUser", req, res); })
         app.get('/users/:userId/rentals',auth, (req, res) => { requestManager("getRentalsByUserId", req, res); })
         app.get('/users/:id/getReviewsByUserId', auth, (req, res) => { requestManager("getReviewsByUserId", req, res); })
