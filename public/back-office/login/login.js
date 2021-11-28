@@ -1,5 +1,3 @@
-const { application } = require("express");
-
 function doLogin() {
     if ($("#username").val() != "" && $("#password").val() != "") {
         httpPost('loginBack', {username: $("#username").val(), password: $("#password").val()}, false)

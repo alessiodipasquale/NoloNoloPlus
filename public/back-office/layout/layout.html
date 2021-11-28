@@ -1,15 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" style="width: 100%;height: 100%;">
 <head>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
-    <link href="./layout.css" rel="stylesheet">
-
-    
-
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="./layout.css" rel="stylesheet">    
 </head>
 <body>
 
@@ -20,51 +18,45 @@
                 <img src="../assets/Logo.png" style="width: 70%;">
             </div>
            
-            <ul>
+            <ul id="menuItems">
                 <li>
-                    <a href="#" class="active">
+                    <a href="#" class="active" id="homeBtn" name="home">
                         <span class="icon"><i class="fas fa-home"></i></span>
                         <span class="item">Home</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="icon"><i class="fas fa-desktop"></i></span>
-                        <span class="item">My Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
+                    <a href="#" id="usersBtn" name="users">
                         <span class="icon"><i class="fas fa-user-friends"></i></span>
-                        <span class="item">People</span>
+                        <span class="item">Users</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="rentalsBtn" name="rentals">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                        <span class="item">Perfomance</span>
+                        <span class="item">Rentals</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="itemsBtn" name="items">
                         <span class="icon"><i class="fas fa-database"></i></span>
-                        <span class="item">Development</span>
+                        <span class="item">Items</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="categoriesBtn" name="cateogories">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
-                        <span class="item">Reports</span>
+                        <span class="item">Categories</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="adminBtn" name="admin">
                         <span class="icon"><i class="fas fa-user-shield"></i></span>
                         <span class="item">Admin</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="settingsBtn" name="settings">
                         <span class="icon"><i class="fas fa-cog"></i></span>
                         <span class="item">Settings</span>
                     </a>
@@ -72,11 +64,12 @@
             </ul>
         </div>
 
+        <div id="content" style="position: fixed; left: 226px; width: 100%; height: 100%;">
+            Loading..
         </div>
-
+        
     </div>
-  <script>
+    <script src="./layout.js"></script>
 
-  </script>
 </body>
 </html>
