@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div class="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div id="content" class="bg-light min-vh-100 d-flex flex-row align-items-center">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-8">
@@ -48,6 +48,37 @@
         </div>
       </div>
     </div>
+
+    <div id="changeSizeText" style="margin: 20%; text-align: center;">
+      <div class="image" style="display: flex; justify-content: center;">
+          <img src="../assets/LogoAlt.png" style="width: 70%;">
+      </div>
+      <h4 style="margin-top: 10%;">L'utilizzo di NoloNolo BackOffice non è ottimizzata per la visualizzazione mobile. Passare ad una visualizzazione desktop.</h4>
+    </div>
   </body>
+
+  <script>
+    $(document).ready(function() {
+            if ($(this).width() > 1024) {
+                // if screen size is 1025px wide or larger
+                $('#changeSizeText').hide();    
+                $('#content').attr('style','display:flex !important');
+            }
+            else if ($(this).width() <= 1024)  {
+                $('#content').attr('style','display:none !important');
+                $('#changeSizeText').show();  
+            }
+        });
+
+        $(window).resize(function() {
+            if ($(this).width() < 1024) {
+              $('#content').attr('style','display:none !important');
+                $('#changeSizeText').show();    
+            } else {
+                $('#changeSizeText').hide();    
+                $('#content').attr('style','display:flex !important');
+            }
+        });
+  </script>
 
 </html>
