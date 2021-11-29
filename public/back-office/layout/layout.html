@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" style="width: 100%;height: 100%;">
+<html lang="en">
 <head>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
@@ -69,11 +69,45 @@
             </a>
         </div>
 
-        <div id="content" style="position: absolute; left: 226px; width: 88%; height: 100%; padding: 1%;">
+        <div id="content" style="margin-left: 226px; height: 100%; padding: 1%;">
             Loading..
         </div>
-        
+
+        <div id="changeSizeText" style="margin: 20%; text-align: center;">
+            <div class="image" style="display: flex; justify-content: center;">
+                <img src="../assets/LogoAlt.png" style="width: 70%;">
+            </div>
+            <h4 style="margin-top: 10%;">L'utilizzo di NoloNolo BackOffice non è ottimizzata per la visualizzazione mobile. Passare ad una visualizzazione desktop.</h4>
+        </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            console.log($(this).width());
+            if ($(this).width() > 1024) {
+                // if screen size is 1025px wide or larger
+                $('#changeSizeText').hide();    
+                $('.sideBar').show();    
+                $('#content').show();
+            }
+            else if ($(this).width() <= 1024)  {
+                $('#content').hide();
+                $('.sideBar').hide();    
+                $('#changeSizeText').show();  
+            }
+        });
+
+        $(window).resize(function() {
+            if ($(this).width() < 1024) {
+                $('#content').hide();
+                $('.sideBar').hide();    
+                $('#changeSizeText').show();    
+            } else {
+                $('#changeSizeText').hide();    
+                $('.sideBar').show();    
+                $('#content').show();
+            }
+        });
+    </script>
     
     <script src="../services/http-service.js"></script>
     <script src="./layout.js"></script>
