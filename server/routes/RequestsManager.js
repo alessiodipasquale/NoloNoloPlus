@@ -1,6 +1,6 @@
 const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack, roleChecker } = require("./Auth");
 const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId, calculatePriceforItem, editItem } = require("./Item");
-const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId } = require("./User");
+const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental, editRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetail} = require("./PriceDetails");

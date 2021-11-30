@@ -86,7 +86,7 @@ const editUserAdvanced = async (userId, object) => {
     if(object.name)
         secureObject.name = object.name;
     if(object.username)
-        secureObject.username = object.name;
+        secureObject.username = object.username;
     if(object.surname)
         secureObject.surname = object.surname;
     if(object.address)
