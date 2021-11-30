@@ -1,6 +1,5 @@
-const UserModel = require("../models/UserModel");
-const { getAuthToken } = require("./User");
-const { BadRequestError } = require("../config/errors");
+const { getAuthToken, getUserById } = require("./User");
+const { BadRequestError, UnauthorizedError } = require("../config/errors");
 
 const loginFront = async (username, clearTextPassword) => { //req.body.username / password
     const token = await getAuthToken(username, clearTextPassword);
@@ -38,11 +37,31 @@ const registerBack = async (obj) => {  //req.body.username / password
     return user;
 }
 
+const roleChecker = async (userId, required, controlType) => {
+    const user = await getUserById(userId)
+    switch(required){
+        case 'funzionario':{
+            if(user.role == 'cliente')
+                if(controlType == "block")
+                    throw UnauthorizedError;
+                else return false
+        }
+        case 'manager':{
+            if(user.role == 'funzionario' || user.role == 'cliente')
+                if(controlType == "block")
+                    throw UnauthorizedError;
+                else return false
+        }
+    }
+    return true;
+}
+
 module.exports = {
     loginFront,
     registerFront,
     registerDashboard,
     loginDashboard,
     loginBack,
-    registerBack
+    registerBack,
+    roleChecker
 }
