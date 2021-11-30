@@ -59,9 +59,11 @@ const createUser = async (object) => {
 }
 
 const editUser = async (userId, object) => {
-    const user = await getUserById(userId);
+    const user = await getUserById(object._id);
     let secureObject = JSON.stringify(user);
     secureObject = JSON.parse(secureObject)
+
+    console.log(object);
     
     if(object.name)
         secureObject.name = object.name;
@@ -74,7 +76,7 @@ const editUser = async (userId, object) => {
     if(object.favPaymentMethod && (object.favPaymentMethod == 'carta' || object.favPaymentMethod == 'alla consegna'))
         secureObject.favPaymentMethod = object.favPaymentMethod;
         
-    await UserModel.updateOne({_id: userId},secureObject);
+    await UserModel.updateOne({_id: object._id},secureObject);
     return null;
 }
 

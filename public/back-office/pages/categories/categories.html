@@ -1,12 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories</title>
-</head>
-<body>
-    categories works.
-</body>
-</html>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCategoryModal">
+    Crea nuova categoria
+</button>
+
+<table class="table" style="margin-top: 2%;">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Descrizione</th>
+        <th scope="col">Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<!-- CreateModal -->
+<div class="modal fade" id="createCategoryModal" tabindex="-1" role="dialog" aria-labelledby="createCategoryModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="createCategoryModalLabel">Crea categoria</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputName">Nome *</label>
+                            <input type="text" class="form-control" id="inputName" placeholder="Inserisci nome">
+                        </div>    
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputUsername">Descrizione *</label>
+                            <textarea type="text" class="form-control" id="inputDescription" placeholder="Inserisci Descrizione"></textarea>
+                        </div>
+                    </div>
+                </div> 
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="create()">Crea</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- EditModal -->
+<div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editCategoryModalLabel">Modifica categoria</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inpuEditId">Id</label>
+                            <input type="text" disabled class="form-control" id="inputEditId" >
+                        </div>    
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputEditName">Nome *</label>
+                            <input type="text" class="form-control" id="inputEditName" placeholder="Inserisci nome">
+                        </div>    
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputEditUsername">Descrizione *</label>
+                            <textarea type="text" class="form-control" id="inputEditDescription" placeholder="Inserisci Descrizione"></textarea>
+                        </div>
+                    </div>
+                </div> 
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-warning" id="editBtn" onclick="edit()">Modifica</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="../services/categories-service.js"></script>
+<script src="../pages/categories/categories.js"></script>
