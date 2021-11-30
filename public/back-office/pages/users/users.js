@@ -29,13 +29,27 @@ function addElemToTable(elem) {
         console.log(elem.target.id);
     })*/
 
-    var editBtn = $('<button type="button" class="btn btn-success mr-3" id='+elem._id+'><i class="fas fa-edit"></i></button>')
-
+    var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
+    var editIcon = $('')
     editBtn.click(function (elem) {
-        console.log(elem.target.id);
+        console.log(elem.target)
+        getUserById(elem.target.id)
+        .done(user => {
+            console.log(user);
+            $('#inputEditId').val(user._id)
+            $('#inputEditName').val(user.name)
+            $('#inputEditSurname').val(user.surname)
+            $('#inputEditUsername').val(user.username)
+            $('#inputEditAddress').val(user.address)
+            $('#inputEditLoyaltyPoint').val(user.loyaltyPoints)
+            $('#inputEditLastVisit').val(new Date(user.lastVisit).toISOString().substr(0, 10))
+            $('#inputEditPayementMethod').text(user.favPaymentMethod);
+            $('#inputEditRole').text(user.role);
+            $('#editUserModal').modal('show')
+        })
     })
 
-    var deleteBtn = $('<button type="button" class="btn btn-danger" id='+elem._id+'><i class="far fa-trash-alt"></i></button>')
+    var deleteBtn = $('<button type="button" class="btn btn-danger" id="'+elem._id+'"><i class="far fa-trash-alt" id="'+elem._id+'"></i></button>')
     deleteBtn.click(function (elem) {
         var r = confirm("Sei sicuro di voler eliminare?");
         if (r) {
@@ -74,5 +88,26 @@ function create() {
             addElemToTable(res);
             $('#createUserModal').modal('hide')
         }).catch(err => alert("Errore nella creazione dell'utente."))
+    }
+}
+
+function edit() {
+    const id = $('#inputEditId').val();
+    const name = $('#inputEditName').val();
+    const surname = $('#inputEditSurname').val();
+    const username = $('#inputEditUsername').val();
+    const address = $('#inputEditAddress').val() !== '' ? $('#inputEditAddress').val() : null;
+    const loyaltyPoints = $('#inputEditLoyaltyPoint').val() !== '' ? $('#inputEditLoyaltyPoint').val() : null;
+    const lastVisit = $('#inputEditLastVisit').val() !== '' ? $('#inputEditLastVisit').val() : null;
+    const role = $('#inputEditRole').text() !== '' ? $('#inputEditRole').text() : null;
+    const favPaymentMethod = $('#inputEditPayementMethod').text() !== '' ? $('#inputEditPayementMethod').text() : null;
+    if(name=='' || surname == '' || username == '') {
+        alert('Inserisci tutti i campi.')
+    } else {
+        editUser(id, name, surname, username, address, loyaltyPoints, lastVisit, role, favPaymentMethod)
+        .done((res)=> {
+            //editElemInTable(res);
+            $('#editUserModal').modal('hide')
+        }).catch(err => alert("Errore nella modifica dell'utente."))
     }
 }

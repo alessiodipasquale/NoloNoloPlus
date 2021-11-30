@@ -20,7 +20,7 @@
 </table>
 
 
-<!-- Modal -->
+<!-- CreateModal -->
 <div class="modal fade" id="createUserModal" tabindex="-1" role="dialog" aria-labelledby="createUserModalLabel"
 aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
@@ -120,6 +120,112 @@ aria-hidden="true">
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
             <button type="button" class="btn btn-primary" id="createBtn" onclick="create()">Crea</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- EditModal -->
+<div class="modal fade" id="editUserModal" tabindex="-1" role="dialog" aria-labelledby="editUserModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editUserModalLabel">Modifica utente</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputEditId">Id</label>
+                            <input type="text" disabled class="form-control" id="inputEditId">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputEditUsername">Username *</label>
+                            <input type="text" class="form-control" id="inputEditUsername" placeholder="Inserisci username">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputEditName">Nome *</label>
+                            <input type="text" class="form-control" id="inputEditName" placeholder="Inserisci nome">
+                        </div>    
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputEditSurname">Cognome *</label>
+                            <input type="text" class="form-control" id="inputEditSurname"placeholder="Inserisci cognome">
+                        </div>
+                    </div>
+                </div>
+                
+
+                <p class="mt-3">Opzionali</p>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="inputEditAddress">Indirizzo</label>
+                            <input type="text" class="form-control" id="inputEditAddress" placeholder="Inserisci indirizzo">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="inputEditLoyaltyPoint">Punti fedeltà</label>
+                            <input type="number" class="form-control" id="inputEditLoyaltyPoint" placeholder="Inserisci punti fedeltà">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="inputEditLastVisit">Ultima visita</label>
+                            <input type="date" class="form-control" id="inputEditLastVisit" placeholder="Inserisci ultima visita">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputEditPayementMethod">Metodo di pagamento</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputEditPayementMethod" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Metodo di pagamento
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputEditPayementMethod">
+                              <a class="dropdown-item" href="#">carta</a>
+                              <a class="dropdown-item" href="#">alla consegna</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputEditRole">Ruolo</label>
+                            <button class="btn btn-secondary btn-outline dropdown-toggle" type="button" id="inputEditRole" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Ruolo
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-role" aria-labelledby="inputEditRole">
+                              <a class="dropdown-item" href="#">cliente</a>
+                              <a class="dropdown-item" href="#">funzionario</a>
+                              <a class="dropdown-item" href="#">manager</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+                
+                
+                
+                
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-warning" id="editBtn" onclick="edit()">Modifica</button>
         </div>
     </div>
 </div>
