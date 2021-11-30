@@ -109,8 +109,8 @@ const requestManager = async (reqName, req, res) => {
             }
             case "editUser": {
                 if(roleChecker(req.user.user._id,'funzionario',"return"))
-                    toReturn = await editUser(req.user.user._id,req.body);      // advanced version 
-                else  toReturn = await editUser(req.user.user._id,req.body);
+                    toReturn = await editUserAdvanced(req.params.id,req.body); 
+                else  toReturn = await editUser(req.params.id,req.body);
                 break;
             }
             case "getRentalsByUserId": {

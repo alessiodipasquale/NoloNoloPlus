@@ -62,8 +62,6 @@ const editUser = async (userId, object) => {
     const user = await getUserById(object._id);
     let secureObject = JSON.stringify(user);
     secureObject = JSON.parse(secureObject)
-
-    console.log(object);
     
     if(object.name)
         secureObject.name = object.name;
@@ -75,6 +73,37 @@ const editUser = async (userId, object) => {
         secureObject.address = object.address;
     if(object.favPaymentMethod && (object.favPaymentMethod == 'carta' || object.favPaymentMethod == 'alla consegna'))
         secureObject.favPaymentMethod = object.favPaymentMethod;
+        
+    await UserModel.updateOne({_id: object._id},secureObject);
+    return null;
+}
+
+const editUserAdvanced = async (userId, object) => {
+    const user = await getUserById(object._id);
+    let secureObject = JSON.stringify(user);
+    secureObject = JSON.parse(secureObject)
+
+    if(object.name)
+        secureObject.name = object.name;
+    if(object.username)
+        secureObject.username = object.name;
+    if(object.surname)
+        secureObject.surname = object.surname;
+    if(object.address)
+        secureObject.address = object.address;
+    if(object.favPaymentMethod && (object.favPaymentMethod == 'carta' || object.favPaymentMethod == 'alla consegna'))
+        secureObject.favPaymentMethod = object.favPaymentMethod;
+    if(object.role)
+        secureObject.role = object.role
+
+    if(object.loyaltyPoints)
+        secureObject.loyaltyPoints = object.loyaltyPoints
+    if(object.commentsFromOfficiers)
+        secureObject.commentsFromOfficiers = object.commentsFromOfficiers
+    if(object.favCategories)
+        secureObject.favCategories = object.favCategories
+    if(object.favItemsId)
+        secureObject.favItemsId = object.favItemsId
         
     await UserModel.updateOne({_id: object._id},secureObject);
     return null;
@@ -176,5 +205,6 @@ module.exports = {
     createUser,
     getRentalsByUserId,
     editUser,
+    editUserAdvanced,
     getReviewsByUserId,
 }

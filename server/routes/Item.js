@@ -37,6 +37,7 @@ const getItems = async () => {
     for(let item of items){
         
         const props = [];
+        const categories = [];
         for(let propId of item.properties){
             const propVal = await PropertyValueModel.findOne({_id: propId});
             const prop = await PropertyModel.findOne({_id: propVal.associatedProperty});
@@ -45,9 +46,14 @@ const getItems = async () => {
             const unitOfMeasure = propVal.unitOfMeasure;
             props.push({name, value, unitOfMeasure});
         }
+        for(let catId of item.category){
+            const category = await CategoryModel.findOne({_id: catId});
+            categories.push({name:category.name, description: category.description});
+        }
         let elem = JSON.stringify(item)
         elem = JSON.parse(elem)
         elem.properties = props;
+        elem.categories = categories;
         toReturn.push(elem);
     }
     return toReturn;
