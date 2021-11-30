@@ -45,12 +45,14 @@ const roleChecker = async (userId, required, controlType) => {
                 if(controlType == "block")
                     throw UnauthorizedError;
                 else return false
+            break;
         }
         case 'manager':{
             if(user.role == 'funzionario' || user.role == 'cliente')
                 if(controlType == "block")
                     throw UnauthorizedError;
                 else return false
+            break;
         }
     }
     return true;
