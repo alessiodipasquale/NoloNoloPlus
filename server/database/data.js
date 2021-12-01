@@ -18,7 +18,7 @@ const users = [
         password: "admin",
         name: "admin",
         surname: "admin",
-        rentals: ["Rental1", "Rental2"],
+        rentals: ["Rental1", "Rental2", "Rental3"],
         role: "funzionario"
     }
 ];
@@ -182,7 +182,7 @@ const rentals = [
     {
         _id: "Rental2",
         startDate: new Date("<2021-10-05>"),
-        endDate: new Date("<2023-10-10>"),
+        endDate: new Date("<2021-10-10>"),
         clientId: "User1",
         timeInDays: 10,
         state: 'terminata',
@@ -192,6 +192,21 @@ const rentals = [
         rentalCertification: "Certification1",
         returnCertification: "Certification2",
         finalPrice: 1200,
+        notes: ["js is bad"]
+    },
+    {
+        _id: "Rental3",
+        startDate: new Date("<2021-11-029>"),
+        endDate: new Date("<2021-11-029>"),
+        clientId: "User1",
+        timeInDays: 10,
+        state: 'terminata',
+        kitId: "Kit1",
+        rentalType: 'istantaneo',
+        rentalTarget: 'kit',
+        rentalCertification: "Certification1",
+        returnCertification: "Certification2",
+        finalPrice: 1600,
         notes: ["js is bad"]
     }
 ];
