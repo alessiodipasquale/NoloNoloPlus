@@ -3,22 +3,22 @@ type RentalTarget = 'singolo' | 'kit';
 type State = 'in corso' | 'terminata' | 'futura' | 'non completabile';
 
 interface Rental {
-    _id: String;
-    startDate: String;
-    endDate: String;
-    clientId: String;
-    employerId: String;
-    itemId: String[];
-    kitId: String;
+    _id: string;
+    startDate: string;
+    endDate: string;
+    clientId: string;
+    employerId: string;
+    itemId: string[];
+    kitId: string;
     timeInDays: number;
     rentalType: RentalType;
     rentalTarget: RentalTarget;
-    rentalCertification: String;
+    rentalCertification: string;
     state: State
     finalPrice: number;
-    receipt: String[];
-    partialPrices: String[][]
-    notes: String[]
+    receipt: string[];
+    partialPrices: string[][]
+    notes: string[]
 }
 
 
