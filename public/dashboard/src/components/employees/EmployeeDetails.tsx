@@ -8,6 +8,7 @@ import { add } from 'lodash';
 import { Spinner } from '@chakra-ui/react';
 import RentalDetails from '../RentalDetails';
 import StatCard from '../cards/StatCard';
+import { subDays } from 'date-fns'
 
 
 const gridItemStyle = {
@@ -22,13 +23,26 @@ function EmployeeDetails({ employeeId } : {employeeId: string}) {
 
     const [rentals, setRentals] = useState<Rental[]>([])
     const [isLoading, setIsLoading] = useState(true)
-
+  
 
     function getAvgPrice() : number {
         if (rentals)
             return rentals.map(rental => rental.finalPrice).reduce((pre, curr) => pre + curr, 0) / rentals.length; 
         else 
             return 0
+    }
+
+    function getRevenue(since?: Date) : number {
+      let toReduce: Rental[];
+      if (since) {
+        toReduce = rentals.filter(rental => {
+          return (new Date(rental.endDate) >= since)
+        })
+        
+      } else {
+        toReduce = rentals;
+      }
+      return toReduce.reduce((prev, curr) => prev + curr.finalPrice, 0)
     }
     
     useEffect(() => {
@@ -41,20 +55,20 @@ function EmployeeDetails({ employeeId } : {employeeId: string}) {
             return res.json();
         })
         .then(json => {
-            setRentals(json); //TODO: define type for database objects
-            setIsLoading(false)
-            return json;
+          setRentals(json); //TODO: define type for database objects
+          console.log(rentals)
+          setIsLoading(false)
+          return json;
         })
         .then(json => console.log(json))
-    }, [employeeId])
-
-
+    }, [])
 
 
     const options = ["All", "Last 30 days", "Last week"];
-    const values = [1, 2, 3]
+    const timeframe = [undefined, subDays(new Date(), 30), subDays(new Date(), 7)]
+    const values = timeframe.map(t => getRevenue(t))
     
-    const revenue = options.map( (e, i) => {
+    const revenueStat = options.map( (e, i) => {
       return {option: e, value: values[i]}
     } )
 
@@ -70,7 +84,7 @@ function EmployeeDetails({ employeeId } : {employeeId: string}) {
           padding={3}
         >
             <GridItem colSpan={4} rowSpan={4} {...gridItemStyle} >
-            <StatCard label="label" stats={revenue}/>
+            <StatCard label="label" stats={revenueStat}/>
           </GridItem>
 
           <GridItem colSpan={4} rowSpan={4} 
