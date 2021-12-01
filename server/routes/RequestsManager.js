@@ -1,15 +1,15 @@
-const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack } = require("./Auth");
-const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId, calculatePriceforItem } = require("./Item");
-const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId } = require("./User");
-const { getRentalById, getRentals, deleteRental, createRental } = require("./Rental");
+const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack, roleChecker } = require("./Auth");
+const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId, calculatePriceforItem, editItem } = require("./Item");
+const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced } = require("./User");
+const { getRentalById, getRentals, deleteRental, createRental, editRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetail} = require("./PriceDetails");
-const { getPropertyById, getProperties, deleteProperty, createProperty } = require("./Property");
-const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue } = require("./PropertyValue");
-const { getCategoryById, getCategories, deleteCategory, createCategory } = require("./Category");
-const { getKitById, getKits, deleteKit, createKit, calculatePriceforKit, getReviewsByKitId } = require("./Kit");
-const { getReviewById, getReviews, deleteReview, createReview } = require("./Review");
-const { getGroupById, getGroups, deleteGroup, createGroup } = require("./Group");
+const { getPropertyById, getProperties, deleteProperty, createProperty, editProperty } = require("./Property");
+const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue, editPropertyValue } = require("./PropertyValue");
+const { getCategoryById, getCategories, deleteCategory, createCategory, editCategory } = require("./Category");
+const { getKitById, getKits, deleteKit, createKit, calculatePriceforKit, getReviewsByKitId, editKit } = require("./Kit");
+const { getReviewById, getReviews, deleteReview, createReview, editReview } = require("./Review");
+const { getGroupById, getGroups, deleteGroup, createGroup, editGroup } = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
     //TODO: associateProperties to categories passing from items
@@ -19,7 +19,6 @@ const requestManager = async (reqName, req, res) => {
             ////////////////////////////////////////////////////////////////////////// Auth
             case "loginFront": {
                 toReturn = await loginFront(req.body.username, req.body.password)
-
                 break;
             }
 
@@ -30,7 +29,6 @@ const requestManager = async (reqName, req, res) => {
 
             case "loginDashboard": {
                 toReturn = await loginDashboard(req.body.username, req.body.password)
-
                 break;
             }
 
@@ -40,9 +38,7 @@ const requestManager = async (reqName, req, res) => {
             }
 
             case "loginBack": {
-                console.log(req.body);
                 toReturn = await loginBack(req.body.username, req.body.password)
-
                 break;
             }
 
@@ -61,11 +57,18 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteItem": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deleteItem(req.params.id);
                 break;
             }
             case "createItem": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await createItem(req.body);
+                break;
+            }
+            case "editItem": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                    toReturn = await editItem(req.params.id,req.body);
                 break;
             }
             case "checkIfAvailable": {
@@ -85,23 +88,29 @@ const requestManager = async (reqName, req, res) => {
 
             ////////////////////////////////////////////////////////////////////////// User
             case "getUserById": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await getUserById(req.params.id);
                 break;
             }
             case "getUsers": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await getUsers();
                 break;
             }
             case "deleteUser": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deleteUser(req.params.id);
                 break;
             }
             case "createUser": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await createUser(req.body);
                 break;
             }
             case "editUser": {
-                toReturn = await editUser(req.user.user._id,req.body);
+                if(roleChecker(req.user.user._id,'funzionario',"return"))
+                    toReturn = await editUserAdvanced(req.params.id,req.body); 
+                else  toReturn = await editUser(req.params.id,req.body);
                 break;
             }
             case "getRentalsByUserId": {
@@ -123,11 +132,17 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteRental": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deleteRental(req.params.id);
                 break;
             }
             case "createRental": {
                 toReturn = await createRental(req.body,req.user.user._id, req.user.user.role);
+                break;
+            }
+            case "editRental": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await editRental(req.params.id,req.body);
                 break;
             }
 
@@ -141,16 +156,19 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteCertification": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deleteCertification(req.params.id);
                 break;
             }
             case "createCertification": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await createCertification(req.body);
                 break;
             }
 
             ////////////////////////////////////////////////////////////////////////// Price detail
             case "getPriceDetail": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await getPriceDetail();
                 break;
             }
@@ -164,11 +182,18 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteProperty": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deleteProperty(req.params.id);
                 break;
             }
             case "createProperty": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await createProperty(req.body);
+                break;
+            }
+            case "editProperty": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                    toReturn = await editProperty(req.params.id,req.body);
                 break;
             }
 
@@ -182,11 +207,18 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deletePropertyValue": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deletePropertyValue(req.params.id);
                 break;
             }
             case "createPropertyValue": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await createPropertyValue(req.body);
+                break;
+            }
+            case "editPropertyValue": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                    toReturn = await editPropertyValue(req.params.id,req.body);
                 break;
             }
 
@@ -200,11 +232,18 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteCategory": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deleteCategory(req.params.id);
                 break;
             }
             case "createCategory": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await createCategory(req.body);
+                break;
+            }
+            case "editCategory": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                    toReturn = await editCategory(req.params.id,req.body);
                 break;
             }
 
@@ -222,11 +261,18 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteKit": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deleteKit(req.params.id);
                 break;
             }
             case "createKit": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await createKit(req.body);
+                break;
+            }
+            case "editKit": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                    toReturn = await editKit(req.params.id,req.body);
                 break;
             }
             case "calculatePriceforKit": {
@@ -250,11 +296,18 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteReview": {
-                await deleteReview(req.params.id);
+                if(roleChecker(req.user.user._id,'funzionario',"return"))
+                    await deleteReview(req.params.id);      // advanced version 
+                else  await deleteReview(req.params.id);
                 break;
             }
             case "createReview": {
                 toReturn = await createReview(req.body,req.user.user._id);
+                break;
+            }
+            case "editReview": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                    toReturn = await editReview(req.params.id,req.body);
                 break;
             }
 
@@ -268,11 +321,18 @@ const requestManager = async (reqName, req, res) => {
                 break;
             }
             case "deleteGroup": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 await deleteGroup(req.params.id);
                 break;
             }
             case "createGroup": {
+                roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await createGroup(req.body);
+                break;
+            }
+            case "editGroup": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                    toReturn = await editGroup(req.params.id,req.body);
                 break;
             }
 

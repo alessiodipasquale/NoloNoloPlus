@@ -10,16 +10,55 @@ function getHeaders() {
 }
 
 function httpGet(endPoint, auth) {
-    const options  = {};
+    let options = '';
     if(auth)
-        options.headers = getHeaders();
-    return $.get('http://'+document.location.host+'/'+ endPoint, options);
+        options = getHeaders();
+    return $.ajax({
+        url:'http://'+document.location.host+'/'+endPoint,
+        type:'get',
+        headers: options});
 }
 
 function httpPost(endPoint, data, auth) {
-    console.log('arrivo')
-    const options  = {};
+    let options = '';;
     if(auth)
-        options.headers = getHeaders();
-    return $.post('http://'+document.location.host+'/'+endPoint, data, options);
+        options = getHeaders();
+
+    return $.ajax({
+        url:'http://'+document.location.host+'/'+endPoint,
+        type:'post',
+        data: data,
+        headers: options});
+}
+
+function httpDelete(endPoint, auth) {
+    let options = '';
+    if(auth)
+        options = getHeaders();
+    return $.ajax({
+        url:'http://'+document.location.host+'/'+endPoint,
+        type:'delete',
+        headers: options});
+}
+
+function httpPatch(endPoint, data, auth) {
+    let options = '';
+    if(auth)
+        options = getHeaders();
+    return $.ajax({
+        url:'http://'+document.location.host+'/'+endPoint,
+        type:'patch',
+        data: data,
+        headers: options});
+}
+
+function httpPut(endPoint, data, auth) {
+    let options = '';
+    if(auth)
+        options = getHeaders();
+    return $.ajax({
+        url:'http://'+document.location.host+'/'+endPoint,
+        type:'put',
+        data: data,
+        headers: options});
 }

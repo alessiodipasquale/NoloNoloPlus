@@ -1,82 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css">
+    <link href="./layout.css" rel="stylesheet">    
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="./layout.css" rel="stylesheet">
-
-    
-
+    <title>NoloNolo - BackOffice</title>
 </head>
 <body>
 
-    <div class="wrapper">
+    <div class="wrappers">
         <!--Top menu -->
-        <div class="sidebar">
+        <div class="sideBar">
             <div class="image" style="display: flex; justify-content: center;">
                 <img src="../assets/Logo.png" style="width: 70%;">
             </div>
            
-            <ul>
+            <ul id="menuItems">
                 <li>
-                    <a href="#" class="active">
+                    <a href="#" class="active" id="dashboardBtn" name="dashboard">
                         <span class="icon"><i class="fas fa-home"></i></span>
-                        <span class="item">Home</span>
+                        <span class="item">Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
-                        <span class="icon"><i class="fas fa-desktop"></i></span>
-                        <span class="item">My Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
+                    <a href="#" id="usersBtn" name="users">
                         <span class="icon"><i class="fas fa-user-friends"></i></span>
-                        <span class="item">People</span>
+                        <span class="item">Users</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="rentalsBtn" name="rentals">
                         <span class="icon"><i class="fas fa-tachometer-alt"></i></span>
-                        <span class="item">Perfomance</span>
+                        <span class="item">Rentals</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="itemsBtn" name="items">
                         <span class="icon"><i class="fas fa-database"></i></span>
-                        <span class="item">Development</span>
+                        <span class="item">Items</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="categoriesBtn" name="categories">
                         <span class="icon"><i class="fas fa-chart-line"></i></span>
-                        <span class="item">Reports</span>
+                        <span class="item">Categories</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="adminBtn" name="admin">
                         <span class="icon"><i class="fas fa-user-shield"></i></span>
                         <span class="item">Admin</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#" id="settingsBtn" name="settings">
                         <span class="icon"><i class="fas fa-cog"></i></span>
                         <span class="item">Settings</span>
                     </a>
                 </li>
             </ul>
+
+            <a href="#" id="logoutBtn" name="logout" style="display: block; padding: 13px 30px; color: white; position: fixed; bottom: 2%; cursor: pointer;">
+                <span class="item"> Logout </span>
+            </a>
         </div>
 
+        <div id="content" style="margin-left: 226px; height: 100%; padding: 1%;">
+            Loading..
         </div>
 
+        <div id="changeSizeText" style="margin: 20%; text-align: center;">
+            <div class="image" style="display: flex; justify-content: center;">
+                <img src="../assets/LogoAlt.png" style="width: 70%;">
+            </div>
+            <h4 style="margin-top: 10%;">L'utilizzo di NoloNolo BackOffice non è ottimizzata per la visualizzazione mobile. Passare ad una visualizzazione desktop.</h4>
+        </div>
     </div>
-  <script>
+    <script>
+        $(document).ready(function() {
+            if ($(this).width() > 1024) {
+                // if screen size is 1025px wide or larger
+                $('#changeSizeText').hide();    
+                $('.sideBar').show();    
+                $('#content').show();
+            }
+            else if ($(this).width() <= 1024)  {
+                $('#content').hide();
+                $('.sideBar').hide();    
+                $('#changeSizeText').show();  
+            }
+        });
 
-  </script>
+        $(window).resize(function() {
+            if ($(this).width() < 1024) {
+                $('#content').hide();
+                $('.sideBar').hide();    
+                $('#changeSizeText').show();    
+            } else {
+                $('#changeSizeText').hide();    
+                $('.sideBar').show();    
+                $('#content').show();
+            }
+        });
+    </script>
+    
+    <script src="../services/http-service.js"></script>
+    <script src="./layout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
 </html>

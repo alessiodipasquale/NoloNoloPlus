@@ -13,7 +13,7 @@ body{
     background: #f5f6fa;
 }
 
-.wrapper .sidebar{
+.wrappers .sideBar{
     background: rgb(5, 68, 104);
     position: fixed;
     top: 0;
@@ -24,7 +24,7 @@ body{
     transition: all 0.5s ease;
 }
 
-.wrapper .sidebar ul li a{
+.wrappers .sideBar ul li a{
     display: block;
     padding: 13px 30px;
     border-bottom: 1px solid #10558d;
@@ -33,27 +33,30 @@ body{
     position: relative;
 }
 
-.wrapper .sidebar ul li a .icon{
+.wrappers .sideBar ul li a .icon{
     color: #dee4ec;
     width: 30px;
     display: inline-block;
 }
 
-.wrapper .sidebar ul li a:hover,
-.wrapper .sidebar ul li a.active{
+.wrappers .sideBar ul li a:hover,
+.wrappers .sideBar ul li a.active{
     color: #0c7db1;
 
     background:white;
     border-right: 2px solid rgb(5, 68, 104);
 }
 
-.wrapper .sidebar ul li a:hover .icon,
-.wrapper .sidebar ul li a.active .icon{
+.wrappers .sideBar ul li a:hover .icon,
+.wrappers .sideBar ul li a.active .icon{
     color: #0c7db1;
 }
 
-.wrapper .sidebar ul li a:hover:before,
-.wrapper .sidebar ul li a.active:before{
+.wrappers .sideBar ul li a:hover:before,
+.wrappers .sideBar ul li a.active:before{
     display: block;
 }
 
+.modal-backdrop.in {
+    z-index:-1;
+  }
