@@ -2,12 +2,16 @@ import { Button } from "@chakra-ui/button";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
 import { Center, Container, Heading, VStack} from "@chakra-ui/layout";
-import { Formik, Form, Field, useField, ErrorMessage, FormikProps} from 'formik';
+import { Formik, Form, Field, useField, ErrorMessage, FormikProps, FormikBag, FormikHandlers, FormikHelpers, FieldInputProps} from 'formik';
 import React, { MutableRefObject, useRef, useState } from "react";
 import * as Yup from "yup"
 import path from 'path'
-import { consoleTestResultHandler } from "tslint/lib/test";
 
+
+interface FormValues {
+    username: string;
+    password: string;
+}
 
 export default function LoginForm() {
 
@@ -15,7 +19,7 @@ export default function LoginForm() {
     //const [user, setUser] = useState({name: '', password: ''})
 
 
-    function handleSubmit(values, formik) {
+    function handleSubmit(values : FormValues, formik: FormikHelpers<FormValues>) {
         console.log(JSON.stringify(values))
         formik.setSubmitting(false)
         fetch("loginDashboard", {
@@ -50,9 +54,9 @@ export default function LoginForm() {
                     <Form>
                         <VStack >
                             <Field name="username">
-                                {({ field, form } ) => (
+                                {({ field , form }: {field: FieldInputProps<string>, form: any} ) => (
                                     <FormControl 
-                                    isInvalid={form.touched.username &&form.errors.username}>
+                                    isInvalid={form.touched.username && form.errors.username}>
                                         <FormLabel> Username or Email</FormLabel>
                                         <Input {...field} id="name" />
                                         <FormErrorMessage>{form.errors.username}</FormErrorMessage>
@@ -60,7 +64,7 @@ export default function LoginForm() {
                                 )}
                             </Field>
                             <Field name="password">
-                                {({ field, form }) => (
+                                {({ field, form }: {field: FieldInputProps<string>, form: any}) => (
                                     <FormControl 
                                     isInvalid={form.touched.password &&form.errors.password}>
                                         <FormLabel>Password</FormLabel>

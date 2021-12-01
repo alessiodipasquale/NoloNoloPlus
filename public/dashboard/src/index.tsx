@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import Clients from "./routes/Clients"
 import Inventory from "./routes/Inventory"
 import Employees from "./routes/Employees"
+import Rentals from "./routes/Rentals"
 
 console.log(process.env)
 
@@ -22,6 +23,7 @@ ReactDOM.render(
             <Route path="/clients" element={<Clients />}/>
             <Route path="/inventory" element={<Inventory />}/>
             <Route path="/employees" element={<Employees />}/>
+            <Route path="/rentals" element={<Rentals />}/>
 
           </Route>
         </Routes>

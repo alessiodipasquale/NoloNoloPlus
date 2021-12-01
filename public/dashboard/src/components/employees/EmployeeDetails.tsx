@@ -6,16 +6,23 @@ import EmployeeHistory from './EmployeeHistory'
 import type { Rental }  from '../../types/bd-entities'
 import { add } from 'lodash';
 import { Spinner } from '@chakra-ui/react';
+import RentalDetails from '../RentalDetails';
+import StatCard from '../cards/StatCard';
 
 
-const border = {
-    border: "solid"
+const gridItemStyle = {
+  padding: "24px",
+  margin: "0",
+  backgroundColor: "white",
+  borderRadius:"md"
 }
+
 
 function EmployeeDetails({ employeeId } : {employeeId: string}) {
 
-    const [rentals, setRentals] = useState([]) as [Rental[], any]
+    const [rentals, setRentals] = useState<Rental[]>([])
     const [isLoading, setIsLoading] = useState(true)
+
 
     function getAvgPrice() : number {
         if (rentals)
@@ -42,60 +49,70 @@ function EmployeeDetails({ employeeId } : {employeeId: string}) {
     }, [employeeId])
 
 
+
+
+    const options = ["All", "Last 30 days", "Last week"];
+    const values = [1, 2, 3]
+    
+    const revenue = options.map( (e, i) => {
+      return {option: e, value: values[i]}
+    } )
+
     return (
       <>
         <Grid
           minWidth="0"
+          w="100%"
           h="100vh"
           templateColumns="Repeat(12, 1fr)"
-          templateRows="Repeat(5, 1fr)"
+          templateRows="Repeat(12, 1fr)"
           gap={3}
           padding={3}
         >
-          <GridItem minWidth="0" rowSpan={3} colSpan={8} style={border}>
-            <EmployeeHistory 
-            employeeId="User1"
-            isLoading={isLoading}
-            data={rentals} />
+            <GridItem colSpan={4} rowSpan={4} {...gridItemStyle} >
+            <StatCard label="label" stats={revenue}/>
           </GridItem>
-          <GridItem style={border} colSpan={4} >
-          <StatGroup>
-            <Stat>
-                <StatLabel>Total rentals</StatLabel>
-                <StatNumber>{rentals.length}</StatNumber>
-                <StatHelpText>
-                <StatArrow type="increase" />
-                23.36%
-                </StatHelpText>
-            </Stat>
+
+          <GridItem colSpan={4} rowSpan={4} 
+          padding="24px"
+          bg="white"
+          borderRadius="base"
+          display="flex"
+          flexDirection="column"
+          alignItems="center"
+          justifyContent="center">
 
             <Stat>
                 <StatLabel>Active rentals</StatLabel>
-                <StatNumber>{rentals.filter(r => r.state === "in corso").length}</StatNumber>
-                <StatHelpText>
-                <StatArrow type="decrease" />
-                9.05%
-                </StatHelpText>
-            </Stat>
-            </StatGroup>
-          </GridItem>
-          <GridItem colSpan={2} style={border}>
-            <Stat>
-                <StatLabel>Avarage price</StatLabel>
-                {rentals? <StatNumber>{getAvgPrice()}</StatNumber> : <Spinner />}
+                <StatNumber>
+                  {rentals.filter(r => r.state === "in corso").length}
+                </StatNumber>
                 <StatHelpText>
                 <StatArrow type="decrease" />
                 9.05%
                 </StatHelpText>
             </Stat>
           </GridItem>
-          <GridItem colSpan={2} style={border} />
-          <GridItem colSpan={2}  />
-          <GridItem colSpan={2}  />
-          <GridItem rowSpan={2} colSpan={4} >
+
+          <GridItem colSpan={4} rowSpan={4} >
+            <Stat 
+            padding="24px"
+            bg="white"
+            borderRadius="base"
+            display="flex"
+            flexDirection="column"
+            alignItems="center">
+                <StatLabel>Active rentals</StatLabel>
+                <StatNumber>
+                  {rentals.filter(r => r.state === "in corso").length}
+                </StatNumber>
+                <StatHelpText>
+                <StatArrow type="decrease" />
+                9.05%
+                </StatHelpText>
+            </Stat>
           </GridItem>
-          <GridItem rowSpan={2} colSpan={4} />
-          <GridItem rowSpan={2} colSpan={4} />
+
         </Grid>
       </>
     );

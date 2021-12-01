@@ -1,10 +1,17 @@
-import { Center } from '@chakra-ui/react'
+import { Center, Container, Flex } from '@chakra-ui/react'
 import React from 'react'
+import { Rental } from '../types/bd-entities'
+import Note from './Note'
 
-function RentalDetails() {
+function RentalDetails( {rental} : {rental: Rental}) {
     return (
-        <Center>
-        </Center>
+        <Container>
+            <Flex 
+            id="notes"
+            direction="column" >
+                {rental && rental.notes? rental.notes.map(note => <Note>{note}</Note>) : <span>Such empty</span>}
+            </Flex>
+        </Container>
     )
 }
 
