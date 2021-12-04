@@ -18,17 +18,28 @@ type StatCardProps = {
   helpText?: string;
 };
 
-function CardMenu({ selected, setSelected, options }: {selected: number, setSelected: any, options: string[]}) {
+function CardMenu({
+  selected,
+  setSelected,
+  options,
+}: {
+  selected: number;
+  setSelected: any;
+  options: string[];
+}) {
   return (
     <Menu>
-      <MenuButton
-        fontSize="sm"
-        fontWeight="500"
-        as={Button}
-        rightIcon={<ai.AiFillCaretDown />}
-      >
-        {options[selected]}
-      </MenuButton>
+      {options.length > 1 && (
+        <MenuButton
+          size="sm"
+          variant="ghost"
+          fontWeight="500"
+          as={Button}
+          rightIcon={<ai.AiFillCaretDown />}
+        >
+          {options[selected]}
+        </MenuButton>
+      )}
       <MenuList>
         {options.map((elem, index) => (
           <MenuItem onClick={() => setSelected(index)}> {elem} </MenuItem>
