@@ -17,8 +17,9 @@ interface Rental {
     state: State
     finalPrice: number;
     receipt: string[];
-    partialPrices: string[][]
-    notes: string[]
+    partialPrices: string[][];
+    notes: string[];
+    tags: string[]
 }
 
 

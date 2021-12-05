@@ -19,12 +19,16 @@ import {
   getYear,
   startOfISOWeek,
   subDays,
-  parse,
   differenceInCalendarWeeks,
-  differenceInWeeks,
+  startOfMonth,
+  startOfWeek,
+  startOfQuarter,
+  minTime,
 } from "date-fns";
 import LineChartCard from "../cards/LineChartCard";
-import { addWeeks } from "date-fns/esm";
+import { addWeeks, startOfYear } from "date-fns/esm";
+import { getRevenuePerWeek } from "./fillMissingMissing";
+import { compareDateString } from "./compareDateString.1";
 
 const gridItemStyle = {
   padding: "24px",
@@ -34,7 +38,23 @@ const gridItemStyle = {
   overflow: "hidden",
 };
 
-const dateFormat = "yyyy-MMM-dd";
+export type timeframe = "week" | "month" | "quarter" | "year" | "all";
+
+function startOfPeriod(date: Date, period: timeframe): Date {
+  switch (period) {
+    case "week":
+      return startOfWeek(date);
+    case "month":
+      return startOfMonth(date);
+    case "quarter":
+      return startOfQuarter(date);
+    case "year":
+      return startOfYear(date);
+    default:
+      return new Date(minTime);
+  }
+}
+
 function EmployeeDetails({ employeeId }: { employeeId: string }) {
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -79,97 +99,13 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
       .then((json) => console.log(json));
   }, []);
 
-  function getRevenuePerWeek(
-    rentals: Rental[]
-  ): { date: string; revenue: number }[] {
-    let rentalsByWeek = rentals.reduce<{ [key: string]: Rental[] }>(
-      (rentalsByWeek, curr, index) => {
-        let endDate = new Date(curr.endDate);
-        let weekDate = startOfISOWeek(endDate);
-        const key = format(weekDate, "yyyy-MMM-dd");
-
-        if (!rentalsByWeek[key]) {
-          rentalsByWeek[key] = [];
-        }
-        rentalsByWeek[key].push(curr);
-
-        return rentalsByWeek;
-      },
-      {}
-    );
-
-    let weekTotals = [] as { date: string; revenue: number }[];
-
-    Object.keys(rentalsByWeek).map((week) => {
-      weekTotals.push({
-        date: week,
-        revenue: rentalsByWeek[week].reduce(
-          (tot, curr) => tot + curr.finalPrice,
-          0
-        ),
-      });
-      return null;
-    });
-
-    function fillMissingWeeks(
-      revenueByWeek: { date: string; revenue: number }[]
-    ): { date: string; revenue: number }[] {
-      let copy = revenueByWeek.slice().sort(compareDateString);
-      let added = 0
-      for (let i = 0; i < revenueByWeek.length - 1; i++) {
-        const dateA = parse(revenueByWeek[i].date, dateFormat, new Date());
-        const dateB = parse(revenueByWeek[i + 1].date, dateFormat, new Date());
-        console.log(dateA)
-        console.log(differenceInCalendarWeeks(dateB, dateA))
-
-        for (let j = 1; j < (differenceInWeeks(dateB, dateA,)); j++) {
-          let date = format(addWeeks(dateA, j), dateFormat)
-          console.log(date)
-          copy.push({
-            date: date,
-            revenue: 0,
-          });
-        }
-      }
-
-      return copy;
-    }
-
-
-    let filledWeeks = fillMissingWeeks(weekTotals);
-
-    function compareDateString(a: {date: string}, b: {date: string}) {
-      let dateA = parse(a.date, "yyyy-MMM-dd", new Date());
-      let dateB = parse(b.date, "yyyy-MMM-dd", new Date());
-      console.log(dateA, dateB);
-      if (dateA > dateB) {
-        return 1;
-      } else if (dateA < dateB) {
-        return -1;
-      } else {
-        return 0;
-      }
-    }
-
-    console.log(filledWeeks.sort(compareDateString));
-    return filledWeeks.sort(compareDateString)
-  }
-
-  function getAvgRentalPrice(rentals: Rental[]): number {
-    if (rentals.length === 0) {
-      return 0;
-    }
-    return (
-      rentals.reduce((acc, curr) => acc + curr.finalPrice, 0) / rentals.length
-    );
-  }
-
   const avgPrice = {
     option: "avarage",
     value: getAvgPrice(),
   };
 
   const options = ["All", "Last 30 days", "Last week"];
+
   const timeframe = [
     undefined,
     subDays(new Date(), 30),
