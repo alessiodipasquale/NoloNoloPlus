@@ -13,7 +13,7 @@ const getDatesFromARange = (start, end) => {
 
 const arrayUnion = (src, dest) => {
     for(let elem of src){
-        if(!dest.include(elem))
+        if(!dest.includes(elem))
             dest.push(elem)
     }
     return dest;
