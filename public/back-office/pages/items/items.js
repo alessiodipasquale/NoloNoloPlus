@@ -24,17 +24,17 @@ function addElemToTable(elem) {
         console.log(elem.target.id);
     })*/
 
-    var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
+    var editBtn = $('<button disabled type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     editBtn.click(function (elem) {
         console.log(elem.target)
-        getCategoryById(elem.target.id)
+        /*getCategoryById(elem.target.id)
         .done(category => {
             console.log(category);
             $('#inputEditId').val(category._id)
             $('#inputEditName').val(category.name)
             $('#inputEditDescription').val(category.description)
             $('#editItemModal').modal('show')
-        })
+        })*/
     })
 
     var deleteBtn = $('<button type="button" class="btn btn-danger" id="'+elem._id+'"><i class="far fa-trash-alt" id="'+elem._id+'"></i></button>')
