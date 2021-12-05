@@ -15,6 +15,6 @@ function deleteUser(id) {
 }
 
 function editUser(_id, name, surname, username, address, loyaltyPoints, lastVisit, role, favPaymentMethod) {
-    console.log(_id);
+    console.log(username);
     return httpPut('users', {_id, name, surname, username, address, loyaltyPoints, lastVisit, role, favPaymentMethod}, true);
 }
