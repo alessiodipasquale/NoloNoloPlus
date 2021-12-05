@@ -6,7 +6,7 @@ const PropertyModel = require("../models/PropertyModel");
 const PropertyValueModel = require("../models/PropertyValueModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { associateToCategory, associateToGroup, associateToPropertyValue, deleteAssociationToGroup, deleteAssociationToCategory  } = require('./associations/AssociationManager');
-const { deleteAssociationToKit, associateToKit,deleteAssociationToProperty  } = require('./associations/AssociationManager')
+const { deleteAssociationToKit, associateToKit,deleteAssociationToPropertyValue  } = require('./associations/AssociationManager')
 const { getPriceDetail } = require('./PriceDetails');
 
 const getItemById = async (id) => {
@@ -344,7 +344,7 @@ const editItem = async (itemId, object) => {
         let toRemove = oldAssociated.filter(x => !object.properties.includes(x));
         let toAdd = object.properties.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
-            deleteAssociationToProperty(elem,itemId)
+            deleteAssociationToPropertyValue(elem,itemId)
         }
         for(let elem of toAdd){
             associateToPropertyValue("array", "associatedItems", itemId, elem);
