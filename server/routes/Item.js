@@ -163,14 +163,14 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
 }
 
 const checkIfAvailable = async (object) => {
-    if(!object.startDate || !object.endDate || !object.objectId)
+    if(!object.startDate || !object.endDate || !object.itemIds)
         throw BadRequestError;
     
-    if(!Array.isArray(object.objectId))
-        object.objectId = [object.objectId];
+    if(!Array.isArray(object.itemIds))
+        object.itemIds = [object.itemIds];
 
     var isOk = true;
-    for(var elem of object.objectId){
+    for(var elem of object.itemIds){
         const item = await getItemById(elem);
         const start = new Date(object.startDate);
         const end = new Date(object.endDate);
