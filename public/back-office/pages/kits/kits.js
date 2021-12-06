@@ -18,10 +18,19 @@ $(document).ready(function() {
             for (const elem of res) {
                 const item = $('<li style="padding: 3px" id="'+elem._id+'"></li>')
                 .click(function(elem) {
+                    console.log(elem)
                     getItemById(elem.target.id)
                     .done(res => {
-                        const it = $('<p></p>').text(res._id+' ,'+res.name+', Stato:'+res.state)
-                        $('#objectList').append(it);
+                        const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-around; margin-bottom: 3px"></div>')
+                        const it = $('<p style="margin-bottom: 0"></p>').text(res._id+' ,'+res.name+', Stato:'+res.state)
+                        const deleteItemBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+res._id+'"><i class="fas fa-trash" id="'+res._id+'"></i></button>')
+                        .click(function(elem) {
+                            itemsList = itemsList.filter(el => el._id !== elem.target.id);
+                            $('#'+elem.target.id+'.itemList').remove();
+                        })
+                        row.append(it);
+                        row.append(deleteItemBtn);
+                        $('#objectList').append(row);
                         itemsList.push(res)
                     })
                 })
