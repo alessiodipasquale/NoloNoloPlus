@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react'
 import React from 'react'
-import EmployeeDetails from '../components/employees/EmployeeDetails'
-import EmployeeHistory from '../components/employees/EmployeeHistory'
+import EmployeeDetails from '../components/employees/EmployeeDashboard'
+import RentalHistory from '../components/employees/RentalsHistory'
 
 function Employees() {
     return (

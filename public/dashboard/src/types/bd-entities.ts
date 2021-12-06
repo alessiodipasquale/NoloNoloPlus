@@ -1,6 +1,10 @@
 type RentalType = 'prenotazione' |'istantaneo';
 type RentalTarget = 'singolo' | 'kit';
 type State = 'in corso' | 'terminata' | 'futura' | 'non completabile';
+type Note = {
+    text: string;
+    author: string;
+}
 
 interface Rental {
     _id: string;
@@ -18,7 +22,7 @@ interface Rental {
     finalPrice: number;
     receipt: string[];
     partialPrices: string[][];
-    notes: string[];
+    notes: Note[];
     tags: string[]
 }
 
