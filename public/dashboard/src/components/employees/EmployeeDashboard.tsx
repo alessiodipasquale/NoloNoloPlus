@@ -9,9 +9,9 @@ import {
 } from "@chakra-ui/stat";
 import React, { useEffect, useMemo, useState } from "react";
 import GenericTable from "../GenericTable";
-import EmployeeHistory from "./EmployeeHistory";
+import RentalHistory from "./RentalsHistory";
 import type { Rental } from "../../types/bd-entities";
-import RentalDetails from "../RentalDetails";
+import RentalDetails from "./RentalDetails";
 import StatCard from "../cards/StatCard";
 import {
   format,
@@ -29,6 +29,7 @@ import LineChartCard from "../cards/LineChartCard";
 import { addWeeks, startOfYear } from "date-fns/esm";
 import { getRevenuePerWeek } from "./fillMissingMissing";
 import { compareDateString } from "./compareDateString.1";
+import { useDisclosure } from "@chakra-ui/hooks";
 
 const gridItemStyle = {
   padding: "24px",
@@ -56,6 +57,7 @@ function startOfPeriod(date: Date, period: timeframe): Date {
 }
 
 function EmployeeDetails({ employeeId }: { employeeId: string }) {
+
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -119,6 +121,9 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
 
   const chartData = getRevenuePerWeek(rentals);
 
+  const [selectedRental, setSelectedRental] = useState<number | null>(null)
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <>
       <Grid
@@ -145,13 +150,16 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
           <LineChartCard data={chartData} />
         </GridItem>
         <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
-          <EmployeeHistory
+          <RentalHistory
             data={rentals}
             isLoading={isLoading}
-            employeeId={employeeId}
-          ></EmployeeHistory>
+            setSelectedRental={setSelectedRental}
+            onOpen={onOpen}
+          ></RentalHistory>
         </GridItem>
       </Grid>
+
+      {selectedRental === null? <></> : <RentalDetails rental={rentals[selectedRental]} isOpen={isOpen} onClose={onClose} />}
     </>
   );
 }
