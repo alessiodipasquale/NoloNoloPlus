@@ -6,7 +6,7 @@ const PropertyModel = require("../models/PropertyModel");
 const PropertyValueModel = require("../models/PropertyValueModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { associateToCategory, associateToGroup, associateToPropertyValue, deleteAssociationToGroup, deleteAssociationToCategory  } = require('./associations/AssociationManager');
-const { deleteAssociationToKit, associateToKit,deleteAssociationToProperty  } = require('./associations/AssociationManager')
+const { deleteAssociationToKit, associateToKit,deleteAssociationToPropertyValue  } = require('./associations/AssociationManager')
 const { getPriceDetail } = require('./PriceDetails');
 
 const getItemById = async (id) => {
@@ -163,14 +163,14 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
 }
 
 const checkIfAvailable = async (object) => {
-    if(!object.startDate || !object.endDate || !object.objectId)
+    if(!object.startDate || !object.endDate || !object.itemIds)
         throw BadRequestError;
     
-    if(!Array.isArray(object.objectId))
-        object.objectId = [object.objectId];
+    if(!Array.isArray(object.itemIds))
+        object.itemIds = [object.itemIds];
 
     var isOk = true;
-    for(var elem of object.objectId){
+    for(var elem of object.itemIds){
         const item = await getItemById(elem);
         const start = new Date(object.startDate);
         const end = new Date(object.endDate);
@@ -344,7 +344,7 @@ const editItem = async (itemId, object) => {
         let toRemove = oldAssociated.filter(x => !object.properties.includes(x));
         let toAdd = object.properties.filter(x => !oldAssociated.includes(x));
         for(let elem of toRemove){
-            deleteAssociationToProperty(elem,itemId)
+            deleteAssociationToPropertyValue(elem,itemId)
         }
         for(let elem of toAdd){
             associateToPropertyValue("array", "associatedItems", itemId, elem);

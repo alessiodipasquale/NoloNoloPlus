@@ -1,12 +1,161 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Items</title>
-</head>
-<body>
-    Items works.
-</body>
-</html>
+<button disabled type="button" class="btn btn-primary" data-toggle="modal" data-target="#createItemModal">
+    Crea nuovo oggetto
+</button>
+
+<table class="table" style="margin-top: 2%;">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Descrizione</th>
+        <th scope="col">Categoria</th>
+        <th scope="col">Stato</th>
+        <th scope="col">Numero di affitti</th>
+        <th scope="col">Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+
+<!-- CreateModal -->
+<div class="modal fade" id="createItemModal" tabindex="-1" role="dialog" aria-labelledby="createItemModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="createItemModalLabel">Crea Oggetto</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="inputName">Nome *</label>
+                            <input type="text" class="form-control" id="inputName" placeholder="Inserisci nome">
+                        </div>    
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="inputPrice">Prezzo standard *</label>
+                            <input type="text" class="form-control" id="inputPrice" placeholder="Inserisci prezzo standard">
+                        </div>    
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputCategory">Categoria</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli Categoria
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputCategory">
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                  Categoria1
+                                </label>
+                              </a>
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                  Categoria2
+                                </label>
+                              </a>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputDescription">Descrizione *</label>
+                            <textarea type="text" class="form-control" id="inputDescription" placeholder="Inserisci Descrizione"></textarea>
+                        </div>
+                    </div>
+                </div> 
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputPrice">Url immagine</label>
+                            <input type="text" class="form-control" id="inputImageUrl" placeholder="Inserisci url immagine">
+                        </div>    
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputCategory">Gruppo</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputGroup" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli Gruppo
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputGroup">
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                  Gruppo1
+                                </label>
+                              </a>
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                  Gruppo2
+                                </label>
+                              </a>
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputCategory">Stato</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputGroup" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli Stato
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputGroup">
+                                <a class="dropdown-item" href="#">inutilizzabile</a>
+                                <a class="dropdown-item" href="#">molto usurato</a>
+                                <a class="dropdown-item" href="#">usurato</a>
+                                <a class="dropdown-item" href="#">buono</a>
+                                <a class="dropdown-item" href="#">ottimo</a>
+                                <a class="dropdown-item" href="#">nuovo</a>
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputCategory">Kit</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputKit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli Kit
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputKit">
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                    Kit1
+                                </label>
+                              </a>
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                    Kit2
+                                </label>
+                              </a>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="create()">Crea</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script src="../services/items-service.js"></script>
+<script src="../pages/items/items.js"></script>
