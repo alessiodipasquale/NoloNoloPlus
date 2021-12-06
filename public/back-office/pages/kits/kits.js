@@ -1,5 +1,5 @@
 var itemsList = [];
-
+var itemsEditList = [];
 $(document).ready(function() {
     
 
@@ -83,17 +83,78 @@ function addElemToTable(elem) {
         console.log(elem.target.id);
     })*/
 
-    var editBtn = $('<button disabled type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
+    var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     editBtn.click(function (elem) {
         console.log(elem.target)
-        /*getCategoryById(elem.target.id)
-        .done(category => {
-            console.log(category);
-            $('#inputEditId').val(category._id)
-            $('#inputEditName').val(category.name)
-            $('#inputEditDescription').val(category.description)
-            $('#editItemModal').modal('show')
-        })*/
+        getKitById(elem.target.id)
+        .done(kit => {
+            console.log(kit);
+
+            $('#editObjectList').empty();
+            $('.elementEditDropdown').remove()
+
+            
+
+            itemsEditList = kit.items;
+            for (var res of itemsEditList) {
+                const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-around; margin-bottom: 3px"></div>')
+                const it = $('<p style="margin-bottom: 0"></p>').text(res._id+' ,'+res.name+', Stato:'+res.state)
+                const deleteItemBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+res._id+'"><i class="fas fa-trash" id="'+res._id+'"></i></button>')
+                .click(function(elem) {
+                    itemsEditList = itemsEditList.filter(el => el._id !== elem.target.id);
+                    $('#'+elem.target.id+'.itemList').remove();
+                })
+                row.append(it);
+                row.append(deleteItemBtn);
+                $('#editObjectList').append(row);
+            }
+            $('#inputEditId').val(kit._id)
+            $('#inputEditName').val(kit.name)
+            $('#inputEditStandardPrice').val(kit.standardPrice)
+            $('#inputEditAvailable').val(kit.available)
+            $('#inputEditDescription').val(kit.description)
+            $('#inputEditAvailable').val(kit.available)
+            
+            getItems()
+            .done(res => {
+                console.log(res);
+                for (const elem of res) {
+                    const item = $('<li class="elementEditDropdown" style="padding: 3px" id="'+elem._id+'"></li>')
+                    .click(function(elem) {
+                        console.log(elem)
+                        getItemById(elem.target.id)
+                        .done(res => {
+                            const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-around; margin-bottom: 3px"></div>')
+                            const it = $('<p style="margin-bottom: 0"></p>').text(res._id+' ,'+res.name+', Stato:'+res.state)
+                            const deleteItemBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+res._id+'"><i class="fas fa-trash" id="'+res._id+'"></i></button>')
+                            .click(function(elem) {
+                                itemsEditList = itemsEditList.filter(el => el._id !== elem.target.id);
+                                $('#'+elem.target.id+'.itemList').remove();
+                            })
+                            row.append(it);
+                            row.append(deleteItemBtn);
+                            $('#editObjectList').append(row);
+                            itemsEditList.push(res)
+                        })
+                    })
+                    const link = $('<a id="'+elem._id+'" href="#"></a>').text(elem._id+' ,'+elem.name+', Stato:'+elem.state)
+                    item.append(link);
+                    $('#dropdown-edititems').append(item);
+                }
+    
+                $(document).ready(function(){
+                    $("#editFilterItems").on("keyup", function() {
+                        var value = $(this).val().toLowerCase();
+                        $(".dropdown-menu li").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                        });
+                    });
+                    });
+    
+            })
+                
+            $('#editKitModal').modal('show')
+        })
     })
 
     var deleteBtn = $('<button type="button" class="btn btn-danger" id="'+elem._id+'"><i class="far fa-trash-alt" id="'+elem._id+'"></i></button>')
@@ -107,8 +168,23 @@ function addElemToTable(elem) {
         }
     })
 
+    
+
     row7.append([/*openBtn,*/ editBtn, deleteBtn]);
             
     row.append([row1, row2, row3, row4, row5, row6, row7]);
     $('tbody').append(row);
+}
+
+function edit() {
+    const id = $('#inputEditId').val();
+    const name = $('#inputEditName').val()
+    const description = $('#inputEditDescription').val()
+
+    const standardPrice = $('#inputEditStandardPrice').val()
+    const available = $('#inputEditAvailable').val()
+    editKit(id, name, description, standardPrice, available, itemsEditList)
+    .done(() => {
+        $('#editKitModal').modal('hide')
+    })
 }
