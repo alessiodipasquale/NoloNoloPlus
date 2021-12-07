@@ -111,7 +111,6 @@ const getReviewsByKitId = async (id) => {
 }
 
 const editKit = async (kitId, object) => {
-    console.log(object);
     const kit = await getKitById(kitId);
     let secureObject = JSON.stringify(kit);
     secureObject = JSON.parse(secureObject);
