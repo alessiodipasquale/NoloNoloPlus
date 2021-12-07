@@ -30,6 +30,7 @@ import { addWeeks, startOfYear } from "date-fns/esm";
 import { getRevenuePerWeek } from "./fillMissingMissing";
 import { compareDateString } from "./compareDateString.1";
 import { useDisclosure } from "@chakra-ui/hooks";
+import RevenueCard from "../cards/RevenueCard";
 
 const gridItemStyle = {
   padding: "24px",
@@ -41,25 +42,29 @@ const gridItemStyle = {
 
 export type timeframe = "week" | "month" | "quarter" | "year" | "all";
 
-function startOfPeriod(date: Date, period: timeframe): Date {
-  switch (period) {
-    case "week":
-      return startOfWeek(date);
-    case "month":
-      return startOfMonth(date);
-    case "quarter":
-      return startOfQuarter(date);
-    case "year":
-      return startOfYear(date);
-    default:
-      return new Date(minTime);
-  }
-}
-
 function EmployeeDetails({ employeeId }: { employeeId: string }) {
-
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedRental, setSelectedRental] = useState<number | null>(null);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    fetch(`users/${employeeId}/rentals`, {
+      headers: {
+        authorization: "bearer " + process.env.REACT_APP_TOKEN,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        setRentals(json); //TODO: define type for database objects
+        console.log(rentals);
+        setIsLoading(false);
+        return json;
+      })
+      .then((json) => console.log(json));
+  }, []);
 
   function getAvgPrice(): number {
     if (rentals)
@@ -83,46 +88,7 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
     return toReduce.reduce((prev, curr) => prev + curr.finalPrice, 0);
   }
 
-  useEffect(() => {
-    fetch(`users/${employeeId}/rentals`, {
-      headers: {
-        authorization: "bearer " + process.env.REACT_APP_TOKEN,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setRentals(json); //TODO: define type for database objects
-        console.log(rentals);
-        setIsLoading(false);
-        return json;
-      })
-      .then((json) => console.log(json));
-  }, []);
-
-  const avgPrice = {
-    option: "avarage",
-    value: getAvgPrice(),
-  };
-
-  const options = ["All", "Last 30 days", "Last week"];
-
-  const timeframe = [
-    undefined,
-    subDays(new Date(), 30),
-    subDays(new Date(), 7),
-  ];
-  const values = timeframe.map((t) => getRevenue(t));
-
-  const revenueStat = options.map((e, i) => {
-    return { option: e, value: values[i] };
-  });
-
   const chartData = getRevenuePerWeek(rentals);
-
-  const [selectedRental, setSelectedRental] = useState<number | null>(null)
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <>
@@ -136,14 +102,12 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
         padding={3}
       >
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          <StatCard label="Total revenue" stats={revenueStat} />
+          <RevenueCard rentals={rentals}/>
         </GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          <StatCard label="Avarage" stats={[avgPrice]} />
         </GridItem>
 
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          <StatCard label="label" stats={revenueStat} />
         </GridItem>
 
         <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
@@ -159,7 +123,15 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
         </GridItem>
       </Grid>
 
-      {selectedRental === null? <></> : <RentalDetails rental={rentals[selectedRental]} isOpen={isOpen} onClose={onClose} />}
+      {selectedRental === null ? (
+        <></>
+      ) : (
+        <RentalDetails
+          rental={rentals[selectedRental]}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
+      )}
     </>
   );
 }

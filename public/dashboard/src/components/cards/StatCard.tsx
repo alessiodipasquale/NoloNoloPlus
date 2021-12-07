@@ -8,7 +8,6 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
-import { valuesIn } from "lodash";
 import React, { useState } from "react";
 import * as ai from "react-icons/ai";
 
@@ -23,7 +22,7 @@ function CardMenu({
   setSelected,
   options,
 }: {
-  selected: number;
+  selected: string;
   setSelected: any;
   options: string[];
 }) {
@@ -37,12 +36,12 @@ function CardMenu({
           as={Button}
           rightIcon={<ai.AiFillCaretDown />}
         >
-          {options[selected]}
+          {selected}
         </MenuButton>
       )}
       <MenuList>
         {options.map((elem, index) => (
-          <MenuItem onClick={() => setSelected(index)}> {elem} </MenuItem>
+          <MenuItem onClick={() => setSelected(elem)}> {elem} </MenuItem>
         ))}
       </MenuList>
     </Menu>
@@ -55,8 +54,16 @@ type Stat = {
   helper?: string | number;
 };
 
-function StatCard({ label, stats }: { label: string; stats: Stat[] }) {
-  const [selected, setSelected] = useState(0);
+function StatCard({
+  label,
+  options,
+  data: values,
+}: {
+  label: string;
+  options: string[];
+  data: { [key: string]: {value: number, helper: JSX.Element} };
+}) {
+  const [selected, setSelected] = useState(options[0]);
 
   return (
     <Flex h="full" direction="column">
@@ -72,15 +79,17 @@ function StatCard({ label, stats }: { label: string; stats: Stat[] }) {
         <CardMenu
           selected={selected}
           setSelected={setSelected}
-          options={stats.map((stat) => stat.option)}
+          options={options}
         />
       </Flex>
-
+    
       <Flex h="full" direction="column" align="center" justifyContent="Center">
         <Text m="0" p="0" fontSize="4xl" fontWeight="500">
-          {stats[selected].value}
+          {values[selected].value}
         </Text>
-        <Text>{stats[selected].helper}</Text>
+
+        {values[selected].helper}
+       
       </Flex>
     </Flex>
   );

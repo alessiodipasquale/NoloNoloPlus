@@ -1,14 +1,17 @@
 import {
   addWeeks,
+  differenceInCalendarMonths,
   differenceInCalendarWeeks,
   format,
   parse,
   startOfISOWeek,
   startOfWeek,
+  Interval,
 } from "date-fns";
 import { timeframe } from "./EmployeeDashboard";
 import { compareDateString } from "./compareDateString.1";
 import { Rental } from "../../types/bd-entities";
+import { addMonths, intervalToDuration, startOfMonth, sub } from "date-fns/esm";
 
 type PeriodHelpers = {
   add: (date: number | Date, amount: number) => Date;
@@ -16,7 +19,7 @@ type PeriodHelpers = {
   startOf: (date: number | Date) => Date;
 };
 
-const dateFormat = "yyyy-MMM-dd";
+export const dateFormat = "yyyy-MMM-dd";
 
 function fillMissing(
   revenueByPeriod: { date: string; revenue: number }[],
@@ -45,11 +48,11 @@ function fillMissing(
   return copy.sort(compareDateString);
 }
 
-function getRevenuePerPeriod(
+function getRevenueByCalendarPeriod(
   rentals: Rental[],
   startOfPeriod: (date: number | Date) => Date
 ): { date: string; revenue: number }[] {
-  let rentalsByPeriod = groupRentalsByPeriod(rentals, startOfPeriod);
+  let rentalsByPeriod = groupRentalsByCalendar(rentals, startOfPeriod);
   let weekTotals = getTotalsPerGroup(rentalsByPeriod);
   return weekTotals;
 }
@@ -69,14 +72,14 @@ function getTotalsPerGroup(rentalsByPeriod: { [key: string]: Rental[] }) {
   return periodTotals;
 }
 
-function groupRentalsByPeriod(
+function groupRentalsByCalendar(
   rentals: Rental[],
   getPeriodStart: (date: number | Date) => Date
 ) {
   return rentals.reduce<{ [key: string]: Rental[] }>(
     (rentalsByPeriod, curr, index) => {
-      let endDate = new Date(curr.endDate);
-      let periodStart = getPeriodStart(endDate);
+      const endDate = new Date(curr.endDate);
+      const periodStart = getPeriodStart(endDate);
       const key = format(periodStart, "yyyy-MMM-dd");
 
       if (!rentalsByPeriod[key]) {
@@ -91,10 +94,23 @@ function groupRentalsByPeriod(
 }
 
 export function getRevenuePerWeek(rentals: Rental[]) {
-  let revenuePerWeek = getRevenuePerPeriod(rentals, startOfWeek);
+  let revenuePerWeek = getRevenueByCalendarPeriod(rentals, startOfWeek);
   return fillMissing(revenuePerWeek, {
     add: addWeeks,
     startOf: startOfISOWeek,
     difference: differenceInCalendarWeeks,
   });
+}
+
+export function getRevenuePerMonth(rentals: Rental[]) {
+  let revenuePerMonth = getRevenueByCalendarPeriod(rentals, startOfMonth);
+  return fillMissing(revenuePerMonth, {
+    add: addMonths,
+    startOf: startOfMonth,
+    difference: differenceInCalendarMonths,
+  });
+}
+
+export function getPercentDiff(last: number, current: number): number {
+  return ((current - last) / last) * 100;
 }
