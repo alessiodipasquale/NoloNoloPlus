@@ -1,6 +1,6 @@
 const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack, roleChecker } = require("./Auth");
 const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId, calculatePriceforItem, editItem } = require("./Item");
-const { getUserById, getUsers, deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced } = require("./User");
+const { getUserById, getUsers, getUsersByRole,deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental, editRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetail} = require("./PriceDetails");
@@ -95,6 +95,21 @@ const requestManager = async (reqName, req, res) => {
             case "getUsers": {
                 roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await getUsers();
+                break;
+            }
+            case "getManagers": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getUsersByRole("manager");
+                break;
+            }
+            case "getEmployers": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getUsersByRole("funzionario");
+                break;
+            }
+            case "getClients": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getUsersByRole("cliente");
                 break;
             }
             case "deleteUser": {
