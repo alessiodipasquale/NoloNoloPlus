@@ -21,7 +21,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-import type { Rental } from "../../types/bd-entities";
+import type { Rental } from "../../types/db-entities";
 import Note from "../Note"
 
 function RentalDetails({ rental, isOpen, onClose }: { rental: Rental, isOpen: boolean, onClose: any}) {

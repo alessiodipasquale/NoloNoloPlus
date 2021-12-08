@@ -1,12 +1,12 @@
-import { format, sub } from "date-fns";
+import { sub } from "date-fns";
 import { isWithinInterval } from "date-fns/esm";
 import React from "react";
-import { Rental } from "../../types/bd-entities";
+import { Rental } from "../../types/db-entities";
 import StatCard from "./StatCard";
-import { dateFormat, getPercentDiff } from "../employees/fillMissingMissing";
+import { getPercentDiff } from "../employees/fillMissingMissing";
 import _ from "lodash";
-import { Text, Flex, Icon, StatArrow, StatHelpText, HStack } from "@chakra-ui/react";
-import { ArrowDownIcon, ArrowUpIcon, TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
+import { Text, HStack } from "@chakra-ui/react";
+import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 
 type GroupsByInterval = {
   [key: string]: {

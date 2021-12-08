@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import GenericTable from "../GenericTable";
 import RentalHistory from "./RentalsHistory";
-import type { Rental } from "../../types/bd-entities";
+import type { Rental } from "../../types/db-entities";
 import RentalDetails from "./RentalDetails";
 import StatCard from "../cards/StatCard";
 import {
@@ -40,9 +40,8 @@ const gridItemStyle = {
   overflow: "hidden",
 };
 
-export type timeframe = "week" | "month" | "quarter" | "year" | "all";
 
-function EmployeeDetails({ employeeId }: { employeeId: string }) {
+function RentalsDash({ employeeId }: { employeeId: string }) {
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRental, setSelectedRental] = useState<number | null>(null);
@@ -66,28 +65,6 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
       .then((json) => console.log(json));
   }, []);
 
-  function getAvgPrice(): number {
-    if (rentals)
-      return (
-        rentals
-          .map((rental) => rental.finalPrice)
-          .reduce((pre, curr) => pre + curr, 0) / rentals.length
-      );
-    else return 0;
-  }
-
-  function getRevenue(since?: Date): number {
-    let toReduce: Rental[];
-    if (since) {
-      toReduce = rentals.filter((rental) => {
-        return new Date(rental.endDate) >= since;
-      });
-    } else {
-      toReduce = rentals;
-    }
-    return toReduce.reduce((prev, curr) => prev + curr.finalPrice, 0);
-  }
-
   const chartData = getRevenuePerWeek(rentals);
 
   return (
@@ -102,13 +79,11 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
         padding={3}
       >
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          <RevenueCard rentals={rentals}/>
+          <RevenueCard rentals={rentals} />
         </GridItem>
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-        </GridItem>
+        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
 
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-        </GridItem>
+        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
 
         <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
           <LineChartCard data={chartData} />
@@ -123,9 +98,7 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
         </GridItem>
       </Grid>
 
-      {selectedRental === null ? (
-        <></>
-      ) : (
+      {selectedRental !== null && (
         <RentalDetails
           rental={rentals[selectedRental]}
           isOpen={isOpen}
@@ -136,4 +109,4 @@ function EmployeeDetails({ employeeId }: { employeeId: string }) {
   );
 }
 
-export default EmployeeDetails;
+export default RentalsDash;

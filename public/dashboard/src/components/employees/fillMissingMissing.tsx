@@ -8,10 +8,13 @@ import {
   startOfWeek,
   Interval,
 } from "date-fns";
-import { timeframe } from "./EmployeeDashboard";
 import { compareDateString } from "./compareDateString.1";
-import { Rental } from "../../types/bd-entities";
+import { Rental } from "../../types/db-entities";
 import { addMonths, intervalToDuration, startOfMonth, sub } from "date-fns/esm";
+
+
+export const dateFormat = "yyyy-MMM-dd";
+export type timeframe = "week" | "month" | "quarter" | "year" | "all";
 
 type PeriodHelpers = {
   add: (date: number | Date, amount: number) => Date;
@@ -19,7 +22,6 @@ type PeriodHelpers = {
   startOf: (date: number | Date) => Date;
 };
 
-export const dateFormat = "yyyy-MMM-dd";
 
 function fillMissing(
   revenueByPeriod: { date: string; revenue: number }[],

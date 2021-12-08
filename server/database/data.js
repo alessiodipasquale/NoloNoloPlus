@@ -35,7 +35,7 @@ const items = [
         everBeenRented: false,
         rentalDates: [],
         available: true,
-        rentCount: 0,
+        rentCount: 1,
         kits: [],
         properties: ["Val1"]
     },
