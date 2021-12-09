@@ -14,6 +14,9 @@ const router = {
 
         // User
         app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
+        app.get('/users/managers', auth, (req, res) => { requestManager("getManagers", req, res); })
+        app.get('/users/employers', auth, (req, res) => { requestManager("getEmployers", req, res); })
+        app.get('/users/managers', auth, (req, res) => { requestManager("getClients", req, res); })
         app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
         app.delete('/users/:id', auth, (req, res) => { requestManager("deleteUser", req, res); })
         app.post('/users', auth, (req, res) => { requestManager("createUser", req, res); })

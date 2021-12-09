@@ -62,7 +62,7 @@ aria-hidden="true">
                     </div>
                     <div class="col-4" style="display: flex; align-items: center;">
                         <div class="dropdown">
-                            <label for="inputDescription">Oggetti *</label>
+                            <label for="dropdown-items">Oggetti *</label>
                             <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown">Scegli oggetti
                             <span class="caret"></span></button>
                             <ul class="dropdown-menu" id="dropdown-items">
@@ -86,6 +86,79 @@ aria-hidden="true">
 </div>
 </div>
 
+<!-- EditModal -->
+<div class="modal fade" id="editKitModal" tabindex="-1" role="dialog" aria-labelledby="editKitModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editKitModalLabel">Modifica Kit</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-2">
+                        <div class="form-group">
+                            <label for="inputEditId">Id *</label>
+                            <input type="text" class="form-control" id="inputEditId">
+                        </div>   
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="inputEditName">Nome *</label>
+                            <input type="text" class="form-control" id="inputEditName" placeholder="Inserisci nome">
+                        </div>    
+                    </div>
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="inputEditStandardPrice">Prezzo Standard *</label>
+                            <input type="number" class="form-control" id="inputEditStandardPrice" placeholder="Inserisci Prezzo standard">
+                        </div>    
+                    </div>
+                    <div class="col-3" style="display: flex; align-items: center;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="inputEditAvailable" checked>
+                            <label class="form-check-label" for="inputEditAvailable">
+                              Disponibile *
+                            </label>
+                          </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <label for="inputEditDescription">Descrizione *</label>
+                            <textarea type="text" class="form-control" id="inputEditDescription" placeholder="Inserisci Descrizione"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-4" style="display: flex; align-items: center;">
+                        <div class="dropdown">
+                            <label for="dropdown-edititems">Oggetti *</label>
+                            <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown">Scegli oggetti
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="dropdown-edititems">
+                              <input class="form-control" id="editFilterItems" type="text" placeholder="Cerca..">
+                            </ul>
+                          </div>
+                    </div>
+                </div>
+                <div class="row" id="editObjectList" style="display: flex; flex-flow: column; padding: 0 4%;">
+
+                </div>
+
+                 
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-warning" id="createBtn" onclick="edit()">Modifica</button>
+        </div>
+    </div>
+</div>
+</div>
 
 <script src="../services/items-service.js"></script>
 <script src="../services/kits-service.js"></script>

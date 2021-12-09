@@ -94,7 +94,8 @@ const deleteAssociationToItem = async (itemId, toDelete) => {
     let elem = JSON.stringify(item);
     elem = JSON.parse(elem);
 
-    if (elem.groupId == toDelete) await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": null} }); 
+    if (elem.groupId)
+        if (elem.groupId == toDelete) await ItemModel.updateOne({_id: itemId},{ $set: { "groupId": null} }); 
 
     let category = elem.category.filter(e => e != toDelete)
     await ItemModel.updateOne({_id: itemId},{ $set: { "category": category} });

@@ -25,15 +25,14 @@ const deletePropertyValue = async (id) => {
 }
 
 const createPropertyValue = async (object) => {
-    if(!object.name || !object.propertyId)
+    if(!object.name || !object.associatedProperty)
         throw BadRequestError;
-        
     /*
     if (await findPropertyValueByName(object.name))
         throw AlreadyExistsError;
     */
     const propertyVal = await PropertyValueModel.create(object);
-    await associateToProperty("array", "associatedValues",object.propertyId,propertyVal._id);
+    await associateToProperty("array", "associatedValues",object.associatedProperty,propertyVal._id);
     return propertyVal;
 }
 

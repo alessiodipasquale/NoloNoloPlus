@@ -36,6 +36,11 @@ const getUsers = async () => {
     return users;
 }
 
+const getUsersByRole = async (role) => {
+    const users = await UserModel.find({ role: role }).select(['-password','-__v'])
+    return users;
+}
+
 const deleteUser = async (id) => {
     const user = await UserModel.deleteOne({_id: id})
     if(!user)
@@ -207,4 +212,5 @@ module.exports = {
     editUser,
     editUserAdvanced,
     getReviewsByUserId,
+    getUsersByRole
 }
