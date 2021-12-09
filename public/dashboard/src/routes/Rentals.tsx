@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import RentalDash from '../components/rentals/RentalDash'
-import type { Rental } from '../types/db-entities'
+import type { Rental } from '../@types/db-entities'
 
 function Rentals() {
 

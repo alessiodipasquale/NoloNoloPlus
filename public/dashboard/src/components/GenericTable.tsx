@@ -1,4 +1,5 @@
 import {
+  Input,
   Table,
   TableCaption,
   Tbody,
@@ -10,10 +11,53 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { useSortBy, useTable } from "react-table";
-import type { Column } from "react-table";
+import {
+  IdType,
+  Row,
+  useAsyncDebounce,
+  useFilters,
+  useGlobalFilter,
+  useSortBy,
+  useTable,
+} from "react-table";
+import type { Column, FilterTypes } from "react-table";
 import PropTypes from "prop-types";
 import RentalDetails from "./employees/RentalDetails";
+import { matchSorter } from "match-sorter";
+
+function GlobalFilter({
+  preGlobalFilteredRows,
+  globalFilter,
+  setGlobalFilter,
+}: {
+  preGlobalFilteredRows: Row<{}>[];
+  globalFilter: any;
+  setGlobalFilter: (filterValue: any) => void;
+}) {
+  const count = preGlobalFilteredRows.length;
+  const [value, setValue] = React.useState(globalFilter);
+  const onChange = useAsyncDebounce((value) => {
+    setGlobalFilter(value || undefined);
+  }, 200);
+
+  return (
+    <span>
+      Search:{" "}
+      <Input
+        value={value || ""}
+        onChange={(e) => {
+          setValue(e.target.value);
+          onChange(e.target.value);
+        }}
+        placeholder={`${count} records...`}
+        style={{
+          fontSize: "1.1rem",
+          border: "0",
+        }}
+      />
+    </span>
+  );
+}
 
 function GenericTable({
   columns,
@@ -28,18 +72,62 @@ function GenericTable({
   caption?: string;
   footer?: any;
   setSelected: (arg: any) => any;
-  onOpen: any
+  onOpen: any;
 }) {
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data }, useSortBy);
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    state,
+    rows,
+    prepareRow,
+    visibleColumns,
+    preGlobalFilteredRows,
+    setGlobalFilter,
+  } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
+  function fuzzyTextFilterFn(
+    rows: Row<any>[],
+    id: IdType<any>,
+    filterValue: any
+  ) {
+    return matchSorter(rows, filterValue, { keys: [(row) => row.values[id]] });
+  }
+
+  const filterTypes = React.useMemo(
+    () =>
+      ({
+        // Add a new fuzzyTextFilterFn filter type.
+        fuzzyText: fuzzyTextFilterFn,
+        // Or, override the default text filter to use
+        // "startWith"
+        text: (rows: Row<any>[], id: IdType<any>, filterValue: any) => {
+          return rows.filter((row) => {
+            const rowValue = row.values[id];
+            return rowValue !== undefined
+              ? String(rowValue)
+                  .toLowerCase()
+                  .startsWith(String(filterValue).toLowerCase())
+              : true;
+          });
+        },
+      }),
+    []
+  );
 
   return (
     <>
-
       <Table {...getTableProps()} variant="simple">
         <TableCaption>{caption}</TableCaption>
         <Thead>
+          <Tr ColSpan={visibleColumns.length}>
+            <GlobalFilter
+              preGlobalFilteredRows={preGlobalFilteredRows}
+              globalFilter={state.globalFilter}
+              setGlobalFilter={setGlobalFilter}
+            />
+          </Tr>
+
           {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
@@ -62,8 +150,13 @@ function GenericTable({
             prepareRow(row);
 
             return (
-              <Tr {...row.getRowProps()}
-              onClick={() => {setSelected(row.index); onOpen()}}>
+              <Tr
+                {...row.getRowProps()}
+                onClick={() => {
+                  setSelected(row.index);
+                  onOpen();
+                }}
+              >
                 {row.cells.map((cell) => {
                   return (
                     <Td {...cell.getCellProps()}>{cell.render("Cell")}</Td>

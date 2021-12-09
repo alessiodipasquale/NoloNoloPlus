@@ -12,7 +12,7 @@ import {
   Label,
   LabelList,
 } from "recharts";
-import { Item } from "../../types/db-entities";
+import { Item } from "../../@types/db-entities";
 
 export default function ItemScatterPlot({ items }: { items: Item[] }) {
   const itemsByCategory = items.reduce((grouped, item) => {

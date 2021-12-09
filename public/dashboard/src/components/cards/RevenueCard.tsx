@@ -1,7 +1,7 @@
 import { sub } from "date-fns";
 import { isWithinInterval } from "date-fns/esm";
 import React from "react";
-import { Rental } from "../../types/db-entities";
+import { Rental } from "../../@types/db-entities";
 import StatCard from "./StatCard";
 import { getPercentDiff } from "../employees/fillMissingMissing";
 import _ from "lodash";

@@ -9,7 +9,7 @@ import {
   Interval,
 } from "date-fns";
 import { compareDateString } from "./compareDateString.1";
-import { Rental } from "../../types/db-entities";
+import { Rental } from "../../@types/db-entities";
 import { addMonths, intervalToDuration, startOfMonth, sub } from "date-fns/esm";
 
 

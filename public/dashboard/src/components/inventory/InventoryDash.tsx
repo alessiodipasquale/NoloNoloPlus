@@ -2,7 +2,7 @@ import { Grid, GridItem } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@chakra-ui/hooks";
 
-import type { Item } from "../../types/db-entities";
+import type { Item } from "../../@types/db-entities";
 import ItemScatterPlot from "./ItemScatterPlot";
 
 const gridItemStyle = {

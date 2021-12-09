@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useMemo, useState } from "react";
 import GenericTable from "../GenericTable";
 import RentalHistory from "./RentalsHistory";
-import type { Rental } from "../../types/db-entities";
+import type { Rental } from "../../@types/db-entities";
 import RentalDetails from "./RentalDetails";
 import StatCard from "../cards/StatCard";
 import {

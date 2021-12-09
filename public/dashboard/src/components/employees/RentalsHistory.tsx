@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { useEffect, useState } from "react";
-import { Rental } from "../../types/db-entities";
+import { Rental } from "../../@types/db-entities";
 import GenericTable from "../GenericTable";
 
 export default function RentalHistory({
