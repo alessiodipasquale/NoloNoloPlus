@@ -9,9 +9,8 @@ import {
   Interval,
 } from "date-fns";
 import { compareDateString } from "./compareDateString.1";
-import { Rental } from "../../@types/db-entities";
+import { Rental as any } from "../../@types/db-entities";
 import { addMonths, intervalToDuration, startOfMonth, sub } from "date-fns/esm";
-
 
 export const dateFormat = "yyyy-MMM-dd";
 export type timeframe = "week" | "month" | "quarter" | "year" | "all";
@@ -21,7 +20,6 @@ type PeriodHelpers = {
   difference: (dateLeft: number | Date, dateRight: number | Date) => number;
   startOf: (date: number | Date) => Date;
 };
-
 
 function fillMissing(
   revenueByPeriod: { date: string; revenue: number }[],
@@ -51,15 +49,18 @@ function fillMissing(
 }
 
 function getRevenueByCalendarPeriod(
-  rentals: Rental[],
+  rentals: any[],
   startOfPeriod: (date: number | Date) => Date
 ): { date: string; revenue: number }[] {
-  let rentalsByPeriod = groupRentalsByCalendar(rentals, startOfPeriod);
+  let rentalsByPeriod = groupByDate(
+    rentals.map((rental) => ({ thing: rental, date: rental.endDate })),
+    startOfPeriod
+  );
   let weekTotals = getTotalsPerGroup(rentalsByPeriod);
   return weekTotals;
 }
 
-function getTotalsPerGroup(rentalsByPeriod: { [key: string]: Rental[] }) {
+function getTotalsPerGroup(rentalsByPeriod: { [key: string]: any[] }) {
   let periodTotals = [] as { date: string; revenue: number }[];
 
   for (let date of Object.keys(rentalsByPeriod)) {
@@ -74,28 +75,27 @@ function getTotalsPerGroup(rentalsByPeriod: { [key: string]: Rental[] }) {
   return periodTotals;
 }
 
-function groupRentalsByCalendar(
-  rentals: Rental[],
+function groupByDate(
+  arr: { thing: any; date: Date }[],
   getPeriodStart: (date: number | Date) => Date
 ) {
-  return rentals.reduce<{ [key: string]: Rental[] }>(
-    (rentalsByPeriod, curr, index) => {
-      const endDate = new Date(curr.endDate);
-      const periodStart = getPeriodStart(endDate);
-      const key = format(periodStart, "yyyy-MMM-dd");
+  return arr.reduce<{ [key: string]: any[] }>(
+    (thingsByPeriod, { thing, date }, index) => {
+      const periodStart = getPeriodStart(new Date(date));
+      const key = format(periodStart, dateFormat);
 
-      if (!rentalsByPeriod[key]) {
-        rentalsByPeriod[key] = [];
+      if (!thingsByPeriod[key]) {
+        thingsByPeriod[key] = [];
       }
-      rentalsByPeriod[key].push(curr);
+      thingsByPeriod[key].push(thing);
 
-      return rentalsByPeriod;
+      return thingsByPeriod;
     },
     {}
   );
 }
 
-export function getRevenuePerWeek(rentals: Rental[]) {
+export function getRevenuePerWeek(rentals: any[]) {
   let revenuePerWeek = getRevenueByCalendarPeriod(rentals, startOfWeek);
   return fillMissing(revenuePerWeek, {
     add: addWeeks,
@@ -104,7 +104,7 @@ export function getRevenuePerWeek(rentals: Rental[]) {
   });
 }
 
-export function getRevenuePerMonth(rentals: Rental[]) {
+export function getRevenuePerMonth(rentals: any[]) {
   let revenuePerMonth = getRevenueByCalendarPeriod(rentals, startOfMonth);
   return fillMissing(revenuePerMonth, {
     add: addMonths,
