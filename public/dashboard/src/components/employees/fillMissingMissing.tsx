@@ -21,32 +21,6 @@ type PeriodHelpers = {
   startOf: (date: number | Date) => Date;
 };
 
-function fillMissing(
-  revenueByPeriod: { date: string; revenue: number }[],
-  periodHelpers: PeriodHelpers
-) {
-  let copy = revenueByPeriod.slice().sort(compareDateString);
-
-  for (let i = 0; i < revenueByPeriod.length - 1; i++) {
-    const dateA = parse(revenueByPeriod[i].date, dateFormat, new Date());
-    const dateB = parse(revenueByPeriod[i + 1].date, dateFormat, new Date());
-    console.log(dateA);
-
-    let difference = periodHelpers.difference(dateB, dateA);
-    console.log(difference);
-
-    for (let j = 1; j < difference; j++) {
-      let date = format(periodHelpers.add(dateA, j), dateFormat);
-      console.log(date);
-      copy.push({
-        date: date,
-        revenue: 0,
-      });
-    }
-  }
-
-  return copy.sort(compareDateString);
-}
 
 function getRevenueByCalendarPeriod(
   rentals: any[],
@@ -75,11 +49,11 @@ function getTotalsPerGroup(rentalsByPeriod: { [key: string]: any[] }) {
   return periodTotals;
 }
 
-function groupByDate(
-  arr: { thing: any; date: Date }[],
+export function groupByDate<T>(
+  arr: { thing: T; date: Date }[],
   getPeriodStart: (date: number | Date) => Date
 ) {
-  return arr.reduce<{ [key: string]: any[] }>(
+  return arr.reduce<{ [key: string]: T[] }>(
     (thingsByPeriod, { thing, date }, index) => {
       const periodStart = getPeriodStart(new Date(date));
       const key = format(periodStart, dateFormat);
@@ -93,6 +67,33 @@ function groupByDate(
     },
     {}
   );
+}
+
+function fillMissing(
+  revenueByPeriod: { date: string; revenue: number }[],
+  periodHelpers: PeriodHelpers
+) {
+  let copy = revenueByPeriod.slice().sort(compareDateString);
+
+  for (let i = 0; i < revenueByPeriod.length - 1; i++) {
+    const dateA = parse(revenueByPeriod[i].date, dateFormat, new Date());
+    const dateB = parse(revenueByPeriod[i + 1].date, dateFormat, new Date());
+    console.log(dateA);
+
+    let difference = periodHelpers.difference(dateB, dateA);
+    console.log(difference);
+
+    for (let j = 1; j < difference; j++) {
+      let date = format(periodHelpers.add(dateA, j), dateFormat);
+      console.log(date);
+      copy.push({
+        date: date,
+        revenue: 0,
+      });
+    }
+  }
+
+  return copy.sort(compareDateString);
 }
 
 export function getRevenuePerWeek(rentals: any[]) {
