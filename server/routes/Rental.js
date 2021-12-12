@@ -3,7 +3,7 @@ const UserModel = require('../models/UserModel')
 const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem, calculatePriceforItem } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
-const { associateToUser, associateToKit, associateToItem } = require("./associations/AssociationManager");
+const { associateToUser, associateToKit, associateToCertification, associateToItem, deleteAssociationToUser, deleteAssociationToCertification } = require("./associations/AssociationManager");
 const { getKitById, calculatePriceforKit } = require("./Kit");
 const { createCertification } = require("./Certification");
 const { updateRentalsCount } = require("./Item");
@@ -36,7 +36,6 @@ const createRental = async (object, userId, role) => {
     Important note: userId is related to the user that make the request.
     If an employer create a rental for one user the clientId must be passed in the object    
     */
-    //TODO Item ever been rented, rent count, etc...
     if(!object.startDate || !object.endDate || !userId  || !object.itemIds)
         throw BadRequestError;
 
@@ -163,6 +162,22 @@ const editRental = async (rentalId, object) => {
         if(object.kitId != "toDelete") {
             secureObject.kitId = object.kitId
             associateToKit("array", "rentals", rentalId, object.kitId);
+        }
+    }
+    if(object.rentalCertification) {
+        if(secureObject.rentalCertification != null)
+            deleteAssociationToCertification(secureObject.rentalCertification, rentalId)
+        if(object.rentalCertification != "toDelete") {
+            secureObject.rentalCertification = object.rentalCertification;
+            associateToCertification("array", "rentalId", rentalId, object.rentalCertification);
+        }
+    }
+    if(object.returnCertification) {
+        if(secureObject.returnCertification != null)
+            deleteAssociationToCertification(secureObject.returnCertification, rentalId)
+        if(object.returnCertification != "toDelete") {
+            secureObject.returnCertification = object.returnCertification;
+            associateToCertification("array", "rentalId", rentalId, object.returnCertification);
         }
     }
     if(object.itemId){

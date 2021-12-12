@@ -12,7 +12,7 @@ const { getReviewById, getReviews, deleteReview, createReview, editReview } = re
 const { getGroupById, getGroups, deleteGroup, createGroup, editGroup } = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
-    //TODO: associateProperties to categories passing from items
+    //TODO: new attribute to rentals ?
     try {
         var toReturn = null;
         switch (reqName) {

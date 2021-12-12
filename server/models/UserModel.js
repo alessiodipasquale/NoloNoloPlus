@@ -48,6 +48,11 @@ const _UserModel = new mongoose.Schema({
         type: [String],
         ref: 'Review',
         default: []
+    },
+    certifications: {
+        type: [String],
+        ref: 'Certification',
+        required: false
     }
 }, { collection: "User"});
 

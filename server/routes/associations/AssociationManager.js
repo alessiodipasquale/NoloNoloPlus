@@ -121,6 +121,19 @@ const deleteAssociationToCertification = async (certificationId, toDelete) => {
     if (elem.rentalId == toDelete) await CertificationModel.updateOne({_id: certificationId},{ $set: { "rentalId": null} }); 
 }
 
+const associateToCertification = async (type, toModify, value, certId) => {
+    const certification = await CertificationModel.findOne({_id: certId});
+    if(type == "array") {
+        
+    }else {
+        switch (toModify) {
+            case "rentalId": {
+                await CertificationModel.updateOne({_id: certId},{ $set: { "rentalId": value} });
+                break;
+            }
+        }
+    }
+}
 ///////////////////////////////////////////////////////////////////////////////////// Group
 
 const deleteAssociationToGroup = async (groupId, toDelete) => {
@@ -362,6 +375,14 @@ const associateToUser = async (type, toModify, value, userId) => {
                 }
                 break;
             }
+            case 'certifications': {
+                let certifications = elem.certifications;
+                if(!certifications.includes(value)){
+                    certifications.push(value);
+                    await UserModel.updateOne({_id: userId},{ $set: { "certifications": certifications} });
+                }
+                break;
+            }
         }
     }/* else {
 
@@ -381,6 +402,7 @@ module.exports = {
     deleteAssociationToItem,
 
     deleteAssociationToCertification,
+    associateToCertification,
 
     deleteAssociationToGroup,
     associateToGroup,
