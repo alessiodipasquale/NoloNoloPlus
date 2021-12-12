@@ -20,7 +20,7 @@ function addElemToTable(elem) {
         console.log(elem.target.id);
     })*/
 
-    var editBtn = $('<button disabled type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
+    var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     editBtn.click(function (elem) {
         console.log(elem.target)
         getGroupById(elem.target.id)

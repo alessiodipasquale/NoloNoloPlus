@@ -1,5 +1,5 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createGroupModal">
-    Crea nuovo gruppo
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPropertyModal">
+    Crea nuova proprietà
 </button>
 
 <table class="table" style="margin-top: 2%;">
@@ -14,12 +14,12 @@
 </table>
 
 <!-- CreateModal -->
-<div class="modal fade" id="createGroupModal" tabindex="-1" role="dialog" aria-labelledby="createGroupModalLabel"
+<div class="modal fade" id="createPropertyModal" tabindex="-1" role="dialog" aria-labelledby="createPropertyModalLabel"
 aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="createGroupModalLabel">Crea gruppo</h5>
+            <h5 class="modal-title" id="createPropertyModalLabel">Crea proprietà</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -30,10 +30,10 @@ aria-hidden="true">
                     <div class="col-12">
                         <div class="form-group">
                             <label for="inputName">Nome *</label>
-                            <textarea type="text" class="form-control" id="inputName" placeholder="Inserisci nome"></textarea>
-                        </div>
+                            <input type="text" class="form-control" id="inputName" placeholder="Inserisci nome">
+                        </div>    
                     </div>
-                </div> 
+                </div>
             </form>
         </div>
         <div class="modal-footer">
@@ -45,12 +45,12 @@ aria-hidden="true">
 </div>
 
 <!-- EditModal -->
-<div class="modal fade" id="editGroupModal" tabindex="-1" role="dialog" aria-labelledby="editGroupModalLabel"
+<div class="modal fade" id="editPropertyModal" tabindex="-1" role="dialog" aria-labelledby="editPropertyModalLabel"
 aria-hidden="true">
 <div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
     <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="editGroupModalLabel">Modifica gruppo</h5>
+            <h5 class="modal-title" id="editPropertyModalLabel">Modifica proprietà</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -81,6 +81,5 @@ aria-hidden="true">
 </div>
 </div>
 
-
-<script src="../services/groups-service.js"></script>
-<script src="../pages/groups/groups.js"></script>
+<script src="../services/properties-service.js"></script>
+<script src="../pages/properties/properties.js"></script>
