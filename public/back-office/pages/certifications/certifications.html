@@ -1,0 +1,148 @@
+<button disabled type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCertificationModal">
+    Crea nuovo oggetto
+</button>
+
+<table class="table" style="margin-top: 2%;">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Noleggio associato</th>
+        <th scope="col">Impiegato associato</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Data</th>
+        <th scope="col">Commenti</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<!-- CreateModal -->
+<div class="modal fade" id="createCertificationModal" tabindex="-1" role="dialog" aria-labelledby="createCertificationModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="createCertificationModalLabel">Crea Certificazione</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputType">Stato</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli Tipo
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputType">
+                                <a class="dropdown-item" href="#">Avvenuta consegna</a>
+                                <a class="dropdown-item" href="#">Riconsegna e pagamento</a>
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputRental">Noleggio</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputRental" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli Noleggio a cui associarla
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputRental">
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                  Rental1
+                                </label>
+                              </a>
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                  Rental2
+                                </label>
+                              </a>
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputEmployer">Kit</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputEmployer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli Impiegato a cui associarla
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputEmployer">
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                    User1
+                                </label>
+                              </a>
+                              <a class="dropdown-item" href="#">
+                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                                <label class="form-check-label" for="dropdownCheck">
+                                    User2
+                                </label>
+                              </a>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputComment">Commento *</label>
+                            <textarea type="text" class="form-control" id="inputComment" placeholder="Inserisci Commento"></textarea>
+                        </div>
+                    </div>
+                </div> 
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="create()">Crea</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- EditModal -->
+<div class="modal fade" id="editCertificationModal" tabindex="-1" role="dialog" aria-labelledby="editCertificationModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editCertificationModalLabel">Modifica certificazione</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inpuEditId">Id</label>
+                            <input type="text" disabled class="form-control" id="inputEditId" >
+                        </div>    
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputEditComment">Commento *</label>
+                            <input type="text" class="form-control" id="inputEditComment" placeholder="Inserisci commento">
+                        </div>    
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-warning" id="editBtn" onclick="edit()">Modifica</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<script src="../services/certifications-service.js"></script>
+<script src="../pages/certifications/certifications.js"></script>
