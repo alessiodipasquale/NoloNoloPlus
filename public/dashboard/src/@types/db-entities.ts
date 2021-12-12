@@ -21,12 +21,14 @@ interface Rental {
     rentalType: RentalType;
     rentalTarget: RentalTarget;
     rentalCertification: string;
+    returnCertification: string;
     state: RentalState
     finalPrice: number;
     receipt: string[];
     partialPrices: string[][];
     notes: Note[];
-    tags: string[]
+    tags: string[];
+    damaged: boolean;
 }
 
 
@@ -49,4 +51,22 @@ interface Item {
 }
 
 
-export type {Rental, Item} 
+interface Client { 
+    _id: String,
+    username: string; 
+    name: string;
+    surname: string;
+    favPaymentMethod?: 'carta'|'alla consegna'
+    address?:string;
+    loyaltyPoints: number;
+    lastVisit: Date
+    commentsFromOfficiers?: string;
+    favCategories: string[],
+    favItemsId: string[];
+    role: "cliente"
+    rentals: string[];
+    reviews: string[];
+    registrationDate: Date;
+}
+
+export type {Rental, Item, Client} 

@@ -66,7 +66,8 @@ const _RentalModel = new mongoose.Schema({
     notes: {
         type: [String],
         required: false
-    }
+    },
+    damagedSomething: {type: Boolean, required: false},
 },  { collection: "Rental"});
 
 _RentalModel.pre('save', function (next) {

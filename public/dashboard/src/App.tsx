@@ -4,7 +4,7 @@ import {
   ChakraProvider, Container, Flex,
 } from "@chakra-ui/react"
 
-import RentalHistory from "./components/employees/RentalsHistory";
+import RentalsList from "./components/employees/RentalsList";
 import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
 
 

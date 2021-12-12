@@ -2,7 +2,7 @@ import { Grid, GridItem } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@chakra-ui/hooks";
 
-import type { Item } from "../../@types/db-entities";
+import type { Client, Item } from "../../@types/db-entities";
 
 const gridItemStyle = {
   padding: "24px",
@@ -13,13 +13,13 @@ const gridItemStyle = {
 };
 
 function ClientsDash() {
-  const [items, setItems] = useState<Item[]>([]);
+  const [clients, setClients] = useState<Client[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   //const [selectedRental, setSelectedRental] = useState<number | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    fetch(`items`, {
+    fetch(`users/clients`, {
       headers: {
         authorization: "bearer " + process.env.REACT_APP_TOKEN,
       },
@@ -28,8 +28,8 @@ function ClientsDash() {
         return res.json();
       })
       .then((json) => {
-        setItems(json); //TODO: define type for database objects
-        console.log(items);
+        setClients(json); //TODO: define type for database objects
+        console.log(clients);
         setIsLoading(false);
         return json;
       })

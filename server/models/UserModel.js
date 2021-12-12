@@ -48,6 +48,10 @@ const _UserModel = new mongoose.Schema({
         type: [String],
         ref: 'Review',
         default: []
+    },
+    registrationDate: {
+        type: Date,
+        required: true,
     }
 }, { collection: "User"});
 

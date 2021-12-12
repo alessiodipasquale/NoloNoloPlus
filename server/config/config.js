@@ -11,7 +11,7 @@ const initialize = async () => {
         env,
         swagger: !!env,
         force: false,
-        seed: false,
+        seed: true,
         log: !!env,
         favouritesTreshold: 4,
         kitDiscount: 10

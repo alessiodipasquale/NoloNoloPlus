@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/stat";
 import React, { useEffect, useMemo, useState } from "react";
 import GenericTable from "../GenericTable";
-import RentalHistory from "./RentalsHistory";
+import RentalsList from "./RentalsList";
 import type { Rental } from "../../@types/db-entities";
 import RentalDetails from "./RentalDetails";
 import StatCard from "../cards/StatCard";
@@ -31,6 +31,7 @@ import { getRevenuePerWeek } from "./fillMissingMissing";
 import { compareDateString } from "./compareDateString.1";
 import { useDisclosure } from "@chakra-ui/hooks";
 import RevenueCard from "../cards/RevenueCard";
+import RentalConclusionsPie from "./RentalConclusionsPie";
 
 const gridItemStyle = {
   padding: "24px",
@@ -58,6 +59,7 @@ function RentalsDash({ employeeId }: { employeeId: string }) {
       })
       .then((json) => {
         setRentals(json); //TODO: define type for database objects
+        console.log("Rentals:")
         console.log(rentals);
         setIsLoading(false);
         return json;
@@ -83,18 +85,20 @@ function RentalsDash({ employeeId }: { employeeId: string }) {
         </GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
 
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
+        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
+          <RentalConclusionsPie rentals={rentals}/>
+        </GridItem>
 
         <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
           <LineChartCard data={chartData} />
         </GridItem>
         <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
-          <RentalHistory
+          <RentalsList
             data={rentals}
             isLoading={isLoading}
             setSelectedRental={setSelectedRental}
             onOpen={onOpen}
-          ></RentalHistory>
+          ></RentalsList>
         </GridItem>
       </Grid>
 

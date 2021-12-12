@@ -36,9 +36,8 @@ function groupRentalsByInterval(
   let groups: { interval: { start: Date; end: Date }; rentals: Rental[] }[] =
     [];
 
-  const now = new Date();
-  let latest = now;
-  let earliest = sub(now, period);
+  let latest = new Date();
+  let earliest = sub(latest, period);
 
   for (let i = 0; i < howMany; i++) {
     let interval = { start: earliest, end: latest };
@@ -80,11 +79,10 @@ function RevenueCard({ rentals }: { rentals: Rental[] }) {
         key,
         {
           value: revenuesByInterval[key][0],
-          helper:
-          getPercentHelper(
-              revenuesByInterval[key][1],
-              revenuesByInterval[key][0]
-            ),
+          helper: getPercentHelper(
+            revenuesByInterval[key][1],
+            revenuesByInterval[key][0]
+          ),
         },
       ];
     })
@@ -98,20 +96,17 @@ function RevenueCard({ rentals }: { rentals: Rental[] }) {
 
     let arrow;
     if (diff >= 0) {
-        arrow = <ArrowUpIcon color="green" />
+      arrow = <ArrowUpIcon color="green" />;
     } else {
-        arrow = <ArrowDownIcon color="red" />;
+      arrow = <ArrowDownIcon color="red" />;
     }
-      return (
-          <HStack >
-              {arrow} 
-              <Text>{diff.toFixed(2).toString() + "%"}</Text>
-
-          </HStack>
-
-      );
-    }
-
+    return (
+      <HStack>
+        {arrow}
+        <Text>{diff.toFixed(2).toString() + "%"}</Text>
+      </HStack>
+    );
+  }
 
   console.log(groupsByInterval);
   console.log(revenuesByInterval);

@@ -1,5 +1,19 @@
 const users = [
     {
+        _id: "User3",
+        username: "bb",
+        password: "ciao",
+        name: "bobby",
+        surname: "brown",
+        favPaymentMethod: 'carta',
+        address: "Via Massarenti 470",
+        commentsFromOfficiers: 'cliente cattivo',
+        favItemsId: [],
+        rentals: [],
+        role: 'cliente',
+        registrationDate: new Date("<2021-10-05>") 
+    },
+    {
         _id: "User2",
         username: "alessio",
         password: "ciao",
@@ -10,7 +24,8 @@ const users = [
         commentsFromOfficiers: 'cliente cattivo',
         favItemsId: [],
         rentals: [],
-        role: 'cliente'
+        role: 'cliente',
+        registrationDate: new Date("<2021-10-05>") 
     },
     {
         _id: "User1",
@@ -18,8 +33,9 @@ const users = [
         password: "admin",
         name: "admin",
         surname: "admin",
-        rentals: ["Rental1", "Rental2", "Rental3"],
-        role: "funzionario"
+        rentals: ["Rental1", "Rental2", "Rental3", "Rental4"],
+        role: "funzionario",
+        registrationDate: new Date()
     }
 ];
 
@@ -196,8 +212,8 @@ const rentals = [
     },
     {
         _id: "Rental3",
-        startDate: new Date("<2021-11-029>"),
-        endDate: new Date("<2021-11-029>"),
+        startDate: new Date("<2021-11-29>"),
+        endDate: new Date("<2021-11-29>"),
         clientId: "User1",
         timeInDays: 10,
         state: 'terminata',
@@ -208,8 +224,24 @@ const rentals = [
         returnCertification: "Certification2",
         finalPrice: 1600,
         notes: ["js is bad"]
+    },
+    {
+        _id: "Rental4",
+        startDate: new Date("<2021-10-29>"),
+        endDate: new Date("<2021-10-30>"),
+        clientId: "User1",
+        timeInDays: 10,
+        state: 'terminata',
+        kitId: "Kit1",
+        rentalType: 'istantaneo',
+        rentalTarget: 'kit',
+        rentalCertification: "Certification1",
+        returnCertification: "",
+        finalPrice: 1500,
+        notes: ["why tf don´t you appear"]
     }
 ];
+
 
 const kits = [
     {

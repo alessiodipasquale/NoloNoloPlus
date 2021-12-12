@@ -71,8 +71,8 @@ function GenericTable({
   data: any;
   caption?: string;
   footer?: any;
-  setSelected: (arg: any) => any;
-  onOpen: any;
+  setSelected?: (arg: any) => any;
+  onOpen?: any;
 }) {
   const {
     getTableProps,
@@ -95,23 +95,22 @@ function GenericTable({
   }
 
   const filterTypes = React.useMemo(
-    () =>
-      ({
-        // Add a new fuzzyTextFilterFn filter type.
-        fuzzyText: fuzzyTextFilterFn,
-        // Or, override the default text filter to use
-        // "startWith"
-        text: (rows: Row<any>[], id: IdType<any>, filterValue: any) => {
-          return rows.filter((row) => {
-            const rowValue = row.values[id];
-            return rowValue !== undefined
-              ? String(rowValue)
-                  .toLowerCase()
-                  .startsWith(String(filterValue).toLowerCase())
-              : true;
-          });
-        },
-      }),
+    () => ({
+      // Add a new fuzzyTextFilterFn filter type.
+      fuzzyText: fuzzyTextFilterFn,
+      // Or, override the default text filter to use
+      // "startWith"
+      text: (rows: Row<any>[], id: IdType<any>, filterValue: any) => {
+        return rows.filter((row) => {
+          const rowValue = row.values[id];
+          return rowValue !== undefined
+            ? String(rowValue)
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
+            : true;
+        });
+      },
+    }),
     []
   );
 
@@ -153,8 +152,8 @@ function GenericTable({
               <Tr
                 {...row.getRowProps()}
                 onClick={() => {
-                  setSelected(row.index);
-                  onOpen();
+                  setSelected && setSelected(row.index);
+                  onOpen && onOpen();
                 }}
               >
                 {row.cells.map((cell) => {

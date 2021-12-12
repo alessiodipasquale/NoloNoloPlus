@@ -4,6 +4,8 @@ import { useDisclosure } from "@chakra-ui/hooks";
 
 import type { Item } from "../../@types/db-entities";
 import ItemScatterPlot from "./ItemScatterPlot";
+import ItemTable from "./ItemTable";
+import ConditionPieChart from "./ConditionPieChart";
 
 const gridItemStyle = {
   padding: "24px",
@@ -49,16 +51,19 @@ function InventoryDash() {
         padding={3}
       >
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-            {/* graph showing tot rentals, revenue and damage per user */}
+          {/* graph showing tot rentals, revenue and damage per user */}
         </GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
-
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
+        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
+          <ConditionPieChart items={items} />
+        </GridItem>
 
         <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
-        <ItemScatterPlot items={items} />
+          <ItemScatterPlot items={items} />
         </GridItem>
-        <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}></GridItem>
+        <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
+          <ItemTable isLoading={isLoading} data={items} />
+        </GridItem>
       </Grid>
     </>
   );

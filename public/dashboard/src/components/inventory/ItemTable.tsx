@@ -1,18 +1,18 @@
 import React, { useMemo } from "react";
 import { useEffect, useState } from "react";
-import { Rental } from "../../@types/db-entities";
+import { Item } from "../../@types/db-entities";
 import GenericTable from "../GenericTable";
 
-export default function RentalHistory({
+export default function ItemTable({
   isLoading,
   data,
-  setSelectedRental,
+  setSelected,
   onOpen,
 }: {
   isLoading: boolean;
-  data: any;
-  setSelectedRental: React.Dispatch<React.SetStateAction<number | null>>;
-  onOpen: any
+  data: Item[];
+  setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
+  onOpen?: any
 }) {
   const columns = useMemo(
     () => [
@@ -21,12 +21,12 @@ export default function RentalHistory({
         accessor: "_id",
       },
       {
-        Header: "client id",
-        accessor: "clientId",
+        Header: "name",
+        accessor: "name",
       },
       {
-        Header: "item id",
-        accessor: "itemId",
+        Header: "available",
+        accessor: "available",
       },
       // {
       //     Header: "start date",
@@ -37,15 +37,8 @@ export default function RentalHistory({
       //     accessor: "endDate"
       // },
       {
-        Header: "status",
-        accessor: "state",
-      },
-      {
-        Header: "final price",
-        accessor: "finalPrice",
-      },
-      {
-        Header: "details"
+        Header: "standardPrice",
+        accessor: "standardPrice",
       }
     ],
     []
@@ -54,6 +47,6 @@ export default function RentalHistory({
   return isLoading ? (
     <p>loading</p> 
   ) : (
-    <GenericTable columns={columns} data={data} setSelected={setSelectedRental} onOpen={onOpen} />
+    <GenericTable columns={columns} data={data} setSelected={setSelected} onOpen={onOpen} />
   );
 }

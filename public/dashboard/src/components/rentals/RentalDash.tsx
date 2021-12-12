@@ -2,7 +2,7 @@ import { Grid, GridItem } from '@chakra-ui/layout'
 import { StatGroup, Stat, StatLabel, StatNumber, StatHelpText, StatArrow, Spinner } from '@chakra-ui/react'
 import { border } from '@chakra-ui/styled-system'
 import React from 'react'
-import RentalHistory from '../employees/RentalsHistory'
+import RentalsList from '../employees/RentalsList'
 import RentalDetails from '../employees/RentalDetails'
 
 function RentalDash() {
