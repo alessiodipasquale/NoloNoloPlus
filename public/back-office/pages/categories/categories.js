@@ -74,7 +74,7 @@ function edit() {
     } else {
         editCategory(id, name, description)
         .done(res => {
-            $('#editUserModal').modal('hide')
-        }).catch(err => alert("Errore nella modifica dell'utente."))
+            $('#editCategoryModal').modal('hide')
+        }).catch(err => alert("Errore nella modifica della categoria."))
     }
 }

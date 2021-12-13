@@ -21,7 +21,7 @@ const loginDashboard = async (username, clearTextPassword) => { //req.body.usern
 const registerDashboard = async (obj) => {  //req.body.username / password
     if(!obj.name || !obj.surname || !obj.clearTextPassword || !obj.username)
         throw BadRequestError;
-    const user = await UserModel.create({name:obj.name, surname: obj.surname,username: obj.username, password: obj.clearTextPassword, role: 'manager'});
+    const user = await UserModel.create({name:obj.name, surname: obj.surname,username: obj.username, password: obj.clearTextPassword, role: 'manager', certifications:[]});
     return user;
 }
 
@@ -33,7 +33,7 @@ const loginBack = async (username, clearTextPassword) => { //req.body.username /
 const registerBack = async (obj) => {  //req.body.username / password
     if(!obj.name || !obj.surname || !obj.clearTextPassword || !obj.username)
         throw BadRequestError;
-    const user = await UserModel.create({name:obj.name, surname: obj.surname, username: obj.username, password: obj.clearTextPassword, role: 'funzionario'});
+    const user = await UserModel.create({name:obj.name, surname: obj.surname, username: obj.username, password: obj.clearTextPassword, role: 'funzionario', certifications:[]});
     return user;
 }
 

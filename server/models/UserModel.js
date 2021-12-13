@@ -52,6 +52,11 @@ const _UserModel = new mongoose.Schema({
     registrationDate: {
         type: Date,
         required: true,
+    },
+    certifications: {
+        type: [String],
+        ref: 'Certification',
+        required: false
     }
 }, { collection: "User"});
 

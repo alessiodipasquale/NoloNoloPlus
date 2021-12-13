@@ -14,7 +14,6 @@ function deleteCertification(id) {
     return httpDelete('certifications/'+id, true);
 }
 
-/*   Manca back-end
-function editCertification(_id, rentalId, certificationType, employerId) {
-    return httpPut('certifications', {_id, rentalId, certificationType, employerId}, true);
-}*/
+function editCertification(_id, rentalId, certificationType, employerId, certificationDate) {
+    return httpPut('certifications', {_id, rentalId, certificationType, employerId, certificationDate}, true);
+}

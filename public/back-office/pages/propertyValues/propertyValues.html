@@ -1,0 +1,124 @@
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createPropertyValueModal">
+    Crea nuova proprietà specifica
+</button>
+
+<table class="table" style="margin-top: 2%;">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Valore</th>
+        <th scope="col">Proprietà generale</th>
+        <th scope="col">Unità di misura</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<!-- CreateModal -->
+<div class="modal fade" id="createPropertyValueModal" tabindex="-1" role="dialog" aria-labelledby="createPropertyValueModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="createPropertyValueModalLabel">Crea proprietà specifica</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputValue">Valore *</label>
+                            <textarea type="text" class="form-control" id="inputValue" placeholder="Inserisci valore"></textarea>
+                        </div>
+                    </div>
+                </div> 
+                <div class="col-4">
+                    <div class="dropdown" style="display: flex; flex-direction: column;">
+                        <label for="inputProperty">Proprietà generale</label>
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="inputProperty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         Scegli Proprietà generale a cui associarla
+                        </button>
+                        <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputProperty">
+                          <a class="dropdown-item" href="#">
+                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                            <label class="form-check-label" for="dropdownCheck">
+                              Property1
+                            </label>
+                          </a>
+                          <a class="dropdown-item" href="#">
+                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
+                            <label class="form-check-label" for="dropdownCheck">
+                              Property2
+                            </label>
+                          </a>
+                        </div>
+                    </div>    
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="inputUnitOfMeasure">Unità di misura *</label>
+                            <textarea type="text" class="form-control" id="inputUnitOfMeasure" placeholder="Inserisci unità di misura"></textarea>
+                        </div>
+                    </div>
+                </div> 
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="create()">Crea</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- EditModal -->
+<div class="modal fade" id="editPropertyValueModal" tabindex="-1" role="dialog" aria-labelledby="editPropertyValueModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editPropertyValueModalLabel">Modifica proprietà specifica</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <form>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inpuEditId">Id</label>
+                            <input type="text" disabled class="form-control" id="inputEditId" >
+                        </div>    
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputEditValue">Valore *</label>
+                            <input type="text" class="form-control" id="inputEditValue" placeholder="Inserisci valore">
+                        </div>    
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="inputEditUnitOfMeasure">Unità di misura *</label>
+                            <input type="text" class="form-control" id="inputEditUnitOfMeasure" placeholder="Inserisci unità di misura">
+                        </div>    
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-warning" id="editBtn" onclick="edit()">Modifica</button>
+        </div>
+    </div>
+</div>
+</div>
+
+<script src="../services/property-values-service.js"></script>
+<script src="../pages/propertyValues/propertyValues.js"></script>
