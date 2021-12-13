@@ -1,7 +1,7 @@
-import { sub } from "date-fns";
+import { maxTime, minTime, sub } from "date-fns";
 import { isWithinInterval } from "date-fns/esm";
 import React from "react";
-import { Rental } from "../../@types/db-entities";
+import { Rental, Rental as T } from "../../@types/db-entities";
 import StatCard from "./StatCard";
 import { getPercentDiff } from "../employees/fillMissingMissing";
 import _ from "lodash";
@@ -16,7 +16,7 @@ type GroupsByInterval = {
           end: Date;
         }
       | undefined;
-    rentals: Rental[];
+    rentals: T[];
   }[];
 };
 
@@ -24,34 +24,44 @@ type RevenuesByInterval = {
   [key: string]: number[];
 };
 
-function groupRentalsByInterval(
-  rentals: Rental[],
+function groupByInterval<T>(
+  things: T[],
+  dates: Date[],
   period: Duration,
   howMany: number = 2
-): { interval?: { start: Date; end: Date }; rentals: Rental[] }[] {
+) {
   if (_.isEqual(period, {})) {
-    return [{ rentals: rentals }];
+    return new Map<Interval, T[]>([[{ start: minTime, end: maxTime }, things]]);
   }
 
-  let groups: { interval: { start: Date; end: Date }; rentals: Rental[] }[] =
-    [];
+  let groupedByInterval = new Map<Interval, T[]>();
 
   let latest = new Date();
   let earliest = sub(latest, period);
 
   for (let i = 0; i < howMany; i++) {
     let interval = { start: earliest, end: latest };
-    let groupedRentals = rentals.filter((rental) =>
-      isWithinInterval(new Date(rental.endDate), interval)
+    console.log(things)
+    let groups = things.filter((thing, index) =>
+      isWithinInterval(dates[index], interval)
     );
-    groups.push({ interval: interval, rentals: groupedRentals });
+    console.log(interval)
+    console.log(groups)
+    groupedByInterval.set(interval, groups);
 
     latest = earliest;
     earliest = sub(earliest, period);
   }
+  console.log(groupedByInterval);
+  return groupedByInterval;
+}
 
-  console.log(groups);
-  return groups;
+function groupRentalsByInterval(rentals: Rental[], period: Duration) {
+  return groupByInterval(
+    rentals,
+    rentals.map((rental) => new Date(rental.endDate)),
+    period
+  );
 }
 
 function RevenueCard({ rentals }: { rentals: Rental[] }) {
@@ -63,13 +73,15 @@ function RevenueCard({ rentals }: { rentals: Rental[] }) {
     "last week": { days: 7 },
   } as { [key: string]: Duration };
 
-  const revenuesByInterval = {} as RevenuesByInterval;
-  const groupsByInterval = {} as GroupsByInterval;
+  const revenuesByInterval = {} as { [key: string]: number[] };
+  const groupsByInterval = {} as { [key: string]: Map<Interval, Rental[]> };
 
   for (let key of Object.keys(periods)) {
     groupsByInterval[key] = groupRentalsByInterval(rentals, periods[key]);
-    revenuesByInterval[key] = groupsByInterval[key].map((group) =>
-      group.rentals.reduce((revenue, curr) => revenue + curr.finalPrice, 0)
+    console.log(groupsByInterval[key])
+    console.log(Array.from(groupsByInterval[key]))
+    revenuesByInterval[key] = Array.from(groupsByInterval[key]).map(
+      ([_, rentals]) => rentals.reduce((tot, curr) => tot + curr.finalPrice, 0)
     );
   }
 
