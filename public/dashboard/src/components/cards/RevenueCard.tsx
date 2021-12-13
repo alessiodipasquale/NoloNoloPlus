@@ -1,12 +1,11 @@
-import { maxTime, minTime, sub } from "date-fns";
-import { isWithinInterval } from "date-fns/esm";
 import React from "react";
 import { Rental, Rental as T } from "../../@types/db-entities";
 import StatCard from "./StatCard";
 import { getPercentDiff } from "../employees/fillMissingMissing";
-import _ from "lodash";
 import { Text, HStack } from "@chakra-ui/react";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
+import { groupByInterval } from "./groupByInterval";
+import getPercentHelper from "./getPercentHelper";
 
 type GroupsByInterval = {
   [key: string]: {
@@ -23,38 +22,6 @@ type GroupsByInterval = {
 type RevenuesByInterval = {
   [key: string]: number[];
 };
-
-function groupByInterval<T>(
-  things: T[],
-  dates: Date[],
-  period: Duration,
-  howMany: number = 2
-) {
-  if (_.isEqual(period, {})) {
-    return new Map<Interval, T[]>([[{ start: minTime, end: maxTime }, things]]);
-  }
-
-  let groupedByInterval = new Map<Interval, T[]>();
-
-  let latest = new Date();
-  let earliest = sub(latest, period);
-
-  for (let i = 0; i < howMany; i++) {
-    let interval = { start: earliest, end: latest };
-    console.log(things)
-    let groups = things.filter((thing, index) =>
-      isWithinInterval(dates[index], interval)
-    );
-    console.log(interval)
-    console.log(groups)
-    groupedByInterval.set(interval, groups);
-
-    latest = earliest;
-    earliest = sub(earliest, period);
-  }
-  console.log(groupedByInterval);
-  return groupedByInterval;
-}
 
 function groupRentalsByInterval(rentals: Rental[], period: Duration) {
   return groupByInterval(
@@ -78,8 +45,6 @@ function RevenueCard({ rentals }: { rentals: Rental[] }) {
 
   for (let key of Object.keys(periods)) {
     groupsByInterval[key] = groupRentalsByInterval(rentals, periods[key]);
-    console.log(groupsByInterval[key])
-    console.log(Array.from(groupsByInterval[key]))
     revenuesByInterval[key] = Array.from(groupsByInterval[key]).map(
       ([_, rentals]) => rentals.reduce((tot, curr) => tot + curr.finalPrice, 0)
     );
@@ -99,29 +64,6 @@ function RevenueCard({ rentals }: { rentals: Rental[] }) {
       ];
     })
   );
-
-  function getPercentHelper(a: number, b: number) {
-    if (!a || !b) {
-      return <></>;
-    }
-    const diff = getPercentDiff(a, b);
-
-    let arrow;
-    if (diff >= 0) {
-      arrow = <ArrowUpIcon color="green" />;
-    } else {
-      arrow = <ArrowDownIcon color="red" />;
-    }
-    return (
-      <HStack>
-        {arrow}
-        <Text>{diff.toFixed(2).toString() + "%"}</Text>
-      </HStack>
-    );
-  }
-
-  console.log(groupsByInterval);
-  console.log(revenuesByInterval);
 
   return (
     <StatCard label="Revenue" options={Object.keys(periods)} data={values} />

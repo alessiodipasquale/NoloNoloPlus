@@ -182,8 +182,8 @@ const propertyValues = [
 const rentals = [
     {
         _id: "Rental1",
-        startDate: new Date("<2021-10-01>"),
-        endDate: new Date("<2021-10-02>"),
+        startDate: new Date("<2021-12-01>"),
+        endDate: new Date("<2021-12-8>"),
         clientId: "User1",
         timeInDays: 10,
         itemId: "Item1",
@@ -198,7 +198,7 @@ const rentals = [
     {
         _id: "Rental2",
         startDate: new Date("<2021-10-05>"),
-        endDate: new Date("<2021-10-10>"),
+        endDate: new Date("<2021-12-13>"),
         clientId: "User1",
         timeInDays: 10,
         state: 'terminata',

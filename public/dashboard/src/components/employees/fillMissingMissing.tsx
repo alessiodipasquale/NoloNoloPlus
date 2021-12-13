@@ -82,7 +82,6 @@ export function fillMissing<T>(
     const dateB = thingsByPeriod[i + 1].date;
 
     let difference = periodHelpers.difference(dateB, dateA);
-    console.log(difference);
 
     for (let j = 1; j < difference; j++) {
       copy.push({
@@ -91,8 +90,6 @@ export function fillMissing<T>(
       });
     }
   }
-  console.log("fillMissingMissing")
-  console.log(copy)
   return copy.sort((a, b) => compareAsc(a.date, b.date));
 }
 

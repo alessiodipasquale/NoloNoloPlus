@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@chakra-ui/hooks";
 
 import type { Client, Item } from "../../@types/db-entities";
+import { NewClients } from "./NewClients";
 
 const gridItemStyle = {
   padding: "24px",
@@ -29,6 +30,7 @@ function ClientsDash() {
       })
       .then((json) => {
         setClients(json); //TODO: define type for database objects
+        console.log("clients")
         console.log(clients);
         setIsLoading(false);
         return json;
@@ -48,7 +50,7 @@ function ClientsDash() {
         padding={3}
       >
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-            {/* New users */}
+          <NewClients clients={clients} />
         </GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
 

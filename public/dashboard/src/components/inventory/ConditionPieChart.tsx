@@ -31,7 +31,6 @@ function ConditionPieChart({ items } : { items: Item[]}) {
     }, {})
 
     const data = Object.keys(itemsByStatus).map(key => {return {status: key, count: itemsByStatus[key].length}})
-    console.log(itemsByStatus)
 
     let renderLabel = function(entry : { status: string }) {
         return entry.status;
