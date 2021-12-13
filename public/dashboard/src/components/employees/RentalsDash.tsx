@@ -27,7 +27,7 @@ import {
 } from "date-fns";
 import LineChartCard from "../cards/LineChartCard";
 import { addWeeks, startOfYear } from "date-fns/esm";
-import { getRevenuePerWeek } from "./fillMissingMissing";
+import { dateFormat, getRevenuePerWeek } from "./fillMissingMissing";
 import { compareDateString } from "./compareDateString.1";
 import { useDisclosure } from "@chakra-ui/hooks";
 import RevenueCard from "../cards/RevenueCard";
@@ -67,7 +67,8 @@ function RentalsDash({ employeeId }: { employeeId: string }) {
       .then((json) => console.log(json));
   }, []);
 
-  const chartData = getRevenuePerWeek(rentals);
+  const chartData = getRevenuePerWeek(rentals).map(value => ({revenue: value.revenue, date: format(value.date, dateFormat)}));
+  console.log(chartData);
 
   return (
     <>

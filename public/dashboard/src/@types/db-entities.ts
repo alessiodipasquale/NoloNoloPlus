@@ -12,8 +12,8 @@ type ItemState = 'nuovo' | 'ottimo'|'buono'|'usurato'|'molto usurato'|'inutilizz
 interface Rental {
     _id: string;
     startDate: string;
-    endDate: string;
-    clientId: string;
+    endDate: Date;
+    clientId: Date;
     employerId: string;
     itemId: string[];
     kitId: string;

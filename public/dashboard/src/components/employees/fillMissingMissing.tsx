@@ -7,9 +7,10 @@ import {
   startOfISOWeek,
   startOfWeek,
   Interval,
+  compareAsc,
 } from "date-fns";
 import { compareDateString } from "./compareDateString.1";
-import { Rental as any } from "../../@types/db-entities";
+import { Rental as any, Rental } from "../../@types/db-entities";
 import { addMonths, intervalToDuration, startOfMonth, sub } from "date-fns/esm";
 
 export const dateFormat = "yyyy-MMM-dd";
@@ -21,12 +22,11 @@ type PeriodHelpers = {
   startOf: (date: number | Date) => Date;
 };
 
-
 function getRevenueByCalendarPeriod(
-  rentals: any[],
+  rentals: Rental[],
   startOfPeriod: (date: number | Date) => Date
-): { date: string; revenue: number }[] {
-  let rentalsByPeriod = groupByDate(
+) {
+  let rentalsByPeriod = groupByDate<Rental>(
     rentals.map((rental) => ({ thing: rental, date: rental.endDate })),
     startOfPeriod
   );
@@ -34,85 +34,107 @@ function getRevenueByCalendarPeriod(
   return weekTotals;
 }
 
-function getTotalsPerGroup(rentalsByPeriod: { [key: string]: any[] }) {
-  let periodTotals = [] as { date: string; revenue: number }[];
+function getTotalsPerGroup(rentalsByPeriod: Map<Date, Rental[]>) {
+  // let periodTotals = [] as { date: string; revenue: number }[];
+  let arr = Array.from(rentalsByPeriod);
+  return new Map(
+    arr.map(([key, rentals]) => [
+      key,
+      rentals.reduce((tot, curr) => tot + curr.finalPrice, 0),
+    ])
+  );
 
-  for (let date of Object.keys(rentalsByPeriod)) {
-    periodTotals.push({
-      date: date,
-      revenue: rentalsByPeriod[date].reduce(
-        (tot, curr) => tot + curr.finalPrice,
-        0
-      ),
-    });
-  }
-  return periodTotals;
+  // for (let date of Object.keys(rentalsByPeriod)) {
+  //   periodTotals.push({
+  //     date: date,
+  //     revenue: rentalsByPeriod[date].reduce(
+  //       (tot, curr) => tot + curr.finalPrice,
+  //       0
+  //     ),
+  //   });
+  // }
+  // return periodTotals;
 }
 
 export function groupByDate<T>(
   arr: { thing: T; date: Date }[],
   getPeriodStart: (date: number | Date) => Date
 ) {
-  return arr.reduce<{ [key: string]: T[] }>(
-    (thingsByPeriod, { thing, date }, index) => {
-      const periodStart = getPeriodStart(new Date(date));
-      const key = format(periodStart, dateFormat);
+  return arr.reduce((map, { thing, date }, index) => {
+    const periodStart = getPeriodStart(new Date(date));
 
-      if (!thingsByPeriod[key]) {
-        thingsByPeriod[key] = [];
-      }
-      thingsByPeriod[key].push(thing);
+    if (!map.has(periodStart)) {
+      map.set(periodStart, []);
+    }
+    map.get(periodStart)!.push(thing);
 
-      return thingsByPeriod;
-    },
-    {}
-  );
+    return map;
+  }, new Map<Date, T[]>());
 }
 
-function fillMissing(
-  revenueByPeriod: { date: string; revenue: number }[],
+export function fillMissing<T>(
+  thingsByPeriod: { value: T | null; date: Date }[],
   periodHelpers: PeriodHelpers
 ) {
-  let copy = revenueByPeriod.slice().sort(compareDateString);
-
-  for (let i = 0; i < revenueByPeriod.length - 1; i++) {
-    const dateA = parse(revenueByPeriod[i].date, dateFormat, new Date());
-    const dateB = parse(revenueByPeriod[i + 1].date, dateFormat, new Date());
-    console.log(dateA);
+  let copy = thingsByPeriod.slice().sort((a, b) => compareAsc(a.date, b.date));
+  for (let i = 0; i < thingsByPeriod.length - 1; i++) {
+    const dateA = thingsByPeriod[i].date;
+    const dateB = thingsByPeriod[i + 1].date;
 
     let difference = periodHelpers.difference(dateB, dateA);
     console.log(difference);
 
     for (let j = 1; j < difference; j++) {
-      let date = format(periodHelpers.add(dateA, j), dateFormat);
-      console.log(date);
       copy.push({
-        date: date,
-        revenue: 0,
+        date: periodHelpers.add(dateA, j) ,
+        value: null,
       });
     }
   }
-
-  return copy.sort(compareDateString);
+  console.log("fillMissingMissing")
+  console.log(copy)
+  return copy.sort((a, b) => compareAsc(a.date, b.date));
 }
 
 export function getRevenuePerWeek(rentals: any[]) {
-  let revenuePerWeek = getRevenueByCalendarPeriod(rentals, startOfWeek);
-  return fillMissing(revenuePerWeek, {
-    add: addWeeks,
-    startOf: startOfISOWeek,
-    difference: differenceInCalendarWeeks,
-  });
+  const revenuePerWeek = getRevenueByCalendarPeriod(rentals, startOfWeek);
+  const arrToFill = Array.from(revenuePerWeek)
+
+  const filledValues = fillMissing(
+    arrToFill.map(([date, rental]) => ({
+      value: rental,
+      date: date,
+    })),
+    {
+      add: addWeeks,
+      startOf: startOfISOWeek,
+      difference: differenceInCalendarWeeks,
+    }
+  );
+  return filledValues.map((current) => ({
+    revenue: current.value ?? 0,
+    date: current.date,
+  }));
 }
 
-export function getRevenuePerMonth(rentals: any[]) {
-  let revenuePerMonth = getRevenueByCalendarPeriod(rentals, startOfMonth);
-  return fillMissing(revenuePerMonth, {
-    add: addMonths,
-    startOf: startOfMonth,
-    difference: differenceInCalendarMonths,
-  });
-}
+// export function getRevenuePerMonth(rentals: any[]) {
+//   let revenuePerMonth = getRevenueByCalendarPeriod(rentals, startOfMonth);
+//   const filledValues = fillMissing(
+//     revenuePerMonth.map((curr) => ({
+//       value: curr.revenue,
+//       date: new Date(curr.date),
+//     })),
+//     {
+//       add: addMonths,
+//       startOf: startOfMonth,
+//       difference: differenceInCalendarMonths,
+//     }
+//   );
+//   return filledValues.map((current) => ({
+//     revenue: current.value ?? 0,
+//     date: current.date,
+//   }));
+// }
 
 export function getPercentDiff(last: number, current: number): number {
   return ((current - last) / last) * 100;
