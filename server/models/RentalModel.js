@@ -69,10 +69,11 @@ const _RentalModel = new mongoose.Schema(
       type: [String],
       required: false,
     },
-    damages: { type: Number, default: 0 }
-  },
-  { collection: "Rental" }
-);
+    damage: {
+        type: Number, 
+        default: 0
+    },
+},  { collection: "Rental"});
 
 _RentalModel.pre("save", function (next) {
   const rental = this;

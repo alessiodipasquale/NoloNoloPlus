@@ -201,6 +201,45 @@ const getRentalsByUserId = async (userId) => {
     return toReturn;
 }
 
+const getUserDamage = async (userId) => {
+    const rentals = RentalModel.find({ clientId: userId })
+    let tot = 0;
+    for(let rental of rentals){
+        tot = tot + rental.damage;
+    }
+    return tot;
+}
+
+const getUsersTotalDamage = async () => {
+    const users = await getUsersByRole("cliente")
+    const toReturn = [];
+    for(let user of users){
+        const totalDamage = await getUserDamage(user._id)
+        toReturn.push({user, totalDamage})
+    }
+    return toReturn;
+}
+
+const getEmployerRevenue = async (userId) => {
+    const rentals = RentalModel.find({ employerId: userId })
+    let tot = 0;
+    for(let rental of rentals){
+        tot = tot + rental.finalPrice;
+    }
+    return tot;
+}
+
+const getEmployersTotalRevenue = async () => {
+    const users = await getUsersByRole("funzionario")
+    const toReturn = [];
+    for(let user of users){
+        const totalRevenue = await getEmployerRevenue(user._id)
+        toReturn.push({user, totalRevenue})
+    }
+    return toReturn;
+}
+
+
 module.exports = {
     getUsers,
     getUserById,
@@ -212,5 +251,9 @@ module.exports = {
     editUser,
     editUserAdvanced,
     getReviewsByUserId,
-    getUsersByRole
+    getUsersByRole,
+    getUserDamage,
+    getUsersTotalDamage,
+    getEmployerRevenue,
+    getEmployersTotalRevenue
 }

@@ -1,6 +1,6 @@
 const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack, roleChecker } = require("./Auth");
 const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId, calculatePriceforItem, editItem } = require("./Item");
-const { getUserById, getUsers, getUsersByRole,deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced } = require("./User");
+const { getUserById, getUsers, getUsersByRole,deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced, getUserDamage, getUsersTotalDamage } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental, editRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetail} = require("./PriceDetails");
@@ -134,6 +134,26 @@ const requestManager = async (reqName, req, res) => {
             }
             case "getReviewsByUserId": {
                 toReturn = await getReviewsByUserId(req.user.user._id);
+                break;
+            }
+            case "getUserDamage": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getUserDamage(req.params.id);
+                break;
+            }
+            case "getUsersTotalDamage": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getUsersTotalDamage();
+                break;
+            }
+            case "getUserDamage": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getEmployerRevenue(req.params.id);
+                break;
+            }
+            case "getUsersTotalDamage": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getEmployersTotalRevenue();
                 break;
             }
 
