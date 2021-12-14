@@ -22,7 +22,7 @@ import {
 } from "react-table";
 import type { Column, FilterTypes } from "react-table";
 import PropTypes from "prop-types";
-import RentalDetails from "./employees/RentalDetails";
+import RentalDetails from "./rentals/RentalDetails";
 import { matchSorter } from "match-sorter";
 
 function GlobalFilter({

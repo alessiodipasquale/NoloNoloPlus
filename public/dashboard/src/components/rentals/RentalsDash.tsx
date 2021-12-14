@@ -33,7 +33,7 @@ import { useDisclosure } from "@chakra-ui/hooks";
 import RevenueCard from "../cards/RevenueCard";
 import RentalConclusionsPie from "./RentalConclusionsPie";
 
-const gridItemStyle = {
+export const gridItemStyle = {
   padding: "24px",
   margin: "0",
   backgroundColor: "white",
@@ -42,14 +42,14 @@ const gridItemStyle = {
 };
 
 
-function RentalsDash({ employeeId }: { employeeId: string }) {
+function RentalsDash({ employeeId }: { employeeId?: string }) {
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRental, setSelectedRental] = useState<number | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    fetch(`users/${employeeId}/rentals`, {
+    fetch(employeeId?`users/${employeeId}/rentals`:"rentals", {
       headers: {
         authorization: "bearer " + process.env.REACT_APP_TOKEN,
       },

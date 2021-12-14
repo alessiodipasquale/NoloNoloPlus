@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import RentalDash from '../components/rentals/RentalDash'
 import type { Rental } from '../@types/db-entities'
+import RentalsDash from '../components/rentals/RentalsDash'
 
 function Rentals() {
 
@@ -27,8 +27,7 @@ function Rentals() {
 
 
     return (
-        <div>hi</div>
-        //<RentalDash rentals={data}/>
+        <RentalsDash/>
     )
 }
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Rental, Rental as T } from "../../@types/db-entities";
 import StatCard from "./StatCard";
-import { getPercentDiff } from "../employees/fillMissingMissing";
+import { getPercentDiff } from "../rentals/fillMissingMissing";
 import { Text, HStack } from "@chakra-ui/react";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 import { groupByInterval } from "./groupByInterval";

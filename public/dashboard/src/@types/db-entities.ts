@@ -67,6 +67,20 @@ interface Client {
     rentals: string[];
     reviews: string[];
     registrationDate: Date;
+    damages: number;
 }
 
-export type {Rental, Item, Client} 
+interface Employee { 
+    _id: string;
+    username: string;
+    name: string;
+    surname: string;
+    address: string;
+    role : "funzionario" | "manager"
+    rentals: string[];
+    registrationDate: Date;
+    certificacions: string[];
+
+}
+
+export type {Rental, Item, Client, Employee}

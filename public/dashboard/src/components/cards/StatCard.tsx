@@ -61,7 +61,7 @@ function StatCard({
 }: {
   label: string;
   options: string[];
-  data: { [key: string]: {value: number, helper: JSX.Element} };
+  data: { [key: string]: {value: number | string, helper: JSX.Element} };
 }) {
   const [selected, setSelected] = useState(options[0]);
 

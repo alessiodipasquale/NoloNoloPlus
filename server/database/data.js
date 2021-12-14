@@ -1,5 +1,19 @@
 const users = [
     {
+        _id: "User4",
+        username: "alessio",
+        password: "ciao",
+        name: "Alessio",
+        surname: "Di Pasquale",
+        favPaymentMethod: 'carta',
+        address: "Via Massarenti 470",
+        commentsFromOfficiers: 'cliente cattivo',
+        favItemsId: [],
+        rentals: [],
+        role: 'cliente',
+        registrationDate: new Date("<2021-9-30>") 
+    },
+    {
         _id: "User3",
         username: "bb",
         password: "ciao",
@@ -11,7 +25,7 @@ const users = [
         favItemsId: [],
         rentals: [],
         role: 'cliente',
-        registrationDate: new Date("<2021-10-05>") 
+        registrationDate: new Date("<2021-12-07>") 
     },
     {
         _id: "User2",
@@ -25,7 +39,7 @@ const users = [
         favItemsId: [],
         rentals: [],
         role: 'cliente',
-        registrationDate: new Date("<2021-10-05>") 
+        registrationDate: new Date("<2021-12-14>") 
     },
     {
         _id: "User1",

@@ -6,6 +6,7 @@ import type { Item } from "../../@types/db-entities";
 import ItemScatterPlot from "./ItemScatterPlot";
 import ItemTable from "./ItemTable";
 import ConditionPieChart from "./ConditionPieChart";
+import AvailableCard from "./AvailableCard";
 
 const gridItemStyle = {
   padding: "24px",
@@ -51,7 +52,7 @@ function InventoryDash() {
         padding={3}
       >
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          {/* graph showing tot rentals, revenue and damage per user */}
+          <AvailableCard items={items}/>
         </GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>

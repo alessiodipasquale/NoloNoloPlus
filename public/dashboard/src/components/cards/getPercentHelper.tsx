@@ -1,7 +1,7 @@
 import { ArrowUpIcon, ArrowDownIcon } from "@chakra-ui/icons";
 import { HStack, Text } from "@chakra-ui/react";
 import React from "react";
-import { getPercentDiff } from "../employees/fillMissingMissing";
+import { getPercentDiff } from "../rentals/fillMissingMissing";
 
 export default function getPercentHelper(a: number, b: number) {
     if (!a || !b) {
