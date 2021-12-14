@@ -23,6 +23,8 @@ const router = {
         app.put('/users',auth, (req, res) => { requestManager("editUser", req, res); })
         app.get('/users/:userId/rentals',auth, (req, res) => { requestManager("getRentalsByUserId", req, res); })
         app.get('/users/:id/getReviewsByUserId', auth, (req, res) => { requestManager("getReviewsByUserId", req, res); })
+        app.get('/users/:id/damage', auth, (req, res) => { requestManager("getUserDamage", req, res); })
+        app.get('/users/damage', auth, (req, res) => { requestManager("getUsersTotalDamage", req, res); })
 
         // Item
         /**/app.get('/items', (req, res) => { requestManager("getItems", req, res); })

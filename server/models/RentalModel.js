@@ -67,7 +67,10 @@ const _RentalModel = new mongoose.Schema({
         type: [String],
         required: false
     },
-    damagedSomething: {type: Boolean, required: false},
+    damage: {
+        type: Number, 
+        default: 0
+    },
 },  { collection: "Rental"});
 
 _RentalModel.pre('save', function (next) {
