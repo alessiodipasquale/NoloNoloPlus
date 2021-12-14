@@ -146,6 +146,16 @@ const requestManager = async (reqName, req, res) => {
                 toReturn = await getUsersTotalDamage();
                 break;
             }
+            case "getUserDamage": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getEmployerRevenue(req.params.id);
+                break;
+            }
+            case "getUsersTotalDamage": {
+                roleChecker(req.user.user._id,'funzionario',"block")
+                toReturn = await getEmployersTotalRevenue();
+                break;
+            }
 
             ////////////////////////////////////////////////////////////////////////// Rental
             case "getRentalById": {

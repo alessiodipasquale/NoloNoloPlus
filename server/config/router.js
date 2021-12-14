@@ -25,6 +25,9 @@ const router = {
         app.get('/users/:id/getReviewsByUserId', auth, (req, res) => { requestManager("getReviewsByUserId", req, res); })
         app.get('/users/:id/damage', auth, (req, res) => { requestManager("getUserDamage", req, res); })
         app.get('/users/damage', auth, (req, res) => { requestManager("getUsersTotalDamage", req, res); })
+        app.get('/users/employers/:id/revenue', auth, (req, res) => { requestManager("getEmployerRevenue", req, res); })
+        app.get('/users/employers/revenue', auth, (req, res) => { requestManager("getEmployersTotalRevenue", req, res); })
+
 
         // Item
         /**/app.get('/items', (req, res) => { requestManager("getItems", req, res); })
