@@ -207,7 +207,7 @@ const getUserDamage = async (userId) => {
     for(let rental of rentals){
         tot = tot + rental.damage;
     }
-    return tot;
+    return {tot};
 }
 
 const getUsersTotalDamage = async () => {
@@ -215,7 +215,7 @@ const getUsersTotalDamage = async () => {
     const toReturn = [];
     for(let user of users){
         const totalDamage = await getUserDamage(user._id)
-        toReturn.push({user, totalDamage})
+        toReturn.push({user, totalDamage:totalDamage.tot})
     }
     return toReturn;
 }

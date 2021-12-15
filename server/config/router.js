@@ -1,4 +1,5 @@
 const { requestManager } = require('../routes/RequestsManager');
+const { BadRequestError } = require('./errors');
 
 const router = {
     initialize: (app, passport) => {
@@ -17,14 +18,14 @@ const router = {
         app.get('/users/managers', auth, (req, res) => { requestManager("getManagers", req, res); })
         app.get('/users/employers', auth, (req, res) => { requestManager("getEmployers", req, res); })
         app.get('/users/managers', auth, (req, res) => { requestManager("getClients", req, res); })
+        app.get('/users/damage', auth, (req, res) => { requestManager("getUsersTotalDamage", req, res);})
         app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
         app.delete('/users/:id', auth, (req, res) => { requestManager("deleteUser", req, res); })
         app.post('/users', auth, (req, res) => { requestManager("createUser", req, res); })
         app.put('/users',auth, (req, res) => { requestManager("editUser", req, res); })
         app.get('/users/:userId/rentals',auth, (req, res) => { requestManager("getRentalsByUserId", req, res); })
         app.get('/users/:id/getReviewsByUserId', auth, (req, res) => { requestManager("getReviewsByUserId", req, res); })
-        app.get('/users/:id/damage', auth, (req, res) => { requestManager("getUserDamage", req, res); })
-        app.get('/users/damage', auth, (req, res) => { requestManager("getUsersTotalDamage", req, res); })
+        app.get('/users/:id/damage', auth, (req, res) => { console.log("ao");requestManager("getUserDamage", req, res); })
         app.get('/users/employers/:id/revenue', auth, (req, res) => { requestManager("getEmployerRevenue", req, res); })
         app.get('/users/employers/revenue', auth, (req, res) => { requestManager("getEmployersTotalRevenue", req, res); })
 
