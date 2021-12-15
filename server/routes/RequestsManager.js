@@ -1,6 +1,6 @@
 const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack, roleChecker } = require("./Auth");
 const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId, calculatePriceforItem, editItem } = require("./Item");
-const { getUserById, getUsers, getUsersByRole,deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced, getUserDamage, getUsersTotalDamage } = require("./User");
+const { getUserById, getUsers, getUsersByRole,deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced, getUserDamage, getUsersTotalDamage, getEmployerRevenue, getEmployersTotalRevenue } = require("./User");
 const { getRentalById, getRentals, deleteRental, createRental, editRental } = require("./Rental");
 const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
 const { getPriceDetail} = require("./PriceDetails");
@@ -146,12 +146,12 @@ const requestManager = async (reqName, req, res) => {
                 toReturn = await getUsersTotalDamage();
                 break;
             }
-            case "getUserDamage": {
+            case "getEmployerRevenue": {
                 roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await getEmployerRevenue(req.params.id);
                 break;
             }
-            case "getUsersTotalDamage": {
+            case "getEmployersTotalRevenue": {
                 roleChecker(req.user.user._id,'funzionario',"block")
                 toReturn = await getEmployersTotalRevenue();
                 break;
@@ -374,6 +374,7 @@ const requestManager = async (reqName, req, res) => {
             default:
                 console.log("ti sei scordato di inserire un case");
         }
+        //console.log(reqName)
         //console.log(toReturn);
         if(!toReturn) res.send();
         else res.send(toReturn);

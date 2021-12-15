@@ -202,12 +202,12 @@ const getRentalsByUserId = async (userId) => {
 }
 
 const getUserDamage = async (userId) => {
-    const rentals = RentalModel.find({ clientId: userId })
+    const rentals = await RentalModel.find({ clientId: userId })
     let tot = 0;
     for(let rental of rentals){
         tot = tot + rental.damage;
     }
-    return tot;
+    return {tot};
 }
 
 const getUsersTotalDamage = async () => {
@@ -215,13 +215,13 @@ const getUsersTotalDamage = async () => {
     const toReturn = [];
     for(let user of users){
         const totalDamage = await getUserDamage(user._id)
-        toReturn.push({user, totalDamage})
+        toReturn.push({user, totalDamage:totalDamage.tot})
     }
     return toReturn;
 }
 
 const getEmployerRevenue = async (userId) => {
-    const rentals = RentalModel.find({ employerId: userId })
+    const rentals = await RentalModel.find({ employerId: userId })
     let tot = 0;
     for(let rental of rentals){
         tot = tot + rental.finalPrice;

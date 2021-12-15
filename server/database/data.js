@@ -193,7 +193,8 @@ const rentals = [
         rentalCertification: "Certification1",
         returnCertification: "Certification2",
         finalPrice: 1000,
-        notes: ["dadadada", "ohohoho"]
+        notes: ["dadadada", "ohohoho"],
+        employerId: "User1"
     },
     {
         _id: "Rental2",
@@ -208,7 +209,8 @@ const rentals = [
         rentalCertification: "Certification1",
         returnCertification: "Certification2",
         finalPrice: 1200,
-        notes: ["js is bad"]
+        notes: ["js is bad"],
+        employerId: "User1"
     },
     {
         _id: "Rental3",
@@ -223,7 +225,8 @@ const rentals = [
         rentalCertification: "Certification1",
         returnCertification: "Certification2",
         finalPrice: 1600,
-        notes: ["js is bad"]
+        notes: ["js is bad"],
+        employerId: "User1"
     },
     {
         _id: "Rental4",
@@ -238,7 +241,8 @@ const rentals = [
         rentalCertification: "Certification1",
         returnCertification: "",
         finalPrice: 1500,
-        notes: ["why tf don´t you appear"]
+        notes: ["why tf don´t you appear"],
+        employerId: "User1"
     }
 ];
 
