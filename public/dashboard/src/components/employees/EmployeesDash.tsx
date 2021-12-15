@@ -1,33 +1,55 @@
-import { Grid, GridItem } from "@chakra-ui/react";
+import icon from "@chakra-ui/icon/dist/declarations/src/icon";
+import { Box, Grid, GridItem, IconButton, useDisclosure } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Employee } from "../../@types/db-entities";
+import { FaChevronLeft } from "react-icons/fa";
+import { Employee, Rental } from "../../@types/db-entities";
 import { gridItemStyle } from "../rentals/RentalsDash";
+import RentalsList from "../rentals/RentalsList";
+import { CountRevenueChart } from "./CountRevenueChart";
 import EmployeesList from "./EmployeesList";
 
 function EmployeesDash() {
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [selectedEmployee, setSelectedEmployee] = useState<number>();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [rentals, setRentals] = useState<Rental[]>([]);
 
-    const [employees, setEmployees] = useState<Employee[]>([])
-    const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    fetch(`users/employers`, {
+      headers: {
+        authorization: "bearer " + process.env.REACT_APP_TOKEN,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        setEmployees(json); //TODO: define type for database objects
+        setIsLoading(false);
+        return json;
+      })
+      .then((json) => console.log(json));
+  }, []);
 
-    useEffect(() => {
-        fetch(`users/employers`, {
-          headers: {
-            authorization: "bearer " + process.env.REACT_APP_TOKEN,
-          },
-        })
-          .then((res) => {
-            return res.json();
-          })
-          .then((json) => {
-            setEmployees(json); //TODO: define type for database objects
-            setIsLoading(false);
-            return json;
-          })
-          .then((json) => console.log(json));
-      }, []);
-    
+  useEffect(() => {
+    if (!selectedEmployee) return;
+    fetch(`users/${employees[selectedEmployee]._id}/rentals`, {
+      headers: {
+        authorization: "bearer " + process.env.REACT_APP_TOKEN,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((json) => {
+        setRentals(json); //TODO: define type for database objects
+        setIsLoading(false);
+        return json;
+      })
+      .then((json) => console.log(json));
+  }, [employees, selectedEmployee]);
 
-    
   return (
     <Grid
       minWidth="0"
@@ -39,9 +61,35 @@ function EmployeesDash() {
       padding={3}
     >
       <GridItem colSpan={6} rowSpan={12} {...gridItemStyle}>
-          <EmployeesList isLoading={isLoading} employees={employees} onOpen={undefined} />
+        {!isOpen && (
+          <EmployeesList
+            isLoading={isLoading}
+            employees={employees}
+            setSelected={setSelectedEmployee}
+            onOpen={onOpen}
+          />
+        )}
+        {isOpen && (
+          <Box>
+            <IconButton
+              aria-label="go back to employees"
+              icon={<FaChevronLeft />}
+              onClick={()=> {setSelectedEmployee(undefined); onClose()}}
+            />
+            <RentalsList
+              rentals={rentals}
+              employeeId={
+                selectedEmployee ? employees[selectedEmployee]._id : undefined
+              }
+              onOpen={undefined}
+              isLoading={isLoading}
+            />
+          </Box>
+        )}
       </GridItem>
-      <GridItem colSpan={6} rowSpan={6} {...gridItemStyle}></GridItem>
+      <GridItem colSpan={6} rowSpan={6} {...gridItemStyle}>
+        <CountRevenueChart />
+      </GridItem>
 
       <GridItem colSpan={6} rowSpan={6} {...gridItemStyle}></GridItem>
     </Grid>

@@ -10,12 +10,14 @@ import Inventory from "./routes/Inventory"
 import Employees from "./routes/Employees"
 import Rentals from "./routes/Rentals"
 
+import theme from "./theme/index"
+
 console.log(process.env)
 
 ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />
-    <ChakraProvider>
+    <ChakraProvider theme={theme} >
 
       <BrowserRouter>
         <Routes>

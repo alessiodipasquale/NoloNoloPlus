@@ -396,12 +396,6 @@ const requestManager = async (reqName, req, res) => {
     } catch(err) {
         res.handle(err);
     }
-    //console.log(toReturn);
-    if (!toReturn) res.send();
-    else res.send(toReturn);
-  } catch (err) {
-    res.handle(err);
-  }
 };
 
 module.exports = {

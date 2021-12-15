@@ -1,5 +1,6 @@
 // theme/index.js
 import { extendTheme } from "@chakra-ui/react"
+import GenericTable from "./components/genericTable"
 
 // Global style overrides
 //import styles from "./styles"
@@ -8,14 +9,13 @@ import { extendTheme } from "@chakra-ui/react"
 //import borders from "./foundations/borders"
 
 // Component style overrides
-import Card from "./components/card"
 
 const overrides = {
   //styles,
   //borders,
   // Other foundational style overrides go here
   components: {
-    Card,
+    GenericTable,
     // Other components go here
   },
 }

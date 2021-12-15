@@ -5,15 +5,21 @@ import GenericTable from "../GenericTable";
 
 export default function RentalsList({
   isLoading,
-  data,
+  rentals,
   setSelectedRental,
   onOpen,
+  employeeId
 }: {
   isLoading: boolean;
-  data: any;
-  setSelectedRental: React.Dispatch<React.SetStateAction<number | null>>;
+  rentals: Rental[];
   onOpen: any
+  setSelectedRental?: React.Dispatch<React.SetStateAction<number | null>>;
+  employeeId?: string,
 }) {
+
+  const data = employeeId ? rentals : rentals.filter(rental => rental._id === employeeId)
+
+
   const columns = useMemo(
     () => [
       {
@@ -28,14 +34,6 @@ export default function RentalsList({
         Header: "item id",
         accessor: "itemId",
       },
-      // {
-      //     Header: "start date",
-      //     accessor: "startDate"
-      // },
-      // {
-      //     Header: "end date",
-      //     accessor: "endDate"
-      // },
       {
         Header: "status",
         accessor: "state",

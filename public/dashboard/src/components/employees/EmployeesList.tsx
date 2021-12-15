@@ -3,14 +3,18 @@ import { useEffect, useState } from "react";
 import { Employee, Rental } from "../../@types/db-entities";
 import GenericTable from "../GenericTable";
 
+
+
 export default function EmployeesList({
   isLoading,
   employees,
   onOpen,
+  setSelected
 }: {
   isLoading: boolean;
   employees: Employee[];
   onOpen: any;
+  setSelected: any;
 }) {
   const columns = useMemo(
     () => [
@@ -41,6 +45,8 @@ export default function EmployeesList({
       columns={columns}
       data={employees}
       onOpen={onOpen}
+      setSelected={setSelected}
+      variant="withHover"
     />
   );
 }

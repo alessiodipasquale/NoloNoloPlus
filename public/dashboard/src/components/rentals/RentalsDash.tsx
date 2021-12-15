@@ -95,7 +95,7 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
         </GridItem>
         <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
           <RentalsList
-            data={rentals}
+            rentals={rentals}
             isLoading={isLoading}
             setSelectedRental={setSelectedRental}
             onOpen={onOpen}

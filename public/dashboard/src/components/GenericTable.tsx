@@ -1,4 +1,5 @@
 import {
+  Box,
   Input,
   Table,
   TableCaption,
@@ -9,6 +10,7 @@ import {
   Thead,
   Tr,
   useDisclosure,
+  useMultiStyleConfig,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import {
@@ -41,9 +43,10 @@ function GlobalFilter({
   }, 200);
 
   return (
-    <span>
+    <Box w="full">
       Search:{" "}
       <Input
+      w="full"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
@@ -55,7 +58,7 @@ function GlobalFilter({
           border: "0",
         }}
       />
-    </span>
+    </Box>
   );
 }
 
@@ -66,6 +69,7 @@ function GenericTable({
   footer,
   setSelected,
   onOpen,
+  variant
 }: {
   columns: Column[];
   data: any;
@@ -73,6 +77,7 @@ function GenericTable({
   footer?: any;
   setSelected?: (arg: any) => any;
   onOpen?: any;
+  variant?: string
 }) {
   const {
     getTableProps,
@@ -85,6 +90,9 @@ function GenericTable({
     preGlobalFilteredRows,
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
+
+  const styles = useMultiStyleConfig("GenericTable", {variant})
+  console.log(styles)
 
   function fuzzyTextFilterFn(
     rows: Row<any>[],
@@ -155,6 +163,7 @@ function GenericTable({
                   setSelected && setSelected(row.index);
                   onOpen && onOpen();
                 }}
+                sx={styles.Tr}
               >
                 {row.cells.map((cell) => {
                   return (
