@@ -26,6 +26,7 @@ import type { Column, FilterTypes } from "react-table";
 import PropTypes from "prop-types";
 import RentalDetails from "./rentals/RentalDetails";
 import { matchSorter } from "match-sorter";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 function GlobalFilter({
   preGlobalFilteredRows,
@@ -143,8 +144,8 @@ function GenericTable({
                   <span>
                     {column.isSorted
                       ? column.isSortedDesc
-                        ? " 🔽"
-                        : " 🔼"
+                        ? <FaChevronUp />
+                        : <FaChevronDown />
                       : ""}
                   </span>
                 </Th>
