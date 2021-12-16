@@ -45,7 +45,7 @@ export const gridItemStyle = {
 function RentalsDash({ employeeId }: { employeeId?: string }) {
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedRental, setSelectedRental] = useState<number | null>(null);
+  const [selectedRental, setSelectedRental] = useState<number>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
@@ -97,13 +97,13 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
           <RentalsList
             rentals={rentals}
             isLoading={isLoading}
-            setSelectedRental={setSelectedRental}
-            onOpen={onOpen}
+            setSelected={setSelectedRental}
+            onClickRow={onOpen}
           ></RentalsList>
         </GridItem>
       </Grid>
 
-      {selectedRental !== null && (
+      {(selectedRental || selectedRental === 0)   && (
         <RentalDetails
           rental={rentals[selectedRental]}
           isOpen={isOpen}

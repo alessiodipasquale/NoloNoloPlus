@@ -8,12 +8,12 @@ import GenericTable from "../GenericTable";
 export default function EmployeesList({
   isLoading,
   employees,
-  onOpen,
+  onClickRow,
   setSelected
 }: {
   isLoading: boolean;
   employees: Employee[];
-  onOpen: any;
+  onClickRow: any;
   setSelected: any;
 }) {
   const columns = useMemo(
@@ -44,7 +44,7 @@ export default function EmployeesList({
     <GenericTable
       columns={columns}
       data={employees}
-      onOpen={onOpen}
+      onClickRow={onClickRow}
       setSelected={setSelected}
       variant="withHover"
     />

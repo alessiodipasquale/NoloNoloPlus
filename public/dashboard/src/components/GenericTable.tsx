@@ -69,7 +69,7 @@ function GenericTable({
   caption,
   footer,
   setSelected,
-  onOpen,
+  onClickRow,
   variant
 }: {
   columns: Column[];
@@ -77,7 +77,7 @@ function GenericTable({
   caption?: string;
   footer?: any;
   setSelected?: (arg: any) => any;
-  onOpen?: any;
+  onClickRow?: any;
   variant?: string
 }) {
   const {
@@ -162,7 +162,7 @@ function GenericTable({
                 {...row.getRowProps()}
                 onClick={() => {
                   setSelected && setSelected(row.index);
-                  onOpen && onOpen();
+                  onClickRow && onClickRow();
                 }}
                 sx={styles.Tr}
               >

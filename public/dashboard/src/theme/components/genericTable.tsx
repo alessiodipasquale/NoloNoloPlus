@@ -11,7 +11,7 @@ const style = {
       Tr: {
         _hover: {
           boxShadow: "md",
-          backgroundColor: "gray.50",
+          
         },
       },
     },

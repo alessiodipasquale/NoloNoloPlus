@@ -47,6 +47,6 @@ export default function ItemTable({
   return isLoading ? (
     <p>loading</p> 
   ) : (
-    <GenericTable columns={columns} data={data} setSelected={setSelected} onOpen={onOpen} />
+    <GenericTable columns={columns} data={data} setSelected={setSelected} onClickRow={onOpen} />
   );
 }

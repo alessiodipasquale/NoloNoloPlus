@@ -6,15 +6,17 @@ import GenericTable from "../GenericTable";
 export default function RentalsList({
   isLoading,
   rentals,
-  setSelectedRental,
-  onOpen,
-  employeeId
+  onClickRow,
+  employeeId,
+  setSelected,
+  variant
 }: {
   isLoading: boolean;
   rentals: Rental[];
-  onOpen: any
-  setSelectedRental?: React.Dispatch<React.SetStateAction<number | null>>;
+  onClickRow: any
   employeeId?: string,
+  setSelected?: React.Dispatch<React.SetStateAction<number | undefined>>;
+  variant?: string
 }) {
 
   const data = employeeId ? rentals : rentals.filter(rental => rental._id === employeeId)
@@ -52,6 +54,6 @@ export default function RentalsList({
   return isLoading ? (
     <p>loading</p> 
   ) : (
-    <GenericTable columns={columns} data={data} setSelected={setSelectedRental} onOpen={onOpen} />
+    <GenericTable columns={columns} data={data} setSelected={setSelected} onClickRow={onClickRow} variant={variant} />
   );
 }
