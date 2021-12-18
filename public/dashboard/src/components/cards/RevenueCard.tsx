@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Rental, Rental as T } from "../../@types/db-entities";
 import StatCard from "./StatCard";
 import { getPercentDiff } from "../rentals/fillMissingMissing";
-import { Text, HStack } from "@chakra-ui/react";
+import { Text, HStack, Flex } from "@chakra-ui/react";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 import { groupByInterval } from "./groupByInterval";
 import getPercentHelper from "./getPercentHelper";
+import { CardMenu } from "./CardMenu";
+import CardHeader from "./CardHeader";
 
 type GroupsByInterval = {
   [key: string]: {
@@ -32,6 +34,8 @@ function groupRentalsByInterval(rentals: Rental[], period: Duration) {
 }
 
 function RevenueCard({ rentals }: { rentals: Rental[] }) {
+  const [selected, setSelected] = useState("all");
+
   const periods = {
     all: {},
     "last year": { years: 1 },
@@ -66,7 +70,24 @@ function RevenueCard({ rentals }: { rentals: Rental[] }) {
   );
 
   return (
-    <StatCard label="Revenue" options={Object.keys(periods)} data={values} />
+    <>
+      <CardHeader>
+        <Text variant="card-header">
+          Revenue
+        </Text>
+        <CardMenu
+          selected={selected}
+          setSelected={setSelected}
+          options={Object.keys(periods)}
+        />
+      </CardHeader>
+      {values[selected] && (
+        <StatCard
+          value={values[selected].value}
+          helper={values[selected].helper}
+        />
+      )}
+    </>
   );
 }
 

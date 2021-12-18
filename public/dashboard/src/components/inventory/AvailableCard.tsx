@@ -1,22 +1,27 @@
-import React from 'react'
-import { Item } from '../../@types/db-entities'
-import StatCard from '../cards/StatCard'
+import React from "react";
+import { Item } from "../../@types/db-entities";
+import StatCard from "../cards/StatCard";
+import { Button, Flex, Text } from "@chakra-ui/react";
+import CardHeader from "../cards/CardHeader";
 
-function AvailableCard( { items } : { items: Item[] } ) {
+function AvailableCard({ items }: { items: Item[] }) {
+  const available = items.filter((item) => item.available);
 
-    const available = items.filter(item => item.available)
+  const data = {
+    available: {
+      value: "" + available.length.toString() + "/" + items.length.toString(),
+      helper: <></>,
+    },
+  };
 
-    const data = {
-        "available": { 
-            value: "" + available.length.toString() + "/" + items.length.toString(),
-            helper: <></>
-        }
-    }
-
-
-    return (
-        <StatCard label="Available items" data={data} options={["available"]}/>
-    )
+  return (
+    <>
+      <CardHeader>
+        <Text variant="card-header">Available items</Text>
+      </CardHeader>
+      <StatCard value={data.available.value} />
+    </>
+  );
 }
 
-export default AvailableCard
+export default AvailableCard;

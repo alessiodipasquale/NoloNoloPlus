@@ -1,13 +1,13 @@
 
-import { Box, Grid, GridItem, IconButton, useDisclosure, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, IconButton, useDisclosure, Text, Flex } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { Employee, Rental } from "../../@types/db-entities";
-import RentalDetails from "../rentals/RentalDetails";
 import { gridItemStyle } from "../rentals/RentalsDash";
 import RentalsList from "../rentals/RentalsList";
 import { CountRevenueChart } from "./CountRevenueChart";
 import EmployeesList from "./EmployeesList";
+import RentalDetails from "../rentals/RentalDetails";
 
 type menuScreen = "details" | "employees" | "rentals"
 
@@ -81,6 +81,7 @@ function EmployeesDash() {
               icon={<FaChevronLeft />}
               onClick={()=> {setSelectedEmployee(undefined); setMenu("employees")}}
             />
+            <Text>Rentals</Text>
             <RentalsList
               rentals={rentals}
               setSelected={setSelectedRental}
@@ -95,12 +96,13 @@ function EmployeesDash() {
         )}
         {menu === "details"  && (
           <Box>
+            <Text>Rentals</Text>
             <IconButton
               aria-label="go back to employees"
               icon={<FaChevronLeft />}
               onClick={()=> {setSelectedRental(undefined); setMenu("rentals")}}
             />
-            <Text> details </Text>
+            <RentalDetails rental={rentals[selectedRental!]} />
           </Box>
         ) }
       </GridItem>

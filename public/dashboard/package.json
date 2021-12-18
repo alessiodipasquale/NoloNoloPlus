@@ -24,6 +24,7 @@
     "react-table": "^7.7.0",
     "recharts": "^2.1.6",
     "typescript": "^3.9.10",
+    "use-http": "^1.0.26",
     "web-vitals": "^0.2.4",
     "yup": "^0.32.11"
   },

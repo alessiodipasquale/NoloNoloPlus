@@ -11,7 +11,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import GenericTable from "../GenericTable";
 import RentalsList from "./RentalsList";
 import type { Rental } from "../../@types/db-entities";
-import RentalDetails from "./RentalDetails";
+import RentalDetails from "./RentalDetailsModal";
 import StatCard from "../cards/StatCard";
 import {
   format,
@@ -32,6 +32,9 @@ import { compareDateString } from "./compareDateString.1";
 import { useDisclosure } from "@chakra-ui/hooks";
 import RevenueCard from "../cards/RevenueCard";
 import RentalConclusionsPie from "./RentalConclusionsPie";
+import Card from "../cards/Card";
+import { Flex } from "@chakra-ui/react";
+import { CardMenu } from "../cards/CardMenu";
 
 export const gridItemStyle = {
   padding: "24px",
@@ -41,7 +44,6 @@ export const gridItemStyle = {
   overflow: "hidden",
 };
 
-
 function RentalsDash({ employeeId }: { employeeId?: string }) {
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -49,7 +51,7 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    fetch(employeeId?`users/${employeeId}/rentals`:"rentals", {
+    fetch(employeeId ? `users/${employeeId}/rentals` : "rentals", {
       headers: {
         authorization: "bearer " + process.env.REACT_APP_TOKEN,
       },
@@ -59,7 +61,7 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
       })
       .then((json) => {
         setRentals(json); //TODO: define type for database objects
-        console.log("Rentals:")
+        console.log("Rentals:");
         console.log(rentals);
         setIsLoading(false);
         return json;
@@ -67,7 +69,10 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
       .then((json) => console.log(json));
   }, []);
 
-  const chartData = getRevenuePerWeek(rentals).map(value => ({revenue: value.revenue, date: format(value.date, dateFormat)}));
+  const chartData = getRevenuePerWeek(rentals).map((value) => ({
+    revenue: value.revenue,
+    date: format(value.date, dateFormat),
+  }));
   console.log(chartData);
 
   return (
@@ -81,13 +86,13 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
         gap={3}
         padding={3}
       >
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
+        <GridItem as={Card} colSpan={4} rowSpan={4}>
           <RevenueCard rentals={rentals} />
         </GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
 
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          <RentalConclusionsPie rentals={rentals}/>
+          <RentalConclusionsPie rentals={rentals} />
         </GridItem>
 
         <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
@@ -103,7 +108,7 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
         </GridItem>
       </Grid>
 
-      {(selectedRental || selectedRental === 0)   && (
+      {(selectedRental || selectedRental === 0) && (
         <RentalDetails
           rental={rentals[selectedRental]}
           isOpen={isOpen}

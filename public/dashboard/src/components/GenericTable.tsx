@@ -24,7 +24,7 @@ import {
 } from "react-table";
 import type { Column, FilterTypes } from "react-table";
 import PropTypes from "prop-types";
-import RentalDetails from "./rentals/RentalDetails";
+import RentalDetails from "./rentals/RentalDetailsModal";
 import { matchSorter } from "match-sorter";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 
@@ -47,7 +47,7 @@ function GlobalFilter({
     <Box w="full">
       Search:{" "}
       <Input
-      w="full"
+        w="full"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
@@ -70,7 +70,7 @@ function GenericTable({
   footer,
   setSelected,
   onClickRow,
-  variant
+  variant,
 }: {
   columns: Column[];
   data: any;
@@ -78,7 +78,7 @@ function GenericTable({
   footer?: any;
   setSelected?: (arg: any) => any;
   onClickRow?: any;
-  variant?: string
+  variant?: string;
 }) {
   const {
     getTableProps,
@@ -92,8 +92,8 @@ function GenericTable({
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
-  const styles = useMultiStyleConfig("GenericTable", {variant})
-  console.log(styles)
+  const styles = useMultiStyleConfig("GenericTable", { variant });
+  console.log(styles);
 
   function fuzzyTextFilterFn(
     rows: Row<any>[],
@@ -142,11 +142,15 @@ function GenericTable({
                 <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
                   <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? <FaChevronUp />
-                        : <FaChevronDown />
-                      : ""}
+                    {column.isSorted ? (
+                      column.isSortedDesc ? (
+                        <FaChevronUp />
+                      ) : (
+                        <FaChevronDown />
+                      )
+                    ) : (
+                      ""
+                    )}
                   </span>
                 </Th>
               ))}

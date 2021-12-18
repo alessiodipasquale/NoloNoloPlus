@@ -4,12 +4,14 @@ import {
   parse,
   startOfISOWeek,
 } from "date-fns";
-import React from "react";
+import React, { useState } from "react";
 import { Client } from "../../@types/db-entities";
+import CardHeader from "../cards/CardHeader";
+import { CardMenu } from "../cards/CardMenu";
 import getPercentHelper from "../cards/getPercentHelper";
 import { groupByInterval } from "../cards/groupByInterval";
 import StatCard from "../cards/StatCard";
-
+import { Text } from "@chakra-ui/react";
 
 const periods = {
   all: {},
@@ -27,17 +29,16 @@ function groupClientsByInterval(clients: Client[], period: Duration) {
   );
 }
 
-
 function getNewClientsPerPeriod(clients: Client[]) {
-  
   const clientsByInterval = {} as { [key: string]: Map<Interval, Client[]> };
-  const countByInterval = {} as {[key: string]: number[]}
+  const countByInterval = {} as { [key: string]: number[] };
 
   for (let key of Object.keys(periods)) {
-    clientsByInterval[key] = groupClientsByInterval(clients, periods[key])
-    countByInterval[key] = Array.from(clientsByInterval[key]).map(([_, clients]) => clients.length)
+    clientsByInterval[key] = groupClientsByInterval(clients, periods[key]);
+    countByInterval[key] = Array.from(clientsByInterval[key]).map(
+      ([_, clients]) => clients.length
+    );
   }
-
 
   const values = Object.fromEntries(
     Object.keys(periods).map((key) => {
@@ -54,15 +55,29 @@ function getNewClientsPerPeriod(clients: Client[]) {
     })
   );
 
-  return values
+  return values;
 }
 
-
 export function NewClients({ clients }: { clients: Client[] }) {
-
-  const values = getNewClientsPerPeriod(clients)
+  const [selected, setSelected] = useState("all");
+  const values = getNewClientsPerPeriod(clients);
 
   return (
-    <StatCard label="New Clients" options={Object.keys(periods)} data={values} />
+    <>
+      <CardHeader>
+        <Text variant="card-header">New Clients</Text>
+        <CardMenu
+          selected={selected}
+          setSelected={setSelected}
+          options={Object.keys(periods)}
+        />
+      </CardHeader>
+      {values[selected] && (
+        <StatCard
+          value={values[selected].value}
+          helper={values[selected].helper}
+        />
+      )}
+    </>
   );
 }
