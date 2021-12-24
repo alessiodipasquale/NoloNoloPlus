@@ -4,10 +4,10 @@ import { Rental } from "../../@types/db-entities";
 import GenericTable from "../GenericTable";
 
 export default function RentalsList({
-  isLoading,
   rentals,
-  onClickRow,
   employeeId,
+  isLoading,
+  onClickRow,
   setSelected,
   variant
 }: {

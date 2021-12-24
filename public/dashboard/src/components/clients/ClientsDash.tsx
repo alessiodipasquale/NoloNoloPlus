@@ -2,8 +2,26 @@ import { Grid, GridItem } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@chakra-ui/hooks";
 
-import type { Client, Item } from "../../@types/db-entities";
+import type {
+  Client,
+  ClientWithRevenueAndDamage,
+  Item,
+  Rental,
+} from "../../@types/db-entities";
 import { NewClients } from "./NewClients";
+import DamagesScatterPlot from "./DamagesScatterPlot";
+import useFetch, { IncomingOptions } from "use-http";
+import {
+  ResponsiveContainer,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  Bar,
+} from "recharts";
+import Card from "../cards/Card";
 
 const gridItemStyle = {
   padding: "24px",
@@ -14,29 +32,41 @@ const gridItemStyle = {
 };
 
 function ClientsDash() {
-  const [clients, setClients] = useState<Client[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [clients, setClients] = useState<ClientWithRevenueAndDamage[]>([]);
+  const [rentals, setRentals] = useState<Rental[]>([]);
   //const [selectedRental, setSelectedRental] = useState<number | null>(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const options = {
+    headers: {
+      authorization: "Bearer " + process.env.REACT_APP_TOKEN,
+    },
+    responseType: "json",
+  } as IncomingOptions;
+
+  const { get, response } = useFetch(options);
 
   useEffect(() => {
-    fetch(`users/clients`, {
-      headers: {
-        authorization: "bearer " + process.env.REACT_APP_TOKEN,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setClients(json); //TODO: define type for database objects
-        console.log("clients")
-        console.log(clients);
-        setIsLoading(false);
-        return json;
-      })
-      .then((json) => console.log(json));
-  }, []);
+    async function fetchClients() {
+      const clients = (await get(
+        "users/clients/revenue"
+      )) as ClientWithRevenueAndDamage[];
+      if (response.ok) setClients(clients);
+    }
+    fetchClients();
+  }, [get, response]);
+
+  useEffect(() => {
+    async function fetchRentals() {
+      const rentals = (await get("rentals")) as Rental[];
+      if (response.ok) setRentals(rentals);
+    }
+    fetchRentals();
+  }, [get, response]);
+
+  const activeRentals = rentals.filter((rental) => rental.state === "in corso");
+  const rentingUsers = Array.from(
+    new Set(activeRentals.map((rental) => rental.clientId))
+  );
 
   return (
     <>
@@ -49,17 +79,84 @@ function ClientsDash() {
         gap={3}
         padding={3}
       >
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          <NewClients clients={clients} />
+        <GridItem colSpan={4} rowSpan={4} as={Card}>
+          <NewClients clients={clients.map((client) => client.user)} />
         </GridItem>
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
+        <GridItem colSpan={4} rowSpan={4} as={Card}></GridItem>
 
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
+        <GridItem colSpan={4} rowSpan={4} as={Card}></GridItem>
 
-        <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
-            {/* graph showing tot rentals, revenue and damage per user */}
+        <GridItem colSpan={4} rowSpan={8} as={Card}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              layout="vertical"
+              width={500}
+              height={300}
+              data={clients}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" dataKey="totalRevenue" />
+              <YAxis dataKey="user.username" type="category" />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="totalRevenue" barSize={20} fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
         </GridItem>
-        <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}></GridItem>
+        <GridItem colSpan={4} rowSpan={8} as={Card}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              layout="vertical"
+              width={500}
+              height={300}
+              data={clients}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" dataKey="totalDamage" />
+              <YAxis dataKey="user.username" type="category" />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="totalDamage" barSize={20} fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+        </GridItem>
+        <GridItem colSpan={4} rowSpan={8} as={Card}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              layout="vertical"
+              width={500}
+              height={300}
+              data={clients}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+              }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis type="number" dataKey="user.rentals.length" />
+              <YAxis dataKey="user.username" type="category" />
+              <Tooltip />
+              <Legend />
+              <Bar
+                dataKey="user.rentals.length"
+                name="number of rentals"
+                barSize={20}
+                fill="#8884d8"
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </GridItem>
       </Grid>
     </>
   );

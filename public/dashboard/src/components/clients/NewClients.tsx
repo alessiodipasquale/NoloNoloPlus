@@ -1,9 +1,3 @@
-import {
-  addWeeks,
-  differenceInCalendarWeeks,
-  parse,
-  startOfISOWeek,
-} from "date-fns";
 import React, { useState } from "react";
 import { Client } from "../../@types/db-entities";
 import CardHeader from "../cards/CardHeader";

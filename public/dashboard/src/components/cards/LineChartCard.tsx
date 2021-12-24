@@ -1,5 +1,5 @@
 import { Container, Flex, Text, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { subDays } from "date-fns";
+import { format, subDays } from "date-fns";
 import React from "react";
 import {
   LineChart,
@@ -11,8 +11,21 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
+import { Rental } from "../../@types/db-entities";
+import { dateFormat, getRevenuePerMonth, getRevenuePerWeek } from "../rentals/fillMissingMissing";
 
-function LineChartCard({ data }: any) {
+function LineChartCard({ rentals }: { rentals: Rental[]}) {
+
+  const revenueByWeek = getRevenuePerWeek(rentals).map((value) => ({
+    revenue: value.revenue,
+    date: format(value.date, dateFormat),
+  }));
+
+  const revenuesByMonth = getRevenuePerMonth(rentals).map((value) => ({
+    revenue: value.revenue,
+    date: format(value.date, "yyyy-MMM"),
+  }))
+
   return (
     <Tabs as="figure" w="full" h="full" size="sm" align="end">
 
@@ -33,7 +46,7 @@ function LineChartCard({ data }: any) {
             <LineChart
               width={500}
               height={300}
-              data={data}
+              data={revenueByWeek}
               //   margin={{
               //     top: 5,
               //     right: 30,
@@ -57,8 +70,33 @@ function LineChartCard({ data }: any) {
           </ResponsiveContainer>
         </TabPanel>
 
-        <TabPanel>
-          <p>two!</p>
+        <TabPanel w="full" h="full">
+        <ResponsiveContainer width="99%" height="100%">
+            <LineChart
+              width={500}
+              height={300}
+              data={revenuesByMonth}
+              //   margin={{
+              //     top: 5,
+              //     right: 30,
+              //     left: 20,
+              //     bottom: 5,
+              //   }}
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="revenue"
+                stroke="#8884d8"
+                activeDot={{ r: 8 }}
+              />
+              <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
+            </LineChart>
+          </ResponsiveContainer>
         </TabPanel>
       </TabPanels>
     </Tabs>
@@ -66,3 +104,5 @@ function LineChartCard({ data }: any) {
 }
 
 export default LineChartCard;
+
+

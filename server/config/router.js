@@ -17,7 +17,7 @@ const router = {
         app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
         app.get('/users/managers', auth, (req, res) => { requestManager("getManagers", req, res); })
         app.get('/users/employers', auth, (req, res) => { requestManager("getEmployers", req, res); })
-        app.get('/users/managers', auth, (req, res) => { requestManager("getClients", req, res); })
+        app.get('/users/clients', auth, (req, res) => { requestManager("getClients", req, res); })
         app.get('/users/damage', auth, (req, res) => { requestManager("getUsersTotalDamage", req, res);})
         app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
         app.delete('/users/:id', auth, (req, res) => { requestManager("deleteUser", req, res); })
@@ -28,7 +28,7 @@ const router = {
         app.get('/users/:id/damage', auth, (req, res) => { console.log("ao");requestManager("getUserDamage", req, res); })
         app.get('/users/employers/:id/revenue', auth, (req, res) => { requestManager("getEmployerRevenue", req, res); })
         app.get('/users/employers/revenue', auth, (req, res) => { requestManager("getEmployersTotalRevenue", req, res); })
-
+        app.get('/users/clients/revenue', auth, (req, res) => { requestManager("getClientsTotalRevenue",req, res); })
 
         // Item
         /**/app.get('/items', (req, res) => { requestManager("getItems", req, res); })

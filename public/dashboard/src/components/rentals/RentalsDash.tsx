@@ -35,6 +35,7 @@ import RentalConclusionsPie from "./RentalConclusionsPie";
 import Card from "../cards/Card";
 import { Flex } from "@chakra-ui/react";
 import { CardMenu } from "../cards/CardMenu";
+import useFetch, { IncomingOptions } from "use-http";
 
 export const gridItemStyle = {
   padding: "24px",
@@ -44,36 +45,28 @@ export const gridItemStyle = {
   overflow: "hidden",
 };
 
-function RentalsDash({ employeeId }: { employeeId?: string }) {
+function RentalsDash() {
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [selectedRental, setSelectedRental] = useState<number>();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  useEffect(() => {
-    fetch(employeeId ? `users/${employeeId}/rentals` : "rentals", {
-      headers: {
-        authorization: "bearer " + process.env.REACT_APP_TOKEN,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setRentals(json); //TODO: define type for database objects
-        console.log("Rentals:");
-        console.log(rentals);
-        setIsLoading(false);
-        return json;
-      })
-      .then((json) => console.log(json));
-  }, []);
+  const options = {
+    headers: {
+      authorization: "Bearer " + process.env.REACT_APP_TOKEN,
+    },
+    responseType: "json",
+  } as IncomingOptions;
 
-  const chartData = getRevenuePerWeek(rentals).map((value) => ({
-    revenue: value.revenue,
-    date: format(value.date, dateFormat),
-  }));
-  console.log(chartData);
+  const { get, response, loading } = useFetch(options);
+
+  useEffect(() => {
+    async function fetchRentals() {
+      const rentals = (await get("rentals")) as Rental[];
+      if (response.ok) setRentals(rentals);
+    }
+    fetchRentals();
+  }, [get, response]);
 
   return (
     <>
@@ -96,7 +89,7 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
         </GridItem>
 
         <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
-          <LineChartCard data={chartData} />
+          <LineChartCard rentals={rentals} />
         </GridItem>
         <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
           <RentalsList
@@ -107,14 +100,6 @@ function RentalsDash({ employeeId }: { employeeId?: string }) {
           ></RentalsList>
         </GridItem>
       </Grid>
-
-      {(selectedRental || selectedRental === 0) && (
-        <RentalDetails
-          rental={rentals[selectedRental]}
-          isOpen={isOpen}
-          onClose={onClose}
-        />
-      )}
     </>
   );
 }

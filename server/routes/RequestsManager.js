@@ -1,15 +1,97 @@
-const { loginFront, registerFront, loginDashboard, registerDashboard, loginBack, registerBack, roleChecker } = require("./Auth");
-const { getItemById, getItems, deleteItem, createItem, getItemsByCategoryId, checkIfAvailable, getReviewsByItemId, calculatePriceforItem, editItem } = require("./Item");
-const { getUserById, getUsers, getUsersByRole,deleteUser, createUser, getRentalsByUserId, editUser, getReviewsByUserId, editUserAdvanced, getUserDamage, getUsersTotalDamage, getEmployerRevenue, getEmployersTotalRevenue } = require("./User");
-const { getRentalById, getRentals, deleteRental, createRental, editRental } = require("./Rental");
-const { getCertificationById, getCertifications, deleteCertification, createCertification } = require("./Certification");
-const { getPriceDetail} = require("./PriceDetails");
-const { getPropertyById, getProperties, deleteProperty, createProperty, editProperty } = require("./Property");
-const { getPropertyValueById, getPropertyValues, deletePropertyValue, createPropertyValue, editPropertyValue } = require("./PropertyValue");
-const { getCategoryById, getCategories, deleteCategory, createCategory, editCategory } = require("./Category");
-const { getKitById, getKits, deleteKit, createKit, calculatePriceforKit, getReviewsByKitId, editKit } = require("./Kit");
-const { getReviewById, getReviews, deleteReview, createReview, editReview } = require("./Review");
-const { getGroupById, getGroups, deleteGroup, createGroup, editGroup } = require("./Group");
+const {
+  loginFront,
+  registerFront,
+  loginDashboard,
+  registerDashboard,
+  loginBack,
+  registerBack,
+  roleChecker,
+} = require("./Auth");
+const {
+  getItemById,
+  getItems,
+  deleteItem,
+  createItem,
+  getItemsByCategoryId,
+  checkIfAvailable,
+  getReviewsByItemId,
+  calculatePriceforItem,
+  editItem,
+} = require("./Item");
+const {
+  getUserById,
+  getUsers,
+  getUsersByRole,
+  deleteUser,
+  createUser,
+  getRentalsByUserId,
+  editUser,
+  getReviewsByUserId,
+  editUserAdvanced,
+  getUserDamage,
+  getUsersTotalDamage,
+  getEmployerRevenue,
+  getEmployersTotalRevenue,
+  getClientsTotalRevenue
+} = require("./User");
+const {
+  getRentalById,
+  getRentals,
+  deleteRental,
+  createRental,
+  editRental,
+} = require("./Rental");
+const {
+  getCertificationById,
+  getCertifications,
+  deleteCertification,
+  createCertification,
+} = require("./Certification");
+const { getPriceDetail } = require("./PriceDetails");
+const {
+  getPropertyById,
+  getProperties,
+  deleteProperty,
+  createProperty,
+  editProperty,
+} = require("./Property");
+const {
+  getPropertyValueById,
+  getPropertyValues,
+  deletePropertyValue,
+  createPropertyValue,
+  editPropertyValue,
+} = require("./PropertyValue");
+const {
+  getCategoryById,
+  getCategories,
+  deleteCategory,
+  createCategory,
+  editCategory,
+} = require("./Category");
+const {
+  getKitById,
+  getKits,
+  deleteKit,
+  createKit,
+  calculatePriceforKit,
+  getReviewsByKitId,
+  editKit,
+} = require("./Kit");
+const {
+  getReviewById,
+  getReviews,
+  deleteReview,
+  createReview,
+  editReview,
+} = require("./Review");
+const {
+  getGroupById,
+  getGroups,
+  deleteGroup,
+  createGroup,
+  editGroup,
+} = require("./Group");
 
 const requestManager = async (reqName, req, res) => {
   //TODO: new attribute to rentals ?
@@ -91,76 +173,82 @@ const requestManager = async (reqName, req, res) => {
         break;
       }
 
-            ////////////////////////////////////////////////////////////////////////// User
-            case "getUserById": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getUserById(req.params.id);
-                break;
-            }
-            case "getUsers": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getUsers();
-                break;
-            }
-            case "getManagers": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getUsersByRole("manager");
-                break;
-            }
-            case "getEmployers": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getUsersByRole("funzionario");
-                break;
-            }
-            case "getClients": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getUsersByRole("cliente");
-                break;
-            }
-            case "deleteUser": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                await deleteUser(req.params.id);
-                break;
-            }
-            case "createUser": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await createUser(req.body);
-                break;
-            }
-            case "editUser": {
-                if(roleChecker(req.user.user._id,'funzionario',"return"))
-                    toReturn = await editUserAdvanced(req.params.id,req.body); 
-                else  toReturn = await editUser(req.params.id,req.body);
-                break;
-            }
-            case "getRentalsByUserId": {
-                toReturn = await getRentalsByUserId(req.user.user._id);
-                break;
-            }
-            case "getReviewsByUserId": {
-                toReturn = await getReviewsByUserId(req.user.user._id);
-                break;
-            }
-            case "getUserDamage": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getUserDamage(req.params.id);
-                break;
-            }
-            case "getUsersTotalDamage": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getUsersTotalDamage();
-                break;
-            }
-            case "getEmployerRevenue": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getEmployerRevenue(req.params.id);
-                break;
-            }
-            case "getEmployersTotalRevenue": {
-                roleChecker(req.user.user._id,'funzionario',"block")
-                toReturn = await getEmployersTotalRevenue();
-                break;
-            }
+      ////////////////////////////////////////////////////////////////////////// User
+      case "getUserById": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getUserById(req.params.id);
+        break;
+      }
+      case "getUsers": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getUsers();
+        break;
+      }
+      case "getManagers": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getUsersByRole("manager");
+        break;
+      }
+      case "getEmployers": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getUsersByRole("funzionario");
+        break;
+      }
+      case "getClients": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getUsersByRole("cliente");
+        break;
+      }
+      case "deleteUser": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        await deleteUser(req.params.id);
+        break;
+      }
+      case "createUser": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await createUser(req.body);
+        break;
+      }
+      case "editUser": {
+        if (roleChecker(req.user.user._id, "funzionario", "return"))
+          toReturn = await editUserAdvanced(req.params.id, req.body);
+        else toReturn = await editUser(req.params.id, req.body);
+        break;
+      }
+      case "getRentalsByUserId": {
+        toReturn = await getRentalsByUserId(req.user.user._id);
+        break;
+      }
+      case "getReviewsByUserId": {
+        toReturn = await getReviewsByUserId(req.user.user._id);
+        break;
+      }
+      case "getUserDamage": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getUserDamage(req.params.id);
+        break;
+      }
+      case "getUsersTotalDamage": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getUsersTotalDamage();
+        break;
+      }
+      case "getEmployerRevenue": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getEmployerRevenue(req.params.id);
+        break;
+      }
+      case "getEmployersTotalRevenue": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getEmployersTotalRevenue();
+        break;
+      }
+
+      case "getClientsTotalRevenue": {
+        roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getClientsTotalRevenue();
+        break;
+      }
 
       ////////////////////////////////////////////////////////////////////////// Rental
       case "getRentalById": {
@@ -386,16 +474,16 @@ const requestManager = async (reqName, req, res) => {
         break;
       }
 
-            default:
-                console.log("ti sei scordato di inserire un case");
-        }
-        //console.log(reqName)
-        //console.log(toReturn);
-        if(!toReturn) res.send();
-        else res.send(toReturn);
-    } catch(err) {
-        res.handle(err);
+      default:
+        console.log("ti sei scordato di inserire un case");
     }
+    //console.log(reqName)
+    //console.log(toReturn);
+    if (!toReturn) res.send();
+    else res.send(toReturn);
+  } catch (err) {
+    res.handle(err);
+  }
 };
 
 module.exports = {

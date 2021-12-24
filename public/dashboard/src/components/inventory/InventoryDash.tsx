@@ -2,11 +2,13 @@ import { Grid, GridItem } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@chakra-ui/hooks";
 
-import type { Item } from "../../@types/db-entities";
+import type { Item, Rental } from "../../@types/db-entities";
 import ItemScatterPlot from "./ItemScatterPlot";
 import ItemTable from "./ItemTable";
 import ConditionPieChart from "./ConditionPieChart";
 import AvailableCard from "./AvailableCard";
+import useFetch, { IncomingOptions } from "use-http";
+import RevenueByCategory from "./RevenueByCategory";
 
 const gridItemStyle = {
   padding: "24px",
@@ -18,27 +20,33 @@ const gridItemStyle = {
 
 function InventoryDash() {
   const [items, setItems] = useState<Item[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  //const [selectedRental, setSelectedRental] = useState<number | null>(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [rentals, setRentals] = useState<Rental[]>([]);
+
+  const options = {
+    headers: {
+      authorization: "Bearer " + process.env.REACT_APP_TOKEN,
+    },
+    responseType: "json",
+  } as IncomingOptions;
+
+  const { get, response, loading } = useFetch(options);
 
   useEffect(() => {
-    fetch(`items`, {
-      headers: {
-        authorization: "bearer " + process.env.REACT_APP_TOKEN,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setItems(json); //TODO: define type for database objects
-        console.log(items);
-        setIsLoading(false);
-        return json;
-      })
-      .then((json) => console.log(json));
-  }, []);
+    async function fetchRentals() {
+      const rentals = (await get("rentals")) as Rental[];
+      if (response.ok) setRentals(rentals);
+    }
+    fetchRentals();
+  }, [get, response]);
+
+  useEffect(() => {
+    async function fetchRentals() {
+      const items = (await get("items")) as Item[];
+      if (response.ok) setItems(items);
+    }
+    fetchRentals();
+  }, [get, response]);
+
 
   return (
     <>
@@ -52,7 +60,7 @@ function InventoryDash() {
         padding={3}
       >
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          <AvailableCard items={items}/>
+          <AvailableCard items={items} />
         </GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
@@ -63,7 +71,8 @@ function InventoryDash() {
           <ItemScatterPlot items={items} />
         </GridItem>
         <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
-          <ItemTable isLoading={isLoading} data={items} />
+          <RevenueByCategory items={items} rentals={rentals} />
+          {/* <ItemTable isLoading={isLoading} data={items} /> */}
         </GridItem>
       </Grid>
     </>
