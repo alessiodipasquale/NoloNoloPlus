@@ -22,7 +22,7 @@ import {
 import React from "react";
 
 import type { Rental } from "../../@types/db-entities";
-import Note from "../Note"
+import Note from "./Note"
 
 function RentalDetails({ rental, isOpen, onClose }: { rental: Rental, isOpen: boolean, onClose: any}) {
 
@@ -46,7 +46,7 @@ function RentalDetails({ rental, isOpen, onClose }: { rental: Rental, isOpen: bo
 
               <VStack flex="1">
                 {rental.notes && rental.notes.map((note) => (
-                  <Note author={note.author}>{note.text}</Note>
+                  <Note author={note.author}/>
                 ))}
                 <Input></Input>
               </VStack>

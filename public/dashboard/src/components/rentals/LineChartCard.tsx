@@ -1,4 +1,13 @@
-import { Container, Flex, Text, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import {
+  Container,
+  Flex,
+  Text,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
+} from "@chakra-ui/react";
 import { format, subDays } from "date-fns";
 import React from "react";
 import {
@@ -12,10 +21,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { Rental } from "../../@types/db-entities";
-import { dateFormat, getRevenuePerMonth, getRevenuePerWeek } from "../rentals/fillMissingMissing";
+import {
+  dateFormat,
+  getRevenuePerMonth,
+  getRevenuePerWeek,
+} from "./fillMissingMissing";
 
-function LineChartCard({ rentals }: { rentals: Rental[]}) {
-
+function LineChartCard({ rentals }: { rentals: Rental[] }) {
   const revenueByWeek = getRevenuePerWeek(rentals).map((value) => ({
     revenue: value.revenue,
     date: format(value.date, dateFormat),
@@ -24,36 +36,25 @@ function LineChartCard({ rentals }: { rentals: Rental[]}) {
   const revenuesByMonth = getRevenuePerMonth(rentals).map((value) => ({
     revenue: value.revenue,
     date: format(value.date, "yyyy-MMM"),
-  }))
+  }));
 
   return (
     <Tabs as="figure" w="full" h="full" size="sm" align="end">
+      <Flex justify="space-between">
+        <Text as={"figcaption"} size="md" fontWeight="600">
+          Revenue
+        </Text>
 
-    <Flex justify="space-between">
-      <Text as={"figcaption"}
-      size="md"
-      fontWeight="600">Revenue</Text>
+        <TabList>
+          <Tab>by week</Tab>
+          <Tab>by month</Tab>
+        </TabList>
+      </Flex>
 
-      <TabList>
-        <Tab>by week</Tab>
-        <Tab>by month</Tab>
-      </TabList>
-    </Flex>
-
-      <TabPanels w="full" h="full" >
-        <TabPanel w="full" h="full" >
+      <TabPanels w="full" h="full">
+        <TabPanel w="full" h="full">
           <ResponsiveContainer width="99%" height="100%">
-            <LineChart
-              width={500}
-              height={300}
-              data={revenueByWeek}
-              //   margin={{
-              //     top: 5,
-              //     right: 30,
-              //     left: 20,
-              //     bottom: 5,
-              //   }}
-            >
+            <LineChart width={500} height={300} data={revenueByWeek}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
@@ -71,7 +72,7 @@ function LineChartCard({ rentals }: { rentals: Rental[]}) {
         </TabPanel>
 
         <TabPanel w="full" h="full">
-        <ResponsiveContainer width="99%" height="100%">
+          <ResponsiveContainer width="99%" height="100%">
             <LineChart
               width={500}
               height={300}
@@ -104,5 +105,3 @@ function LineChartCard({ rentals }: { rentals: Rental[]}) {
 }
 
 export default LineChartCard;
-
-

@@ -1,41 +1,14 @@
-import { Box, Center, Container, Grid, GridItem } from "@chakra-ui/layout";
-import {
-  Stat,
-  StatLabel,
-  StatNumber,
-  StatHelpText,
-  StatArrow,
-  StatGroup,
-} from "@chakra-ui/stat";
-import React, { useEffect, useMemo, useState } from "react";
-import GenericTable from "../GenericTable";
+import { Grid, GridItem, Text } from "@chakra-ui/layout";
+import React, { useEffect, useState } from "react";
 import RentalsList from "./RentalsList";
 import type { Rental } from "../../@types/db-entities";
-import RentalDetails from "./RentalDetailsModal";
-import StatCard from "../cards/StatCard";
-import {
-  format,
-  getWeek,
-  getYear,
-  startOfISOWeek,
-  subDays,
-  differenceInCalendarWeeks,
-  startOfMonth,
-  startOfWeek,
-  startOfQuarter,
-  minTime,
-} from "date-fns";
-import LineChartCard from "../cards/LineChartCard";
-import { addWeeks, startOfYear } from "date-fns/esm";
-import { dateFormat, getRevenuePerWeek } from "./fillMissingMissing";
-import { compareDateString } from "./compareDateString.1";
+import LineChartCard from "./LineChartCard";
 import { useDisclosure } from "@chakra-ui/hooks";
-import RevenueCard from "../cards/RevenueCard";
+import RevenueCard from "./RevenueCard";
 import RentalConclusionsPie from "./RentalConclusionsPie";
 import Card from "../cards/Card";
-import { Flex } from "@chakra-ui/react";
-import { CardMenu } from "../cards/CardMenu";
 import useFetch, { IncomingOptions } from "use-http";
+import CardHeader from "../cards/CardHeader";
 
 export const gridItemStyle = {
   padding: "24px",
@@ -82,22 +55,20 @@ function RentalsDash() {
         <GridItem as={Card} colSpan={4} rowSpan={4}>
           <RevenueCard rentals={rentals} />
         </GridItem>
+
         <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
 
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
-          <RentalConclusionsPie rentals={rentals} />
-        </GridItem>
+        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
 
         <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
           <LineChartCard rentals={rentals} />
         </GridItem>
+
         <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
-          <RentalsList
-            rentals={rentals}
-            isLoading={isLoading}
-            setSelected={setSelectedRental}
-            onClickRow={onOpen}
-          ></RentalsList>
+          <CardHeader>
+            <Text variant="card-header">Rentals by status</Text>
+          </CardHeader>
+          <RentalConclusionsPie rentals={rentals} />
         </GridItem>
       </Grid>
     </>

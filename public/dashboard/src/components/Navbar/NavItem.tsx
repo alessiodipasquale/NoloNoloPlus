@@ -1,41 +1,24 @@
-import Icon from "@chakra-ui/icon";
-import { Button, ComponentWithAs, Container, Flex, IconProps, Link, Text } from "@chakra-ui/react";
-import {Link as ReactRouterLink} from "react-router-dom" 
+import {
+  Box,
+  ComponentWithAs,
+  Flex,
+  IconProps,
+} from "@chakra-ui/react";
 import React from "react";
-import palette from "../../palette.json"
 
 type NavItemContent = {
-    icon: ComponentWithAs<"svg", IconProps>;
-    title: string;
-    route: string;
-    isOpen: boolean
+  leftIcon?: ComponentWithAs<"svg", IconProps>;
+  children: React.ReactNode;
 };
 
-
-export default function NavItem({icon, title, route, isOpen} : NavItemContent) {
-
-    return (
-        <Flex
-
-        >   
-            <Button 
-            as={Link}
-            >
-                
-                <Flex>
-                    <Icon as={icon}/>
-                    <Text 
-
-                    >
-                        {title}
-                    </Text>
-                </Flex>
-                
-            </Button>
-        </Flex>
-    )
+export default function NavItem({ children, leftIcon }: NavItemContent) {
+  return (
+    <Flex align="center">
+      <Box alignSelf="left">{leftIcon}</Box>
+      {children}
+    </Flex>
+  );
 }
 
-
-export { NavItem }
-export type { NavItemContent }
+export { NavItem };
+export type { NavItemContent };

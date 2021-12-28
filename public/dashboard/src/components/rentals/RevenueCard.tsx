@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Rental, Rental as T } from "../../@types/db-entities";
-import StatCard from "./StatCard";
-import { getPercentDiff } from "../rentals/fillMissingMissing";
+import StatCard from "../cards/StatCard";
+import { getPercentDiff } from "./fillMissingMissing";
 import { Text, HStack, Flex } from "@chakra-ui/react";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
-import { groupByInterval } from "./groupByInterval";
-import getPercentHelper from "./getPercentHelper";
-import { CardMenu } from "./CardMenu";
-import CardHeader from "./CardHeader";
+import { groupByInterval } from "../cards/groupByInterval";
+import getPercentHelper from "../cards/getPercentHelper";
+import { CardMenu } from "../cards/CardMenu";
+import CardHeader from "../cards/CardHeader";
 
 type GroupsByInterval = {
   [key: string]: {

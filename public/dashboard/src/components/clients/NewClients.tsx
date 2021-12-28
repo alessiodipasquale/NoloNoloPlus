@@ -59,7 +59,12 @@ export function NewClients({ clients }: { clients: Client[] }) {
   return (
     <>
       <CardHeader>
-        <Text variant="card-header">New Clients</Text>
+        {selected === "all" ? (
+          <Text variant="card-header">Total Clients</Text>
+        ) : (
+          <Text variant="card-header">New Clients Since</Text>
+        )}
+
         <CardMenu
           selected={selected}
           setSelected={setSelected}

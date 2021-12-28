@@ -51,8 +51,7 @@ function InventoryDash() {
   return (
     <>
       <Grid
-        minWidth="0"
-        w="100%"
+        w="auto"
         h="100vh"
         templateColumns="Repeat(12, 1fr)"
         templateRows="Repeat(12, 1fr)"

@@ -7,12 +7,12 @@ import {
 import React from "react";
 import * as ai from "react-icons/ai";
 
-export function CardMenu({
+export function CardMenu<T extends string>({
   selected, setSelected, options,
 }: {
-  selected: number | string;
-  setSelected: React.Dispatch<React.SetStateAction<string>>;
-  options: string[];
+  selected: T;
+  setSelected: React.Dispatch<React.SetStateAction<T>>;
+  options: readonly T[];
 }) {
   return (
     <Menu>
@@ -29,7 +29,7 @@ export function CardMenu({
       )}
       <MenuList>
         {options.map((elem, index) => (
-          <MenuItem onClick={() => setSelected(elem)}> {elem} </MenuItem>
+          <MenuItem key={options[index]} onClick={() => setSelected(elem)}> {elem} </MenuItem>
         ))}
       </MenuList>
     </Menu>

@@ -1,31 +1,22 @@
-import * as React from "react"
-import {
-  Box,
-  ChakraProvider, Container, Flex,
-} from "@chakra-ui/react"
+import * as React from "react";
+import { Box, Flex } from "@chakra-ui/react";
 
-import RentalsList from "./components/rentals/RentalsList";
-import { BrowserRouter, Link, Outlet, Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import Sidebar from "./components/Navbar/Navbar";
 
-
-
+import { FaClipboardList, FaDollyFlatbed, FaIdBadge, FaUserFriends } from "react-icons/fa"
+import Navlink from "./components/Navbar/Navlink";
 
 export const App = () => (
-  <Flex
-  bg="gray.100">
-      <Flex 
-      as={'nav'}
-      direction="column"
-      width="258px"
-      height="100vh"
-      top="0"
-      bg="gray.100">
-        <Link to="/clients">Clients</Link>
-        <Link to="/inventory" >Inventory</Link>
-        <Link to="/employees" >Employees</Link>
-        <Link to="/rentals" >Rentals</Link>
-      </Flex>
-        <Outlet />
-
-  </Flex>
-)
+  <Box bg="gray.100">
+    <Sidebar>
+      <Navlink to="/clients" icon={FaUserFriends}>clients</Navlink>
+      <Navlink to="/inventory" icon={FaDollyFlatbed}>inventory</Navlink>
+      <Navlink to="/employees" icon={FaIdBadge}>employees</Navlink>
+      <Navlink to="/rentals" icon={FaClipboardList}>rentals</Navlink>
+    </Sidebar>
+    <Box marginLeft="5rem" width="auto">
+      <Outlet />
+    </Box>
+  </Box>
+);

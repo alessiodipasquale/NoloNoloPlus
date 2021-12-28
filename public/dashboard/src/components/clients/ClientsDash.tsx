@@ -1,5 +1,5 @@
-import { Grid, GridItem } from "@chakra-ui/layout";
-import React, { useEffect, useState } from "react";
+import { Box, Grid, GridItem, Text } from "@chakra-ui/layout";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDisclosure } from "@chakra-ui/hooks";
 
 import type {
@@ -22,20 +22,20 @@ import {
   Bar,
 } from "recharts";
 import Card from "../cards/Card";
-
-const gridItemStyle = {
-  padding: "24px",
-  margin: "0",
-  backgroundColor: "white",
-  borderRadius: "md",
-  overflow: "hidden",
-};
+import CardHeader from "../cards/CardHeader";
+import { CardMenu } from "../cards/CardMenu";
+import ClientsBarChart from "./ClientsBarChart";
+import CurrentlyRenting from "./CurrentlyRenting";
+import RentalsNo from "./RentalsNo";
 
 function ClientsDash() {
+  const sortOrder = ["byRevenue", "byDamage"] as const;
+
   const [clients, setClients] = useState<ClientWithRevenueAndDamage[]>([]);
   const [rentals, setRentals] = useState<Rental[]>([]);
-  //const [selectedRental, setSelectedRental] = useState<number | null>(null);
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedOrder, setSelectedOrder] =
+    useState<typeof sortOrder[number]>("byRevenue");
+
   const options = {
     headers: {
       authorization: "Bearer " + process.env.REACT_APP_TOKEN,
@@ -63,16 +63,26 @@ function ClientsDash() {
     fetchRentals();
   }, [get, response]);
 
-  const activeRentals = rentals.filter((rental) => rental.state === "in corso");
-  const rentingUsers = Array.from(
-    new Set(activeRentals.map((rental) => rental.clientId))
-  );
+  const sortedClients = useMemo(() => {
+    return clients
+      .slice()
+      .sort((a, b) => {
+        if (selectedOrder === "byRevenue") {
+          return a.totalRevenue - b.totalRevenue;
+        } else if (selectedOrder === "byDamage") {
+          return a.totalDamage - b.totalDamage;
+        }
+        return 0;
+      })
+      .reverse();
+  }, [clients, selectedOrder]);
+
+  useEffect(() => console.log(sortedClients), [selectedOrder, sortedClients]);
 
   return (
     <>
       <Grid
-        minWidth="0"
-        w="100%"
+        w="auto"
         h="100vh"
         templateColumns="Repeat(12, 1fr)"
         templateRows="Repeat(12, 1fr)"
@@ -82,80 +92,31 @@ function ClientsDash() {
         <GridItem colSpan={4} rowSpan={4} as={Card}>
           <NewClients clients={clients.map((client) => client.user)} />
         </GridItem>
-        <GridItem colSpan={4} rowSpan={4} as={Card}></GridItem>
+        <GridItem colSpan={4} rowSpan={4} as={Card}>
+          <CurrentlyRenting rentals={rentals} />
+        </GridItem>
 
         <GridItem colSpan={4} rowSpan={4} as={Card}></GridItem>
 
-        <GridItem colSpan={4} rowSpan={8} as={Card}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              layout="vertical"
-              width={500}
-              height={300}
-              data={clients}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" dataKey="totalRevenue" />
-              <YAxis dataKey="user.username" type="category" />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="totalRevenue" barSize={20} fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
-        </GridItem>
-        <GridItem colSpan={4} rowSpan={8} as={Card}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              layout="vertical"
-              width={500}
-              height={300}
-              data={clients}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" dataKey="totalDamage" />
-              <YAxis dataKey="user.username" type="category" />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="totalDamage" barSize={20} fill="#8884d8" />
-            </BarChart>
-          </ResponsiveContainer>
-        </GridItem>
-        <GridItem colSpan={4} rowSpan={8} as={Card}>
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              layout="vertical"
-              width={500}
-              height={300}
-              data={clients}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis type="number" dataKey="user.rentals.length" />
-              <YAxis dataKey="user.username" type="category" />
-              <Tooltip />
-              <Legend />
-              <Bar
-                dataKey="user.rentals.length"
-                name="number of rentals"
-                barSize={20}
-                fill="#8884d8"
+        <GridItem colSpan={8} rowSpan={8} as={Card}>
+          <CardHeader>
+            <Text variant="card-header">Revenue and Damage</Text>
+            <Box>
+              <CardMenu
+                selected={selectedOrder}
+                setSelected={setSelectedOrder}
+                options={sortOrder}
               />
-            </BarChart>
-          </ResponsiveContainer>
+            </Box>
+          </CardHeader>
+          <ClientsBarChart clients={sortedClients} />
+        </GridItem>
+
+        <GridItem colSpan={4} rowSpan={8} as={Card}>
+          <CardHeader>
+            <Text variant="card-header">Number of Rentals</Text>
+          </CardHeader>
+          <RentalsNo data={clients} />
         </GridItem>
       </Grid>
     </>

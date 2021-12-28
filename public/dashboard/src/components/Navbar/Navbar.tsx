@@ -1,86 +1,69 @@
 import { IconProps } from "@chakra-ui/icon";
-import { Container, Flex, ListItem, UnorderedList, VStack } from "@chakra-ui/layout";
-import { Avatar, Button, Divider, Heading, IconButton, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Container,
+  Flex,
+  ListItem,
+  UnorderedList,
+  VStack,
+} from "@chakra-ui/layout";
+import {
+  Avatar,
+  Button,
+  Divider,
+  Heading,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
 import { ComponentWithAs } from "@chakra-ui/system";
-import React, { useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import NavItem from "./NavItem";
-import palette from "../../palette.json"
+import palette from "../../palette.json";
 
-
-import type { NavItemContent } from "./NavItem"
+import type { NavItemContent } from "./NavItem";
 import { FaIcons } from "react-icons/fa";
+import styled from "@emotion/styled";
 
+export function Sidebar({ children }: { children: ReactNode }) {
+  const [isOpen, setOpen] = useState(false);
 
+  const toggleSidebar = () => setOpen(!isOpen);
 
-
-
-export default function Sidebar({navItems}: {navItems: Array<NavItemContent>}) {
-
-
-    const [isOpen, setOpen] = useState(false)
-
-    const toggleSidebar = () => setOpen(!isOpen)
-
-    return (
-        <Flex
+  return (
+    <Box
+      bgColor="gray.500"
+      as="nav"
+      width="5rem"
+      height="100vh"
+      position="fixed"
+      _hover={{
+        width: "16rem",
+      }}
+      sx= {{
+        "&:hover .link-text" : {
+          display: "block"
+        }
+      }}
+      transition={"width 200ms ease"}
+      zIndex="1"
+      overflow="hidden"
+    >
+      <Flex
+        h="full"
+        as={UnorderedList}
+        margin="0"
+        padding="0"
+        styleType="none"
         direction="column"
-        h="90vh"
-        mt="5vh"
-        w={isOpen? "250px" : "75px"}
-        bgColor={palette["Pewter Blue"]}
-        justifyContent="space-between"
-        >   
-
-            <Flex
-            as="nav"
-            >
-                <UnorderedList
-                listStyleType="none"
-                mx="5%"
-                p={0}
-                >
-                    <ListItem>
-                        <IconButton
-                        icon={<FiMenu />}
-                        onClick={toggleSidebar}
-                        aria-label="toggle sidebar"
-                        />
-                    </ListItem>
-                    
-                    {navItems.map((item: NavItemContent) => 
-                        <ListItem
-                        h="60px"
-                        >
-                            <NavItem
-                            icon={item.icon} 
-                            title={item.title}
-                            route={"/"}
-                            isOpen={isOpen}
-                            />
-                        </ListItem>
-                    )}
-                    
-                </UnorderedList>
-            </Flex>
-
-
-            <Flex
-
-            >
-                <Divider />
-                <Flex>
-                    <Avatar />
-                    <Flex>
-                        <Heading>John Smith</Heading>
-                        <Text>Admin</Text>
-                    </Flex>
-                </Flex>
-                
-
-            </Flex>
-
-
-        </Flex>
-        )
+        alignItems="center"
+      >
+        {React.Children.map(children, (child) => (
+          <ListItem width="full">{child}</ListItem>
+        ))}
+      </Flex>
+    </Box>
+  );
 }
+
+export default Sidebar
