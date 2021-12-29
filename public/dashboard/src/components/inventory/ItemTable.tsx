@@ -9,7 +9,7 @@ export default function ItemTable({
   setSelected,
   onOpen,
 }: {
-  isLoading: boolean;
+  isLoading?: boolean;
   data: Item[];
   setSelected?: React.Dispatch<React.SetStateAction<number | null>>;
   onOpen?: any
@@ -28,18 +28,6 @@ export default function ItemTable({
         Header: "available",
         accessor: "available",
       },
-      // {
-      //     Header: "start date",
-      //     accessor: "startDate"
-      // },
-      // {
-      //     Header: "end date",
-      //     accessor: "endDate"
-      // },
-      {
-        Header: "standardPrice",
-        accessor: "standardPrice",
-      }
     ],
     []
   );

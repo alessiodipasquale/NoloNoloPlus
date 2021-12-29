@@ -20,36 +20,47 @@ function RentalDetails({ rental }: { rental: Rental }) {
       value: rental.itemId,
     },
     {
-      header: "End Date",
-      value: rental.endDate,
+      header: "End",
+      value: format(new Date(rental.endDate,), "yyyy-MM-dd")
     },
     {
-      header: "Items",
-      value: rental.itemId,
+      header: "Start",
+      value: format(new Date(rental.startDate), "yyyy-MM-dd")
+    },
+    {
+      header: "Kit",
+      value: rental.kitId,
+    },
+    {
+      header: "Was returned?",
+      value: rental.returnCertification ? "yes" : "no",
+    },
+    {
+      header: "Status",
+      value: rental.state,
     },
   ];
 
   return (
-    <Flex>
+    <Flex marginTop="1rem">
       <Box flex="2">
         <HStack>{rental.tags}</HStack>
         <VStack align="left">
-          {details.map(({ header, value }) => (
-            <UnorderedList>
-              <ListItem
-              variant="">
+          <UnorderedList listStyleType="none">
+            {details.map(({ header, value }) => (
+              <ListItem>
                 <Text
                   fontWeight="600"
                   color="gray.500"
-                  w="100px"
+                  w="12rem"
                   display="inline-block"
                 >
                   {header}
                 </Text>
                 <Text as="span">{value}</Text>
               </ListItem>
-            </UnorderedList>
-          ))}
+            ))}
+          </UnorderedList>
         </VStack>
       </Box>
 

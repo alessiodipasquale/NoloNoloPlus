@@ -66,7 +66,7 @@ function ConditionPieChart({ items }: { items: Item[] }) {
 
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <PieChart width={400} height={400}>
+      <PieChart>
         <Pie
           dataKey="count"
           startAngle={180}

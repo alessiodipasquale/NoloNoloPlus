@@ -52,23 +52,27 @@ function RentalsDash() {
         gap={3}
         padding={3}
       >
-        <GridItem as={Card} colSpan={4} rowSpan={4}>
+        <GridItem as={Card} colSpan={4} rowSpan={4} order="1">
           <RevenueCard rentals={rentals} />
         </GridItem>
 
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
-
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
-
-        <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
-          <LineChartCard rentals={rentals} />
-        </GridItem>
-
-        <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
+        <GridItem colSpan={4} rowSpan={4} order="2" as={Card}>
           <CardHeader>
             <Text variant="card-header">Rentals by status</Text>
           </CardHeader>
           <RentalConclusionsPie rentals={rentals} />
+        </GridItem>
+
+        <GridItem colSpan={4} rowSpan={12} order="3" as={Card}>
+          <RentalsList
+            isLoading={false}
+            rentals={rentals}
+            onClickRow={undefined}
+          />
+        </GridItem>
+
+        <GridItem colSpan={8} rowSpan={8} order="4" as={Card}>
+          <LineChartCard rentals={rentals} />
         </GridItem>
       </Grid>
     </>

@@ -10,7 +10,7 @@ import Navlink from "./components/Navbar/Navlink";
 export const App = () => (
   <Box bg="gray.100">
     <Sidebar>
-      <Navlink to="/clients" icon={FaUserFriends}>clients</Navlink>
+      <Navlink  to="/clients" icon={FaUserFriends}>clients</Navlink>
       <Navlink to="/inventory" icon={FaDollyFlatbed}>inventory</Navlink>
       <Navlink to="/employees" icon={FaIdBadge}>employees</Navlink>
       <Navlink to="/rentals" icon={FaClipboardList}>rentals</Navlink>

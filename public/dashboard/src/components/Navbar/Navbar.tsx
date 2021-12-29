@@ -26,10 +26,6 @@ import { FaIcons } from "react-icons/fa";
 import styled from "@emotion/styled";
 
 export function Sidebar({ children }: { children: ReactNode }) {
-  const [isOpen, setOpen] = useState(false);
-
-  const toggleSidebar = () => setOpen(!isOpen);
-
   return (
     <Box
       bgColor="gray.500"
@@ -40,10 +36,10 @@ export function Sidebar({ children }: { children: ReactNode }) {
       _hover={{
         width: "16rem",
       }}
-      sx= {{
-        "&:hover .link-text" : {
-          display: "block"
-        }
+      sx={{
+        "&:hover .link-text": {
+          display: "block",
+        },
       }}
       transition={"width 200ms ease"}
       zIndex="1"
@@ -66,4 +62,4 @@ export function Sidebar({ children }: { children: ReactNode }) {
   );
 }
 
-export default Sidebar
+export default Sidebar;

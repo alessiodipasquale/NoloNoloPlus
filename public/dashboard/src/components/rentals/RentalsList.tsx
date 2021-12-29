@@ -43,9 +43,6 @@ export default function RentalsList({
       {
         Header: "final price",
         accessor: "finalPrice",
-      },
-      {
-        Header: "details"
       }
     ],
     []

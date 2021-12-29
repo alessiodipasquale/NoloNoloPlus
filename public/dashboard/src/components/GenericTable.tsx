@@ -1,5 +1,6 @@
 import {
   Box,
+  chakra,
   Input,
   Table,
   TableCaption,
@@ -44,20 +45,18 @@ function GlobalFilter({
   }, 200);
 
   return (
-    <Box w="full">
-      Search:{" "}
+    <Box width="100%">
+      Search:
       <Input
-        w="full"
+        width="full"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
           onChange(e.target.value);
         }}
+        fontSize="1.1rem"
+        border="0"
         placeholder={`${count} records...`}
-        style={{
-          fontSize: "1.1rem",
-          border: "0",
-        }}
       />
     </Box>
   );

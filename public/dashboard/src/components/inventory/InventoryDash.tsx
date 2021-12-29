@@ -1,4 +1,4 @@
-import { Grid, GridItem } from "@chakra-ui/layout";
+import { Grid, GridItem, Text } from "@chakra-ui/layout";
 import React, { useEffect, useState } from "react";
 import { useDisclosure } from "@chakra-ui/hooks";
 
@@ -9,6 +9,12 @@ import ConditionPieChart from "./ConditionPieChart";
 import AvailableCard from "./AvailableCard";
 import useFetch, { IncomingOptions } from "use-http";
 import RevenueByCategory from "./RevenueByCategory";
+import CardHeader from "../cards/CardHeader";
+import Card from "../cards/Card";
+import { Tabs, TabList, Tab, TabPanels, TabPanel, Icon } from "@chakra-ui/react";
+
+import {MdScatterPlot} from "react-icons/md"
+
 
 const gridItemStyle = {
   padding: "24px",
@@ -47,7 +53,6 @@ function InventoryDash() {
     fetchRentals();
   }, [get, response]);
 
-
   return (
     <>
       <Grid
@@ -58,20 +63,38 @@ function InventoryDash() {
         gap={3}
         padding={3}
       >
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
+        <GridItem colSpan={4} rowSpan={4} as={Card}>
           <AvailableCard items={items} />
         </GridItem>
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}></GridItem>
-        <GridItem colSpan={4} rowSpan={4} {...gridItemStyle}>
+        <GridItem colSpan={4} rowSpan={4} as={Card}>
+          <CardHeader>
+            <Text variant="card-header">Available items</Text>
+          </CardHeader>
           <ConditionPieChart items={items} />
         </GridItem>
 
-        <GridItem colSpan={8} rowSpan={8} {...gridItemStyle}>
-          <ItemScatterPlot items={items} />
+        <GridItem colSpan={4} rowSpan={12} as={Card}>
+          {/* <RevenueByCategory items={items} rentals={rentals} /> */}
+          <ItemTable data={items} />
         </GridItem>
-        <GridItem colSpan={4} rowSpan={8} {...gridItemStyle}>
-          <RevenueByCategory items={items} rentals={rentals} />
-          {/* <ItemTable isLoading={isLoading} data={items} /> */}
+
+        <GridItem colSpan={8} rowSpan={8} as={Card}>
+          <Tabs size='sm' align='end' width="full" h="full">
+            <TabList>
+              <Tab><Icon as={MdScatterPlot} aria-label="Show scatter-plot"/></Tab>
+              <Tab>Two</Tab>
+            </TabList>
+
+            <TabPanels w="full" h="full">
+              <TabPanel w="full" h="full">
+              <ItemScatterPlot items={items} />
+              </TabPanel>
+              <TabPanel>
+                <p>two!</p>
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
+         
         </GridItem>
       </Grid>
     </>
