@@ -1,4 +1,4 @@
-import { NumberDecrementStepperProps } from "@chakra-ui/number-input";
+
 
 type RentalType = "prenotazione" | "istantaneo";
 type RentalTarget = "singolo" | "kit";
@@ -96,6 +96,19 @@ interface ClientWithRevenueAndDamage {
   totalDamage: number;
 }
 
+
+interface Review {
+  _id: string;
+  stars: number;
+  comment: string;
+  clientId: string;
+  itemId: string
+}
+
+type UserRevenue = {
+  user: Employee;
+  totalRevenue: number;
+};
 export type {
   Rental,
   Item,
@@ -103,4 +116,8 @@ export type {
   Employee,
   userWithDamage,
   ClientWithRevenueAndDamage,
+  Review,
+  UserRevenue
 };
+
+

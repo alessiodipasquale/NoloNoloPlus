@@ -1,16 +1,12 @@
 import {
-  Box,
   Grid,
   GridItem,
   IconButton,
-  useDisclosure,
   Text,
-  Flex,
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
 import { Employee, Rental, UserRevenue } from "../../@types/db-entities";
-import { gridItemStyle } from "../rentals/RentalsDash";
 import RentalsList from "../rentals/RentalsList";
 import RevenueChart from "./CountRevenueChart";
 import EmployeesList from "./EmployeesList";
