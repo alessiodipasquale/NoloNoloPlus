@@ -46,7 +46,7 @@ function RentalDetails({ rental }: { rental: Rental }) {
       <Box flex="2">
         <HStack>{rental.tags}</HStack>
         <VStack align="left">
-          <UnorderedList listStyleType="none">
+          <UnorderedList listStyleType="none" display="flex" flexDirection="column" sx={{gap: "1rem"}}>
             {details.map(({ header, value }) => (
               <ListItem>
                 <Text

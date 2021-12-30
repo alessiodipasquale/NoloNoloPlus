@@ -13,7 +13,7 @@ import CardHeader from "../cards/CardHeader";
 import Card from "../cards/Card";
 import { Tabs, TabList, Tab, TabPanels, TabPanel, Icon } from "@chakra-ui/react";
 
-import {MdScatterPlot} from "react-icons/md"
+import {MdBarChart, MdScatterPlot} from "react-icons/md"
 
 
 const gridItemStyle = {
@@ -82,7 +82,7 @@ function InventoryDash() {
           <Tabs size='sm' align='end' width="full" h="full">
             <TabList>
               <Tab><Icon as={MdScatterPlot} aria-label="Show scatter-plot"/></Tab>
-              <Tab>Two</Tab>
+              <Tab><Icon as={MdBarChart} aria-label="Show bar-chart"/></Tab>
             </TabList>
 
             <TabPanels w="full" h="full">

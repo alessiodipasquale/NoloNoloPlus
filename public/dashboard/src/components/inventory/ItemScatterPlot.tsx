@@ -1,3 +1,5 @@
+import { scaleOrdinal } from "d3-scale";
+import { schemeCategory10, schemeTableau10 } from "d3-scale-chromatic";
 import React from "react";
 import {
   ScatterChart,
@@ -14,6 +16,7 @@ import {
 } from "recharts";
 import { Item } from "../../@types/db-entities";
 
+
 export default function ItemScatterPlot({ items }: { items: Item[] }) {
   const itemsByCategory = items.reduce((grouped, item) => {
     item.category.forEach((category) => {
@@ -22,8 +25,10 @@ export default function ItemScatterPlot({ items }: { items: Item[] }) {
     });
     return grouped;
   }, {} as { [category: string]: Item[] });
-
+  
   console.log(itemsByCategory);
+  
+  const colors = scaleOrdinal(Object.keys(itemsByCategory), schemeTableau10);
 
   return (
     <ResponsiveContainer>
@@ -42,7 +47,7 @@ export default function ItemScatterPlot({ items }: { items: Item[] }) {
           <Scatter
             name={category}
             data={itemsByCategory[category]}
-            fill="#8884d8"
+            fill={colors(category)}
           >
             <LabelList  dataKey="_id" position="right"/>
           </Scatter>

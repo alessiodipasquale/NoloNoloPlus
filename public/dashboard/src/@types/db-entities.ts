@@ -96,6 +96,15 @@ interface ClientWithRevenueAndDamage {
   totalDamage: number;
 }
 
+
+interface Review {
+  _id: string;
+  stars: number;
+  comment: string;
+  clientId: string;
+  itemId: string
+}
+
 export type {
   Rental,
   Item,
@@ -103,4 +112,5 @@ export type {
   Employee,
   userWithDamage,
   ClientWithRevenueAndDamage,
+  Review
 };
