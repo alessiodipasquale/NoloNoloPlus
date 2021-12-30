@@ -9,12 +9,8 @@ import {
   Legend,
   Bar,
 } from "recharts";
-import { Employee } from "../../@types/db-entities";
+import { Employee, UserRevenue } from "../../@types/db-entities";
 
-type UserRevenue = {
-  user: Employee;
-  totalRevenue: number;
-};
 
 function RevenueChart({data} : {data: UserRevenue[]}) {
   return (

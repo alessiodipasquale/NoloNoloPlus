@@ -105,6 +105,10 @@ interface Review {
   itemId: string
 }
 
+type UserRevenue = {
+  user: Employee;
+  totalRevenue: number;
+};
 export type {
   Rental,
   Item,
@@ -112,5 +116,8 @@ export type {
   Employee,
   userWithDamage,
   ClientWithRevenueAndDamage,
-  Review
+  Review,
+  UserRevenue
 };
+
+

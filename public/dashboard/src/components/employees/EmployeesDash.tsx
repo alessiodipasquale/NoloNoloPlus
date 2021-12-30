@@ -9,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
-import { Employee, Rental } from "../../@types/db-entities";
+import { Employee, Rental, UserRevenue } from "../../@types/db-entities";
 import { gridItemStyle } from "../rentals/RentalsDash";
 import RentalsList from "../rentals/RentalsList";
 import RevenueChart from "./CountRevenueChart";
@@ -21,6 +21,8 @@ import useFetch, { IncomingOptions } from "use-http";
 import RentalsNoBarChart from "./RentalsNoBarChart";
 
 type menuScreen = "details" | "employees" | "rentals";
+
+
 
 function EmployeesDash() {
   const [employees, setEmployees] = useState<Employee[]>([]);
@@ -37,28 +39,27 @@ function EmployeesDash() {
     responseType: "json",
   } as IncomingOptions;
 
-  const { get, response, loading } = useFetch(options);
-
+  const employeesReq = useFetch("users/employers", options);
   useEffect(() => {
+    
     async function fetchEmployees() {
-      const employees = (await get("users/employers")) as Employee[];
-      if (response.ok) setEmployees(employees);
+      const {get, loading} = employeesReq
+      const data = await employeesReq.get();
+      if (employeesReq.response.ok) setEmployees(data);
     }
     fetchEmployees();
-  }, [get, response]);
+  }, []);
 
+  const usersReq = useFetch("users", options)
   useEffect(() => {
-    async function fetchEmployees() {
-      if (!selectedEmployee) return;
-      const rentals = (await get(
-        `users/${employees[selectedEmployee]._id}/rentals`
-      )) as Rental[];
-      if (response.ok) setRentals(rentals);
+    async function fetchRentals() {
+      if (!selectedRental || !employees) return
+      const data = await usersReq.get(`${employees[selectedRental]._id}/rentals`);
+      if (usersReq.response.ok) setRentals(data);
     }
-    fetchEmployees();
-  }, [employees, get, response, selectedEmployee]);
+    fetchRentals();
+  }, [employees, selectedRental, usersReq]);
 
-  
 
   useEffect(() => {
     fetch("users/employers/revenue", {
@@ -68,10 +69,8 @@ function EmployeesDash() {
     })
       .then((res) => res.json())
       .then((json) => setRevenues(json))
-      .then(json => console.log(json));
+      .then((json) => console.log(json));
   }, []);
-
-
 
   let header;
   let content;
@@ -80,7 +79,7 @@ function EmployeesDash() {
     header = <Text fontSize="lg">Employees</Text>;
     content = (
       <EmployeesList
-        isLoading={loading}
+        isLoading={false}
         employees={employees}
         setSelected={setSelectedEmployee}
         onClickRow={() => setMenu("rentals")}
@@ -110,7 +109,7 @@ function EmployeesDash() {
         onClickRow={() => {
           setMenu("details");
         }}
-        isLoading={loading}
+        isLoading={usersReq.loading}
         variant="withHover"
       />
     );
@@ -130,7 +129,7 @@ function EmployeesDash() {
         </Text>
       </>
     );
-    content = <RentalDetails rental={rentals[selectedRental!]} />;
+    content = selectedRental ? <RentalDetails rental={rentals[selectedRental]}/> : null;
   }
 
   return (
@@ -144,7 +143,6 @@ function EmployeesDash() {
       padding={3}
     >
       <GridItem colSpan={6} rowSpan={12} as={Card}>
-        <>
           <CardHeader
             marginBottom="2rem"
             justifyContent="left"
@@ -154,10 +152,9 @@ function EmployeesDash() {
             {header}
           </CardHeader>
           {content}
-        </>
       </GridItem>
       <GridItem colSpan={6} rowSpan={6} as={Card}>
-        <RevenueChart />
+        <RevenueChart data={revenues} />
       </GridItem>
 
       <GridItem colSpan={6} rowSpan={6} as={Card}>
