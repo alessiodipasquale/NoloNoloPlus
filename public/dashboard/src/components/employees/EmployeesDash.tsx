@@ -9,58 +9,129 @@ import {
 } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { FaChevronLeft } from "react-icons/fa";
-import { Employee, Rental } from "../../@types/db-entities";
+import { Employee, Rental, UserRevenue } from "../../@types/db-entities";
 import { gridItemStyle } from "../rentals/RentalsDash";
 import RentalsList from "../rentals/RentalsList";
-import { CountRevenueChart } from "./CountRevenueChart";
+import RevenueChart from "./CountRevenueChart";
 import EmployeesList from "./EmployeesList";
 import RentalDetails from "../rentals/RentalDetails";
 import CardHeader from "../cards/CardHeader";
+import Card from "../cards/Card";
+import useFetch, { IncomingOptions } from "use-http";
+import RentalsNoBarChart from "./RentalsNoBarChart";
 
 type menuScreen = "details" | "employees" | "rentals";
 
+
+
 function EmployeesDash() {
   const [employees, setEmployees] = useState<Employee[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [selectedEmployee, setSelectedEmployee] = useState<number>();
   const [selectedRental, setSelectedRental] = useState<number>();
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [menu, setMenu] = useState<menuScreen>("employees");
+  const [revenues, setRevenues] = useState<UserRevenue[]>([]);
+
+  const options = {
+    headers: {
+      authorization: "Bearer " + process.env.REACT_APP_TOKEN,
+    },
+    responseType: "json",
+  } as IncomingOptions;
+  
+  const employeesReq = (({ get, loading, response }) => ({ get, loading, response }))(useFetch("users/employers", options));
 
   useEffect(() => {
-    fetch(`users/employers`, {
+    const {get, response} = employeesReq
+    async function fetchEmployees() {
+      const data = await get();
+      if (response.ok) setEmployees(data);
+    }
+    fetchEmployees();
+  }, [employeesReq]);
+
+  const usersReq = (({ get, loading, response }) => ({ get, loading, response }))(useFetch("users", options))
+
+  useEffect(() => {
+    async function fetchRentals() {
+      if (!selectedRental || !employees) return
+      const data = await usersReq.get(`${employees[selectedRental]._id}/rentals`);
+      if (usersReq.response.ok) setRentals(data);
+    }
+    fetchRentals();
+  }, [employees, selectedRental, usersReq]);
+
+
+  useEffect(() => {
+    fetch("users/employers/revenue", {
       headers: {
         authorization: "bearer " + process.env.REACT_APP_TOKEN,
       },
     })
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setEmployees(json); //TODO: define type for database objects
-        setIsLoading(false);
-        return json;
-      })
+      .then((res) => res.json())
+      .then((json) => setRevenues(json))
       .then((json) => console.log(json));
   }, []);
 
-  useEffect(() => {
-    if (!selectedEmployee) return;
-    fetch(`users/${employees[selectedEmployee]._id}/rentals`, {
-      headers: {
-        authorization: "bearer " + process.env.REACT_APP_TOKEN,
-      },
-    })
-      .then((res) => {
-        return res.json();
-      })
-      .then((json) => {
-        setRentals(json); //TODO: define type for database objects
-        setIsLoading(false);
-        return json;
-      })
-      .then((json) => console.log(json));
-  }, [employees, selectedEmployee]);
+  let header;
+  let content;
+
+  if (menu === "employees") {
+    header = <Text fontSize="lg">Employees</Text>;
+    content = (
+      <EmployeesList
+        isLoading={false}
+        employees={employees}
+        setSelected={setSelectedEmployee}
+        onClickRow={() => setMenu("rentals")}
+      />
+    );
+  } else if (menu === "rentals") {
+    header = (
+      <>
+        <IconButton
+          aria-label="go back to employees"
+          icon={<FaChevronLeft />}
+          onClick={() => {
+            setSelectedEmployee(undefined);
+            setMenu("employees");
+          }}
+        />
+        <Text fontSize="lg">Rentals</Text>
+      </>
+    );
+    content = (
+      <RentalsList
+        rentals={rentals}
+        setSelected={setSelectedRental}
+        employeeId={
+          selectedEmployee ? employees[selectedEmployee]._id : undefined
+        }
+        onClickRow={() => {
+          setMenu("details");
+        }}
+        isLoading={usersReq.loading}
+        variant="withHover"
+      />
+    );
+  } else {
+    header = (
+      <>
+        <IconButton
+          aria-label="go back to rentals"
+          icon={<FaChevronLeft />}
+          onClick={() => {
+            setSelectedRental(undefined);
+            setMenu("rentals");
+          }}
+        />
+        <Text Text fontSize="lg">
+          Details
+        </Text>
+      </>
+    );
+    content = selectedRental ? <RentalDetails rental={rentals[selectedRental]}/> : null;
+  }
 
   return (
     <Grid
@@ -72,86 +143,24 @@ function EmployeesDash() {
       gap={3}
       padding={3}
     >
-      <GridItem colSpan={6} rowSpan={12} {...gridItemStyle}>
-        {menu === "employees" && (
-          <>
-            <CardHeader
-              marginBottom="2rem"
-              justifyContent="left"
-              alignItems="baseline"
-              sx={{ gap: "1rem" }}
-            >
-              <Text fontSize="lg">Employees</Text>
-            </CardHeader>
-            <EmployeesList
-              isLoading={isLoading}
-              employees={employees}
-              setSelected={setSelectedEmployee}
-              onClickRow={() => setMenu("rentals")}
-            />
-          </>
-        )}
-
-        {menu === "rentals" && (
-          <>
-            <CardHeader
-              marginBottom="2rem"
-              justifyContent="left"
-              alignItems="baseline"
-              sx={{ gap: "1rem" }}
-            >
-              <IconButton
-                aria-label="go back to employees"
-                icon={<FaChevronLeft />}
-                onClick={() => {
-                  setSelectedEmployee(undefined);
-                  setMenu("employees");
-                }}
-              />
-              <Text fontSize="lg">Rentals</Text>
-            </CardHeader>
-
-            <RentalsList
-              rentals={rentals}
-              setSelected={setSelectedRental}
-              employeeId={
-                selectedEmployee ? employees[selectedEmployee]._id : undefined
-              }
-              onClickRow={() => {
-                setMenu("details");
-              }}
-              isLoading={isLoading}
-              variant="withHover"
-            />
-          </>
-        )}
-        {menu === "details" && (
-          <Box>
-            <CardHeader
-              marginBottom="2rem"
-              justifyContent="left"
-              alignItems="baseline"
-              sx={{ gap: "1rem" }}
-            >
-              <IconButton
-                aria-label="go back to rentals"
-                icon={<FaChevronLeft />}
-                onClick={() => {
-                  setSelectedRental(undefined);
-                  setMenu("rentals");
-                }}
-              />
-              <Text>Details</Text>
-            </CardHeader>
-            <RentalDetails rental={rentals[selectedRental!]} />
-          </Box>
-        )}
+      <GridItem colSpan={6} rowSpan={12} as={Card}>
+          <CardHeader
+            marginBottom="2rem"
+            justifyContent="left"
+            alignItems="baseline"
+            sx={{ gap: "1rem" }}
+          >
+            {header}
+          </CardHeader>
+          {content}
       </GridItem>
-      <GridItem colSpan={6} rowSpan={6} {...gridItemStyle}>
-        <CountRevenueChart />
+      <GridItem colSpan={6} rowSpan={6} as={Card}>
+        <RevenueChart data={revenues} />
       </GridItem>
 
-      <GridItem colSpan={6} rowSpan={6} {...gridItemStyle}></GridItem>
+      <GridItem colSpan={6} rowSpan={6} as={Card}>
+        <RentalsNoBarChart data={employees} />
+      </GridItem>
     </Grid>
   );
 }
