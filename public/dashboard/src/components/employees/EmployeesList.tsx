@@ -1,5 +1,8 @@
+import { Icon } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import { useEffect, useState } from "react";
+import { FaChevronRight } from "react-icons/fa";
+import { Cell } from "react-table";
 import { Employee, Rental } from "../../@types/db-entities";
 import GenericTable from "../GenericTable";
 
@@ -34,8 +37,22 @@ export default function EmployeesList({
         Header: "address",
         accessor: "address",
       },
+      {
+        Header: "",
+        accessor: "details",
+        Cell: ({ cell }: { cell: Cell }) => (
+          <button
+            onClick={(e) => {
+              setSelected && setSelected(cell.row.index);
+              onClickRow && onClickRow(e);
+            }}
+          >
+            <Icon as={FaChevronRight} />
+          </button>
+        ),
+      },
     ],
-    []
+    [onClickRow, setSelected]
   );
 
   return isLoading ? (

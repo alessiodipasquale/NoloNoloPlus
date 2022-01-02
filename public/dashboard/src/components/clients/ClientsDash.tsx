@@ -27,6 +27,7 @@ import { CardMenu } from "../cards/CardMenu";
 import ClientsBarChart from "./ClientsBarChart";
 import CurrentlyRenting from "./CurrentlyRenting";
 import RentalsNo from "./RentalsNo";
+import ClientsList from "./ClientsList";
 
 function ClientsDash() {
   const sortOrder = ["byRevenue", "byDamage"] as const;
@@ -50,6 +51,7 @@ function ClientsDash() {
       const clients = (await get(
         "users/clients/revenue"
       )) as ClientWithRevenueAndDamage[];
+      console.log(clients)
       if (response.ok) setClients(clients);
     }
     fetchClients();
@@ -58,6 +60,7 @@ function ClientsDash() {
   useEffect(() => {
     async function fetchRentals() {
       const rentals = (await get("rentals")) as Rental[];
+      console.log(rentals)
       if (response.ok) setRentals(rentals);
     }
     fetchRentals();
@@ -116,7 +119,10 @@ function ClientsDash() {
           <CardHeader>
             <Text variant="card-header">Number of Rentals</Text>
           </CardHeader>
-          <RentalsNo data={clients} />
+          {/* <RentalsNo data={clients} />
+           */}
+        <ClientsList clients={clients} />
+
         </GridItem>
       </Grid>
     </>

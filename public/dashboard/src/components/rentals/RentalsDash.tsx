@@ -10,19 +10,8 @@ import Card from "../cards/Card";
 import useFetch, { IncomingOptions } from "use-http";
 import CardHeader from "../cards/CardHeader";
 
-export const gridItemStyle = {
-  padding: "24px",
-  margin: "0",
-  backgroundColor: "white",
-  borderRadius: "md",
-  overflow: "hidden",
-};
-
 function RentalsDash() {
   const [rentals, setRentals] = useState<Rental[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [selectedRental, setSelectedRental] = useState<number>();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const options = {
     headers: {
@@ -44,11 +33,10 @@ function RentalsDash() {
   return (
     <>
       <Grid
-        minWidth="0"
         w="100%"
         h="100vh"
-        templateColumns="Repeat(12, 1fr)"
-        templateRows="Repeat(12, 1fr)"
+        templateColumns="Repeat(auto-fit, min-max(240px, 1fr))"
+        autoRows="240px"
         gap={3}
         padding={3}
       >
@@ -65,7 +53,6 @@ function RentalsDash() {
 
         <GridItem colSpan={4} rowSpan={12} order="3" as={Card}>
           <RentalsList
-            isLoading={false}
             rentals={rentals}
             onClickRow={undefined}
           />

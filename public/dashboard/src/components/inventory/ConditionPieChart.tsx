@@ -6,6 +6,7 @@ import {
   Cell,
   ResponsiveContainer,
   LabelList,
+  Tooltip
 } from "recharts";
 import { Item } from "../../@types/db-entities";
 import { scaleOrdinal } from "d3-scale";
@@ -41,7 +42,7 @@ const renderCustomizedLabel = ({
   );
 };
 
-function ConditionPieChart({ items }: { items: Item[] }) {
+function ConditionPieChart({ items, selected, setSelected }: { items: Item[], selected?: string, setSelected?: any }) {
   const itemsByStatus = useMemo(() => {
     return items.reduce<Record<string, Item[]>>((grouped, curr) => {
       grouped[curr.state] ?? (grouped[curr.state] = []);
@@ -54,21 +55,31 @@ function ConditionPieChart({ items }: { items: Item[] }) {
   
   const colors = scaleOrdinal(Object.keys(itemsByStatus), schemeCategory10);
 
-
   const data = Object.keys(itemsByStatus).map((key) => ({
     status: key,
     count: itemsByStatus[key].length,
   }));
 
+  console.log(data)
+
   let renderLabel = function (entry: { status: string }) {
     return entry.status;
   };
+
+  function toggleSelectedState(toSelect: string) {
+    if (toSelect === selected) {
+      setSelected(null);
+    } else {
+      setSelected(toSelect)
+    }
+  }
 
   return (
     <ResponsiveContainer width="100%" height="100%">
       <PieChart>
         <Pie
           dataKey="count"
+          nameKey="status"
           startAngle={180}
           endAngle={0}
           data={data}
@@ -79,10 +90,11 @@ function ConditionPieChart({ items }: { items: Item[] }) {
           label={renderLabel}
         >
           {data.map((entry, index) => (
-            <Cell key={`cell-${index}`} fill={colors(entry.status)} />
+            <Cell  key={`cell-${index}`} fill={colors(entry.status)} onClick={setSelected && (() => toggleSelectedState(entry.status))} />
           ))}
         </Pie>
-        <LabelList dataKey="status" position="insideTop" />
+        <Tooltip />
+        <LabelList position="insideTop" />
       </PieChart>
     </ResponsiveContainer>
   );

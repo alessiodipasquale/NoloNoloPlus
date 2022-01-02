@@ -1,3 +1,5 @@
+import { CSSObject } from "@chakra-ui/styled-system";
+
 const style = {
   // The parts of the component
   parts: ["Table", "TableCaption", "Thead", "Tr", "Th", "Tbody", "Tfoot"],
@@ -10,9 +12,11 @@ const style = {
     withHover: {
       Tr: {
         _hover: {
-          boxShadow: "md",
-          
+          boxShadow: "md"
         },
+        _focus: {
+          border: "1px solid"
+        }
       },
     },
   },

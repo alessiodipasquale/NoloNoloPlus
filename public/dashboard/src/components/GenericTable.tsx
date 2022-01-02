@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   chakra,
   Input,
   Table,
@@ -13,7 +14,15 @@ import {
   useDisclosure,
   useMultiStyleConfig,
 } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
+import React, {
+  createRef,
+  EventHandler,
+  ReactEventHandler,
+  KeyboardEvent,
+  RefObject,
+  useEffect,
+  useState,
+} from "react";
 import {
   IdType,
   Row,
@@ -76,7 +85,7 @@ function GenericTable({
   caption?: string;
   footer?: any;
   setSelected?: (arg: any) => any;
-  onClickRow?: any;
+  onClickRow?: React.MouseEventHandler;
   variant?: string;
 }) {
   const {
@@ -91,8 +100,14 @@ function GenericTable({
     setGlobalFilter,
   } = useTable({ columns, data }, useGlobalFilter, useSortBy);
 
+  const setRowRef = (element: HTMLElement | null, index: number) => {
+    rowRefs[index] = element;
+  };
+
+  let rowRefs: (HTMLElement | null)[] = rows.map((row) => null);
+  const [focusedIndex, onKeyDown] = useTableNavigation(rowRefs);
+
   const styles = useMultiStyleConfig("GenericTable", { variant });
-  console.log(styles);
 
   function fuzzyTextFilterFn(
     rows: Row<any>[],
@@ -136,7 +151,7 @@ function GenericTable({
           </Tr>
 
           {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()}>
+            <Tr {...headerGroup.getHeaderGroupProps()} tabIndex={0}>
               {headerGroup.headers.map((column) => (
                 <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
                   {column.render("Header")}
@@ -156,18 +171,23 @@ function GenericTable({
             </Tr>
           ))}
         </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {rows.map((row) => {
+        <Tbody
+          {...getTableBodyProps()}
+          tabIndex={0}
+          onKeyDown={(e) => {
+            onKeyDown(e);
+          }}
+        >
+          {rows.map((row, index) => {
             prepareRow(row);
 
             return (
               <Tr
                 {...row.getRowProps()}
-                onClick={() => {
-                  setSelected && setSelected(row.index);
-                  onClickRow && onClickRow();
-                }}
                 sx={styles.Tr}
+                ref={(element) => setRowRef(element, index)}
+                tabIndex={0}
+
               >
                 {row.cells.map((cell) => {
                   return (
@@ -182,6 +202,47 @@ function GenericTable({
       </Table>
     </>
   );
+}
+
+function useTableNavigation(rowRefs: (HTMLElement | null)[]) {
+  const [focusedIndex, setFocusedIndex] = React.useState(0);
+
+  const onKeyDown = (event: KeyboardEvent<HTMLTableSectionElement>) => {
+    const nextRow = () => {
+      const next = rowRefs[focusedIndex + 1];
+      if (next) {
+        setFocusedIndex(focusedIndex + 1);
+        console.log(next);
+        console.log("next");
+        next.focus();
+      }
+    };
+    const previousRow = () => {
+      const prev = rowRefs[focusedIndex - 1];
+      if (prev) {
+        setFocusedIndex(focusedIndex - 1);
+        console.log(prev);
+        console.log("prev");
+        prev.focus();
+      }
+    };
+
+    const keyMap = {
+      ArrowDown: () => nextRow(),
+      ArrowUp: () => previousRow(),
+    } as { [key: string]: () => any };
+
+    const eventKey = event.key;
+
+    const action = keyMap[eventKey];
+
+    if (action) {
+      event.preventDefault();
+      action();
+    }
+  };
+
+  return [focusedIndex, onKeyDown] as const;
 }
 
 export default GenericTable;

@@ -1,5 +1,5 @@
 import { Grid, GridItem, Text } from "@chakra-ui/layout";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDisclosure } from "@chakra-ui/hooks";
 
 import type { Item, Rental } from "../../@types/db-entities";
@@ -11,22 +11,21 @@ import useFetch, { IncomingOptions } from "use-http";
 import RevenueByCategory from "./RevenueByCategory";
 import CardHeader from "../cards/CardHeader";
 import Card from "../cards/Card";
-import { Tabs, TabList, Tab, TabPanels, TabPanel, Icon } from "@chakra-ui/react";
+import {
+  Tabs,
+  TabList,
+  Tab,
+  TabPanels,
+  TabPanel,
+  Icon,
+} from "@chakra-ui/react";
 
-import {MdBarChart, MdScatterPlot} from "react-icons/md"
-
-
-const gridItemStyle = {
-  padding: "24px",
-  margin: "0",
-  backgroundColor: "white",
-  borderRadius: "md",
-  overflow: "hidden",
-};
+import { MdBarChart, MdScatterPlot } from "react-icons/md";
 
 function InventoryDash() {
   const [items, setItems] = useState<Item[]>([]);
   const [rentals, setRentals] = useState<Rental[]>([]);
+  const [selectedState, setSeletedState] = useState();
 
   const options = {
     headers: {
@@ -53,6 +52,14 @@ function InventoryDash() {
     fetchRentals();
   }, [get, response]);
 
+  const filtered = useMemo(
+    () =>
+      items.filter((item) =>
+        selectedState ? item.state === selectedState : true
+      ),
+    [items, selectedState]
+  );
+
   return (
     <>
       <Grid
@@ -70,31 +77,34 @@ function InventoryDash() {
           <CardHeader>
             <Text variant="card-header">Available items</Text>
           </CardHeader>
-          <ConditionPieChart items={items} />
+          <ConditionPieChart selected={selectedState} setSelected={setSeletedState} items={items} />
         </GridItem>
 
         <GridItem colSpan={4} rowSpan={12} as={Card}>
           {/* <RevenueByCategory items={items} rentals={rentals} /> */}
-          <ItemTable data={items} />
+          <ItemTable data={filtered} />
         </GridItem>
 
         <GridItem colSpan={8} rowSpan={8} as={Card}>
-          <Tabs size='sm' align='end' width="full" h="full">
+          <Tabs size="sm" align="end" width="full" h="full">
             <TabList>
-              <Tab><Icon as={MdScatterPlot} aria-label="Show scatter-plot"/></Tab>
-              <Tab><Icon as={MdBarChart} aria-label="Show bar-chart"/></Tab>
+              <Tab>
+                <Icon as={MdScatterPlot} aria-label="Show scatter-plot" />
+              </Tab>
+              <Tab>
+                <Icon as={MdBarChart} aria-label="Show bar-chart" />
+              </Tab>
             </TabList>
 
             <TabPanels w="full" h="full">
               <TabPanel w="full" h="full">
-              <ItemScatterPlot items={items} />
+                <ItemScatterPlot items={filtered} />
               </TabPanel>
               <TabPanel>
                 <p>two!</p>
               </TabPanel>
             </TabPanels>
           </Tabs>
-         
         </GridItem>
       </Grid>
     </>

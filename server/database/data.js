@@ -294,6 +294,17 @@ const kits = [
   },
 ];
 
+
+const reviews = [
+  {
+    _id: "review1",
+    stars: 4,
+    comment: "tastes like chicken",
+    clientId: "User1",
+    itemId: "Item1"
+  }
+]
+
 module.exports = {
   users,
   items,
@@ -304,4 +315,5 @@ module.exports = {
   propertyValues,
   rentals,
   kits,
+  reviews
 };

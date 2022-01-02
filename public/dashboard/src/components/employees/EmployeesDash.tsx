@@ -13,7 +13,7 @@ import EmployeesList from "./EmployeesList";
 import RentalDetails from "../rentals/RentalDetails";
 import CardHeader from "../cards/CardHeader";
 import Card from "../cards/Card";
-import useFetch, { IncomingOptions } from "use-http";
+import { IncomingOptions, useFetch } from "use-http";
 import RentalsNoBarChart from "./RentalsNoBarChart";
 
 type menuScreen = "details" | "employees" | "rentals";
@@ -21,12 +21,10 @@ type menuScreen = "details" | "employees" | "rentals";
 
 
 function EmployeesDash() {
-  const [employees, setEmployees] = useState<Employee[]>([]);
   const [selectedEmployee, setSelectedEmployee] = useState<number>();
   const [selectedRental, setSelectedRental] = useState<number>();
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [menu, setMenu] = useState<menuScreen>("employees");
-  const [revenues, setRevenues] = useState<UserRevenue[]>([]);
 
   const options = {
     headers: {
@@ -35,39 +33,25 @@ function EmployeesDash() {
     responseType: "json",
   } as IncomingOptions;
   
-  const employeesReq = (({ get, loading, response }) => ({ get, loading, response }))(useFetch("users/employers", options));
+  //TODO questa roba è troppo incasinata. È difficile dare nomi sensati ed evitare fetch infiniti
 
+
+  const { data: employees = [], loading : loadingEmployees } = useFetch<Employee[]>("users/employers", options, [])
+  const { data: revenues = [], loading: revenuesLoading } = useFetch<UserRevenue[]>("users/employers/revenue", options, [])
+
+  const { get,  loading : loadingUsers, response } = useFetch<Rental[]>("/users", options)
   useEffect(() => {
-    const {get, response} = employeesReq
     async function fetchEmployees() {
-      const data = await get();
-      if (response.ok) setEmployees(data);
+      if(!selectedEmployee) return
+      const data = await get(`/${employees[selectedEmployee]._id}/rentals`) as Rental[];
+      console.log(data)
+
+      if (response.ok) setRentals(data)
     }
     fetchEmployees();
-  }, [employeesReq]);
-
-  const usersReq = (({ get, loading, response }) => ({ get, loading, response }))(useFetch("users", options))
-
-  useEffect(() => {
-    async function fetchRentals() {
-      if (!selectedRental || !employees) return
-      const data = await usersReq.get(`${employees[selectedRental]._id}/rentals`);
-      if (usersReq.response.ok) setRentals(data);
-    }
-    fetchRentals();
-  }, [employees, selectedRental, usersReq]);
+  }, [employees, get, response.ok, selectedEmployee])
 
 
-  useEffect(() => {
-    fetch("users/employers/revenue", {
-      headers: {
-        authorization: "bearer " + process.env.REACT_APP_TOKEN,
-      },
-    })
-      .then((res) => res.json())
-      .then((json) => setRevenues(json))
-      .then((json) => console.log(json));
-  }, []);
 
   let header;
   let content;
@@ -76,7 +60,7 @@ function EmployeesDash() {
     header = <Text fontSize="lg">Employees</Text>;
     content = (
       <EmployeesList
-        isLoading={false}
+        isLoading={loadingEmployees}
         employees={employees}
         setSelected={setSelectedEmployee}
         onClickRow={() => setMenu("rentals")}
@@ -103,17 +87,16 @@ function EmployeesDash() {
         employeeId={
           selectedEmployee ? employees[selectedEmployee]._id : undefined
         }
-        onClickRow={() => {
+        onClickRow={(e) => {
           setMenu("details");
         }}
-        isLoading={usersReq.loading}
         variant="withHover"
       />
     );
   } else {
     header = (
       <>
-        <IconButton
+        <IconButton autoFocus
           aria-label="go back to rentals"
           icon={<FaChevronLeft />}
           onClick={() => {
