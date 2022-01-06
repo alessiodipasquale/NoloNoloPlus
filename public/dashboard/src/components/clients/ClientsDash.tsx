@@ -7,12 +7,12 @@ import type {
   ClientWithRevenueAndDamage,
   Item,
   Rental,
+  Review,
 } from "../../@types/db-entities";
 import { NewClients } from "./NewClients";
 import DamagesScatterPlot from "./DamagesScatterPlot";
 import useFetch, { IncomingOptions } from "use-http";
 import {
-  ResponsiveContainer,
   BarChart,
   CartesianGrid,
   XAxis,
@@ -28,8 +28,14 @@ import ClientsBarChart from "./ClientsBarChart";
 import CurrentlyRenting from "./CurrentlyRenting";
 import RentalsNo from "./RentalsNo";
 import ClientsList from "./ClientsList";
+import StarRating from "./starRating/StarRating";
+import { Flex } from "@chakra-ui/react";
+import { useAuth } from "../Login/AuthProvider";
+import useDefaultOptions from "../../useDefaultOptions";
 
 function ClientsDash() {
+  const { token } = useAuth();
+
   const sortOrder = ["byRevenue", "byDamage"] as const;
 
   const [clients, setClients] = useState<ClientWithRevenueAndDamage[]>([]);
@@ -37,12 +43,7 @@ function ClientsDash() {
   const [selectedOrder, setSelectedOrder] =
     useState<typeof sortOrder[number]>("byRevenue");
 
-  const options = {
-    headers: {
-      authorization: "Bearer " + process.env.REACT_APP_TOKEN,
-    },
-    responseType: "json",
-  } as IncomingOptions;
+  const options = useDefaultOptions(token);
 
   const { get, response } = useFetch(options);
 
@@ -51,7 +52,7 @@ function ClientsDash() {
       const clients = (await get(
         "users/clients/revenue"
       )) as ClientWithRevenueAndDamage[];
-      console.log(clients)
+      console.log(clients);
       if (response.ok) setClients(clients);
     }
     fetchClients();
@@ -60,12 +61,22 @@ function ClientsDash() {
   useEffect(() => {
     async function fetchRentals() {
       const rentals = (await get("rentals")) as Rental[];
-      console.log(rentals)
+      console.log(rentals);
       if (response.ok) setRentals(rentals);
     }
     fetchRentals();
   }, [get, response]);
 
+  const { data: reviews } = useFetch<Review[]>("reviews", options, []);
+  const avgRating = useMemo(
+    () =>
+      reviews
+        ? reviews.reduce((acc, review) => acc + review.stars, 0) /
+          reviews.length
+        : 0,
+    [reviews]
+  );
+  console.log(reviews);
   const sortedClients = useMemo(() => {
     return clients
       .slice()
@@ -86,22 +97,33 @@ function ClientsDash() {
     <>
       <Grid
         w="auto"
-        h="100vh"
-        templateColumns="Repeat(12, 1fr)"
-        templateRows="Repeat(12, 1fr)"
+        h={{ base: "auto", lg: "100vh" }}
+        templateColumns={{ base: "1fr", lg: "repeat(3, 1fr)" }}
+        autoRows={{ base: "240px", lg: "1fr" }}
         gap={3}
         padding={3}
       >
-        <GridItem colSpan={4} rowSpan={4} as={Card}>
+        <GridItem as={Card}>
           <NewClients clients={clients.map((client) => client.user)} />
         </GridItem>
-        <GridItem colSpan={4} rowSpan={4} as={Card}>
+        <GridItem as={Card}>
           <CurrentlyRenting rentals={rentals} />
         </GridItem>
 
-        <GridItem colSpan={4} rowSpan={4} as={Card}></GridItem>
+        <GridItem as={Card}>
+          <CardHeader>
+            <Text variant="card-header">Avarage review score</Text>
+          </CardHeader>
+          <Flex
+            h="100%"
+            align="center"
+            aria-label={`avarage review rating: ${avgRating}`}
+          >
+            <StarRating rating={avgRating} />
+          </Flex>
+        </GridItem>
 
-        <GridItem colSpan={8} rowSpan={8} as={Card}>
+        <GridItem colSpan={{ lg: 2 }} rowSpan={2} as={Card}>
           <CardHeader>
             <Text variant="card-header">Revenue and Damage</Text>
             <Box>
@@ -115,14 +137,13 @@ function ClientsDash() {
           <ClientsBarChart clients={sortedClients} />
         </GridItem>
 
-        <GridItem colSpan={4} rowSpan={8} as={Card}>
+        <GridItem colSpan={1} rowSpan={2} as={Card}>
           <CardHeader>
             <Text variant="card-header">Number of Rentals</Text>
           </CardHeader>
           {/* <RentalsNo data={clients} />
            */}
-        <ClientsList clients={clients} />
-
+          <ClientsList clients={clients} />
         </GridItem>
       </Grid>
     </>

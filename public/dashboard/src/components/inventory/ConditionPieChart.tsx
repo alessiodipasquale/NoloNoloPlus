@@ -4,13 +4,13 @@ import {
   Pie,
   Sector,
   Cell,
-  ResponsiveContainer,
   LabelList,
   Tooltip
 } from "recharts";
 import { Item } from "../../@types/db-entities";
 import { scaleOrdinal } from "d3-scale";
 import { schemeCategory10 } from "d3-scale-chromatic";
+import ResponsiveFix from "../ResponsiveFix";
 
 const RADIAN = Math.PI / 180;
 
@@ -68,14 +68,14 @@ function ConditionPieChart({ items, selected, setSelected }: { items: Item[], se
 
   function toggleSelectedState(toSelect: string) {
     if (toSelect === selected) {
-      setSelected(null);
+      setSelected(undefined);
     } else {
       setSelected(toSelect)
     }
   }
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveFix width="99%">
       <PieChart>
         <Pie
           dataKey="count"
@@ -88,15 +88,16 @@ function ConditionPieChart({ items, selected, setSelected }: { items: Item[], se
           outerRadius={80}
           fill="#0088FE"
           label={renderLabel}
+          aria-label="pie chart showing item condition"
         >
           {data.map((entry, index) => (
-            <Cell  key={`cell-${index}`} fill={colors(entry.status)} onClick={setSelected && (() => toggleSelectedState(entry.status))} />
+            <Cell tabIndex={0}  key={`cell-${index}`} fill={colors(entry.status)} onClick={setSelected && (() => toggleSelectedState(entry.status))} />
           ))}
         </Pie>
         <Tooltip />
         <LabelList position="insideTop" />
       </PieChart>
-    </ResponsiveContainer>
+    </ResponsiveFix>
   );
 }
 

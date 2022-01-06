@@ -54,10 +54,10 @@ function GlobalFilter({
   }, 200);
 
   return (
-    <Box width="100%">
-      Search:
+    <Box width="100%" role="search">
+      <chakra.label htmlFor="search">Search:</chakra.label>
       <Input
-        width="full"
+        width="100%"
         value={value || ""}
         onChange={(e) => {
           setValue(e.target.value);
@@ -66,6 +66,9 @@ function GlobalFilter({
         fontSize="1.1rem"
         border="0"
         placeholder={`${count} records...`}
+        id="search"
+        aria-label="Filter table values"
+        tabIndex={0}
       />
     </Box>
   );
@@ -139,21 +142,34 @@ function GenericTable({
 
   return (
     <>
-      <Table {...getTableProps()} variant="simple">
-        <TableCaption>{caption}</TableCaption>
+      <GlobalFilter
+        preGlobalFilteredRows={preGlobalFilteredRows}
+        globalFilter={state.globalFilter}
+        setGlobalFilter={setGlobalFilter}
+      />
+      <Table
+        {...getTableProps()}
+        variant="simple"
+        minWidth="0"
+        maxWidth="100%"
+        p={0}
+        layout="fixed"
+      >
+        {/* <TableCaption>{caption}</TableCaption> */}
         <Thead>
-          <Tr ColSpan={visibleColumns.length}>
-            <GlobalFilter
-              preGlobalFilteredRows={preGlobalFilteredRows}
-              globalFilter={state.globalFilter}
-              setGlobalFilter={setGlobalFilter}
-            />
-          </Tr>
+          {/* <Tr colSpan={visibleColumns.length}>
+          
+        </Tr> */}
 
           {headerGroups.map((headerGroup) => (
-            <Tr {...headerGroup.getHeaderGroupProps()} tabIndex={0}>
+            <Tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <Th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                <Th
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  tabIndex={0}
+                  _focus={{ boxShadow: "outline" }}
+                  onKeyPress={(e) => e.key === "Enter" && column.toggleSortBy()}
+                >
                   {column.render("Header")}
                   <span>
                     {column.isSorted ? (
@@ -173,7 +189,6 @@ function GenericTable({
         </Thead>
         <Tbody
           {...getTableBodyProps()}
-          tabIndex={0}
           onKeyDown={(e) => {
             onKeyDown(e);
           }}
@@ -186,8 +201,6 @@ function GenericTable({
                 {...row.getRowProps()}
                 sx={styles.Tr}
                 ref={(element) => setRowRef(element, index)}
-                tabIndex={0}
-
               >
                 {row.cells.map((cell) => {
                   return (
@@ -217,6 +230,7 @@ function useTableNavigation(rowRefs: (HTMLElement | null)[]) {
         next.focus();
       }
     };
+
     const previousRow = () => {
       const prev = rowRefs[focusedIndex - 1];
       if (prev) {

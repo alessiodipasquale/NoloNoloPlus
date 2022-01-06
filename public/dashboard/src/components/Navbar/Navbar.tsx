@@ -1,47 +1,27 @@
-import { IconProps } from "@chakra-ui/icon";
-import {
-  Box,
-  Container,
-  Flex,
-  ListItem,
-  UnorderedList,
-  VStack,
-} from "@chakra-ui/layout";
-import {
-  Avatar,
-  Button,
-  Divider,
-  Heading,
-  IconButton,
-  Text,
-} from "@chakra-ui/react";
-import { ComponentWithAs } from "@chakra-ui/system";
-import React, { ReactNode, useState } from "react";
-import { FiMenu } from "react-icons/fi";
-import NavItem from "./NavItem";
-import palette from "../../palette.json";
-
-import type { NavItemContent } from "./NavItem";
-import { FaIcons } from "react-icons/fa";
-import styled from "@emotion/styled";
+import { Box, Flex, ListItem, UnorderedList } from "@chakra-ui/layout";
+import React, { ReactNode } from "react";
 
 export function Sidebar({ children }: { children: ReactNode }) {
   return (
     <Box
       bgColor="gray.500"
       as="nav"
-      width="5rem"
-      height="100vh"
+      width={{ base: "100vw", md: "5rem" }}
+      height={{ base: "5rem", md: "100vh" }}
       position="fixed"
+      bottom={{base: 0, md: undefined}}
       _hover={{
-        width: "16rem",
-      }}
-      sx={{
-        "&:hover .link-text": {
-          display: "block",
+        md: {
+          width: "16rem",
         },
       }}
-      transition={"width 200ms ease"}
+      sx={
+        {
+          "&:hover .link-text": {
+            display: {md: "block"}
+        }
+      }}
+      transition="width 200ms ease"
       zIndex="1"
       overflow="hidden"
     >
@@ -51,11 +31,12 @@ export function Sidebar({ children }: { children: ReactNode }) {
         margin="0"
         padding="0"
         styleType="none"
-        direction="column"
+        direction={{ md: "column" }}
         alignItems="center"
+        justifyContent={{base: "space-around", md: "flex-start"}}
       >
         {React.Children.map(children, (child) => (
-          <ListItem width="full">{child}</ListItem>
+          <ListItem key={"key-"+child?.toString} width={{base: 'auto', md: "full"}}>{child}</ListItem>
         ))}
       </Flex>
     </Box>

@@ -11,6 +11,9 @@ import ClientsDash from "./components/clients/ClientsDash";
 import InventoryDash from "./components/inventory/InventoryDash";
 import EmployeesDash from "./components/employees/EmployeesDash";
 import RentalsDash from "./components/rentals/RentalsDash";
+import AuthProvider from "./components/Login/AuthProvider";
+import RequireAuth from "./components/Login/RequireAuth";
+import LoginPage from "./components/Login/LoginPage";
 
 console.log(process.env);
 
@@ -18,18 +21,20 @@ ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />
     <ChakraProvider theme={theme}>
-      <BrowserRouter>
-        <Routes>
-          
-          <Route path="/" element={<App />}>
-            <Route path="/clients" element={<ClientsDash />} />
-            <Route path="/inventory" element={<InventoryDash />} />
-            <Route path="/employees" element={<EmployeesDash />} />
-            <Route path="/rentals" element={<RentalsDash />} />
-            <Route index element={<Navigate to="/rentals" />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<RequireAuth><App /></RequireAuth>}>
+              <Route path="/clients" element={<ClientsDash />} />
+              <Route path="/inventory" element={<InventoryDash />} />
+              <Route path="/employees" element={<EmployeesDash />} />
+              <Route path="/rentals" element={<RentalsDash />} />
+              <Route index element={<Navigate to="/rentals" />} />
+            </Route>
+            <Route path="login" element={<LoginPage />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
     </ChakraProvider>
   </React.StrictMode>,
   document.getElementById("root")

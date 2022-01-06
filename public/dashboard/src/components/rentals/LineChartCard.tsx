@@ -18,9 +18,9 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  ResponsiveContainer,
 } from "recharts";
 import { Rental } from "../../@types/db-entities";
+import ResponsiveFix from "../ResponsiveFix";
 import {
   dateFormat,
   getRevenuePerMonth,
@@ -53,8 +53,8 @@ function LineChartCard({ rentals }: { rentals: Rental[] }) {
 
       <TabPanels w="full" h="full">
         <TabPanel w="full" h="full">
-          <ResponsiveContainer width="99%" height="100%">
-            <LineChart width={500} height={300} data={revenueByWeek}>
+          <ResponsiveFix width="99%">
+            <LineChart data={revenueByWeek}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
@@ -68,11 +68,11 @@ function LineChartCard({ rentals }: { rentals: Rental[] }) {
               />
               <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
             </LineChart>
-          </ResponsiveContainer>
+          </ResponsiveFix>
         </TabPanel>
 
         <TabPanel w="full" h="full">
-          <ResponsiveContainer width="99%" height="100%">
+          <ResponsiveFix width="99%" height="99%">
             <LineChart
               width={500}
               height={300}
@@ -97,7 +97,7 @@ function LineChartCard({ rentals }: { rentals: Rental[] }) {
               />
               <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
             </LineChart>
-          </ResponsiveContainer>
+          </ResponsiveFix>
         </TabPanel>
       </TabPanels>
     </Tabs>

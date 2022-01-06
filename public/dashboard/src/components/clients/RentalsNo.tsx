@@ -1,14 +1,13 @@
 import React from 'react'
-import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts'
+import {BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from 'recharts'
 import { ClientWithRevenueAndDamage } from '../../@types/db-entities'
+import ResponsiveFix from '../ResponsiveFix'
 
 function RentalsNo({data}: {data : ClientWithRevenueAndDamage[]} ) {
     return (
-        <ResponsiveContainer width="100%" height="100%">
+        <ResponsiveFix width="100%" height="100%">
             <BarChart
               layout="vertical"
-              width={500}
-              height={300}
               data={data}
               margin={{
                 top: 5,
@@ -28,7 +27,7 @@ function RentalsNo({data}: {data : ClientWithRevenueAndDamage[]} ) {
                 fill="#8884d8"
               />
             </BarChart>
-          </ResponsiveContainer>
+          </ResponsiveFix>
     )
 }
 

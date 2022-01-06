@@ -1,6 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
+import { schemeCategory10 } from "d3-scale-chromatic";
+import React from "react";
 import {
-  ResponsiveContainer,
   BarChart,
   CartesianGrid,
   XAxis,
@@ -8,32 +8,31 @@ import {
   Tooltip,
   Legend,
   Bar,
+  Cell,
 } from "recharts";
-import { Employee, UserRevenue } from "../../@types/db-entities";
+import { UserRevenue } from "../../@types/db-entities";
+import ResponsiveFix from "../ResponsiveFix";
 
 
 function RevenueChart({data} : {data: UserRevenue[]}) {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveFix width="100%" height="100%">
       <BarChart
-        width={500}
-        height={300}
         data={data}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
+        aria-labelledby="Revenue by employee"
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="user.username" />
         <YAxis yAxisId="left" orientation="left" stroke="#8884d8" />
         <Tooltip />
-        <Legend />
-        <Bar yAxisId="left" dataKey="totalRevenue" fill="#8884d8" />
+        <Legend aria-label="legend" aria-hidden="true"/>
+        <Bar yAxisId="left" name="revenue" dataKey="totalRevenue" fill={schemeCategory10[2]}>
+          {data.map((entry, index) => (
+              <Cell  key={`cell-${index}`} aria-label={`User: ${entry.user.username}; revenue: ${entry.totalRevenue}`} />
+            ))}
+        </Bar>
       </BarChart>
-    </ResponsiveContainer>
+    </ResponsiveFix>
   );
 }
 

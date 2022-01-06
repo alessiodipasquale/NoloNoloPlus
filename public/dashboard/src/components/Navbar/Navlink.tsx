@@ -23,15 +23,17 @@ function Navlink({
       to={to}
       display="flex"
       alignItems="center"
-      w="full"
+      w={{base: "5rem", md: "full"}}
       height="5rem"
       style={({isActive}) => ({
         color: isActive ? "green" : "blue"
       })}
       {...rest}
+      label={"go to " + children}
+      aria-labelledby={children!.toString()}
     >
-      <Icon minWidth="2rem" minHeight="2rem" margin="0 1.5rem" as={icon} />
-      <chakra.span className="link-text" ml="1rem" display="none">
+      <Icon minWidth="2rem" minHeight="2rem" margin="0 1.5rem"  as={icon} role="presentation" />
+      <chakra.span id={children!.toString()} className="link-text" ml="1rem" display="none">
         {children}
       </chakra.span>
     </ChakraNavLink>

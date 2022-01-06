@@ -1,20 +1,14 @@
+import { schemeCategory10 } from "d3-scale-chromatic";
 import React from "react";
-import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts";
+import { BarChart, CartesianGrid, XAxis, YAxis, Tooltip, Legend, Bar } from "recharts";
 import { Employee } from "../../@types/db-entities";
+import ResponsiveFix from "../ResponsiveFix";
 
 function RentalsNoBarChart( {data} : {data: Employee[]}) {
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveFix width="100%" height="100%">
       <BarChart
-        width={500}
-        height={300}
         data={data}
-        margin={{
-          top: 20,
-          right: 30,
-          left: 20,
-          bottom: 5,
-        }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="username" />
@@ -24,9 +18,9 @@ function RentalsNoBarChart( {data} : {data: Employee[]}) {
         />
         <Tooltip />
         <Legend />
-        <Bar dataKey="rentals.length" fill="#82ca9d" />
+        <Bar dataKey="rentals.length" name="number of rentals" fill={schemeCategory10[0]} />
       </BarChart>
-    </ResponsiveContainer>
+    </ResponsiveFix>
   );
 }
 

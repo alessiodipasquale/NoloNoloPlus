@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  ResponsiveContainer,
   BarChart,
   CartesianGrid,
   XAxis,
@@ -10,6 +9,7 @@ import {
   Bar,
 } from "recharts";
 import { Client, Item, Rental } from "../../@types/db-entities";
+import ResponsiveFix from "../ResponsiveFix";
 
 
 function RevenueByCategory({
@@ -46,7 +46,7 @@ function RevenueByCategory({
   })).sort((a, b) => b.revenue - a.revenue)
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveFix width="100%" height="100%">
       <BarChart
         width={500}
         height={300}
@@ -66,7 +66,7 @@ function RevenueByCategory({
         <Legend />
         <Bar dataKey="revenue" fill="#8884d8" />
       </BarChart>
-    </ResponsiveContainer>
+    </ResponsiveFix>
   );
 }
 

@@ -1,6 +1,5 @@
 import { Grid, GridItem, Text } from "@chakra-ui/layout";
 import React, { useEffect, useMemo, useState } from "react";
-import { useDisclosure } from "@chakra-ui/hooks";
 
 import type { Item, Rental } from "../../@types/db-entities";
 import ItemScatterPlot from "./ItemScatterPlot";
@@ -8,7 +7,6 @@ import ItemTable from "./ItemTable";
 import ConditionPieChart from "./ConditionPieChart";
 import AvailableCard from "./AvailableCard";
 import useFetch, { IncomingOptions } from "use-http";
-import RevenueByCategory from "./RevenueByCategory";
 import CardHeader from "../cards/CardHeader";
 import Card from "../cards/Card";
 import {
@@ -21,19 +19,18 @@ import {
 } from "@chakra-ui/react";
 
 import { MdBarChart, MdScatterPlot } from "react-icons/md";
+import useDefaultOptions from "../../useDefaultOptions";
+import { useAuth } from "../Login/AuthProvider";
 
 function InventoryDash() {
+  const {token} = useAuth()
+
   const [items, setItems] = useState<Item[]>([]);
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [selectedState, setSeletedState] = useState();
 
-  const options = {
-    headers: {
-      authorization: "Bearer " + process.env.REACT_APP_TOKEN,
-    },
-    responseType: "json",
-  } as IncomingOptions;
-
+  const options = useDefaultOptions(token)
+  
   const { get, response, loading } = useFetch(options);
 
   useEffect(() => {
@@ -64,28 +61,29 @@ function InventoryDash() {
     <>
       <Grid
         w="auto"
-        h="100vh"
-        templateColumns="Repeat(12, 1fr)"
-        templateRows="Repeat(12, 1fr)"
+        h={{base: "auto", lg:"100vh"}}
+        templateColumns={{base: "1fr", lg: "repeat(3, 1fr)"}}
+        autoRows={{base: "240px", lg: "1fr"}}
         gap={3}
         padding={3}
       >
-        <GridItem colSpan={4} rowSpan={4} as={Card}>
+        <GridItem colSpan={1} rowSpan={1} as={Card}>
           <AvailableCard items={items} />
         </GridItem>
-        <GridItem colSpan={4} rowSpan={4} as={Card}>
+
+        <GridItem colSpan={1} rowSpan={1} as={Card}>
           <CardHeader>
             <Text variant="card-header">Available items</Text>
           </CardHeader>
           <ConditionPieChart selected={selectedState} setSelected={setSeletedState} items={items} />
         </GridItem>
 
-        <GridItem colSpan={4} rowSpan={12} as={Card}>
+        <GridItem colSpan={1} rowSpan={3} as={Card} overflowX="auto" alignItems="flex-start">
           {/* <RevenueByCategory items={items} rentals={rentals} /> */}
           <ItemTable data={filtered} />
         </GridItem>
 
-        <GridItem colSpan={8} rowSpan={8} as={Card}>
+        <GridItem colSpan={{base: 1, lg: 2}} rowSpan={2} as={Card}>
           <Tabs size="sm" align="end" width="full" h="full">
             <TabList>
               <Tab>

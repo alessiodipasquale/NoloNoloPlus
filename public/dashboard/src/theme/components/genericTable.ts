@@ -9,16 +9,13 @@ const style = {
   sizes: {},
   // The variant styles for each part
   variants: {
-    withHover: {
-      Tr: {
-        _hover: {
-          boxShadow: "md"
-        },
-        _focus: {
-          border: "1px solid"
-        }
-      },
-    },
+    // withHover: {
+    //   Tr: {
+    //     _hover: {
+    //       boxShadow: "md"
+    //     },
+    //   },
+    // },
   },
   // The default `size` or `variant` values
   defaultProps: {},

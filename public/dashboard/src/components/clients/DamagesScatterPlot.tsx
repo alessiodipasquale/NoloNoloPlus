@@ -2,7 +2,6 @@ import { scaleOrdinal } from "d3-scale";
 import { schemeCategory10 } from "d3-scale-chromatic";
 import React, { useEffect, useState } from "react";
 import {
-  ResponsiveContainer,
   ScatterChart,
   CartesianGrid,
   XAxis,
@@ -15,6 +14,7 @@ import { IncomingOptions, useFetch } from "use-http";
 import {
   ClientWithRevenueAndDamage,
 } from "../../@types/db-entities";
+import ResponsiveFix from "../ResponsiveFix";
 
 type DamageRevenueDataPoint = {
   username: string;
@@ -53,7 +53,7 @@ function DamagesScatterPlot({ clients }: any) {
   console.log(chartData)
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
+    <ResponsiveFix width="100%" height="100%">
       <ScatterChart
         width={400}
         height={400}
@@ -74,7 +74,7 @@ function DamagesScatterPlot({ clients }: any) {
           ))}
         </Scatter>
       </ScatterChart>
-    </ResponsiveContainer>
+    </ResponsiveFix>
   );
 }
 

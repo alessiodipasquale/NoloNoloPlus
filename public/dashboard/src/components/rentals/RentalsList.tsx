@@ -19,19 +19,20 @@ export default function RentalsList({
   variant?: string;
 }) {
   const data = employeeId
-    ? rentals
-    : rentals.filter((rental) => rental._id === employeeId);
+    ? rentals.filter((rental) => rental._id === employeeId)
+    : rentals
 
+    console.log(rentals)
   const columns = useMemo(() => {
-    let columns: Column[] = [
+    let columns: Column<Rental>[] = [
       {
         Header: "id",
-        accessor: "_id",
+        accessor: "_id"
       },
-      {
-        Header: "client id",
-        accessor: "clientId",
-      },
+      // {
+      //   Header: "client id",
+      //   accessor: "clientId",
+      // },
       {
         Header: "item id",
         accessor: "itemId",
@@ -45,28 +46,31 @@ export default function RentalsList({
         accessor: "finalPrice",
       },
     ];
+
     if (onClickRow) {
       columns.push({
         Header: "",
-        accessor: "details",
+        id: "details",
         Cell: ({ cell }: { cell: Cell }) => (
           <button
             onClick={(e) => {
               setSelected && setSelected(cell.row.index);
               onClickRow && onClickRow(e);
             }}
+            aria-label="see details"
           >
-            <Icon as={FaChevronRight} />
+            <Icon role="presentation" as={FaChevronRight} />
           </button>
         ),
       });
     }
+
     return columns;
   }, [onClickRow, setSelected]);
 
   return (
     <GenericTable
-      columns={columns}
+      columns={columns as Column[]}
       data={data}
       setSelected={setSelected}
       onClickRow={onClickRow}

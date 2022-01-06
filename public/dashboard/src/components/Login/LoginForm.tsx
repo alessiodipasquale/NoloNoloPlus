@@ -6,6 +6,8 @@ import { Formik, Form, Field, useField, ErrorMessage, FormikProps, FormikBag, Fo
 import React, { MutableRefObject, useRef, useState } from "react";
 import * as Yup from "yup"
 import path from 'path'
+import { useLocation, useNavigate } from "react-router";
+import { useAuth } from "./AuthProvider";
 
 
 interface FormValues {
@@ -14,25 +16,38 @@ interface FormValues {
 }
 
 export default function LoginForm() {
+    const navigate = useNavigate()
+    const auth = useAuth()
+    const location = useLocation()
 
-    const form = useRef<HTMLFormElement>(null) 
-    //const [user, setUser] = useState({name: '', password: ''})
+    let from = location.state?.from?.pathname || "/";
 
+    // function handleSubmit(values : FormValues, formik: FormikHelpers<FormValues>) {
+    //     console.log(JSON.stringify(values))
+    //     formik.setSubmitting(false)
+    //     fetch("loginDashboard", {
+    //         method: "POST",
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: JSON.stringify(values)
+    //     })
+    //     .then(res => res.json())
+    //     .then(json => localStorage.setItem('token', json.token))
+    // }
 
     function handleSubmit(values : FormValues, formik: FormikHelpers<FormValues>) {
-        console.log(JSON.stringify(values))
-        formik.setSubmitting(false)
-        fetch("loginDashboard", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(values)
-        })
-        .then(res => res.json())
-        .then(json => localStorage.setItem('token', json.token))
-        
-    }
+        auth.signin(values, () => {
+          // Send them back to the page they tried to visit when they were
+          // redirected to the login page. Use { replace: true } so we don't create
+          // another entry in the history stack for the login page.  This means that
+          // when they get to the protected page and click the back button, they
+          // won't end up back on the login page, which is also really nice for the
+          // user experience.
+          formik.setSubmitting(false)
+          navigate(from, { replace: true });
+        });
+      }
 
 
     return (
@@ -50,7 +65,7 @@ export default function LoginForm() {
             })}
             onSubmit={(values, formik) => handleSubmit(values, formik)}
             >
-                {(formProps: FormikProps<any>) => (
+                {(formProps: FormikProps<FormValues>) => (
                     <Form>
                         <VStack >
                             <Field name="username">

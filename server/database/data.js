@@ -298,7 +298,7 @@ const kits = [
 const reviews = [
   {
     _id: "review1",
-    stars: 4,
+    stars: 3.5,
     comment: "tastes like chicken",
     clientId: "User1",
     itemId: "Item1"

@@ -46,8 +46,9 @@ export default function EmployeesList({
               setSelected && setSelected(cell.row.index);
               onClickRow && onClickRow(e);
             }}
+            aria-label="see details"
           >
-            <Icon as={FaChevronRight} />
+            <Icon role="presentation" as={FaChevronRight} />
           </button>
         ),
       },

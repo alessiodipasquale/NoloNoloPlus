@@ -1,3 +1,4 @@
+import { useBreakpointValue } from "@chakra-ui/media-query";
 import { scaleOrdinal } from "d3-scale";
 import { schemeCategory10, schemeTableau10 } from "d3-scale-chromatic";
 import React from "react";
@@ -10,14 +11,18 @@ import {
   Tooltip,
   Legend,
   Scatter,
-  ResponsiveContainer,
   Label,
   LabelList,
 } from "recharts";
 import { Item } from "../../@types/db-entities";
+import ResponsiveFix from "../ResponsiveFix";
+
+
 
 
 export default function ItemScatterPlot({ items }: { items: Item[] }) {
+
+
   const itemsByCategory = items.reduce((grouped, item) => {
     item.category.forEach((category) => {
       grouped[category] ?? (grouped[category] = []);
@@ -29,13 +34,10 @@ export default function ItemScatterPlot({ items }: { items: Item[] }) {
   console.log(itemsByCategory);
   
   const colors = scaleOrdinal(Object.keys(itemsByCategory), schemeTableau10);
-
+  const label = useBreakpointValue({md:  <LabelList  dataKey="_id" position="right"/>})
   return (
-    <ResponsiveContainer>
+    <ResponsiveFix>
       <ScatterChart
-        width={730}
-        height={250}
-        margin={{ top: 20, right: 20, bottom: 10, left: 10 }}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="rentCount" type="number" name="rentals" allowDecimals={false}/>
@@ -49,10 +51,11 @@ export default function ItemScatterPlot({ items }: { items: Item[] }) {
             data={itemsByCategory[category]}
             fill={colors(category)}
           >
-            <LabelList  dataKey="_id" position="right"/>
+           {label}
           </Scatter>
         ))}
       </ScatterChart>
-    </ResponsiveContainer>
+    </ResponsiveFix>
   );
 }
+

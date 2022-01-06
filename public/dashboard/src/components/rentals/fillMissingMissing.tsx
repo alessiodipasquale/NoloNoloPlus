@@ -63,8 +63,11 @@ export function groupByDate<T>(
   }, new Map<Date, T[]>());
 }
 
+
+
+
 function fillMissing<T>(
-  thingsByPeriod: readonly { value: T | null; date: Date }[],
+  thingsByPeriod: readonly { value?: T; date: Date }[],
   periodHelpers: PeriodHelpers
 ) {
   let copy = thingsByPeriod.slice().sort((a, b) => compareAsc(a.date, b.date));
@@ -76,7 +79,6 @@ function fillMissing<T>(
     for (let j = 1; j < difference; j++) {
       copy.push({
         date: periodHelpers.add(dateA, j),
-        value: null,
       });
     }
   }

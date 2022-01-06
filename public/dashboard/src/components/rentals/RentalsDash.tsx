@@ -1,5 +1,5 @@
 import { Grid, GridItem, Text } from "@chakra-ui/layout";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import RentalsList from "./RentalsList";
 import type { Rental } from "../../@types/db-entities";
 import LineChartCard from "./LineChartCard";
@@ -9,56 +9,60 @@ import RentalConclusionsPie from "./RentalConclusionsPie";
 import Card from "../cards/Card";
 import useFetch, { IncomingOptions } from "use-http";
 import CardHeader from "../cards/CardHeader";
+import { useAuth } from "../Login/AuthProvider";
+import useDefaultOptions from "../../useDefaultOptions";
 
 function RentalsDash() {
+  const {user, token} = useAuth()
+
   const [rentals, setRentals] = useState<Rental[]>([]);
 
-  const options = {
-    headers: {
-      authorization: "Bearer " + process.env.REACT_APP_TOKEN,
-    },
-    responseType: "json",
-  } as IncomingOptions;
+  const options = useDefaultOptions(token)
 
   const { get, response, loading } = useFetch(options);
 
   useEffect(() => {
+    if (!token) return
+    console.log(token)
     async function fetchRentals() {
       const rentals = (await get("rentals")) as Rental[];
       if (response.ok) setRentals(rentals);
     }
     fetchRentals();
-  }, [get, response]);
+  }, [get, response, options, token]);
+
+  console.log(user);
+  
 
   return (
     <>
       <Grid
+        templateColumns={{base: "1fr", lg: "repeat(3, 1fr)"}}
+        autoRows={{base: "240px", lg: "1fr"}}
         w="100%"
-        h="100vh"
-        templateColumns="Repeat(auto-fit, min-max(240px, 1fr))"
-        autoRows="240px"
+        h={{base: "auto", lg:"100vh"}}
         gap={3}
         padding={3}
       >
-        <GridItem as={Card} colSpan={4} rowSpan={4} order="1">
+        <GridItem as={Card} colSpan={1} rowSpan={1} >
           <RevenueCard rentals={rentals} />
         </GridItem>
 
-        <GridItem colSpan={4} rowSpan={4} order="2" as={Card}>
+        <GridItem colSpan={1} rowSpan={1}  as={Card}>
           <CardHeader>
             <Text variant="card-header">Rentals by status</Text>
           </CardHeader>
           <RentalConclusionsPie rentals={rentals} />
         </GridItem>
 
-        <GridItem colSpan={4} rowSpan={12} order="3" as={Card}>
+        <GridItem colSpan={1} rowSpan={{base: "auto", md: 3}}  as={Card} overflowX="auto" alignItems="flex-start">
           <RentalsList
             rentals={rentals}
-            onClickRow={undefined}
+            // onClickRow={(e) => {console.log(e.target)}}
           />
         </GridItem>
 
-        <GridItem colSpan={8} rowSpan={8} order="4" as={Card}>
+        <GridItem colSpan={{base: 1, lg: 2}} rowSpan={2} as={Card}>
           <LineChartCard rentals={rentals} />
         </GridItem>
       </Grid>
