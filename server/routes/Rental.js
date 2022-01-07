@@ -60,7 +60,7 @@ const createRental = async (object, userId, role) => {
     if(!Array.isArray(object.objectId))
         object.objectId = [object.objectId]
     
-    if(role == 'cliente')
+    //if(role == 'cliente')
         object.clientId = userId;
     object.itemId = object.objectId;
 
