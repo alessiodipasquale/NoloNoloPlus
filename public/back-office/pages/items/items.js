@@ -6,7 +6,63 @@ $(document).ready(function() {
             addElemToTable(elem);
         }
     });
+
+
 });
+
+function openCreateItem() {
+    getCategories()
+    .done(res => {
+        console.log(res);
+        for (const category of res) {
+            var a = $(`<a class="dropdown-item" href="#"></a>`);
+            const input = $('<input type="checkbox" class="form-check-input" name="categorySelected">').attr("id",category._id);
+            console.log(input.attr("id"));
+            const label = $('<label class="form-check-label" for="dropdownCheck"></label>').text(category.name);
+            a.append(input);
+            a.append(label);
+          $('#dropdown-category').append(a)
+        }
+    })
+
+    getKits()
+    .done(res => {
+        console.log(res);
+        for (const kit of res) {
+            var a = $(`<a class="dropdown-item" href="#"></a>`);
+            const input = $('<input type="checkbox" class="form-check-input" name="categorySelected">').attr("id",kit._id);
+            console.log(input.attr("id"));
+            const label = $('<label class="form-check-label" for="dropdownCheck"></label>').text(kit.name);
+            a.append(input);
+            a.append(label);
+          $('#dropdown-kits').append(a)
+        }
+    }) 
+
+    
+    $('#createItemModal').modal('show')
+}
+
+function createItem() {
+    const categorySelectedEl = $('input[name="categorySelected"]')
+    const kitSelected = $('input[name="kitSelected"]')
+
+    var categoriesIds = [];
+    var kitsIds = [];
+
+    for(const category of categorySelectedEl) {
+        if(category.checked)
+            categoriesIds.push(category.id)
+    }
+
+    for(const kit of kitSelected) {
+        if(kit.checked)
+            kitSelected.push(kit.id)
+    }
+    
+    
+    
+}
 
 function addElemToTable(elem) {
     console.log(elem);

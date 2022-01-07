@@ -1,4 +1,4 @@
-<button disabled type="button" class="btn btn-primary" data-toggle="modal" data-target="#createItemModal">
+<button type="button" class="btn btn-primary" onclick="openCreateItem()">
     Crea nuovo oggetto
 </button>
 
@@ -51,19 +51,8 @@ aria-hidden="true">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="inputCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                              Scegli Categoria
                             </button>
-                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputCategory">
-                              <a class="dropdown-item" href="#">
-                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                <label class="form-check-label" for="dropdownCheck">
-                                  Categoria1
-                                </label>
-                              </a>
-                              <a class="dropdown-item" href="#">
-                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                <label class="form-check-label" for="dropdownCheck">
-                                  Categoria2
-                                </label>
-                              </a>
+                            <div class="dropdown-menu" id="dropdown-category" aria-labelledby="inputCategory">
+                              
                             </div>
                         </div>    
                     </div>
@@ -129,19 +118,7 @@ aria-hidden="true">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="inputKit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                              Scegli Kit
                             </button>
-                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputKit">
-                              <a class="dropdown-item" href="#">
-                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                <label class="form-check-label" for="dropdownCheck">
-                                    Kit1
-                                </label>
-                              </a>
-                              <a class="dropdown-item" href="#">
-                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                <label class="form-check-label" for="dropdownCheck">
-                                    Kit2
-                                </label>
-                              </a>
+                            <div class="dropdown-menu" id="dropdown-kits" aria-labelledby="inputKit">
                             </div>
                         </div>    
                     </div>
@@ -150,12 +127,13 @@ aria-hidden="true">
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
-            <button type="button" class="btn btn-primary" id="createBtn" onclick="create()">Crea</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="createItem()">Crea</button>
         </div>
     </div>
 </div>
 </div>
 
-
+<script src="../services/kits-service.js"></script>
+<script src="../services/categories-service.js"></script>
 <script src="../services/items-service.js"></script>
 <script src="../pages/items/items.js"></script>

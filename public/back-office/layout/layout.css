@@ -14,7 +14,7 @@ body{
 }
 
 .wrappers .sideBar{
-    background: rgb(5, 68, 104);
+    background: #007BFF;
     position: fixed;
     top: 0;
     left: 0;
@@ -27,7 +27,7 @@ body{
 .wrappers .sideBar ul li a{
     display: block;
     padding: 13px 30px;
-    border-bottom: 1px solid #10558d;
+    border-bottom: 1px solid #007BFF;
     color: rgb(241, 237, 237);
     font-size: 16px;
     position: relative;
@@ -44,7 +44,7 @@ body{
     color: #0c7db1;
 
     background:white;
-    border-right: 2px solid rgb(5, 68, 104);
+    border-right: 1px solid #007BFF;
 }
 
 .wrappers .sideBar ul li a:hover .icon,
