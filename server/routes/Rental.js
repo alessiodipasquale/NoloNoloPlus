@@ -36,7 +36,7 @@ const createRental = async (object, userId, role) => {
     Important note: userId is related to the user that make the request.
     If an employer create a rental for one user the clientId must be passed in the object    
     */
-    if(!object.startDate || !object.endDate || !userId  || !object.itemIds)
+    if(!object.startDate || !object.endDate || !userId  || !object.objectId)
         throw BadRequestError;
 
     if(object.kitId){
@@ -57,12 +57,12 @@ const createRental = async (object, userId, role) => {
 
     if(!checkIfAvailable(object))
         throw BadRequestError;
-    if(!Array.isArray(object.itemIds))
-        object.itemIds = [object.itemIds]
+    if(!Array.isArray(object.objectId))
+        object.objectId = [object.objectId]
     
     if(role == 'cliente')
         object.clientId = userId;
-    object.itemId = object.itemIds;
+    object.itemId = object.objectId;
 
     if(object.rentalTarget == 'kit'){
         const price = await calculatePriceforKit({startDate: object.startDate, endDate: object.endDate},object.kitId,userId)
@@ -78,9 +78,9 @@ const createRental = async (object, userId, role) => {
     const rental = await RentalModel.create(object);
     const dates = getDatesFromARange(object.startDate, object.endDate);
     object.timeInDays = dates.length;
-    await updateItemRentalDates("add", dates, object.itemIds);
+    await updateItemRentalDates("add", dates, object.objectId);
     await associateToUser("array", "rentals", rental._id, object.clientId);
-    for(let id of object.itemIds){
+    for(let id of object.objectId){
         if(await countSpecifiedPurchase(object.clientId, id) >= global.config.favouritesTreshold){
             await associateToUser("array", "favItemsId", id, object.clientId);
             const categories = await getCategoriesByItem(id);
