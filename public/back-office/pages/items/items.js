@@ -1,3 +1,5 @@
+var state = ""
+
 $(document).ready(function() {
     getItems()
     .done(res => {
@@ -43,9 +45,9 @@ function openCreateItem() {
     $('#createItemModal').modal('show')
 }
 
-function createItem() {
+function confirmCreateItem() {
     const categorySelectedEl = $('input[name="categorySelected"]')
-    const kitSelected = $('input[name="kitSelected"]')
+    const kitSelectedEl = $('input[name="kitSelected"]')
 
     var categoriesIds = [];
     var kitsIds = [];
@@ -55,12 +57,22 @@ function createItem() {
             categoriesIds.push(category.id)
     }
 
-    for(const kit of kitSelected) {
+    for(const kit of kitSelectedEl) {
         if(kit.checked)
-            kitSelected.push(kit.id)
+            kitsIds.push(kit.id)
     }
     
+    const name = $('#inputName').val();
+    const price = $('#inputPrice').val();
+    const inputDescription = $('#inputDescription').val();
+    const inputImageUrl = $('#inputImageUrl').val();
     
+    
+        createItem(name, inputDescription, price, inputImageUrl, categoriesIds, kitsIds, state)
+        .done((res) => {
+            addElemToTable(res);
+            $('#createItemModal').modal('hide')
+        }).catch(err => alert("Errore nella creazione dell'utente."))
     
 }
 

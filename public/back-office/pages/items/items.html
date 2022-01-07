@@ -68,7 +68,7 @@ aria-hidden="true">
                 <div class="row">
                     <div class="col-12">
                         <div class="form-group">
-                            <label for="inputPrice">Url immagine</label>
+                            <label for="inputImageUrl">Url immagine</label>
                             <input type="text" class="form-control" id="inputImageUrl" placeholder="Inserisci url immagine">
                         </div>    
                     </div>
@@ -103,12 +103,12 @@ aria-hidden="true">
                              Scegli Stato
                             </button>
                             <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputGroup">
-                                <a class="dropdown-item" href="#">inutilizzabile</a>
-                                <a class="dropdown-item" href="#">molto usurato</a>
-                                <a class="dropdown-item" href="#">usurato</a>
-                                <a class="dropdown-item" href="#">buono</a>
-                                <a class="dropdown-item" href="#">ottimo</a>
-                                <a class="dropdown-item" href="#">nuovo</a>
+                                <a class="dropdown-item" href="#" onclick="state = 'inutilizzabile'">inutilizzabile</a>
+                                <a class="dropdown-item" href="#" onclick="state = 'molto usurato'">molto usurato</a>
+                                <a class="dropdown-item" href="#" onclick="state = 'usurato'">usurato</a>
+                                <a class="dropdown-item" href="#" onclick="state = 'buono'">buono</a>
+                                <a class="dropdown-item" href="#" onclick="state = 'ottimo'">ottimo</a>
+                                <a class="dropdown-item" href="#" onclick="state = 'nuovo'">nuovo</a>
                             </div>
                         </div>    
                     </div>
@@ -127,7 +127,7 @@ aria-hidden="true">
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
-            <button type="button" class="btn btn-primary" id="createBtn" onclick="createItem()">Crea</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="confirmCreateItem()">Crea</button>
         </div>
     </div>
 </div>

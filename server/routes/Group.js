@@ -1,6 +1,7 @@
 const GroupModel = require("../models/GroupModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { associateToItem } = require("./associations/AssociationManager");
+const { getItemById } = require("./Item");
 
 const getGroupById = async (id) => {
     const group = await GroupModel.findById(id)
@@ -23,6 +24,7 @@ const deleteGroup = async (id) => {
 }
 
 const createGroup = async (object) => {
+    console.log(object);
     if(!object.items || !object.name)
         throw BadRequestError;
 
