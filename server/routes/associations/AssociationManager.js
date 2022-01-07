@@ -188,9 +188,9 @@ const associateToKit = async (type, toModify, value, kitId) => {
                 break;
             }
             case "rentals": {
-                let rentals = elem. rentals;
+                let rentals = elem.rentals;
                 rentals.push(value);
-                await KitModel.updateOne({_id: kitId},{ $set: { "rentals": items} });
+                await KitModel.updateOne({_id: kitId},{ $set: { "rentals": rentals} });
                 break;
             }
         }
