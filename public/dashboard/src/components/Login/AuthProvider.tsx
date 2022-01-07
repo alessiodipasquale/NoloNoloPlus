@@ -24,7 +24,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     newUser: { username: string; password: string },
     callback: VoidFunction
   ) => {
-    fetch("loginDashboard", {
+    fetch("http://site202107.tw.cs.unibo.it/loginDashboard", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

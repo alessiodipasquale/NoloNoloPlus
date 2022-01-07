@@ -8,7 +8,8 @@ import * as Yup from "yup"
 import path from 'path'
 import { useLocation, useNavigate } from "react-router";
 import { useAuth } from "./AuthProvider";
-
+import { Image } from "@chakra-ui/react";
+import logo from '../../LogoAlt.png';
 
 interface FormValues {
     username: string;
@@ -68,6 +69,7 @@ export default function LoginForm() {
                 {(formProps: FormikProps<FormValues>) => (
                     <Form>
                         <VStack >
+                            <Image src={logo} style={{width: '15rem'}}/>
                             <Field name="username">
                                 {({ field , form }: {field: FieldInputProps<string>, form: any} ) => (
                                     <FormControl 
@@ -90,7 +92,7 @@ export default function LoginForm() {
                             </Field>
                             <Button
                                 mt={4}
-                                colorScheme="teal"
+                                colorScheme="blue"
                                 w="full"
                                 isLoading={formProps.isSubmitting}
                                 type="submit"

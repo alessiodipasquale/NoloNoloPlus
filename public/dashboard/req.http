@@ -1,4 +1,4 @@
-POST  http://localhost:8000/loginDashboard
+POST  http://site202107.tw.cs.unibo.it/loginDashboard
 Content-Type: application/json
 
 {

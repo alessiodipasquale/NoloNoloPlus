@@ -22,7 +22,7 @@ ReactDOM.render(
     <ColorModeScript />
     <ChakraProvider theme={theme}>
       <AuthProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/dashboard">
           <Routes>
             <Route path="/" element={<RequireAuth><App /></RequireAuth>}>
               <Route path="/clients" element={<ClientsDash />} />

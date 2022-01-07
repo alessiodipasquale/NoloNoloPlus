@@ -4,7 +4,7 @@ import React, { ReactNode } from "react";
 export function Sidebar({ children }: { children: ReactNode }) {
   return (
     <Box
-      bgColor="gray.500"
+      bgColor="#394248"
       as="nav"
       width={{ base: "100vw", md: "5rem" }}
       height={{ base: "5rem", md: "100vh" }}
