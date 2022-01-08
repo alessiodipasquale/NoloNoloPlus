@@ -19,7 +19,7 @@ $(document).ready(function() {
                     console.log(elem)
                     getItemById(elem.target.id)
                     .done(res => {
-                        const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-around; margin-bottom: 3px"></div>')
+                        const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px"></div>')
                         const it = $('<p style="margin-bottom: 0"></p>').text(res._id+' ,'+res.name+', Stato:'+res.state)
                         const deleteItemBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+res._id+'"><i class="fas fa-trash" id="'+res._id+'"></i></button>')
                         .click(function(elem) {
@@ -74,7 +74,7 @@ function addElemToTable(elem) {
             $('#itemsEditList').empty();
             itemsEditList = group.items;
             for (var res of itemsEditList) {
-                const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-around; margin-bottom: 3px"></div>')
+                const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px"></div>')
                 const it = $('<p style="margin-bottom: 0"></p>').text(res._id+' ,'+res.name+', Stato:'+res.state)
                 const deleteItemBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+res._id+'"><i class="fas fa-trash" id="'+res._id+'"></i></button>')
                 .click(function(elem) {

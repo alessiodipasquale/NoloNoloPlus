@@ -12,6 +12,11 @@ $(document).ready(function() {
 
 });
 
+function setState(stat) {
+    state = stat;
+    $('#inputState').text(stat);
+}
+
 function openCreateItem() {
     getCategories()
     .done(res => {

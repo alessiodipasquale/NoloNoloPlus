@@ -59,7 +59,7 @@ const router = {
         app.delete('/properties/:id', auth, (req, res) => { requestManager("deleteProperty", req, res); })
         /**/app.get('/properties/:id', (req, res) => { requestManager("getPropertyById", req, res); })
         app.post('/properties',auth, (req, res) => { requestManager("createProperty", req, res); })
-        app.put('/properties',auth, (req, res) => { requestManager("editProperty", req, res); })
+        app.put('/properties/:id',auth, (req, res) => { requestManager("editProperty", req, res); })
 
         // PropertyValue (roba tua, non da frontoffice, magari da back)
         /**/app.get('/propertyValues', (req, res) => { requestManager("getPropertyValues", req, res); })
