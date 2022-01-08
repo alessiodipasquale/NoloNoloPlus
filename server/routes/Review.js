@@ -1,6 +1,6 @@
 const ReviewModel = require("../models/ReviewModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { associateToUser,associateToItem } = require("./associations/AssociationManager");
+const { associateToUser,associateToItem, deleteAssociationToUser, deleteAssociationToItem } = require("./associations/AssociationManager");
 
 const getReviewById = async (id) => {
     const review = await ReviewModel.findById(id)
@@ -34,12 +34,14 @@ const createReview = async (object, userId) => {
 }
 
 const editReview = async (revId, object) => {
-    const review = await getRentalById(revId);
+    const review = await getReviewById(revId);
     let secureObject = JSON.stringify(review);
     secureObject = JSON.parse(secureObject);
 
+    console.log(secureObject);
+
     if(object.stars)
-        secureObject.start = object.stars;
+        secureObject.stars = object.stars;
     if(object.comment)
         secureObject.comment = object.comment;
     if(object.clientId) {
@@ -58,8 +60,10 @@ const editReview = async (revId, object) => {
             associateToItem("array", "reviews", revId, object.itemId);
         }
     }    
-    await ReviewModel.updateOne({_id: revId},secureObject);
-    return null;
+    console.log(secureObject);
+    await ReviewModel.updateOne({_id: revId}, secureObject);
+    const toReturn = await getReviewById(revId);
+    return toReturn;
 }
 
 module.exports = {

@@ -14,6 +14,6 @@ function deleteReview(id) {
     return httpDelete('reviews/'+id, true);
 }
 
-function editReview(_id, stars, itemId, comment, clientId ) {
-    return httpPut('reviews', {_id, stars, itemId, comment, clientId }, true);
+function editReview(_id, stars, comment ) {
+    return httpPut('reviews/'+_id, {stars, comment}, true);
 }

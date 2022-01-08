@@ -91,6 +91,7 @@ const router = {
         app.delete('/reviews/:id', auth, (req, res) => { requestManager("deleteReview", req, res); })
         /**/app.get('/reviews/:id', (req, res) => { requestManager("getReviewById", req, res); })
         app.post('/reviews',auth, (req, res) => { requestManager("createReview", req, res); })
+        app.put('/reviews/:id',auth, (req, res) => { requestManager("editReview", req, res); })
 
         // Group (Ancora implemento da frontoffice)
         /**/app.get('/groups', (req, res) => { requestManager("getGroups", req, res); })

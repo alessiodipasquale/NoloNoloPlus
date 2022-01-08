@@ -49,8 +49,8 @@ function openCreateReview() {
 function addElemToTable(elem) {
     var row = $('<tr id='+elem._id+'></tr>');
     var row1 = $('<td></td>').text(elem._id);
-    var row2 = $('<td></td>').text(elem.stars);
-    var row3 = $('<td></td>').text(elem.comment);
+    var row2 = $('<td name="stars"></td>').text(elem.stars);
+    var row3 = $('<td name="comment"></td>').text(elem.comment);
     var row4 = $('<td></td>').text(elem.clientId);
     var row5 = $('<td></td>').text(elem.itemId);
     var row6 = $('<td></td>');
@@ -106,5 +106,18 @@ function create() {
 }
 
 function edit() {
-
+    const id = $('#inputEditId').val();
+    const stars = $('#inputEditStars').val();
+    const comment = $('#inputEditComment').val();
+    if(stars=='' || comment == '') {
+        alert('Inserisci tutti i campi.')
+    } else {
+        editReview(id, stars, comment)
+        .done(res => {
+            const row = $('#'+res._id);
+            row.children('td[name="stars"]').text(res.stars);
+            row.children('td[name="comment"]').text(res.comment);
+            $('#editReviewModal').modal('hide')
+        }).catch(err => alert("Errore nella modifica della recensione."))
+    }
 }
