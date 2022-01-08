@@ -65,10 +65,9 @@ function edit() {
     const name = $('#inputEditName').val();
     editProperty(id,name)
     .done(res => {
-        console.log(res);
-        //modifica nella tabella NON TORNA FAI RETURN
+        //modifica nella tabella
         const row = $('#'+res._id);
-        console.log($('#'+res._id))
+        row.children('td[name="name"]').text(res.name);
         $('#editPropertyModal').modal('hide')
     }).catch(err => alert("Errore nella modifica della proprietà."))
 }

@@ -59,7 +59,8 @@ const editProperty = async (propId, object) => {
         secureObject.associatedValues = object.associatedValues;
     }
     await PropertyModel.updateOne({_id: propId},secureObject);
-    return null;
+    const toReturn = await getPropertyById(propId);
+    return toReturn;
 }
 
 module.exports = {
