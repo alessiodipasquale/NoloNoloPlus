@@ -1,5 +1,5 @@
-function createReview(stars, itemId) {
-    return httpPost('reviews', {stars, itemId}, true);
+function createReview(stars, comment, itemId, userId) {
+    return httpPost('reviews', {stars, comment, itemId, userId, itemId}, true);
 }
 
 function getReviews() {

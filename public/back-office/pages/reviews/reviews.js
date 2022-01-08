@@ -1,3 +1,6 @@
+var selectedItemId = null;
+var selectedUserId = null;
+
 $(document).ready(function() {
     getReviews()
     .done(res => {
@@ -7,6 +10,40 @@ $(document).ready(function() {
         }
     });
 });
+
+function openCreateReview() {
+    $('#dropdown-items').empty();
+    getItems()
+    .done(res => {
+        for (const item of res) {
+            var a = $('<a class="dropdown-item" href="#"></a>');
+            a.text(item.name);
+            a.attr("id", item._id);
+            a.click(function(elem) {
+                $("#inputItem").text(elem.target.text)
+                selectedItemId = elem.target.id;
+            })
+            $('#dropdown-items').append(a); 
+        }
+    })
+
+    $('#dropdown-users').empty();
+    getUsers()
+    .done(res => {
+        for(const user of res) {
+            var a = $('<a class="dropdown-item" href="#"></a>');
+            a.text(user.name +' '+user.surname);
+            a.attr("id", user._id);
+            a.click(function(elem) {
+                $("#inputUser").text(elem.target.text)
+                selectedUserId = elem.target.id;
+            })
+            $('#dropdown-users').append(a); 
+        }
+    })
+
+    $('#createReviewModal').modal('show');
+}
 
 
 function addElemToTable(elem) {
@@ -54,7 +91,18 @@ function addElemToTable(elem) {
 }
 
 function create() {
-
+    const stars = $('#inputStars').val();
+    const comment = $('#inputComment').val();
+    console.log(stars, comment, selectedItemId, selectedUserId)
+    if(stars=='' || comment == '' || selectedItemId == null || selectedUserId == null) {
+        alert('Inserisci tutti i campi.')
+    } else {
+        createReview(stars, comment, selectedItemId, selectedUserId)
+        .done(res => {
+            addElemToTable(res);
+            $('#createReviewModal').modal('hide')
+        }).catch(err => alert("Errore nella creazione della recensione."))
+    }
 }
 
 function edit() {

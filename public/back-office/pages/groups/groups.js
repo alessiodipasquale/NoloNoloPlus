@@ -10,6 +10,9 @@ $(document).ready(function() {
     });
 
     $('#createGroupModalButton').click(function(elem) {
+        $('#objectList').empty();
+        $('#dropdown-items').empty();
+
         getItems()
         .done(res => {
             console.log(res);

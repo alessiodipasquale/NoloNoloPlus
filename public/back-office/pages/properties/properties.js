@@ -36,7 +36,7 @@ function addElemToTable(elem) {
     deleteBtn.click(function (elem) {
         var r = confirm("Sei sicuro di voler eliminare?");
         if (r) {
-            deleteCategory(elem.target.id)
+            deleteProperty(elem.target.id)
             .done( () => {
                 $('#'+elem.target.id).remove();
             });

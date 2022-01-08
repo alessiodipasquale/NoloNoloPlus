@@ -18,6 +18,8 @@ function setState(stat) {
 }
 
 function openCreateItem() {
+    $('#dropdown-category').empty();
+
     getCategories()
     .done(res => {
         console.log(res);
@@ -31,6 +33,8 @@ function openCreateItem() {
           $('#dropdown-category').append(a)
         }
     })
+
+    $('#dropdown-kits').empty();
 
     getKits()
     .done(res => {
