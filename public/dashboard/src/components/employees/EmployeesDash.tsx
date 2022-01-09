@@ -8,48 +8,28 @@ import EmployeesList from "./EmployeesList";
 import RentalDetails from "../rentals/RentalDetails";
 import CardHeader from "../cards/CardHeader";
 import Card from "../cards/Card";
-import { IncomingOptions, useFetch } from "use-http";
 import RentalsNoBarChart from "./RentalsNoBarChart";
-import useDefaultOptions from "../../useDefaultOptions"
 import { useAuth } from "../Login/AuthProvider";
+import { useQuery } from "react-query";
+import useExtendedKy from "../../utils/useExtendedKy";
 
 type menuScreen = "details" | "employees" | "rentals";
 
 function EmployeesDash() {
   const [selectedEmployee, setSelectedEmployee] = useState<number>();
   const [selectedRental, setSelectedRental] = useState<number>();
-  const [rentals, setRentals] = useState<Rental[]>([]);
   const [menu, setMenu] = useState<menuScreen>("employees");
-  const {token} = useAuth()
-  
-  const options = useDefaultOptions(token)
 
-  //TODO questa roba è troppo incasinata. È difficile dare nomi sensati ed evitare fetch infiniti
-
-  const { data: employees = [], loading: loadingEmployees } = useFetch<
-    Employee[]
-  >("users/employers", options, []);
-  const { data: revenues = [], loading: revenuesLoading } = useFetch<
-    UserRevenue[]
-  >("users/employers/revenue", options, []);
-
-  const {
-    get,
-    loading: loadingUsers,
-    response,
-  } = useFetch<Rental[]>("/users", options);
-  useEffect(() => {
-    async function fetchEmployees() {
-      if (!selectedEmployee) return;
-      const data = (await get(
-        `/${employees[selectedEmployee]._id}/rentals`
-      )) as Rental[];
-      console.log(data);
-
-      if (response.ok) setRentals(data);
-    }
-    fetchEmployees();
-  }, [employees, get, response.ok, selectedEmployee]);
+  const ky = useExtendedKy();
+  const employeesQuery = useQuery("employees", () =>
+    ky.get("users/employers").json<Employee[]>()
+  );
+  const revenuesQuery = useQuery("revenues", () =>
+    ky.get("users/employers/revenue").json<UserRevenue[]>()
+  );
+  const rentalsQuery = useQuery("rentals", () =>
+    ky.get(`rentals`).json<Rental[]>()
+  );
 
   let header;
   let content;
@@ -58,8 +38,7 @@ function EmployeesDash() {
     header = <Text fontSize="lg">Employees</Text>;
     content = (
       <EmployeesList
-        isLoading={loadingEmployees}
-        employees={employees}
+        employees={employeesQuery.data ?? []}
         setSelected={setSelectedEmployee}
         onClickRow={() => setMenu("rentals")}
       />
@@ -80,10 +59,12 @@ function EmployeesDash() {
     );
     content = (
       <RentalsList
-        rentals={rentals}
+        rentals={rentalsQuery.data ?? []}
         setSelected={setSelectedRental}
         employeeId={
-          selectedEmployee ? employees[selectedEmployee]._id : undefined
+          selectedEmployee !== undefined && employeesQuery.data
+            ? employeesQuery.data[selectedEmployee]._id
+            : undefined
         }
         onClickRow={(e) => {
           setMenu("details");
@@ -108,9 +89,10 @@ function EmployeesDash() {
         </Text>
       </>
     );
-    content = selectedRental ? (
-      <RentalDetails rental={rentals[selectedRental]} />
-    ) : undefined;
+    content =
+      selectedRental && rentalsQuery.data ? (
+        <RentalDetails rental={rentalsQuery.data[selectedRental]} />
+      ) : undefined;
   }
 
   return (
@@ -146,16 +128,19 @@ function EmployeesDash() {
             Revenue by employee
           </Text>
         </CardHeader>
-        <RevenueChart data={revenues} aria-labelledby="revenue-header" />
+        <RevenueChart
+          data={revenuesQuery.data ?? []}
+          aria-labelledby="revenue-header"
+        />
       </GridItem>
 
       <GridItem colSpan={1} rowSpan={1} as={Card}>
-      <CardHeader>
+        <CardHeader>
           <Text id="revenue-header" variant="card-header">
             Rentals per employeed
           </Text>
         </CardHeader>
-        <RentalsNoBarChart data={employees} />
+        <RentalsNoBarChart data={employeesQuery.data ?? []} />
       </GridItem>
     </Grid>
   );

@@ -1,17 +1,15 @@
 import { useBreakpointValue } from "@chakra-ui/media-query";
 import { scaleOrdinal } from "d3-scale";
-import { schemeCategory10, schemeTableau10 } from "d3-scale-chromatic";
+import { schemeTableau10 } from "d3-scale-chromatic";
 import React from "react";
 import {
   ScatterChart,
   CartesianGrid,
   XAxis,
   YAxis,
-  ZAxis,
   Tooltip,
   Legend,
   Scatter,
-  Label,
   LabelList,
 } from "recharts";
 import { Item } from "../../@types/db-entities";
@@ -38,6 +36,9 @@ export default function ItemScatterPlot({ items }: { items: Item[] }) {
   return (
     <ResponsiveFix>
       <ScatterChart
+      width={500}
+      height={300}
+
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="rentCount" type="number" name="rentals" allowDecimals={false}/>
@@ -47,6 +48,7 @@ export default function ItemScatterPlot({ items }: { items: Item[] }) {
         <Legend />
         {Object.keys(itemsByCategory).map((category) => (
           <Scatter
+            key={`scatter-${category}`}
             name={category}
             data={itemsByCategory[category]}
             fill={colors(category)}

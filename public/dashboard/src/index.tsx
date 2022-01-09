@@ -14,28 +14,38 @@ import RentalsDash from "./components/rentals/RentalsDash";
 import AuthProvider from "./components/Login/AuthProvider";
 import RequireAuth from "./components/Login/RequireAuth";
 import LoginPage from "./components/Login/LoginPage";
+import { QueryClient, QueryClientProvider } from "react-query";
 
-console.log(process.env);
+const queryClient = new QueryClient();
 
 ReactDOM.render(
   <React.StrictMode>
     <ColorModeScript />
-    <ChakraProvider theme={theme}>
+    <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<RequireAuth><App /></RequireAuth>}>
-              <Route path="/clients" element={<ClientsDash />} />
-              <Route path="/inventory" element={<InventoryDash />} />
-              <Route path="/employees" element={<EmployeesDash />} />
-              <Route path="/rentals" element={<RentalsDash />} />
-              <Route index element={<Navigate to="/rentals" />} />
-            </Route>
-            <Route path="login" element={<LoginPage />} />
-          </Routes>
-        </BrowserRouter>
+        <ChakraProvider theme={theme}>
+          <BrowserRouter>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <RequireAuth>
+                    <App />
+                  </RequireAuth>
+                }
+              >
+                <Route path="/clients" element={<ClientsDash />} />
+                <Route path="/inventory" element={<InventoryDash />} />
+                <Route path="/employees" element={<EmployeesDash />} />
+                <Route path="/rentals" element={<RentalsDash />} />
+                <Route index element={<Navigate to="/rentals" />} />
+              </Route>
+              <Route path="login" element={<LoginPage />} />
+            </Routes>
+          </BrowserRouter>
+        </ChakraProvider>
       </AuthProvider>
-    </ChakraProvider>
+    </QueryClientProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

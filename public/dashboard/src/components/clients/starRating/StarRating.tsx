@@ -23,7 +23,7 @@ function StarRating({
     else { 
         icon = FaStar
     }
-    return <Icon as={icon} role="presentation"/>
+    return <Icon key={index} as={icon} role="presentation"/>
   }
 
 

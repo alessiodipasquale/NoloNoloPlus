@@ -1,6 +1,7 @@
 import { scaleOrdinal } from "d3-scale";
 import { schemeCategory10 } from "d3-scale-chromatic";
 import React, { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import {
   ScatterChart,
   CartesianGrid,
@@ -10,10 +11,8 @@ import {
   Scatter,
   Cell,
 } from "recharts";
-import { IncomingOptions, useFetch } from "use-http";
-import {
-  ClientWithRevenueAndDamage,
-} from "../../@types/db-entities";
+import { Client, ClientWithRevenueAndDamage } from "../../@types/db-entities";
+import useExtendedKy from "../../utils/useExtendedKy";
 import ResponsiveFix from "../ResponsiveFix";
 
 type DamageRevenueDataPoint = {
@@ -26,15 +25,20 @@ function DamagesScatterPlot({ clients }: any) {
   const colors = scaleOrdinal(schemeCategory10).range();
   const [chartData, setChartData] = useState<DamageRevenueDataPoint[]>([]);
 
-  const options = {
-    headers: { authorization: "Bearer " + process.env.REACT_APP_TOKEN },
-    responseType: "json",
-  } as IncomingOptions;
+  // const { data } = useFetch<ClientWithRevenueAndDamage[]>(
+  //   "users/clients/revenue",
+  //   options,
+  //   [clients]
+  // );
 
-  const { data } = useFetch<ClientWithRevenueAndDamage[]>(
-    "users/clients/revenue",
-    options,
-    [clients]
+  const ky = useExtendedKy();
+  const {
+    isLoading,
+    isError,
+    data = [],
+    isFetched,
+  } = useQuery<ClientWithRevenueAndDamage[]>("clients", () =>
+    ky.get("clients").json<ClientWithRevenueAndDamage[]>()
   );
 
   useEffect(() => {
@@ -47,10 +51,10 @@ function DamagesScatterPlot({ clients }: any) {
         }))
       );
 
-      console.log(chartData)
+    console.log(chartData);
   }, [data]);
 
-  console.log(chartData)
+  console.log(chartData);
 
   return (
     <ResponsiveFix width="100%" height="100%">

@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
-import { useEffect, useState } from "react";
+import React, { useCallback, useMemo } from "react";
 import { Rental } from "../../@types/db-entities";
 import GenericTable from "../GenericTable";
 import { Cell, Column } from "react-table";
 import { FaChevronRight } from "react-icons/fa";
 import Icon from "@chakra-ui/icon";
+
 export default function RentalsList({
   rentals,
   employeeId,
@@ -18,16 +18,24 @@ export default function RentalsList({
   setSelected?: React.Dispatch<React.SetStateAction<number | undefined>>;
   variant?: string;
 }) {
-  const data = employeeId
-    ? rentals.filter((rental) => rental._id === employeeId)
-    : rentals
+  const data = useMemo(
+    () =>
+      employeeId !== undefined
+        ? rentals.filter((rental) => rental.employerId === employeeId)
+        : rentals,
+    [employeeId, rentals]
+  );
 
-    console.log(rentals)
+  useCallback(() => {
+    console.log(employeeId);
+  }, [employeeId]);
+
+
   const columns = useMemo(() => {
     let columns: Column<Rental>[] = [
       {
         Header: "id",
-        accessor: "_id"
+        accessor: "_id",
       },
       // {
       //   Header: "client id",

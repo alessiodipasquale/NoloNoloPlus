@@ -1,40 +1,24 @@
 import { Box, Grid, GridItem, Text } from "@chakra-ui/layout";
 import React, { useEffect, useMemo, useState } from "react";
-import { useDisclosure } from "@chakra-ui/hooks";
 
 import type {
-  Client,
   ClientWithRevenueAndDamage,
-  Item,
   Rental,
   Review,
 } from "../../@types/db-entities";
 import { NewClients } from "./NewClients";
-import DamagesScatterPlot from "./DamagesScatterPlot";
-import useFetch, { IncomingOptions } from "use-http";
-import {
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  Bar,
-} from "recharts";
 import Card from "../cards/Card";
 import CardHeader from "../cards/CardHeader";
 import { CardMenu } from "../cards/CardMenu";
 import ClientsBarChart from "./ClientsBarChart";
 import CurrentlyRenting from "./CurrentlyRenting";
-import RentalsNo from "./RentalsNo";
 import ClientsList from "./ClientsList";
 import StarRating from "./starRating/StarRating";
 import { Flex } from "@chakra-ui/react";
-import { useAuth } from "../Login/AuthProvider";
-import useDefaultOptions from "../../useDefaultOptions";
+import useExtendedKy from "../../utils/useExtendedKy";
+import { useQuery } from "react-query";
 
 function ClientsDash() {
-  const { token } = useAuth();
 
   const sortOrder = ["byRevenue", "byDamage"] as const;
 
@@ -43,31 +27,34 @@ function ClientsDash() {
   const [selectedOrder, setSelectedOrder] =
     useState<typeof sortOrder[number]>("byRevenue");
 
-  const options = useDefaultOptions(token);
+  const ky = useExtendedKy();
 
-  const { get, response } = useFetch(options);
-
-  useEffect(() => {
-    async function fetchClients() {
-      const clients = (await get(
-        "users/clients/revenue"
-      )) as ClientWithRevenueAndDamage[];
-      console.log(clients);
-      if (response.ok) setClients(clients);
-    }
-    fetchClients();
-  }, [get, response]);
+  const rentalsQuery = useQuery<Rental[]>("rentals", () =>
+    ky.get("rentals").json<Rental[]>()
+  );
 
   useEffect(() => {
-    async function fetchRentals() {
-      const rentals = (await get("rentals")) as Rental[];
-      console.log(rentals);
-      if (response.ok) setRentals(rentals);
-    }
-    fetchRentals();
-  }, [get, response]);
+    if (rentalsQuery.isFetched) setRentals(rentalsQuery.data ?? []);
+  }, [rentalsQuery.data, rentalsQuery.isFetched]);
 
-  const { data: reviews } = useFetch<Review[]>("reviews", options, []);
+
+  const clientsQuery = useQuery<ClientWithRevenueAndDamage[]>("clients", () =>
+    ky.get("users/clients/revenue").json<ClientWithRevenueAndDamage[]>()
+  );
+
+  useEffect(() => {
+    if (clientsQuery.isFetched) setClients(clientsQuery.data ?? []);
+  }, [clientsQuery.data, clientsQuery.isFetched]);
+
+  const reviewsQuery = useQuery<Review[]>("reviews", () =>
+    ky.get("reviews").json<Review[]>()
+  );
+
+  const {data: reviews} = reviewsQuery;
+
+
+  
+
   const avgRating = useMemo(
     () =>
       reviews
@@ -77,6 +64,7 @@ function ClientsDash() {
     [reviews]
   );
   console.log(reviews);
+
   const sortedClients = useMemo(() => {
     return clients
       .slice()
@@ -137,7 +125,7 @@ function ClientsDash() {
           <ClientsBarChart clients={sortedClients} />
         </GridItem>
 
-        <GridItem colSpan={1} rowSpan={2} as={Card}>
+        <GridItem colSpan={1} rowSpan={2} as={Card} justifyContent="flex-start">
           <CardHeader>
             <Text variant="card-header">Number of Rentals</Text>
           </CardHeader>

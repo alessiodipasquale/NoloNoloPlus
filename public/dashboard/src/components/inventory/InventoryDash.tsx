@@ -6,7 +6,6 @@ import ItemScatterPlot from "./ItemScatterPlot";
 import ItemTable from "./ItemTable";
 import ConditionPieChart from "./ConditionPieChart";
 import AvailableCard from "./AvailableCard";
-import useFetch, { IncomingOptions } from "use-http";
 import CardHeader from "../cards/CardHeader";
 import Card from "../cards/Card";
 import {
@@ -19,35 +18,30 @@ import {
 } from "@chakra-ui/react";
 
 import { MdBarChart, MdScatterPlot } from "react-icons/md";
-import useDefaultOptions from "../../useDefaultOptions";
-import { useAuth } from "../Login/AuthProvider";
+import { useQuery } from "react-query";
+import useExtendedKy from "../../utils/useExtendedKy";
 
 function InventoryDash() {
-  const {token} = useAuth()
 
   const [items, setItems] = useState<Item[]>([]);
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [selectedState, setSeletedState] = useState();
 
-  const options = useDefaultOptions(token)
-  
-  const { get, response, loading } = useFetch(options);
+  const ky = useExtendedKy()
+
+  const rentalsQuery = useQuery<Rental[]>("rentals", () => ky.get("rentals").json<Rental[]>());
 
   useEffect(() => {
-    async function fetchRentals() {
-      const rentals = (await get("rentals")) as Rental[];
-      if (response.ok) setRentals(rentals);
-    }
-    fetchRentals();
-  }, [get, response]);
+    if (rentalsQuery.isFetched) setRentals(rentalsQuery.data ?? []);
+  }, [rentalsQuery.data, rentalsQuery.isFetched]);
+
+
+  const itemsQuery = useQuery<Item[]>("items", () => ky.get("items").json<Item[]>());
 
   useEffect(() => {
-    async function fetchRentals() {
-      const items = (await get("items")) as Item[];
-      if (response.ok) setItems(items);
-    }
-    fetchRentals();
-  }, [get, response]);
+    if (itemsQuery.isFetched) setItems(itemsQuery.data ?? []);
+  }, [itemsQuery.data, itemsQuery.isFetched]);
+
 
   const filtered = useMemo(
     () =>

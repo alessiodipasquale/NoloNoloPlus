@@ -1,12 +1,11 @@
 import { Button } from "@chakra-ui/button";
 import { FormControl, FormErrorMessage, FormLabel } from "@chakra-ui/form-control";
 import { Input } from "@chakra-ui/input";
-import { Center, Container, Heading, VStack} from "@chakra-ui/layout";
-import { Formik, Form, Field, useField, ErrorMessage, FormikProps, FormikBag, FormikHandlers, FormikHelpers, FieldInputProps} from 'formik';
-import React, { MutableRefObject, useRef, useState } from "react";
-import * as Yup from "yup"
-import path from 'path'
-import { useLocation, useNavigate } from "react-router";
+import { Center, VStack } from "@chakra-ui/layout";
+import { Field, FieldInputProps, Form, Formik, FormikHelpers, FormikProps } from 'formik';
+import React from "react";
+import { useLocation, useNavigate, Location } from "react-router-dom";
+import * as Yup from "yup";
 import { useAuth } from "./AuthProvider";
 
 
@@ -15,26 +14,21 @@ interface FormValues {
     password: string;
 }
 
+interface LocationState {
+    from : {
+        pathname: string;
+    }
+}
+
 export default function LoginForm() {
     const navigate = useNavigate()
     const auth = useAuth()
-    const location = useLocation()
+    const location  = useLocation()
+    const state = location.state as LocationState
 
-    let from = location.state?.from?.pathname || "/";
+    let from = state?.from?.pathname || "/";
 
-    // function handleSubmit(values : FormValues, formik: FormikHelpers<FormValues>) {
-    //     console.log(JSON.stringify(values))
-    //     formik.setSubmitting(false)
-    //     fetch("loginDashboard", {
-    //         method: "POST",
-    //         headers: {
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: JSON.stringify(values)
-    //     })
-    //     .then(res => res.json())
-    //     .then(json => localStorage.setItem('token', json.token))
-    // }
+
 
     function handleSubmit(values : FormValues, formik: FormikHelpers<FormValues>) {
         auth.signin(values, () => {

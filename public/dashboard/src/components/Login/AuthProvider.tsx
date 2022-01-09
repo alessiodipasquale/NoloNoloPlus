@@ -1,3 +1,4 @@
+import ky from "ky";
 import React, { ReactNode } from "react";
 
 interface AuthContextType {
@@ -14,34 +15,26 @@ interface LoginResponse {
   token: string;
 }
 
-let AuthContext = React.createContext<AuthContextType>({} as AuthContextType)
+let AuthContext = React.createContext<AuthContextType>({} as AuthContextType);
 
 function AuthProvider({ children }: { children: ReactNode }) {
   let [user, setUser] = React.useState<string>("");
   let [token, setToken] = React.useState<string>("");
 
-  let signin = (
+  let signin = async (
     newUser: { username: string; password: string },
     callback: VoidFunction
   ) => {
-    fetch("loginDashboard", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(newUser),
-    })
-      .then((res) => res.json())
-      .then((json) => {console.log(json); return json})
-      .then((json: LoginResponse) => {
-        console.log(token);
-        setToken(json.token);
-        setUser(newUser.username);
-      })
-      .then(() => callback());
+    const {token} = await ky
+      .post("loginDashboard", { json: newUser })
+      .json<LoginResponse>();
+    setToken(token) 
+    setUser(newUser.username)
+    callback();
   };
 
   let signout = (callback: VoidFunction) => {
+    setUser("");
     setToken("");
     callback();
   };

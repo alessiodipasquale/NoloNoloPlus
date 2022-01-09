@@ -3,11 +3,10 @@ import {
   Box,
   HStack,
   VStack,
-  Input,
-  Text,
   UnorderedList,
   ListItem,
 } from "@chakra-ui/react";
+import {Text} from "@chakra-ui/layout"
 import { format } from "date-fns";
 import React from "react";
 import { Rental } from "../../@types/db-entities";
@@ -56,7 +55,7 @@ function RentalDetails({ rental }: { rental: Rental }) {
             sx={{ gap: "1rem" }}
           >
             {details.map(({ header, value }) => (
-              <ListItem>
+              <ListItem key={`key-${header}`}  >
                 <Text
                   fontWeight="600"
                   color="gray.500"
@@ -65,7 +64,7 @@ function RentalDetails({ rental }: { rental: Rental }) {
                 >
                   {header}
                 </Text>
-                <Text as="span">{value}</Text>
+                <Text >{value}</Text>
               </ListItem>
             ))}
           </UnorderedList>

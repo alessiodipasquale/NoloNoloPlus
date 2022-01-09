@@ -52,9 +52,9 @@ function LineChartCard({ rentals }: { rentals: Rental[] }) {
       </Flex>
 
       <TabPanels w="full" h="full">
-        <TabPanel w="full" h="full">
-          <ResponsiveFix width="99%">
-            <LineChart data={revenueByWeek}>
+        <TabPanel w="full" h="full" minWidth="50px" minHeight="50px">
+          <ResponsiveFix width="99%" height="99%" minWidth={1} minHeight={1}>
+            <LineChart data={revenueByWeek} width={500} height={300}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />
               <YAxis />
@@ -71,8 +71,8 @@ function LineChartCard({ rentals }: { rentals: Rental[] }) {
           </ResponsiveFix>
         </TabPanel>
 
-        <TabPanel w="full" h="full">
-          <ResponsiveFix width="99%" height="99%">
+        <TabPanel w="full" h="full" minWidth="50px" minHeight="50px">
+          <ResponsiveFix width="99%" height="99%" minWidth={1} minHeight={1}>
             <LineChart
               width={500}
               height={300}

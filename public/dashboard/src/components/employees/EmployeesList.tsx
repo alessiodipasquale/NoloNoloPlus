@@ -9,12 +9,10 @@ import GenericTable from "../GenericTable";
 
 
 export default function EmployeesList({
-  isLoading,
   employees,
   onClickRow,
   setSelected
 }: {
-  isLoading: boolean;
   employees: Employee[];
   onClickRow: any;
   setSelected: any;
@@ -56,9 +54,7 @@ export default function EmployeesList({
     [onClickRow, setSelected]
   );
 
-  return isLoading ? (
-    <p>loading</p>
-  ) : (
+  return (
     <GenericTable
       columns={columns}
       data={employees}
