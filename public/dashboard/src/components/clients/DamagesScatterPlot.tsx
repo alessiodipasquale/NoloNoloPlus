@@ -25,12 +25,6 @@ function DamagesScatterPlot({ clients }: any) {
   const colors = scaleOrdinal(schemeCategory10).range();
   const [chartData, setChartData] = useState<DamageRevenueDataPoint[]>([]);
 
-  // const { data } = useFetch<ClientWithRevenueAndDamage[]>(
-  //   "users/clients/revenue",
-  //   options,
-  //   [clients]
-  // );
-
   const ky = useExtendedKy();
   const {
     isLoading,
@@ -38,7 +32,7 @@ function DamagesScatterPlot({ clients }: any) {
     data = [],
     isFetched,
   } = useQuery<ClientWithRevenueAndDamage[]>("clients", () =>
-    ky.get("clients").json<ClientWithRevenueAndDamage[]>()
+    ky.get("/clients").json<ClientWithRevenueAndDamage[]>()
   );
 
   useEffect(() => {

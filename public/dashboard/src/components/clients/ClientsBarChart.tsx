@@ -16,8 +16,8 @@ function ClientsBarChart( {clients} : {clients: ClientWithRevenueAndDamage[]}) {
   return (
     <ResponsiveFix width="100%" height="100%" >
       <BarChart
-        width={500}
-        height={300}
+        width="100%"
+        height="100%"
         data={clients}
         margin={{
           top: 5,

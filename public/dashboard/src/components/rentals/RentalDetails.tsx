@@ -64,7 +64,7 @@ function RentalDetails({ rental }: { rental: Rental }) {
                 >
                   {header}
                 </Text>
-                <Text >{value}</Text>
+                <Text as="span">{value}</Text>
               </ListItem>
             ))}
           </UnorderedList>

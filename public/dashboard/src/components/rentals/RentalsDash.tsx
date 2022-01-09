@@ -20,7 +20,7 @@ function RentalsDash() {
     isError,
     data = [],
     isFetched,
-  } = useQuery<Rental[]>("rentals", () => ky.get("rentals").json<Rental[]>());
+  } = useQuery<Rental[]>("rentals", () => ky.get("/rentals").json<Rental[]>());
 
   useEffect(() => {
     if (isFetched) setRentals(data);

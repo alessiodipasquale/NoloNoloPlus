@@ -24,7 +24,7 @@ ReactDOM.render(
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <ChakraProvider theme={theme}>
-          <BrowserRouter>
+          <BrowserRouter basename="dashboard">
             <Routes>
               <Route
                 path="/"

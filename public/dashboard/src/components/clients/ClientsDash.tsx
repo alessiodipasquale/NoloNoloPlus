@@ -30,7 +30,7 @@ function ClientsDash() {
   const ky = useExtendedKy();
 
   const rentalsQuery = useQuery<Rental[]>("rentals", () =>
-    ky.get("rentals").json<Rental[]>()
+    ky.get("/rentals").json<Rental[]>()
   );
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function ClientsDash() {
 
 
   const clientsQuery = useQuery<ClientWithRevenueAndDamage[]>("clients", () =>
-    ky.get("users/clients/revenue").json<ClientWithRevenueAndDamage[]>()
+    ky.get("/users/clients/revenue").json<ClientWithRevenueAndDamage[]>()
   );
 
   useEffect(() => {
@@ -47,7 +47,7 @@ function ClientsDash() {
   }, [clientsQuery.data, clientsQuery.isFetched]);
 
   const reviewsQuery = useQuery<Review[]>("reviews", () =>
-    ky.get("reviews").json<Review[]>()
+    ky.get("/reviews").json<Review[]>()
   );
 
   const {data: reviews} = reviewsQuery;

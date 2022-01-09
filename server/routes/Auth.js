@@ -1,5 +1,6 @@
 const { getAuthToken, getUserById } = require("./User");
 const { BadRequestError, UnauthorizedError } = require("../config/errors");
+const UserModel = require("../models/UserModel")
 
 const loginFront = async (username, clearTextPassword) => { //req.body.username / password
     const token = await getAuthToken(username, clearTextPassword);

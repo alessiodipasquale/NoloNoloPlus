@@ -12,6 +12,8 @@ $(document).ready(function() {
     });
 
     $('#createKitModalButton').click(function(elem) {
+        $('#dropdown-items').empty();
+
         getItems()
         .done(res => {
             console.log(res);

@@ -26,14 +26,14 @@ function Navlink({
       w={{base: "5rem", md: "full"}}
       height="5rem"
       style={({isActive}) => ({
-        color: isActive ? "green" : "blue"
+        color: isActive ? "#21A8D8" : "white"
       })}
       {...rest}
       label={"go to " + children}
       aria-labelledby={children!.toString()}
     >
       <Icon minWidth="2rem" minHeight="2rem" margin="0 1.5rem"  as={icon} role="presentation" />
-      <chakra.span id={children!.toString()} className="link-text" ml="1rem" display="none">
+      <chakra.span id={children!.toString()} className="link-text" ml="1rem" display="none" style={{color: 'white'}}>
         {children}
       </chakra.span>
     </ChakraNavLink>

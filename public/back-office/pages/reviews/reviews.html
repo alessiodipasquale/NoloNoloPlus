@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createReviewModal">
+<button type="button" class="btn btn-primary" onclick="openCreateReview()">
     Crea nuova recensione
 </button>
 
@@ -33,7 +33,7 @@ aria-hidden="true">
                     <div class="col-12">
                         <div class="form-group">
                             <label for="inputStars">Stelle *</label>
-                            <textarea type="number" class="form-control" id="inputStars" placeholder="Inserisci stelle"></textarea>
+                            <input min="0" max="5" type="number" class="form-control" id="inputStars" placeholder="Inserisci stelle"></input>
                         </div>
                     </div>
                 </div>
@@ -45,50 +45,31 @@ aria-hidden="true">
                         </div>
                     </div>
                 </div> 
-                <div class="col-4">
-                    <div class="dropdown" style="display: flex; flex-direction: column;">
-                        <label for="inputClient">Cliente</label>
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="inputClient" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         Scegli a chi associarla
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputClient">
-                          <a class="dropdown-item" href="#">
-                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                            <label class="form-check-label" for="dropdownCheck">
-                              User1
-                            </label>
-                          </a>
-                          <a class="dropdown-item" href="#">
-                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                            <label class="form-check-label" for="dropdownCheck">
-                              User2
-                            </label>
-                          </a>
-                        </div>
-                    </div>    
+                <div class="row">
+                    <div class="col-6">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputClient">Cliente</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputUser" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli a chi associarla
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-users" aria-labelledby="inputUser">
+                              
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="col-6">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputItem">Oggetto</label>
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli oggetto a cui associarla
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-items" aria-labelledby="inputItem">
+                              
+                            </div>
+                        </div>    
+                    </div> 
                 </div>
-                <div class="col-4">
-                    <div class="dropdown" style="display: flex; flex-direction: column;">
-                        <label for="inputItem">Oggetto</label>
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="inputItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         Scegli oggetto a cui associarla
-                        </button>
-                        <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputItem">
-                          <a class="dropdown-item" href="#">
-                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                            <label class="form-check-label" for="dropdownCheck">
-                              Item1
-                            </label>
-                          </a>
-                          <a class="dropdown-item" href="#">
-                            <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                            <label class="form-check-label" for="dropdownCheck">
-                              Item2
-                            </label>
-                          </a>
-                        </div>
-                    </div>    
-                </div> 
+                
             </form>
         </div>
         <div class="modal-footer">
@@ -122,13 +103,15 @@ aria-hidden="true">
                     <div class="col-6">
                         <div class="form-group">
                             <label for="inputEdiStars">Stelle *</label>
-                            <input type="number" class="form-control" id="inputEditStars" placeholder="Inserisci stelle">
+                            <input type="number" min="0" max="5" class="form-control" id="inputEditStars" placeholder="Inserisci stelle">
                         </div>    
                     </div>
-                    <div class="col-6">
+                </div>
+                <div class="row">
+                    <div class="col-12">
                         <div class="form-group">
                             <label for="inputEditComment">Commento *</label>
-                            <input type="text" class="form-control" id="inputEditComment" placeholder="Inserisci commento">
+                            <textarea type="text" class="form-control" id="inputEditComment" placeholder="Inserisci commento"></textarea>
                         </div>    
                     </div>
                 </div>
@@ -142,5 +125,7 @@ aria-hidden="true">
 </div>
 </div>
 
+<script src="../services/users-service.js"></script>
+<script src="../services/items-service.js"></script>
 <script src="../services/reviews-service.js"></script>
 <script src="../pages/reviews/reviews.js"></script>

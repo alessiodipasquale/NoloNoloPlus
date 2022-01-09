@@ -25,11 +25,11 @@ function AuthProvider({ children }: { children: ReactNode }) {
     newUser: { username: string; password: string },
     callback: VoidFunction
   ) => {
-    const {token} = await ky
-      .post("loginDashboard", { json: newUser })
+    const { token } = await ky
+      .post("/loginDashboard", { json: newUser })
       .json<LoginResponse>();
-    setToken(token) 
-    setUser(newUser.username)
+    setToken(token);
+    setUser(newUser.username);
     callback();
   };
 
@@ -40,7 +40,6 @@ function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   let value = { user, token, signin, signout };
-
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

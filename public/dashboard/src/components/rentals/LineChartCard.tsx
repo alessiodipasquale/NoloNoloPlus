@@ -77,12 +77,6 @@ function LineChartCard({ rentals }: { rentals: Rental[] }) {
               width={500}
               height={300}
               data={revenuesByMonth}
-              //   margin={{
-              //     top: 5,
-              //     right: 30,
-              //     left: 20,
-              //     bottom: 5,
-              //   }}
             >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="date" />

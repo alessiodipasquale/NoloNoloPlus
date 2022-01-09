@@ -11,8 +11,8 @@ $(document).ready(function() {
 
 function addElemToTable(elem) {
     var row = $('<tr id='+elem._id+'></tr>');
-    var row1 = $('<td></td>').text(elem._id);
-    var row2 = $('<td></td>').text(elem.name);
+    var row1 = $('<td name="id"></td>').text(elem._id);
+    var row2 = $('<td name="name"></td>').text(elem.name);
     var row3 = $('<td></td>');
     
     /*var openBtn = $('<button type="button" class="btn btn-primary" id='+elem._id+'><i class="far fa-eye"></i></button>')
@@ -36,7 +36,7 @@ function addElemToTable(elem) {
     deleteBtn.click(function (elem) {
         var r = confirm("Sei sicuro di voler eliminare?");
         if (r) {
-            deleteCategory(elem.target.id)
+            deleteProperty(elem.target.id)
             .done( () => {
                 $('#'+elem.target.id).remove();
             });
@@ -50,9 +50,24 @@ function addElemToTable(elem) {
 }
 
 function create() {
-
+    const name = $('#inputName').val();
+    console.log(name);
+    createProperty(name)
+    .done(res => {
+        console.log(res);
+        addElemToTable(res);
+        $('#createPropertyModal').modal('hide')
+    }).catch(err => alert("Errore nella creazione della proprietà."))
 }
 
 function edit() {
-
+    const id = $('#inputEditId').val();
+    const name = $('#inputEditName').val();
+    editProperty(id,name)
+    .done(res => {
+        //modifica nella tabella
+        const row = $('#'+res._id);
+        row.children('td[name="name"]').text(res.name);
+        $('#editPropertyModal').modal('hide')
+    }).catch(err => alert("Errore nella modifica della proprietà."))
 }

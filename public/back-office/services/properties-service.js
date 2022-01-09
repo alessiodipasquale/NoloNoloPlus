@@ -1,5 +1,5 @@
-function createProperty(name, associatedValues) {
-    return httpPost('properties', {name, associatedValues}, true);
+function createProperty(name) {
+    return httpPost('properties', {name}, true);
 }
 
 function getProperties() {
@@ -14,6 +14,6 @@ function deleteProperty(id) {
     return httpDelete('properties/'+id, true);
 }
 
-function editProperty(_id, name, associatedValues ) {
-    return httpPut('properties', {_id, associatedValues, name}, true);
+function editProperty(_id, name) {
+    return httpPut('properties/'+_id, {name}, true);
 }

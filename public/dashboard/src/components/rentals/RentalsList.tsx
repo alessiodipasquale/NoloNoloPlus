@@ -26,21 +26,12 @@ export default function RentalsList({
     [employeeId, rentals]
   );
 
-  useCallback(() => {
-    console.log(employeeId);
-  }, [employeeId]);
-
-
   const columns = useMemo(() => {
     let columns: Column<Rental>[] = [
       {
         Header: "id",
         accessor: "_id",
       },
-      // {
-      //   Header: "client id",
-      //   accessor: "clientId",
-      // },
       {
         Header: "item id",
         accessor: "itemId",

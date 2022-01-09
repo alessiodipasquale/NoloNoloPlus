@@ -22,13 +22,13 @@ function EmployeesDash() {
 
   const ky = useExtendedKy();
   const employeesQuery = useQuery("employees", () =>
-    ky.get("users/employers").json<Employee[]>()
+    ky.get("/users/employers").json<Employee[]>()
   );
   const revenuesQuery = useQuery("revenues", () =>
-    ky.get("users/employers/revenue").json<UserRevenue[]>()
+    ky.get("/users/employers/revenue").json<UserRevenue[]>()
   );
   const rentalsQuery = useQuery("rentals", () =>
-    ky.get(`rentals`).json<Rental[]>()
+    ky.get(`/rentals`).json<Rental[]>()
   );
 
   let header;

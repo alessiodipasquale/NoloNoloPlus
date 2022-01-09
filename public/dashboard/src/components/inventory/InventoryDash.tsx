@@ -22,26 +22,27 @@ import { useQuery } from "react-query";
 import useExtendedKy from "../../utils/useExtendedKy";
 
 function InventoryDash() {
-
   const [items, setItems] = useState<Item[]>([]);
   const [rentals, setRentals] = useState<Rental[]>([]);
   const [selectedState, setSeletedState] = useState();
 
-  const ky = useExtendedKy()
+  const ky = useExtendedKy();
 
-  const rentalsQuery = useQuery<Rental[]>("rentals", () => ky.get("rentals").json<Rental[]>());
+  const rentalsQuery = useQuery<Rental[]>("rentals", () =>
+    ky.get("/rentals").json<Rental[]>()
+  );
 
   useEffect(() => {
     if (rentalsQuery.isFetched) setRentals(rentalsQuery.data ?? []);
   }, [rentalsQuery.data, rentalsQuery.isFetched]);
 
-
-  const itemsQuery = useQuery<Item[]>("items", () => ky.get("items").json<Item[]>());
+  const itemsQuery = useQuery<Item[]>("items", () =>
+    ky.get("/items").json<Item[]>()
+  );
 
   useEffect(() => {
     if (itemsQuery.isFetched) setItems(itemsQuery.data ?? []);
   }, [itemsQuery.data, itemsQuery.isFetched]);
-
 
   const filtered = useMemo(
     () =>
@@ -55,9 +56,9 @@ function InventoryDash() {
     <>
       <Grid
         w="auto"
-        h={{base: "auto", lg:"100vh"}}
-        templateColumns={{base: "1fr", lg: "repeat(3, 1fr)"}}
-        autoRows={{base: "240px", lg: "1fr"}}
+        h={{ base: "auto", lg: "100vh" }}
+        templateColumns={{ base: "1fr", lg: "repeat(3, 1fr)" }}
+        autoRows={{ base: "240px", lg: "1fr" }}
         gap={3}
         padding={3}
       >
@@ -69,15 +70,25 @@ function InventoryDash() {
           <CardHeader>
             <Text variant="card-header">Available items</Text>
           </CardHeader>
-          <ConditionPieChart selected={selectedState} setSelected={setSeletedState} items={items} />
+          <ConditionPieChart
+            selected={selectedState}
+            setSelected={setSeletedState}
+            items={items}
+          />
         </GridItem>
 
-        <GridItem colSpan={1} rowSpan={3} as={Card} overflowX="auto" alignItems="flex-start">
+        <GridItem
+          colSpan={1}
+          rowSpan={3}
+          as={Card}
+          overflowX="auto"
+          alignItems="flex-start"
+        >
           {/* <RevenueByCategory items={items} rentals={rentals} /> */}
           <ItemTable data={filtered} />
         </GridItem>
 
-        <GridItem colSpan={{base: 1, lg: 2}} rowSpan={2} as={Card}>
+        <GridItem colSpan={{ base: 1, lg: 2 }} rowSpan={2} as={Card}>
           <Tabs size="sm" align="end" width="full" h="full">
             <TabList>
               <Tab>

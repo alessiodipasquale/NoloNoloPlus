@@ -1,3 +1,5 @@
+var state = ""
+
 $(document).ready(function() {
     getItems()
     .done(res => {
@@ -6,7 +8,82 @@ $(document).ready(function() {
             addElemToTable(elem);
         }
     });
+
+
 });
+
+function setState(stat) {
+    state = stat;
+    $('#inputState').text(stat);
+}
+
+function openCreateItem() {
+    $('#dropdown-category').empty();
+
+    getCategories()
+    .done(res => {
+        console.log(res);
+        for (const category of res) {
+            var a = $(`<a class="dropdown-item" href="#"></a>`);
+            const input = $('<input type="checkbox" class="form-check-input" name="categorySelected">').attr("id",category._id);
+            console.log(input.attr("id"));
+            const label = $('<label class="form-check-label" for="dropdownCheck"></label>').text(category.name);
+            a.append(input);
+            a.append(label);
+          $('#dropdown-category').append(a)
+        }
+    })
+
+    $('#dropdown-kits').empty();
+
+    getKits()
+    .done(res => {
+        console.log(res);
+        for (const kit of res) {
+            var a = $(`<a class="dropdown-item" href="#"></a>`);
+            const input = $('<input type="checkbox" class="form-check-input" name="categorySelected">').attr("id",kit._id);
+            console.log(input.attr("id"));
+            const label = $('<label class="form-check-label" for="dropdownCheck"></label>').text(kit.name);
+            a.append(input);
+            a.append(label);
+          $('#dropdown-kits').append(a)
+        }
+    }) 
+
+    
+    $('#createItemModal').modal('show')
+}
+
+function confirmCreateItem() {
+    const categorySelectedEl = $('input[name="categorySelected"]')
+    const kitSelectedEl = $('input[name="kitSelected"]')
+
+    var categoriesIds = [];
+    var kitsIds = [];
+
+    for(const category of categorySelectedEl) {
+        if(category.checked)
+            categoriesIds.push(category.id)
+    }
+
+    for(const kit of kitSelectedEl) {
+        if(kit.checked)
+            kitsIds.push(kit.id)
+    }
+    
+    const name = $('#inputName').val();
+    const price = $('#inputPrice').val();
+    const inputDescription = $('#inputDescription').val();
+    const inputImageUrl = $('#inputImageUrl').val();
+    
+    
+        createItem(name, inputDescription, price, inputImageUrl, categoriesIds, kitsIds, state)
+        .done((res) => {
+            addElemToTable(res);
+            $('#createItemModal').modal('hide')
+        }).catch(err => alert("Errore nella creazione dell'utente."))
+    
+}
 
 function addElemToTable(elem) {
     console.log(elem);

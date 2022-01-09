@@ -163,17 +163,18 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
 }
 
 const checkIfAvailable = async (object) => {
-    if(!object.startDate || !object.endDate || !object.itemIds)
+    if(!object.startDate || !object.endDate || !object.objectId)
         throw BadRequestError;
     
-    if(!Array.isArray(object.itemIds))
-        object.itemIds = [object.itemIds];
+    if(!Array.isArray(object.objectId))
+        object.objectId = [object.objectId];
 
     var isOk = true;
-    for(var elem of object.itemIds){
+    for(var elem of object.objectId){
         const item = await getItemById(elem);
         const start = new Date(object.startDate);
         const end = new Date(object.endDate);
+        console.log(item.rentalDates)
         for(let e of item.rentalDates){
             const elem = new Date(e)
             if (elem >= start && elem <= end){

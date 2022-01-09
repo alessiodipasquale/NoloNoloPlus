@@ -1,3 +1,6 @@
+var selectedItemId = null;
+var selectedUserId = null;
+
 $(document).ready(function() {
     getReviews()
     .done(res => {
@@ -8,12 +11,46 @@ $(document).ready(function() {
     });
 });
 
+function openCreateReview() {
+    $('#dropdown-items').empty();
+    getItems()
+    .done(res => {
+        for (const item of res) {
+            var a = $('<a class="dropdown-item" href="#"></a>');
+            a.text(item.name);
+            a.attr("id", item._id);
+            a.click(function(elem) {
+                $("#inputItem").text(elem.target.text)
+                selectedItemId = elem.target.id;
+            })
+            $('#dropdown-items').append(a); 
+        }
+    })
+
+    $('#dropdown-users').empty();
+    getUsers()
+    .done(res => {
+        for(const user of res) {
+            var a = $('<a class="dropdown-item" href="#"></a>');
+            a.text(user.name +' '+user.surname);
+            a.attr("id", user._id);
+            a.click(function(elem) {
+                $("#inputUser").text(elem.target.text)
+                selectedUserId = elem.target.id;
+            })
+            $('#dropdown-users').append(a); 
+        }
+    })
+
+    $('#createReviewModal').modal('show');
+}
+
 
 function addElemToTable(elem) {
     var row = $('<tr id='+elem._id+'></tr>');
     var row1 = $('<td></td>').text(elem._id);
-    var row2 = $('<td></td>').text(elem.stars);
-    var row3 = $('<td></td>').text(elem.comment);
+    var row2 = $('<td name="stars"></td>').text(elem.stars);
+    var row3 = $('<td name="comment"></td>').text(elem.comment);
     var row4 = $('<td></td>').text(elem.clientId);
     var row5 = $('<td></td>').text(elem.itemId);
     var row6 = $('<td></td>');
@@ -54,9 +91,33 @@ function addElemToTable(elem) {
 }
 
 function create() {
-
+    const stars = $('#inputStars').val();
+    const comment = $('#inputComment').val();
+    console.log(stars, comment, selectedItemId, selectedUserId)
+    if(stars=='' || comment == '' || selectedItemId == null || selectedUserId == null) {
+        alert('Inserisci tutti i campi.')
+    } else {
+        createReview(stars, comment, selectedItemId, selectedUserId)
+        .done(res => {
+            addElemToTable(res);
+            $('#createReviewModal').modal('hide')
+        }).catch(err => alert("Errore nella creazione della recensione."))
+    }
 }
 
 function edit() {
-
+    const id = $('#inputEditId').val();
+    const stars = $('#inputEditStars').val();
+    const comment = $('#inputEditComment').val();
+    if(stars=='' || comment == '') {
+        alert('Inserisci tutti i campi.')
+    } else {
+        editReview(id, stars, comment)
+        .done(res => {
+            const row = $('#'+res._id);
+            row.children('td[name="stars"]').text(res.stars);
+            row.children('td[name="comment"]').text(res.comment);
+            $('#editReviewModal').modal('hide')
+        }).catch(err => alert("Errore nella modifica della recensione."))
+    }
 }

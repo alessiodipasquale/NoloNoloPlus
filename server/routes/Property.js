@@ -39,6 +39,7 @@ const createProperty = async (object) => {
 }
 
 const editProperty = async (propId, object) => {
+    console.log(propId);
     const property = await getPropertyById(propId);
     let secureObject = JSON.stringify(property);
     secureObject = JSON.parse(secureObject);
@@ -58,7 +59,8 @@ const editProperty = async (propId, object) => {
         secureObject.associatedValues = object.associatedValues;
     }
     await PropertyModel.updateOne({_id: propId},secureObject);
-    return null;
+    const toReturn = await getPropertyById(propId);
+    return toReturn;
 }
 
 module.exports = {
