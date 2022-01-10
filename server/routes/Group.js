@@ -9,7 +9,15 @@ const getGroupById = async (id) => {
 }
 
 const getGroups = async () => {
-    const groups =  await GroupModel.find();
+    let groups =  await GroupModel.find();
+    for(let group of groups){
+        let items = []
+        for(let itemId of group.items){
+            const item = await getItemById(itemId)
+            items.push(item) 
+        }
+        group.items = items;
+    }
     return groups;
 }
 
