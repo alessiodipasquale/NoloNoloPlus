@@ -42,12 +42,12 @@ aria-hidden="true">
                     <div class="col-4">
                         <div class="form-group">
                             <label for="inputPrice">Prezzo standard *</label>
-                            <input type="text" class="form-control" id="inputPrice" placeholder="Inserisci prezzo standard">
+                            <input type="number" class="form-control" id="inputPrice" placeholder="Inserisci prezzo standard">
                         </div>    
                     </div>
                     <div class="col-4">
                         <div class="dropdown" style="display: flex; flex-direction: column;">
-                            <label for="inputCategory">Categoria</label>
+                            <label for="inputCategory">Categoria *</label>
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="inputCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                              Scegli Categoria
                             </button>
@@ -98,7 +98,7 @@ aria-hidden="true">
                     </div>
                     <div class="col-4">
                         <div class="dropdown" style="display: flex; flex-direction: column;">
-                            <label for="inputCategory">Stato</label>
+                            <label for="inputCategory">Stato*</label>
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="inputState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                              Scegli Stato
                             </button>
@@ -147,25 +147,31 @@ aria-hidden="true">
         <div class="modal-body">
             <form>
                 <div class="row">
-                    <div class="col-4">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <label for="inputEditId">Id</label>
+                            <input disabled type="text" class="form-control" id="inputEditId">
+                        </div>    
+                    </div>
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="inputName">Nome *</label>
                             <input type="text" class="form-control" id="inputEditName" placeholder="Inserisci nome">
                         </div>    
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <div class="form-group">
                             <label for="inputPrice">Prezzo standard *</label>
                             <input type="text" class="form-control" id="inputEditPrice" placeholder="Inserisci prezzo standard">
                         </div>    
                     </div>
-                    <div class="col-4">
+                    <div class="col-3">
                         <div class="dropdown" style="display: flex; flex-direction: column;">
                             <label for="inputCategory">Categoria</label>
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="inputEditCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                              Scegli Categoria
                             </button>
-                            <div class="dropdown-menu" id="dropdown-category" aria-labelledby="inputCategory">
+                            <div class="dropdown-menu" id="dropdown-edit-category" aria-labelledby="inputCategory">
                               
                             </div>
                         </div>    
@@ -217,12 +223,12 @@ aria-hidden="true">
                              Scegli Stato
                             </button>
                             <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputEditState">
-                                <a class="dropdown-item" href="#" onclick="state = 'inutilizzabile'">inutilizzabile</a>
-                                <a class="dropdown-item" href="#" onclick="state = 'molto usurato'">molto usurato</a>
-                                <a class="dropdown-item" href="#" onclick="state = 'usurato'">usurato</a>
-                                <a class="dropdown-item" href="#" onclick="state = 'buono'">buono</a>
-                                <a class="dropdown-item" href="#" onclick="state = 'ottimo'">ottimo</a>
-                                <a class="dropdown-item" href="#" onclick="state = 'nuovo'">nuovo</a>
+                                <a class="dropdown-item" href="#" onclick="setEditState('inutilizzabile')">inutilizzabile</a>
+                                <a class="dropdown-item" href="#" onclick="setEditState('molto usurato')">molto usurato</a>
+                                <a class="dropdown-item" href="#" onclick="setEditState('usurato')">usurato</a>
+                                <a class="dropdown-item" href="#" onclick="setEditState('buono')">buono</a>
+                                <a class="dropdown-item" href="#" onclick="setEditState('ottimo')">ottimo</a>
+                                <a class="dropdown-item" href="#" onclick="setEditState('nuovo')">nuovo</a>
                             </div>
                         </div>    
                     </div>
@@ -232,7 +238,7 @@ aria-hidden="true">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="inputEditKit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                              Scegli Kit
                             </button>
-                            <div class="dropdown-menu" id="dropdown-kits" aria-labelledby="inputEditKit">
+                            <div class="dropdown-menu" id="dropdown-edit-kits" aria-labelledby="inputEditKit">
                             </div>
                         </div>    
                     </div>

@@ -78,7 +78,7 @@ const findItemByName = async (name) => {
 }
 
 const createItem = async (object) => {
-    if(!object.name || !object.description || !object.standardPrice || !object.state || !object.category  || !object.imgSrc)
+    if(!object.name || !object.description || !object.standardPrice || !object.state || !object.category)
         throw BadRequestError;
 
     //category

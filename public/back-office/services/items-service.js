@@ -14,6 +14,6 @@ function deleteItem(id) {
     return httpDelete('items/'+id, true);
 }
 
-function editItem(_id, name, description) {
-    return httpPut('items', {_id, name, description}, true);
+function editItem(_id, name, description, standardPrice, imgSrc, category, kits, state) {
+    return httpPut('items/'+_id, {name, description, standardPrice, imgSrc, category, kits, state}, true);
 }
