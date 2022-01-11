@@ -26,9 +26,10 @@ const deleteReview = async (id) => {
 const createReview = async (object, userId) => {
     if(!object.stars || !object.itemId)
         throw BadRequestError;
-    object.clientId = userId;
+    if(!object.clientId)
+        object.clientId = userId;
     const review = await ReviewModel.create(object);
-    await associateToUser("array","reviews",review._id,userId);
+    await associateToUser("array","reviews",review._id,object.clientId);
     await associateToItem("array","reviews",review._id,object.itemId);
     return review;
 }
