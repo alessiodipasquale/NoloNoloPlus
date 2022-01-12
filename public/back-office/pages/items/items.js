@@ -99,7 +99,7 @@ function confirmCreateItem() {
     const name = $('#inputName').val();
     const price = $('#inputPrice').val();
     const inputDescription = $('#inputDescription').val();
-    const inputImageUrl = $('#inputImageUrl').val();
+    const inputImageUrl = $('#inputImageUrl').val() != '' ? $('#inputImageUrl').val() : undefined;
     
     
         createItem(name, inputDescription, price, inputImageUrl, categoriesIds, kitsIds, state, groupId)

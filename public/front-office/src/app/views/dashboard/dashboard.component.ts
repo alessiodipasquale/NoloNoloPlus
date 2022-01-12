@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
               private kitsService: KitsService) {}
 
   categories = [];
+  searchtext = "";
   selectedCategory = null;
   allItems = true;
   items = [];
