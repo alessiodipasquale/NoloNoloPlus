@@ -17,7 +17,10 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/logoSmall.ico",
+              "src/Nuovo-progetto.ico"
+
             ],
             "styles": [
               "node_modules/@coreui/icons/css/free.css",

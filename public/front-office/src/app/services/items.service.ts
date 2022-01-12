@@ -15,7 +15,7 @@ export class ItemsService {
                 private router: Router) { }
 
     getItems() {
-        return this.http.get('/items') 
+        return this.http.get('/items/filtered') 
     }
 
     getItemById(id) {

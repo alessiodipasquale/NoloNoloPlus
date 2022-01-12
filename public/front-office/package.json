@@ -38,6 +38,7 @@
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.21",
     "ng2-charts": "^2.4.2",
+    "ng2-search-filter": "^0.5.1",
     "ngx-bootstrap": "^6.2.0",
     "ngx-easy-table": "^15.0.0",
     "ngx-perfect-scrollbar": "^10.1.0",
