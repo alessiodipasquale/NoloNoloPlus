@@ -81,7 +81,7 @@ const createItem = async (object) => {
         await associateToPropertyValue("array", "associatedItems", item._id, prop);
     }
     if(object.groupId){
-        await associateToGroup("array", "items", item._id, groupId);
+        await associateToGroup("array", "items", item._id, object.groupId);
     }
 
     return await generateFullItem(item);

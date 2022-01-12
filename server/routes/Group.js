@@ -1,6 +1,6 @@
 const GroupModel = require("../models/GroupModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
-const { associateToItem } = require("./associations/AssociationManager");
+const { associateToItem, deleteAssociationToItem } = require("./associations/AssociationManager");
 const { getItemById } = require("./Item");
 
 const getGroupById = async (id) => {

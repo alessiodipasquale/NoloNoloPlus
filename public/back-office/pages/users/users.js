@@ -25,6 +25,14 @@ function loadAllItems() {
     });
 }
 
+function openCreateUser() {
+    payment = undefined;
+    role = undefined;
+    $('#inputRole').text();
+    $('#inputPayementMethod').text("Metodo di pagamento");
+    $('#createUserModal').modal('Ruolo')
+}
+
 function addElemToTable(elem) {
     var row = $('<tr id='+elem._id+'></tr>');
     var row1 = $('<td></td>').text(elem._id);

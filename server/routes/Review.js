@@ -24,6 +24,7 @@ const deleteReview = async (id) => {
 }
 
 const createReview = async (object, userId) => {
+    console.log(object);
     if(!object.stars || !object.itemId)
         throw BadRequestError;
     if(!object.clientId)

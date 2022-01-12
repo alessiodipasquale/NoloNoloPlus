@@ -61,6 +61,7 @@ function openCreateItem() {
         }
     }) 
 
+    $('#dropdown-groups').empty();
     getGroups()
     .done(res => {
         for (const group of res) {
@@ -212,6 +213,8 @@ function openEditItem(elem) {
         if(item.groupId)
             groupId = item.groupId;
         else groupId = null;
+
+        $('#dropdown-editgroups').empty();
 
         getGroups()
         .done(res => {
