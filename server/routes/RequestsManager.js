@@ -135,8 +135,11 @@ const requestManager = async (reqName, req, res) => {
         break;
       }
       case "getItems": {
-        const filter = await roleChecker(req.user.user._id, "funzionario", "return");
-        toReturn = await getItems(!filter);
+        toReturn = await getItems(false);
+        break;
+      }
+      case "getFilteredItems": {
+        toReturn = await getItems(true);
         break;
       }
       case "deleteItem": {

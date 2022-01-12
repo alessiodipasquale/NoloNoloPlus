@@ -32,6 +32,7 @@ const router = {
 
         // Item
         /**/app.get('/items', (req, res) => { requestManager("getItems", req, res); })
+        /**/app.get('/items/filtered', (req, res) => { requestManager("getFilteredItems", req, res); })
         app.delete('/items/:id', auth, (req, res) => { requestManager("deleteItem", req, res); })
         /**/app.get('/items/:id', (req, res) => { requestManager("getItemById", req, res); })
         app.post('/items',auth, (req, res) => { requestManager("createItem", req, res); })
