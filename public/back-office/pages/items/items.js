@@ -1,5 +1,6 @@
 var state = ""
 var editstate = ""
+var groupId = null
 
 $(document).ready(function() {
     loadAllItems();
@@ -28,6 +29,7 @@ function setEditState(stat) {
 
 function openCreateItem() {
     $('#dropdown-category').empty();
+    groupId = null;
 
     getCategories()
     .done(res => {
@@ -59,6 +61,20 @@ function openCreateItem() {
         }
     }) 
 
+    getGroups()
+    .done(res => {
+        for (const group of res) {
+            var a = $(`<a class="dropdown-item" href="#"></a>`).text(group.name);
+            a.attr("id",group._id);
+            a.click(function(elem) {
+                groupId = elem.target.id;
+                $('#inputGroup').text(elem.target.text);
+            })
+            $('#dropdown-groups').append(a);
+        }
+
+    })
+
     
     $('#createItemModal').modal('show')
 }
@@ -86,12 +102,24 @@ function confirmCreateItem() {
     const inputImageUrl = $('#inputImageUrl').val();
     
     
-        createItem(name, inputDescription, price, inputImageUrl, categoriesIds, kitsIds, state)
+        createItem(name, inputDescription, price, inputImageUrl, categoriesIds, kitsIds, state, groupId)
         .done((res) => {
-            addElemToTable(res);
+            loadAllItems();
+            clearInputs();
             $('#createItemModal').modal('hide')
-        }).catch(err => alert("Errore nella creazione dell'utente."))
+        }).catch(err => alert("Errore nella creazione dell'oggetto."))
     
+}
+
+function clearInputs() {
+    $('#inputName').val('');
+    $('#inputPrice').val('');
+    $('#inputDescription').val('');
+    $('#inputImageUrl').val('');
+    $('#inputState').text('Scegli Stato');
+    $('#inputGroup').text('Scegli Gruppo');
+    state = null;
+    groupId = null;
 }
 
 function confirmEditItem() {
@@ -117,12 +145,12 @@ function confirmEditItem() {
     const editinputDescription = $('#inputEditDescription').val();
     const editinputImageUrl = $('#inputEditImageUrl').val();
 
-    console.log({editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate})
-    editItem(id, editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate)
+    console.log({editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId})
+    editItem(id, editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId)
     .done((res) => {
         loadAllItems();
         $('#editItemModal').modal('hide')
-    }).catch(err => alert("Errore nella modifica dell'utente."))
+    }).catch(err => alert("Errore nella modifica dell'oggetto."))
 }
 
 function openEditItem(elem) {
@@ -131,6 +159,8 @@ function openEditItem(elem) {
     getItemById(elem.target.id)
     .done(item => {
         console.log(item);
+        editstate = item.state;
+
         $('#inputEditId').val(item._id)
         $('#inputEditName').val(item.name)
         $('#inputEditPrice').val(item.standardPrice)
@@ -178,6 +208,27 @@ function openEditItem(elem) {
               $('#dropdown-edit-kits').append(a)
             }
         })
+
+        if(item.groupId)
+            groupId = item.groupId;
+        else groupId = null;
+
+        getGroups()
+        .done(res => {
+        for (const group of res) {
+            if(groupId == group._id)
+                $('#inputEditGroup').text(group.name);
+
+            var a = $(`<a class="dropdown-item" href="#"></a>`).text(group.name);
+            a.attr("id",group._id);
+            a.click(function(elem) {
+                groupId = elem.target.id;
+                $('#inputEditGroup').text(elem.target.text);
+            })
+            $('#dropdown-editgroups').append(a);
+        }
+
+    })
         
         $('#editItemModal').modal('show')
     }) 

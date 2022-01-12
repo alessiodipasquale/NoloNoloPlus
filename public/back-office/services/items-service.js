@@ -1,5 +1,5 @@
-function createItem(name, description, standardPrice, imgSrc,category, kits, state) {
-    return httpPost('items', {name, description, standardPrice, category, state, imgSrc, kits}, true);
+function createItem(name, description, standardPrice, imgSrc,category, kits, state, groupId) {
+    return httpPost('items', {name, description, standardPrice, category, state, imgSrc, kits, groupId}, true);
 }
 
 function getItems() {
@@ -14,6 +14,6 @@ function deleteItem(id) {
     return httpDelete('items/'+id, true);
 }
 
-function editItem(_id, name, description, standardPrice, imgSrc, category, kits, state) {
-    return httpPut('items/'+_id, {name, description, standardPrice, imgSrc, category, kits, state}, true);
+function editItem(_id, name, description, standardPrice, imgSrc, category, kits, state, groupId) {
+    return httpPut('items/'+_id, {name, description, standardPrice, imgSrc, category, kits, state, groupId}, true);
 }

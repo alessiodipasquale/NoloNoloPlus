@@ -115,7 +115,7 @@ function create() {
     .done(res => {
         addElemToTable(res);
         $('#createGroupModal').modal('hide')
-    }).catch(err => alert("Errore nella creazione del kit."))
+    }).catch(err => alert("Errore nella creazione del gruppo."))
 }
 
 function edit() {
