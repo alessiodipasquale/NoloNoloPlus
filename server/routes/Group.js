@@ -12,7 +12,7 @@ const getGroups = async () => {
     const toReturn = []
     let groups =  await GroupModel.find();
     for(let group of groups){
-        toReturn.push(generateFullGroup(group))
+        toReturn.push(await generateFullGroup(group))
     }
     return toReturn;
 }
