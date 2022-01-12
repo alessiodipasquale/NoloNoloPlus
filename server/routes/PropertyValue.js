@@ -1,6 +1,7 @@
 const PropertyValueModel = require("../models/PropertyValueModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { associateToProperty } = require("./associations/AssociationManager");
+const { getPropertyById } = require("./Property")
 
 
 const getPropertyValueById = async (id) => {
@@ -9,8 +10,12 @@ const getPropertyValueById = async (id) => {
 }
 
 const getPropertyValues = async () => {
+    const toReturn = []
     const propertyValues =  await PropertyValueModel.find();
-    return propertyValues;
+    for(let elem of propertyValues){
+        toReturn.push(await generateFullPropVal(elem))
+    }
+    return toReturn;
 }
 
 const deletePropertyValue = async (id) => {
@@ -69,6 +74,14 @@ const editPropertyValue = async (propValId, object) => {
     }
     await PropertyValueModel.updateOne({_id: propValId},secureObject);
     return null;
+}
+
+const generateFullPropVal = async (basePropVal) =>{
+    const generalProp = await getPropertyById(basePropVal.associatedProperty);
+    let elem = JSON.stringify(basePropVal)
+    elem = JSON.parse(elem)
+    elem.associatedProperty = generalProp;
+    return elem
 }
 
 module.exports = {
