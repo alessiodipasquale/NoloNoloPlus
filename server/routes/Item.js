@@ -85,7 +85,7 @@ const createItem = async (object) => {
 const generateFullItem = async (baseItem) => {
     const props = [];
     const categories = [];
-    for (let propId of item.properties) {
+    for (let propId of baseItem.properties) {
         const propVal = await PropertyValueModel.findOne({ _id: propId });
         const prop = await PropertyModel.findOne({ _id: propVal.associatedProperty });
         const name = prop.name;
@@ -93,11 +93,11 @@ const generateFullItem = async (baseItem) => {
         const unitOfMeasure = propVal.unitOfMeasure;
         props.push({ name, value, unitOfMeasure });
     }
-    for (let catId of item.category) {
+    for (let catId of baseItem.category) {
         const category = await CategoryModel.findOne({ _id: catId });
         categories.push({ name: category.name, description: category.description });
     }
-    let elem = JSON.stringify(item)
+    let elem = JSON.stringify(baseItem)
     elem = JSON.parse(elem)
     elem.properties = props;
     elem.categories = categories;

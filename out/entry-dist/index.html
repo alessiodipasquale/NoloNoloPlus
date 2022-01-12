@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en" style="height: 100%; width: 100%;">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>NoloNoloPlus</title>
+  </head>
+  <body style="display: flex; align-items: center; justify-content: center; height: 100%; width: 100%;  flex-direction: column;">
+    <div class="image" style="display: flex; justify-content: center;">
+      <img src="../assets/LogoAlt.png" style="width: 45%; max-width: 600px; height: auto;">
+    </div>
+
+    <div class="columnBtn" style="display: flex; flex-direction: column;">
+      <button type="button" id="frontOfficeBtn" class="btn btn-primary">Front Office</button>
+      <button type="button" id="backOfficeBtn" class="btn btn-primary mt-3">Back Office</button>
+      <button type="button" id="dashboardBtn" class="btn btn-primary mt-3">Dashboard</button>
+    </div>
+
+    <div class="authors" style="position: absolute; bottom: 5%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+      <a href="https://github.com/alessiodipasquale">Alessio Di Pasquale</a>
+      <a href="https://github.com/StefanoColamonaco">Stefano Colamonaco</a>
+      <a href="https://github.com/andrea-corradetti">Andrea Corradetti</a>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script>
+      let pathname;
+       $(document).ready(function() {
+          pathname = window.location.origin;
+      })
+
+      $('#frontOfficeBtn').on("click", function() {
+        window.location.assign(pathname+'/front-office');
+      })
+
+
+      $('#backOfficeBtn').on("click", function() {
+        window.location.assign(pathname+'/back-office');
+      })
+
+
+      $('#dashboardBtn').on("click", function() {
+        window.location.assign(pathname+'/dashboard');
+      })
+
+
+    </script>
+  </body>
+</html>

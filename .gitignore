@@ -81,8 +81,8 @@ typings/
 # Nuxt.js build / generate output
 .nuxt
 dist
-out
-
+out/dashboard-dist
+out/front-office-dist
 # Gatsby files
 .cache/
 # Comment in the public line in if your project uses Gatsby and *not* Next.js
