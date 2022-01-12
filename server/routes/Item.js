@@ -80,6 +80,10 @@ const createItem = async (object) => {
     for (let prop of object.properties) {
         await associateToPropertyValue("array", "associatedItems", item._id, prop);
     }
+    if(object.groupId){
+        await associateToGroup("array", "items", item._id, groupId);
+    }
+
     return await generateFullItem(item);
 }
 
