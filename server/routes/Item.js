@@ -30,10 +30,11 @@ const filterGroups = (arrayOfItems) => {
     return toReturn;
 }
 
-const getItems = async () => {
+const getItems = async (filter) => {
     const toReturn = [];
     let items = await ItemModel.find();
-    items = filterGroups(items);
+    if(filter)
+        items = filterGroups(items);
     for (let item of items) {
         toReturn.push(await generateFullItem(item));
     }

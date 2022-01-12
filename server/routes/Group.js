@@ -5,20 +5,16 @@ const { getItemById } = require("./Item");
 
 const getGroupById = async (id) => {
     const group = await GroupModel.findById(id)
-    return group;
+    return generateFullGroup(group);
 }
 
 const getGroups = async () => {
+    const toReturn = []
     let groups =  await GroupModel.find();
     for(let group of groups){
-        let items = []
-        for(let itemId of group.items){
-            const item = await getItemById(itemId)
-            items.push(item) 
-        }
-        group.items = items;
+        toReturn.push(generateFullGroup(group))
     }
-    return groups;
+    return toReturn;
 }
 
 const deleteGroup = async (id) => {
@@ -72,6 +68,17 @@ const editGroup = async (groupId, object) => {
     return null;
 }
 
+const generateFullGroup = async (baseGroup) => {
+    const items = [];
+    for(let itemId of baseGroup.items){
+        const item = await getItemById(itemId)
+        items.push(item) 
+    }
+    let elem = JSON.stringify(baseGroup)
+    elem = JSON.parse(elem)
+    elem.items = items;
+    return elem
+}
 
 module.exports = {
     getGroups,
