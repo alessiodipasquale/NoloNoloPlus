@@ -1,11 +1,11 @@
-$(document).ready(function() {
-    getUsers()
-    .done(res => {
-        for(const elem of res){
-            addElemToTable(elem);
-        }
-    });
+var editpayment = undefined;
+var editrole = undefined;
+var payment = undefined;
+var role = undefined;
 
+$(document).ready(function() {
+   
+    loadAllItems();
     $('#dropdown-payement a').click(function () {           
         $('#inputPayementMethod').text($(this).text());
     });
@@ -14,6 +14,16 @@ $(document).ready(function() {
         $('#inputRole').text($(this).text());
     });
 });
+
+function loadAllItems() {
+    $('tbody').empty();
+    getUsers()
+    .done(res => {
+        for(const elem of res){
+            addElemToTable(elem);
+        }
+    });
+}
 
 function addElemToTable(elem) {
     var row = $('<tr id='+elem._id+'></tr>');
@@ -36,13 +46,18 @@ function addElemToTable(elem) {
         getUserById(elem.target.id)
         .done(user => {
             console.log(user);
+            if(user.role)
+             setEditRole(user.role);
+            if(user.favPaymentMethod)
+             setEditPayment(user.favPaymentMethod);
+
             $('#inputEditId').val(user._id)
             $('#inputEditName').val(user.name)
             $('#inputEditSurname').val(user.surname)
             $('#inputEditUsername').val(user.username)
             $('#inputEditAddress').val(user.address)
             $('#inputEditLoyaltyPoint').val(user.loyaltyPoints)
-            $('#inputEditLastVisit').val(new Date(user.lastVisit).toISOString().substr(0, 10))
+            $('#inputEditLastVisit').val(new Date(user.lastVisit))
             $('#inputEditPayementMethod').text(user.favPaymentMethod);
             $('#inputEditRole').text(user.role);
             $('#editUserModal').modal('show')
@@ -78,17 +93,38 @@ function create() {
     const address = $('#inputAddress').val() !== '' ? $('#inputAddress').val() : null;
     const loyaltyPoints = $('#inputLoyaltyPoint').val() !== '' ? $('#inputLoyaltyPoint').val() : null;
     const lastVisit = $('#inputLastVisit').val() !== '' ? $('#inputLastVisit').val() : null;
-    const role = $('#inputRole').text() !== '' ? $('#inputRole').text() : null;
-    const favPaymentMethod = $('#inputPayementMethod').text() !== '' ? $('#inputPayementMethod').text() : null;
     if(name=='' || surname == '' || username == '' || password == '') {
         alert('Inserisci tutti i campi.')
     } else {
-        createUser(name, surname, username, password, address, loyaltyPoints, lastVisit, role, favPaymentMethod)
+        console.log(role, payment)
+       createUser(name, surname, username, password, address, loyaltyPoints, new Date(lastVisit).toLocaleDateString(), role, payment)
         .done((res)=> {
             addElemToTable(res);
             $('#createUserModal').modal('hide')
         }).catch(err => alert("Errore nella creazione dell'utente."))
     }
+}
+
+
+function setRole(rol) {
+    role=rol;
+    $('#inputRole').text(role);
+}
+
+function setPayment(pay) {
+    payment=pay;
+    $('#inputPayementMethod').text(payment);
+}
+
+
+function setEditRole(role) {
+    editrole=role;
+    $('#inputEditRole').text(role);
+}
+
+function setEditPayment(payment) {
+    editpayment=payment;
+    $('#inputEditPayementMethod').text(payment);
 }
 
 function edit() {
@@ -99,14 +135,12 @@ function edit() {
     const address = $('#inputEditAddress').val() !== '' ? $('#inputEditAddress').val() : null;
     const loyaltyPoints = $('#inputEditLoyaltyPoint').val() !== '' ? $('#inputEditLoyaltyPoint').val() : null;
     const lastVisit = $('#inputEditLastVisit').val() !== '' ? $('#inputEditLastVisit').val() : null;
-    const role = $('#inputEditRole').text() !== '' ? $('#inputEditRole').text() : null;
-    const favPaymentMethod = $('#inputEditPayementMethod').text() !== '' ? $('#inputEditPayementMethod').text() : null;
     if(name=='' || surname == '' || username == '') {
         alert('Inserisci tutti i campi.')
     } else {
-        editUser(id, name, surname, username, address, loyaltyPoints, lastVisit, role, favPaymentMethod)
+        editUser(id, name, surname, username, address, loyaltyPoints, new Date(lastVisit).toLocaleDateString(), editrole, editpayment)
         .done((res)=> {
-            //editElemInTable(res);
+            loadAllItems();
             $('#editUserModal').modal('hide')
         }).catch(err => alert("Errore nella modifica dell'utente."))
     }

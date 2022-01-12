@@ -51,7 +51,7 @@ const _UserModel = new mongoose.Schema({
     },
     registrationDate: {
         type: Date,
-        required: true,
+        default: new Date()
     },
     certifications: {
         type: [String],

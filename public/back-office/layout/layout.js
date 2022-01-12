@@ -4,7 +4,7 @@ $(document).ready(function() {
         var pathname = window.location.origin;
        window.location.replace(pathname+'/back-office/login/login.html');
     }
-    $('#content').load('../pages/dashboard/dashboard.html');
+    $('#content').load('../pages/users/users.html');
 })
 
 var listItems = $("#menuItems li");
