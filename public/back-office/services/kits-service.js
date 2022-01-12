@@ -15,5 +15,5 @@ function deleteKit(id) {
 }
 
 function editKit(_id, name, description, standardPrice, available, items) {
-    return httpPut('kits', {_id, name, description, standardPrice, available, items}, true);
+    return httpPut('kits/'+_id, {name, description, standardPrice, available, items}, true);
 }

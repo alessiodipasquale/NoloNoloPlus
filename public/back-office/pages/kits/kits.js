@@ -3,13 +3,7 @@ var itemsEditList = [];
 $(document).ready(function() {
     
 
-    getKits()
-    .done(res => {
-        console.log(res);
-        for(const elem of res){
-            addElemToTable(elem);
-        }
-    });
+    loadAllKits();
 
     $('#createKitModalButton').click(function(elem) {
         $('#dropdown-items').empty();
@@ -55,6 +49,17 @@ $(document).ready(function() {
         
     });
 });
+
+function loadAllKits() {
+    $('tbody').empty();
+    getKits()
+    .done(res => {
+        console.log(res);
+        for(const elem of res){
+            addElemToTable(elem);
+        }
+    });
+}
 
 function create() {
     const name = $('#inputName').val();
@@ -185,8 +190,10 @@ function edit() {
 
     const standardPrice = $('#inputEditStandardPrice').val()
     const available = $('#inputEditAvailable').val()
+
     editKit(id, name, description, standardPrice, available, itemsEditList)
     .done(() => {
+        loadAllKits();
         $('#editKitModal').modal('hide')
     })
 }
