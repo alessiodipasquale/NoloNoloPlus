@@ -3,7 +3,7 @@ function createItem(name, description, standardPrice, imgSrc,category, kits, sta
 }
 
 function getItems() {
-    return httpGet('items', false);
+    return httpGet('items', true);
 }
 
 function getItemById(id) {
