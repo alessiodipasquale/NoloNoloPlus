@@ -8,6 +8,7 @@ const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../c
 const { associateToCategory, associateToGroup, associateToPropertyValue, deleteAssociationToGroup, deleteAssociationToCategory } = require('./associations/AssociationManager');
 const { deleteAssociationToKit, associateToKit, deleteAssociationToPropertyValue } = require('./associations/AssociationManager')
 const { getPriceDetail } = require('./PriceDetails');
+const { createPropertyValue, getPropertyValueByAttributes } = require('./PropertyValue')
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -66,12 +67,18 @@ const createItem = async (object) => {
     //category
     if (!Array.isArray(object.category))
         object.category = [object.category]
+    
     //properties
-    if (object.properties) {
-        if (!Array.isArray(object.properties))
-            object.properties = [object.properties]
-    } else object.properties = [];
-
+    object.properties = []
+    if (object.propertiesList != [] ) {
+        for(let property of object.propertiesList){
+            let prop = await getPropertyValueByAttributes(property);
+            if(prop == null){
+                prop = await createPropertyValue(property);
+            }
+            object.properties.push(prop._id)
+        }
+    };
     const item = await ItemModel.create(object);
 
     for (let cat of object.category) {

@@ -30,15 +30,35 @@ const deletePropertyValue = async (id) => {
 }
 
 const createPropertyValue = async (object) => {
-    if(!object.name || !object.associatedProperty)
+    if(!object.value || !object.associatedProperty)
         throw BadRequestError;
-    /*
-    if (await findPropertyValueByName(object.name))
-        throw AlreadyExistsError;
-    */
+
     const propertyVal = await PropertyValueModel.create(object);
-    await associateToProperty("array", "associatedValues",object.associatedProperty,propertyVal._id);
+    await associateToProperty("array", "associatedValues",propertyVal._id,object.associatedProperty);
     return propertyVal;
+}
+
+const getPropertyValueByAttributes = async (property) =>{
+    const propertyValuesIds = (await getPropertyById(property.associatedProperty)).associatedValues;
+    for(let id of propertyValuesIds){
+        const propVal = await getPropertyValueById(id)
+        if(propVal){
+            if(propVal.value == property.value ){
+                if(property.unitOfMeasure){
+                    if(propVal.unitOfMeasure){
+                        if(property.unitOfMeasure.toLowerCase() == propVal.unitOfMeasure.toLowerCase()){
+                            return propVal;
+                        }else return null;
+                    }else return null;
+                }else{
+                    if(propVal.unitOfMeasure){
+                        return null;
+                    }return propVal
+                } 
+            }
+        }
+    }
+    return null;
 }
 
 const editPropertyValue = async (propValId, object) => {
@@ -89,5 +109,6 @@ module.exports = {
     getPropertyValueById,
     deletePropertyValue,
     createPropertyValue,
-    editPropertyValue
+    editPropertyValue,
+    getPropertyValueByAttributes
 }
