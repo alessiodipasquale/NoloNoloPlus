@@ -1,5 +1,5 @@
-function createItem(name, description, standardPrice, imgSrc,category, kits, state, groupId) {
-    return httpPost('items', {name, description, standardPrice, category, state, imgSrc, kits, groupId}, true);
+function createItem(name, description, standardPrice, imgSrc,category, kits, state, groupId, propertiesList) {
+    return httpPost('items', {name, description, standardPrice, category, state, imgSrc, kits, groupId, propertiesList}, true);
 }
 
 function getItems() {

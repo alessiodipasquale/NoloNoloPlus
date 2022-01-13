@@ -1,6 +1,9 @@
 var state = ""
 var editstate = ""
 var groupId = null
+var propertyId = undefined
+var propertyName;
+var properties = [];
 
 $(document).ready(function() {
     loadAllItems();
@@ -76,8 +79,52 @@ function openCreateItem() {
 
     })
 
+    getProperties()
+    .done(res => {
+        for (const property of res) {
+            var a = $(`<a class="dropdown-item" href="#"></a>`).text(property.name);
+            a.attr("id",property._id);
+            a.click(function(elem) {
+                propertyId = elem.target.id;
+                propertyName = elem.target.text;
+                $('#inputProperty').text(elem.target.text);
+            })
+            $('#dropdown-property').append(a);
+        }
+    });
+
     
     $('#createItemModal').modal('show')
+}
+
+function addPropertyToList() {
+    if(propertyId != undefined) {
+        const propertyValue = $('#inputValueProperty').val()
+        const unitOfMeasure = $('#inputUnitOfMeasureProperty').val() !== '' ? $('#inputUnitOfMeasureProperty').val() : undefined
+        properties.push({associatedProperty: propertyId, value: propertyValue, unitOfMeasure: unitOfMeasure});
+        const row = $(`<div class="row" style="margin-bottom: 3px; border-bottom: 1px solid lightgrey; padding: 1%"></div>`)
+        row.attr("id","prop"+propertyId);
+        const firstCol= $(`<div class="col-10" style="display: flex; align-items: center"></div>`)
+        firstCol.text(propertyValue+ (unitOfMeasure != undefined ? unitOfMeasure+' ' : ' ')+propertyName)
+        const secondCol =$(`<div class="col-2"></div>`)
+        const deleteItemBtn = $('<button type="button" class="btn btn-danger mr-3" id="'+propertyId+'"><i class="fas fa-trash" id="'+propertyId+'"></i></button>')
+
+        deleteItemBtn.click(function(elem) {
+            $('#prop'+elem.target.id).remove();
+            properties = properties.filter(el => el.associatedProperty != elem.target.id);
+            console.log(properties);
+        });
+
+        secondCol.append(deleteItemBtn);
+        row.append([firstCol,secondCol])
+        $('#propertiesList').append(row);
+
+        propertyId = undefined;
+        propertyName = undefined;
+        $('#inputValueProperty').val('')
+        $('#inputInputTypeProperty').val('')
+        $('#inputProperty').text("Scegli proprietà");
+    }
 }
 
 function confirmCreateItem() {
@@ -102,14 +149,12 @@ function confirmCreateItem() {
     const inputDescription = $('#inputDescription').val();
     const inputImageUrl = $('#inputImageUrl').val() != '' ? $('#inputImageUrl').val() : undefined;
     
-    
-        createItem(name, inputDescription, price, inputImageUrl, categoriesIds, kitsIds, state, groupId)
+    createItem(name, inputDescription, price, inputImageUrl, categoriesIds, kitsIds, state, groupId, properties)
         .done((res) => {
             loadAllItems();
             clearInputs();
             $('#createItemModal').modal('hide')
         }).catch(err => alert("Errore nella creazione dell'oggetto."))
-    
 }
 
 function clearInputs() {
