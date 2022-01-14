@@ -258,6 +258,44 @@ aria-hidden="true">
                         </div>    
                     </div>
                 </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                Proprietà oggetto
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-4">
+                                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                                            <label for="inputEditProperty">Nome proprietà</label>
+                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputEditProperty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                             Scegli proprietà
+                                            </button>
+                                            <div class="dropdown-menu" id="dropdown-editproperty" aria-labelledby="inputEditProperty">
+                                            </div>
+                                        </div>    
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="inputEditValueProperty">Valore proprietà</label>
+                                            <input type="text" class="form-control" id="inputEditValueProperty" placeholder="Inserisci valore proprietà">
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <div class="form-group">
+                                            <label for="inputEditUnitOfMeasureProperty">Unità di misura</label>
+                                            <input type="text" class="form-control" id="inputEditUnitOfMeasureProperty" placeholder="Inserisci unità di misura della proprietà">
+                                        </div>
+                                    </div>
+                                    <div class="col-2" style="display: flex; align-items: flex-end;">
+                                        <button type="button" class="btn btn-success" id="addEditProperty" style="margin-bottom: 1rem;" onclick="addEditPropertyToList()">Aggiungi</button>
+                                    </div>
+                                </div>
+                                <div id="editPropertiesList"></div>
+                            </div>
+                        </div>
+                    </div>
             </form>
         </div>
         <div class="modal-footer">

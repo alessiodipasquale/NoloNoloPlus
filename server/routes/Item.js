@@ -12,7 +12,7 @@ const { createPropertyValue, getPropertyValueByAttributes } = require('./Propert
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
-    return item;
+    return await generateFullItem(item);
 }
 
 const filterGroups = (arrayOfItems) => {
@@ -111,8 +111,8 @@ const generateFullItem = async (baseItem) => {
     }
     let elem = JSON.stringify(baseItem)
     elem = JSON.parse(elem)
-    elem.properties = props;
-    elem.categories = categories;
+    elem.propertiesList = props;
+    elem.categoriesList = categories;
     return elem;
 }
 
