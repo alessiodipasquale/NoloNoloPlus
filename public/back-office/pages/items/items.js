@@ -228,7 +228,7 @@ function confirmEditItem() {
     const editinputDescription = $('#inputEditDescription').val();
     const editinputImageUrl = $('#inputEditImageUrl').val();
 
-    console.log({editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId})
+    console.log({editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId, propertiesEdit})
     editItem(id, editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId, propertiesEdit)
     .done((res) => {
         loadAllItems();
@@ -332,15 +332,17 @@ function openEditItem(elem) {
             }
         });
 
+        console.log(propertiesList);
+
         
         propertiesEdit = item.propertiesList;
         for (const property of propertiesEdit) {
             const row = $(`<div class="row" style="margin-bottom: 3px; border-bottom: 1px solid lightgrey; padding: 1%"></div>`)
-            row.attr("id","prop"+property._id);
+            row.attr("id","prop"+property.associatedProperty);
             const firstCol= $(`<div class="col-10" style="display: flex; align-items: center"></div>`)
             firstCol.text(property.value+' '+(property.unitOfMeasure != undefined ? property.unitOfMeasure+' ' : '')+property.name)
             const secondCol =$(`<div class="col-2"></div>`)
-            const deleteItemBtn = $('<button type="button" class="btn btn-danger mr-3" id="'+property._id+'"><i class="fas fa-trash" id="'+property._id+'"></i></button>')
+            const deleteItemBtn = $('<button type="button" class="btn btn-danger mr-3" id="'+property.associatedProperty+'"><i class="fas fa-trash" id="'+property.associatedProperty+'"></i></button>')
 
             deleteItemBtn.click(function(elem) {
                 $('#prop'+elem.target.id).remove();
