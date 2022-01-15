@@ -97,13 +97,13 @@ const createItem = async (object) => {
 const generateFullItem = async (baseItem) => {
     const props = [];
     const categories = [];
-    for (let propId of baseItem.properties) {
-        const propVal = await PropertyValueModel.findOne({ _id: propId });
+    for (let propValId of baseItem.properties) {
+        const propVal = await PropertyValueModel.findOne({ _id: propValId });
         const prop = await PropertyModel.findOne({ _id: propVal.associatedProperty });
         const name = prop.name;
         const value = propVal.value;
         const unitOfMeasure = propVal.unitOfMeasure;
-        props.push({ name, value, unitOfMeasure });
+        props.push({ associatedProperty:propVal.associatedProperty ,name, _id:propValId, value, unitOfMeasure });
     }
     for (let catId of baseItem.category) {
         const category = await CategoryModel.findOne({ _id: catId });
@@ -354,6 +354,17 @@ const editItem = async (itemId, object) => {
             associateToKit("array", "items", itemId, elem);
         }
         secureObject.kits = object.kits;
+    }
+    if (object.propertiesList) {
+        const properties = [];
+        for(let elem of object.propertiesList){
+            let prop = await getPropertyValueByAttributes({associatedProperty:elem.associatedProperty, value:elem.value, unitOfMeasure:elem.unitOfMeasure});
+            if(prop == null){
+                prop = await createPropertyValue({associatedProperty:elem.associatedProperty, value:elem.value, unitOfMeasure:elem.unitOfMeasure});
+            }
+            properties.push(prop._id)
+        }
+        object.properties = properties
     }
     if (object.properties) {
         let oldAssociated = secureObject.properties;
