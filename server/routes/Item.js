@@ -355,6 +355,7 @@ const editItem = async (itemId, object) => {
         }
         secureObject.kits = object.kits;
     }
+    console.log(object)
     if (object.propertiesList) {
         const properties = [];
         for(let elem of object.propertiesList){
@@ -365,6 +366,8 @@ const editItem = async (itemId, object) => {
             properties.push(prop._id)
         }
         object.properties = properties
+    }else{
+        if(!object.properties) object.properties = [];
     }
     if (object.properties) {
         let oldAssociated = secureObject.properties;
