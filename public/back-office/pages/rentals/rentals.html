@@ -99,9 +99,15 @@ aria-hidden="true">
                     </div>
                 </div>
             </div>
+
+            <div class="alert alert-success" role="alert" id="alertAvailable">
+                Disponibilità confermata.
+            </div>
+            <div class="price"></div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-success" id="verifyBtn" onclick="verifyAvailability()">Verifica Disponibilità</button>
             <button type="button" class="btn btn-primary" id="createBtn" onclick="createRent()">Crea</button>
         </div>
     </div>

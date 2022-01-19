@@ -2,6 +2,7 @@ var choice;
 var userId;
 var itemId;
 var state;
+var price;
 $(document).ready(function() {
     loadAllItems();
 });
@@ -29,19 +30,56 @@ function openCreateRental() {
     $('.createItemRental').hide();
     $('.createKitRental').hide();
     $('.modal-footer').hide();
-
+    $('#alertAvailable').hide();
+    $('.price').hide();
     $('#createRentalModal').modal('show')
 
+}
+
+function verifyAvailability() {
+    const startDate = $('#startDate').val();
+    const endDate = $('#endDate').val();
+    if(itemId && startDate && endDate) {
+        checkIfAvailables(itemId, startDate, endDate)
+        .done(() => {
+            $('#alertAvailable').show();
+            calculatePriceforItem(itemId, startDate, endDate)
+            .done(res => {
+                price = res.finalPrice
+                $('.price').show();
+                const row = $('<div style="display: flex; justify-content: space-evenly; margin: 3%"></div>');
+                const h3 = $('<h3></h3>').text('Il prezzo finale calcolato è: ');
+                const input = $('<input type="number" class="form-control" id="finalPrice" style="height:1%; width: 50%">').val(res.finalPrice)
+                row.append([h3, input]);
+                $('.price').append(row);
+
+                for (elem of res.receipt) {
+                    $('.price').append($('<p></p>').text(elem))
+                }
+                
+                $('#verifyBtn').hide();
+                $('#createBtn').show();
+
+            })
+        }).catch(err => {
+            alert("Date non disponibili.")
+        })
+
+    } else {
+        alert("Inserisci tutti i campi.")
+    }
 }
 
 function setChoice() {
     choice = $("input[name='objectKitSelection']:checked").val();
     $('.objectKitSelection').hide();
+    
 
     if (choice == "singolo"){
         setUserDropdown();
         setItemDropdown();
         $('.createItemRental').show();
+        $('#createBtn').hide();
         $('.modal-footer').show();
     }else {
         $('.createKitRental').show();
@@ -152,11 +190,14 @@ function addElemToTable(elem) {
 }
 
 function createRent() {
+    console.log('creo');
     const startDate = $('#startDate').val();
     const endDate = $('#endDate').val();
-
+    var modifyPrice = $('#finalPrice').val();
+    if (price == modifyPrice) 
+        modifyPrice = undefined
     if(userId && itemId && state && startDate && endDate) {
-        createRental(startDate, endDate, [itemId], undefined, state, userId)
+        createRental(startDate, endDate, [itemId], undefined, state, userId, modifyPrice)
         .done(() => {
             $('#createRentalModal').modal('hide')
         })

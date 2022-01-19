@@ -39,7 +39,7 @@ const router = {
         app.put('/items/:id',auth, (req, res) => { requestManager("editItem", req, res); })
         app.post('/items/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
         /*non uso*/app.get('/items/:id/getReviewsByItemId', (req, res) => { requestManager("getReviewsByItemId", req, res); })
-        /*non uso*/app.post('/items/:itemId/calculatePrice', (req, res) => { requestManager("calculatePriceforItem", req, res); })
+        /*non uso*/app.post('/items/:id/calculatePrice', (req, res) => { requestManager("calculatePriceforItem", req, res); })
 
 
         // Rental
