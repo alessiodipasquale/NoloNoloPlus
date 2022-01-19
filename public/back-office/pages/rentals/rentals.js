@@ -32,6 +32,10 @@ function openCreateRental() {
     $('.modal-footer').hide();
     $('#alertAvailable').hide();
     $('.price').hide();
+
+    $('#dropdown-items').find('*').not('#itemFilter').remove();
+    $('#dropdown-users').find('*').not('#userFilter').remove();
+
     $('#createRentalModal').modal('show')
 
 }
