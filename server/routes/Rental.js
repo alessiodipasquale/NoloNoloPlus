@@ -81,9 +81,11 @@ const createRental = async (object, userId, role) => {
         object.receipt = ["mofified by an employer"];
     }
 
-    const rental = await RentalModel.create(object);
     const dates = getDatesFromARange(object.startDate, object.endDate);
     object.timeInDays = dates.length;
+
+    const rental = await RentalModel.create(object);
+
     await updateItemRentalDates("add", dates, object.objectId);
     await associateToUser("array", "rentals", rental._id, object.clientId);
     for(let id of object.objectId){
