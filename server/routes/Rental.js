@@ -3,7 +3,7 @@ const UserModel = require('../models/UserModel')
 const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem, calculatePriceforItem } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
-const { associateToUser, associateToKit, associateToCertification, associateToItem, deleteAssociationToUser, deleteAssociationToCertification } = require("./associations/AssociationManager");
+const { associateToUser, associateToKit, associateToCertification, associateToItem, deleteAssociationToUser, deleteAssociationToCertification, deleteAssociationToKit, deleteAssociationToItem } = require("./associations/AssociationManager");
 const { getKitById, calculatePriceforKit } = require("./Kit");
 const { createCertification } = require("./Certification");
 const { updateRentalsCount } = require("./Item");
@@ -18,7 +18,7 @@ const getRentals = async () => {
     return rentals;
 }
 
-const deleteRental = async () => {
+const deleteRental = async (id) => {
     const functionalObj = {
         clientId: "toDelete",
         employerId: "toDelete",

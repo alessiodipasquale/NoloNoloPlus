@@ -1,12 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rentals</title>
-</head>
-<body>
-    rentals works.
-</body>
-</html>
+<button type="button" class="btn btn-primary" onclick="openCreateItem()">
+    Crea nuova prenotazione
+</button>
+
+<table class="table" style="margin-top: 2%;">
+    <thead>
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Utente</th>
+        <th scope="col">Oggetto</th>
+        <th scope="col">Data di inizio</th>
+        <th scope="col">Data di fine</th>
+        <th scope="col">Stato</th>
+        <th scope="col">Prezzo complessivo</th>
+        <th scope="col">Azioni</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+<script src="../services/items-service.js"></script>
+<script src="../services/kits-service.js"></script>
+
+<script src="../pages/rentals/rentals.js"></script>
+<script src="../services/rentals-service.js"></script>

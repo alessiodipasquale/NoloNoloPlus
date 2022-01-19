@@ -3,7 +3,7 @@ function createRental(startDate, endDate, itemIds, kitId) { //kitId can be null
 }
 
 function getRentals() {
-    return httpGet('rentals', false);
+    return httpGet('rentals', true);
 }
 
 function getRentalById(id) {
