@@ -36,15 +36,14 @@ const createRental = async (object, userId, role) => {
     Important note: userId is related to the user that make the request.
     If an employer create a rental for one user the clientId must be passed in the object    
     */
-   console.log(object);
-   console.log("userId: "+userId);
     if(!object.startDate || !object.endDate || !userId  || !object.objectId)
         throw BadRequestError;
 
     if(object.kitId){
         object.rentalTarget = 'kit';
+        const kit = await getKitById(object.kitId)
+        object.objectId = kit.items;
     }else object.rentalTarget = 'singolo';
-
 
     const start = new Date(object.startDate);
     if(start == new Date()) {
@@ -75,6 +74,11 @@ const createRental = async (object, userId, role) => {
         const price = await calculatePriceforItem({startDate: object.startDate, endDate: object.endDate},object.itemId[0],userId)
         object.finalPrice = price.finalPrice;
         object.receipt = price.receipt;
+    }
+
+    if(object.modifyPrice && role != "cliente"){
+        object.finalPrice = object.modifyPrice;
+        object.receipt = ["mofified by an employer"];
     }
 
     const rental = await RentalModel.create(object);
