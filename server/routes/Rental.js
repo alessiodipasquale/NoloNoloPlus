@@ -36,6 +36,8 @@ const createRental = async (object, userId, role) => {
     Important note: userId is related to the user that make the request.
     If an employer create a rental for one user the clientId must be passed in the object    
     */
+   console.log(object);
+   console.log("userId: "+userId);
     if(!object.startDate || !object.endDate || !userId  || !object.objectId)
         throw BadRequestError;
 

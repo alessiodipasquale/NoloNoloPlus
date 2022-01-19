@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" onclick="openCreateItem()">
+<button type="button" class="btn btn-primary" onclick="openCreateRental()">
     Crea nuova prenotazione
 </button>
 
@@ -19,8 +19,99 @@
     </tbody>
 </table>
 
+<!-- CreateModal -->
+<div class="modal fade" id="createRentalModal" tabindex="-1" role="dialog" aria-labelledby="createRentalModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="createRentalModalLabel">Crea Prenotazione</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="objectKitSelection" style="padding: 2%;">
+                <div class="form-check" style="margin-bottom: 1%;">
+                    <input class="form-check-input" type="radio" name="objectKitSelection" id="objectChoice" value="singolo" checked>
+                    <label class="form-check-label" for="objectChoice">
+                    Oggetto Singolo
+                    </label>
+                </div>
+                <div class="form-check" style="margin-bottom: 2%;">
+                    <input class="form-check-input" type="radio" name="objectKitSelection" id="kitChoice" value="kit">
+                    <label class="form-check-label" for="kitChoice">
+                    Kit
+                    </label>
+                </div>
+                <button type="button" class="btn btn-primary" onclick="setChoice()">Conferma</button>
+            </div>
+
+            <div class="createItemRental">
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <div class="dropdown">
+                            <label for="dropdown-users">Cliente *</label>
+                            <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="clientSearchButton">Scegli cliente
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="dropdown-users">
+                              <input class="form-control" id="userFilter" type="text" placeholder="Cerca..">
+                            </ul>
+                          </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown">
+                            <label for="dropdown-items">Oggetto *</label>
+                            <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="itemSearchButton">Scegli oggetto
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="dropdown-items">
+                              <input class="form-control" id="itemFilter" type="text" placeholder="Cerca..">
+                            </ul>
+                          </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputCategory">Stato*</label>
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="inputState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli stato prenotazione
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputState">
+                                <a class="dropdown-item" href="#" onclick="setState('in corso')">in corso</a>
+                                <a class="dropdown-item" href="#" onclick="setState('terminata')">terminata</a>
+                                <a class="dropdown-item" href="#" onclick="setState('futura')">futura</a>
+                                <a class="dropdown-item" href="#" onclick="setState('non completabile')">non completabile</a>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="startDate">Data di inizio</label>
+                            <input type="date" class="form-control" id="startDate" placeholder="Inserisci data di inizio">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="endDate">Data di fine</label>
+                            <input type="date" class="form-control" id="endDate" placeholder="Inserisci data di fine">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="createRent()">Crea</button>
+        </div>
+    </div>
+</div>
+</div>
+
+
+
 <script src="../services/items-service.js"></script>
 <script src="../services/kits-service.js"></script>
-
+<script src="../services/users-service.js"></script>
 <script src="../pages/rentals/rentals.js"></script>
 <script src="../services/rentals-service.js"></script>
