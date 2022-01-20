@@ -412,14 +412,11 @@ const requestManager = async (reqName, req, res) => {
         break;
       }
       case "calculatePriceforKit": {
-        if (req.user)
-          toReturn = await calculatePriceforKit(
-            req.body,
-            req.params.id,
-            req.user.user._id
-          );
-        else
+        if (req.user){
+          toReturn = await calculatePriceforKit( req.body, req.params.id, req.user.user._id );
+        } else{
           toReturn = await calculatePriceforKit(req.body, req.params.id, null);
+        }
         break;
       }
       case "getReviewsByKitId": {

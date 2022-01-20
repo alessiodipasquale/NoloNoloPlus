@@ -1,6 +1,6 @@
 const RentalModel = require("../models/RentalModel");
 const UserModel = require('../models/UserModel')
-const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem, calculatePriceforItem } = require("../routes/Item"); 
+const { getItemById, updateItemRentalDates, checkIfAvailable, getCategoriesByItem, calculatePriceforItem, editItem } = require("../routes/Item"); 
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors');
 const { getDatesFromARange } = require("../utils/UtilityFuctions");
 const { associateToUser, associateToKit, associateToCertification, associateToItem, deleteAssociationToUser, deleteAssociationToCertification, deleteAssociationToKit, deleteAssociationToItem } = require("./associations/AssociationManager");
@@ -25,10 +25,35 @@ const deleteRental = async (id) => {
         kitId: "toDelete",
         itemId: []
     }
+    await fixDates(id)
     await editRental(id, functionalObj);
     const rental = await RentalModel.deleteOne({_id: id})
     if(!rental)
         throw BadRequestError;
+}
+
+const fixDates = async (rentalId) => {
+    const rental = await getRentalById(rentalId);
+    let items = rental.itemId;
+
+    if(!Array.isArray(items))
+        items = [items];
+
+    const datesRange = getDatesFromARange(rental.startDate, rental.endDate);
+    for(let itemId of items){
+        const item = await getItemById(itemId)
+        for(let date of item.rentalDates){
+            for(let dateInRange of datesRange){
+                if((new Date(date).toLocaleDateString()) == (new Date(dateInRange).toLocaleDateString())){
+                    item.rentalDates = item.rentalDates.filter((elem)=>{
+                        return elem != date;
+                    })
+                }
+            }
+        }
+
+        await editItem(itemId,{rentalDates: item.rentalDates})
+    }
 }
 
 const createRental = async (object, userId, role) => {
@@ -36,14 +61,14 @@ const createRental = async (object, userId, role) => {
     Important note: userId is related to the user that make the request.
     If an employer create a rental for one user the clientId must be passed in the object    
     */
-    if(!object.startDate || !object.endDate || !userId  || !object.objectId)
-        throw BadRequestError;
-
     if(object.kitId){
         object.rentalTarget = 'kit';
         const kit = await getKitById(object.kitId)
         object.objectId = kit.items;
     }else object.rentalTarget = 'singolo';
+
+    if(!object.startDate || !object.endDate || !userId  || !object.objectId)
+        throw BadRequestError;
 
     const start = new Date(object.startDate);
     if(start == new Date()) {
@@ -58,8 +83,13 @@ const createRental = async (object, userId, role) => {
             object.state = 'terminata'
 
         }else{
-            object.rentalType = 'prenotazione';
-            object.state = 'futura'
+            if(start < new Date()){
+                object.rentalType = 'istantaneo';
+                object.state = 'in corso'
+            }else{
+                object.rentalType = 'prenotazione';
+                object.state = 'futura'
+            }
         }
     }
 

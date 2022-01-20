@@ -52,7 +52,6 @@ const deleteKit = async (id) => {
 }
 
 const createKit = async (object) => {
-    console.log(object);
     if(!object.name || !object.description || !object.standardPrice || !object.items)
         throw BadRequestError;
 

@@ -88,20 +88,26 @@ function verifyAvailability() {
                 $('#alertAvailable').show();
                 calculatePriceforKit(kitId, startDate, endDate)
                 .done(res => {
-                    price = res.finalPrice
+                    console.log(res);
+                    price = res.finalKitPrice
                     $('.price').show();
                     const row = $('<div style="display: flex; justify-content: space-evenly; margin: 3%"></div>');
                     const h3 = $('<h3></h3>').text('Il prezzo finale calcolato è: ');
-                    const input = $('<input type="number" class="form-control" id="finalKitPrice" style="height:1%; width: 50%">').val(res.finalPrice)
+                    const input = $('<input type="number" class="form-control" id="finalKitPrice" style="height:1%; width: 50%">').val(res.finalKitPrice)
                     row.append([h3, input]);
                     $('.price').append(row);
     
-                    for (elem of res.receipt) {
+                    for (elem of res.kitReceipt) {
                         $('.price').append($('<p></p>').text(elem))
                     }
+
+                    for (elem of res.partialPrices) {
+                        for (e of elem)
+                            $('.price').append($('<p></p>').text(e))
+                    }
                     
-                    $('#verifyBtn').hide();
-                    $('#createBtn').show();
+                    $('#verifyBtnEdit').hide();
+                    $('#createBtnEdit').show();
     
                 })
             }).catch(err => {
@@ -130,7 +136,7 @@ function setChoice() {
         $('.createKitRental').show();
         setUserKitDropdown();
         setKitsDropdown();
-        $('#createBtn').hide();
+        $('#createBtnEdit').hide();
         $('.modal-footer').show();
     }
     
@@ -305,17 +311,25 @@ function addElemToTable(elem) {
 
 function createRent() {
     console.log('creo');
-    const startDate = $('#startDate').val();
-    const endDate = $('#endDate').val();
-    var modifyPrice = $('#finalPrice').val();
+    const startDate = choice == "singolo" ? $('#startDate').val() : $('#startKitDate').val();
+    const endDate =  choice == "singolo" ? $('#endDate').val() :$('#endKitDate').val() ;
+    var modifyPrice = choice == "singolo" ? $('#finalPrice').val() : $('#finalKitPrice').val();
     if (price == modifyPrice) 
         modifyPrice = undefined
-    if(userId && itemId && state && startDate && endDate) {
-        createRental(startDate, endDate, [itemId], undefined, state, userId, modifyPrice)
-        .done(() => {
-            $('#createRentalModal').modal('hide')
-        })
-    } else {
+    //if(userId && (itemId || kitId) && state && startDate && endDate) {
+        if (choice == "singolo") {
+            createRental(startDate, endDate,itemId, undefined, state, userId, modifyPrice)
+            .done(() => {
+                $('#createRentalModal').modal('hide')
+            })
+        } else {
+            createRental(startDate, endDate,undefined, kitId, state, userId, modifyPrice)
+            .done(() => {
+                $('#createRentalModal').modal('hide')
+            })
+        }
+        
+    /*} else {
         alert("Inserisci tutti i campi.")
-    }
+    }*/
 }

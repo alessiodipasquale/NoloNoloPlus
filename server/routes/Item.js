@@ -179,14 +179,15 @@ const updateItemRentalDates = async (opType, dates, objectId) => {
 }
 
 const checkIfAvailable = async (object) => {
-    if (!object.startDate || !object.endDate || !object.objectId)
-        throw BadRequestError;
-
+    
     if(object.kitId){
-        const kit = await KitModel.findOne({ _id: kitId });
+        const kit = await KitModel.findOne({ _id: object.kitId });
         object.objectId = kit.items;
     }
     
+    if (!object.startDate || !object.endDate || !object.objectId)
+        throw BadRequestError;
+
     if (!Array.isArray(object.objectId))
         object.objectId = [object.objectId];
 
@@ -195,7 +196,6 @@ const checkIfAvailable = async (object) => {
         const item = await getItemById(elem);
         const start = new Date(object.startDate);
         const end = new Date(object.endDate);
-        console.log(item.rentalDates)
         for (let e of item.rentalDates) {
             const elem = new Date(e)
             if (elem >= start && elem <= end) {
@@ -323,6 +323,8 @@ const editItem = async (itemId, object) => {
         secureObject.name = object.name;
     if (object.description)
         secureObject.description = object.description;
+    if (object.rentalDates)
+        secureObject.rentalDates = object.rentalDates;
     if (object.standardPrice)
         secureObject.standardPrice = object.standardPrice;
     if (object.imgSrc)
@@ -361,7 +363,6 @@ const editItem = async (itemId, object) => {
         }
         secureObject.kits = object.kits;
     }
-    console.log(object)
     if (object.propertiesList) {
         const properties = [];
         for(let elem of object.propertiesList){

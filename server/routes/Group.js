@@ -28,7 +28,7 @@ const deleteGroup = async (id) => {
 }
 
 const createGroup = async (object) => {
-    console.log(object);
+    
     if(!object.items || !object.name)
         throw BadRequestError;
 
