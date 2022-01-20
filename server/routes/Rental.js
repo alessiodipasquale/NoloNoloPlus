@@ -32,7 +32,6 @@ const deleteRental = async (id) => {
 }
 
 const createRental = async (object, userId, role) => {
-    console.log(object);
     /*
     Important note: userId is related to the user that make the request.
     If an employer create a rental for one user the clientId must be passed in the object    
