@@ -21,7 +21,12 @@
                 </div>
             </div>
         </div>
-      </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            {{item.description}}
+        </div>
+    </div>
     <div class="card" *ngIf="tokenService.isTokenSet()">
         <div class="card-body">
             <div *ngIf="!checked" class="animated fadeIn">
@@ -45,11 +50,7 @@
         </div>
         
     </div>
-    <div class="card">
-        <div class="card-body">
-            {{item.description}}
-        </div>
-    </div>
+    
     <div class="card card-accent-warning" *ngIf="!tokenService.isTokenSet()">
         <div class="card-header"> Attenzione </div>
         <div class="card-body">

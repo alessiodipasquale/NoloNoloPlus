@@ -17,3 +17,11 @@ function deleteKit(id) {
 function editKit(_id, name, description, standardPrice, available, items) {
     return httpPut('kits/'+_id, {name, description, standardPrice, available, items}, true);
 }
+
+function checkIfKitAvailables(kitId, startDate, endDate) {
+    return httpPost('kits/'+kitId+'/checkIfAvailable', {startDate, endDate, kitId}, true)
+}
+
+function calculatePriceforKit(kitId, startDate, endDate) {
+    return httpPost('kits/'+kitId+'/calculatePrice', {startDate, endDate}, true)
+}

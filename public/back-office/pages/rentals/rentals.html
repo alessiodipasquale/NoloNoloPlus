@@ -100,6 +100,59 @@ aria-hidden="true">
                 </div>
             </div>
 
+            <div class="createKitRental">
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <div class="dropdown">
+                            <label for="dropdown-users">Cliente *</label>
+                            <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="clientSearchButtonKit">Scegli cliente
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="dropdown-kitusers">
+                              <input class="form-control" id="userKitFilter" type="text" placeholder="Cerca..">
+                            </ul>
+                          </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown">
+                            <label for="dropdown-kits">Kit *</label>
+                            <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="kitSearchButton">Scegli kit
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="dropdown-kits">
+                              <input class="form-control" id="kitFilter" type="text" placeholder="Cerca..">
+                            </ul>
+                          </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="dropdown" style="display: flex; flex-direction: column;">
+                            <label for="inputKitState">Stato*</label>
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="inputKitState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                             Scegli stato prenotazione
+                            </button>
+                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputKitState">
+                                <a class="dropdown-item" href="#" onclick="setKitState('in corso')">in corso</a>
+                                <a class="dropdown-item" href="#" onclick="setKitState('terminata')">terminata</a>
+                                <a class="dropdown-item" href="#" onclick="setKitState('futura')">futura</a>
+                                <a class="dropdown-item" href="#" onclick="setKitState('non completabile')">non completabile</a>
+                            </div>
+                        </div>   
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="startKitDate">Data di inizio</label>
+                            <input type="date" class="form-control" id="startKitDate" placeholder="Inserisci data di inizio">
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-group">
+                            <label for="endKitDate">Data di fine</label>
+                            <input type="date" class="form-control" id="endKitDate" placeholder="Inserisci data di fine">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="alert alert-success" role="alert" id="alertAvailable">
                 Disponibilità confermata.
             </div>

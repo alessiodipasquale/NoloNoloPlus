@@ -1,6 +1,7 @@
 var choice;
 var userId;
 var itemId;
+var kitId;
 var state;
 var price;
 $(document).ready(function() {
@@ -35,43 +36,83 @@ function openCreateRental() {
 
     $('#dropdown-items').find('*').not('#itemFilter').remove();
     $('#dropdown-users').find('*').not('#userFilter').remove();
+    $('#dropdown-kitusers').find('*').not('#userKitFilter').remove();
+    $('#dropdown-kits').find('*').not('#kitFilter').remove();
+
 
     $('#createRentalModal').modal('show')
 
 }
 
 function verifyAvailability() {
-    const startDate = $('#startDate').val();
-    const endDate = $('#endDate').val();
-    if(itemId && startDate && endDate) {
-        checkIfAvailables(itemId, startDate, endDate)
-        .done(() => {
-            $('#alertAvailable').show();
-            calculatePriceforItem(itemId, startDate, endDate)
-            .done(res => {
-                price = res.finalPrice
-                $('.price').show();
-                const row = $('<div style="display: flex; justify-content: space-evenly; margin: 3%"></div>');
-                const h3 = $('<h3></h3>').text('Il prezzo finale calcolato è: ');
-                const input = $('<input type="number" class="form-control" id="finalPrice" style="height:1%; width: 50%">').val(res.finalPrice)
-                row.append([h3, input]);
-                $('.price').append(row);
-
-                for (elem of res.receipt) {
-                    $('.price').append($('<p></p>').text(elem))
-                }
-                
-                $('#verifyBtn').hide();
-                $('#createBtn').show();
-
+    
+    if (choice == "singolo") {
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
+        if(itemId && startDate && endDate) {
+            checkIfAvailables(itemId, startDate, endDate)
+            .done(() => {
+                $('#alertAvailable').show();
+                calculatePriceforItem(itemId, startDate, endDate)
+                .done(res => {
+                    price = res.finalPrice
+                    $('.price').show();
+                    const row = $('<div style="display: flex; justify-content: space-evenly; margin: 3%"></div>');
+                    const h3 = $('<h3></h3>').text('Il prezzo finale calcolato è: ');
+                    const input = $('<input type="number" class="form-control" id="finalPrice" style="height:1%; width: 50%">').val(res.finalPrice)
+                    row.append([h3, input]);
+                    $('.price').append(row);
+    
+                    for (elem of res.receipt) {
+                        $('.price').append($('<p></p>').text(elem))
+                    }
+                    
+                    $('#verifyBtn').hide();
+                    $('#createBtn').show();
+    
+                })
+            }).catch(err => {
+                alert("Date non disponibili.")
             })
-        }).catch(err => {
-            alert("Date non disponibili.")
-        })
-
+    
+        } else {
+            alert("Inserisci tutti i campi.")
+        }
     } else {
-        alert("Inserisci tutti i campi.")
+        const startDate = $('#startKitDate').val();
+        const endDate = $('#endKitDate').val();
+        console.log({userId, kitId, state, startDate, endDate})
+        if(kitId && startDate && endDate) {
+            checkIfKitAvailables(kitId, startDate, endDate)
+            .done(() => {
+                $('#alertAvailable').show();
+                calculatePriceforKit(kitId, startDate, endDate)
+                .done(res => {
+                    price = res.finalPrice
+                    $('.price').show();
+                    const row = $('<div style="display: flex; justify-content: space-evenly; margin: 3%"></div>');
+                    const h3 = $('<h3></h3>').text('Il prezzo finale calcolato è: ');
+                    const input = $('<input type="number" class="form-control" id="finalKitPrice" style="height:1%; width: 50%">').val(res.finalPrice)
+                    row.append([h3, input]);
+                    $('.price').append(row);
+    
+                    for (elem of res.receipt) {
+                        $('.price').append($('<p></p>').text(elem))
+                    }
+                    
+                    $('#verifyBtn').hide();
+                    $('#createBtn').show();
+    
+                })
+            }).catch(err => {
+                alert("Date non disponibili.")
+            })
+    
+        } else {
+            alert("Inserisci tutti i campi.")
+        }
     }
+    
 }
 
 function setChoice() {
@@ -80,13 +121,16 @@ function setChoice() {
     
 
     if (choice == "singolo"){
+        $('.createItemRental').show();
         setUserDropdown();
         setItemDropdown();
-        $('.createItemRental').show();
         $('#createBtn').hide();
         $('.modal-footer').show();
     }else {
         $('.createKitRental').show();
+        setUserKitDropdown();
+        setKitsDropdown();
+        $('#createBtn').hide();
         $('.modal-footer').show();
     }
     
@@ -95,6 +139,7 @@ function setChoice() {
 function setUserDropdown(){
     getUsers()
     .done(users => {
+        console.log("utenti: ",users);
         for (elem of users){
             const user = $('<li class="elementDropdown" style="padding: 3px" id="'+elem._id+'"></li>')
             .click(function(elem) {
@@ -119,6 +164,37 @@ function setUserDropdown(){
         });
     });
 }
+
+
+function setUserKitDropdown(){
+    getUsers()
+    .done(users => {
+        console.log("utenti: ",users);
+        for (elem of users){
+            const user = $('<li class="elementDropdown" style="padding: 3px" id="'+elem._id+'"></li>')
+            .click(function(elem) {
+                getUserById(elem.target.id)
+                .done(res => {
+                    userId = res._id
+                    $('#clientSearchButtonKit').text(res.name+' '+res.surname);
+                })
+            })
+            const link = $('<a id="'+elem._id+'" href="#"></a>').text(elem._id+' ,'+elem.name+' '+elem.surname+', ruolo: '+elem.role);
+            user.append(link);
+            $('#dropdown-kitusers').append(user);
+        }
+    })
+
+    $(document).ready(function(){
+        $("#userKitFilter").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $(".dropdown-menu li").filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+}
+
 
 function setItemDropdown() {
     getItems()
@@ -149,9 +225,43 @@ function setItemDropdown() {
     })
 }
 
+function setKitsDropdown() {
+    getKits()
+    .done(res => {
+        for (const elem of res) {
+            const item = $('<li class="elementEditDropdown" style="padding: 3px" id="'+elem._id+'"></li>')
+            .click(function(elem) {
+                getKitById(elem.target.id)
+                .done(res => {
+                    kitId = res._id
+                    $('#kitSearchButton').text(res.name);
+                })
+            })
+            const link = $('<a id="'+elem._id+'" href="#"></a>').text(elem._id+' ,'+elem.name)
+            item.append(link);
+            $('#dropdown-kits').append(item);
+        }
+
+        $(document).ready(function(){
+            $("#kitFilter").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $(".dropdown-menu li").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+            });
+
+    })
+}
+
 function setState(stat) {
     state = stat;
     $('#inputState').text(state);
+}
+
+function setKitState(stat) {
+    state = stat;
+    $('#inputKitState').text(state);
 }
 
 function addElemToTable(elem) {
