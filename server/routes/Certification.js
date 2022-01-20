@@ -27,7 +27,7 @@ const createCertification = async (object, employerId) => {
     if(object.certificationType == 'ritiro'){
         await associateToRental("single", "rentalCertification",certification._id, object.rentalId)
         await associateToRental("single", "employerId", employerId, object.rentalId)
-        await associateToUser("single", "rentals", object.rentalId, employerId)
+        await associateToUser("array", "rentals", object.rentalId, employerId)
     }else{
         await associateToRental("single", "returnCertification",certification._id, object.rentalId)
     }

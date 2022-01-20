@@ -52,8 +52,15 @@ const createRental = async (object, userId, role) => {
         }
         object.state = 'in corso'
     }else{
-        object.rentalType = 'prenotazione';
-        object.state = 'futura'
+        const end = new Date(object.startDate);
+        if(end < new Date()){
+            object.rentalType = 'prenotazione';
+            object.state = 'terminata'
+
+        }else{
+            object.rentalType = 'prenotazione';
+            object.state = 'futura'
+        }
     }
 
     if(!checkIfAvailable(object))
@@ -102,10 +109,12 @@ const createRental = async (object, userId, role) => {
     if(object.rentalType == "istantaneo"){  //if the employer create an instant rental for one user, the certification is automatically given
         await createCertification({rentalId: rental._id, certificationType: 'ritiro'},object.employerId) 
     }
+    if(object.state == "terminata"){  //if the employer create an instant rental for one user, the certification is automatically given
+        await createCertification({rentalId: rental._id, certificationType: 'riconsegna'},object.employerId) 
+    }
     if(object.rentalTarget == 'kit'){
         await associateToKit("array","rentals",rental._id,object.kitId);
     }
-
     return rental;
 }
 

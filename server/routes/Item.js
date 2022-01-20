@@ -1,6 +1,7 @@
 const ItemModel = require('../models/ItemModel');
 const UserModel = require('../models/UserModel')
 const ReviewModel = require('../models/ReviewModel');
+const KitModel = require('../models/KitModel');
 const CategoryModel = require("../models/CategoryModel");
 const PropertyModel = require("../models/PropertyModel");
 const PropertyValueModel = require("../models/PropertyValueModel");
@@ -181,6 +182,11 @@ const checkIfAvailable = async (object) => {
     if (!object.startDate || !object.endDate || !object.objectId)
         throw BadRequestError;
 
+    if(object.kitId){
+        const kit = await KitModel.findOne({ _id: kitId });
+        object.objectId = kit.items;
+    }
+    
     if (!Array.isArray(object.objectId))
         object.objectId = [object.objectId];
 
