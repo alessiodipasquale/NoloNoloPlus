@@ -19,9 +19,44 @@ function loadAllItems() {
 }
 
 function openEditRental(elem) {
+    $('.editprice').empty();
+
     getRentalById(elem.target.id)
     .done(rental => {
         console.log(rental)
+        $('#clientId').val(rental.clientId)
+        $('#employerId').val(rental.employerId)
+        if (rental.kitId) {
+            $('#itemOrKitLabel').text("Id Kit");
+            $('#itemOrKitId').val(rental.kitId);
+        } else {
+            $('#itemOrKitLabel').text("Id Oggetto");
+            $('#itemOrKitId').val(rental.itemId);
+        }
+        $('#startEditDate').val(new Date(rental.startDate).toISOString().substring(0,10));
+        $('#endEditDate').val(new Date(rental.endDate).toISOString().substring(0,10));
+        $('#finalEditPrice').val(rental.finalPrice);
+        //NOTE COME TESTO SINGOLO DA AGGIUNGERE
+
+        if(rental.kitId) {
+            for (elem of rental.receipt) {
+                $('.editprice').append($('<p></p>').text(elem))
+            }
+            $('.editprice').append($('<br></br>'));
+
+            for (elem of rental.partialPrices) {
+                for (e of elem)
+                    $('.editprice').append($('<p></p>').text(e))
+                $('.editprice').append($('<br></br>'));
+            }
+        } else {
+            for (elem of rental.receipt) {
+                $('.editprice').append($('<p></p>').text(elem))
+            }
+        }
+
+        $('#editRentalModal').modal('show')
+
     })
 }
 

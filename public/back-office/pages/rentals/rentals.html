@@ -139,6 +139,83 @@ aria-hidden="true">
 </div>
 </div>
 
+<!-- EditModal -->
+<div class="modal fade" id="editRentalModal" tabindex="-1" role="dialog" aria-labelledby="editRentalModalLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document" style="opacity: 1 !important;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="editRentalModalLabel">Modifica Prenotazione</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+
+            <div class="editRentalBody">
+                <div class="row mb-3">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="clientId">Id Cliente</label>
+                            <input type="text" class="form-control" id="clientId" disabled>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="employerId">Id Impiegato</label>
+                            <input type="text" class="form-control" id="employerId" disabled>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="itemOrKitId" id="itemOrKitLabel"></label>
+                            <input type="text" class="form-control" id="itemOrKitId" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="startEditDate">Data di inizio</label>
+                            <input type="date" class="form-control" id="startEditDate" placeholder="Inserisci data di inizio">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="endEditDate">Data di fine</label>
+                            <input type="date" class="form-control" id="endEditDate" placeholder="Inserisci data di fine">
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="form-group">
+                            <label for="finalEditPrice">Prezzo</label>
+                            <input type="number" class="form-control" id="finalEditPrice">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="form-group">
+                            <label for="editNotes">Note</label>
+                            <textarea class="form-control" id="editNotes" placeholder="Inserisci note per l'ordine"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    
+                </div>
+            </div>
+            <div class="editprice"></div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
+            <button type="button" class="btn btn-primary" data-dismiss="modal" id="dismissBtn">Termina prenotazione</button>
+            <button type="button" class="btn btn-success" id="verifyEditBtn" onclick="verifyEditAvailability()">Verifica Disponibilità</button>
+            <button type="button" class="btn btn-warning" id="editBtn" onclick="editRent()">Modifica</button>
+        </div>
+    </div>
+</div>
+</div>
 
 
 <script src="../services/items-service.js"></script>
