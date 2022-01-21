@@ -1,6 +1,7 @@
 const CertificationModel = require("../models/CertificationModel");
 const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../config/errors')
 const { associateToRental, associateToUser } = require('./associations/AssociationManager')
+const { editRental } = require("./Rental")
 
 const getCertificationById = async (id) => {
     const cert = await CertificationModel.findById(id)
@@ -25,10 +26,12 @@ const createCertification = async (object, employerId) => {
     object.employerId = employerId
     const certification = await CertificationModel.create(object);
     if(object.certificationType == 'ritiro'){
+        await editRental(object.rentalId,{state:"in corso"})
         await associateToRental("single", "rentalCertification",certification._id, object.rentalId)
         await associateToRental("single", "employerId", employerId, object.rentalId)
         await associateToUser("array", "rentals", object.rentalId, employerId)
     }else{
+        await editRental(object.rentalId,{state:"terminata"})
         await associateToRental("single", "returnCertification",certification._id, object.rentalId)
     }
     return certification;

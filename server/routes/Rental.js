@@ -115,7 +115,7 @@ const createRental = async (object, userId, role) => {
 
     if(object.modifyPrice && role != "cliente"){
         object.finalPrice = object.modifyPrice;
-        object.receipt = ["mofified by an employer"];
+        object.receipt = ["Modified by an employer"];
     }
 
     const dates = getDatesFromARange(object.startDate, object.endDate);
