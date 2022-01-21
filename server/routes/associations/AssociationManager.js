@@ -286,6 +286,10 @@ const associateToRental = async (type, toModify, value, rentalId) => {
                 await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": value} });
                 break;
             }
+            case "state": {
+                await RentalModel.updateOne({_id: rentalId},{ $set: { "state": value} });
+                break;
+            }
         }
     }
 }
