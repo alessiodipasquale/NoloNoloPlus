@@ -1,3 +1,4 @@
+const jwt = require('jsonwebtoken');
 const {
   loginFront,
   registerFront,
@@ -111,6 +112,7 @@ const requestManager = async (reqName, req, res) => {
 
       case "loginDashboard": {
         toReturn = await loginDashboard(req.body.username, req.body.password);
+        await roleChecker(jwt.decode(toReturn.token).user._id, "manager", "block");
         break;
       }
 
@@ -121,6 +123,7 @@ const requestManager = async (reqName, req, res) => {
 
       case "loginBack": {
         toReturn = await loginBack(req.body.username, req.body.password);
+        await roleChecker(jwt.decode(toReturn.token).user._id, "funzionario", "block");
         break;
       }
 
