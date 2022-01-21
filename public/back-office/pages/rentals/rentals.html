@@ -49,7 +49,7 @@ aria-hidden="true">
 
             <div class="createItemRental">
                 <div class="row mb-3">
-                    <div class="col-4">
+                    <div class="col-6">
                         <div class="dropdown">
                             <label for="dropdown-users">Cliente *</label>
                             <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="clientSearchButton">Scegli cliente
@@ -59,7 +59,7 @@ aria-hidden="true">
                             </ul>
                           </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <div class="dropdown">
                             <label for="dropdown-items">Oggetto *</label>
                             <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="itemSearchButton">Scegli oggetto
@@ -68,20 +68,6 @@ aria-hidden="true">
                               <input class="form-control" id="itemFilter" type="text" placeholder="Cerca..">
                             </ul>
                           </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="dropdown" style="display: flex; flex-direction: column;">
-                            <label for="inputCategory">Stato*</label>
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="inputState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                             Scegli stato prenotazione
-                            </button>
-                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputState">
-                                <a class="dropdown-item" href="#" onclick="setState('in corso')">in corso</a>
-                                <a class="dropdown-item" href="#" onclick="setState('terminata')">terminata</a>
-                                <a class="dropdown-item" href="#" onclick="setState('futura')">futura</a>
-                                <a class="dropdown-item" href="#" onclick="setState('non completabile')">non completabile</a>
-                            </div>
-                        </div>   
                     </div>
                 </div>
                 <div class="row">
@@ -102,7 +88,7 @@ aria-hidden="true">
 
             <div class="createKitRental">
                 <div class="row mb-3">
-                    <div class="col-4">
+                    <div class="col-6">
                         <div class="dropdown">
                             <label for="dropdown-users">Cliente *</label>
                             <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="clientSearchButtonKit">Scegli cliente
@@ -112,7 +98,7 @@ aria-hidden="true">
                             </ul>
                           </div>
                     </div>
-                    <div class="col-4">
+                    <div class="col-6">
                         <div class="dropdown">
                             <label for="dropdown-kits">Kit *</label>
                             <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="kitSearchButton">Scegli kit
@@ -121,20 +107,6 @@ aria-hidden="true">
                               <input class="form-control" id="kitFilter" type="text" placeholder="Cerca..">
                             </ul>
                           </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="dropdown" style="display: flex; flex-direction: column;">
-                            <label for="inputKitState">Stato*</label>
-                            <button class="btn btn-primary dropdown-toggle" type="button" id="inputKitState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                             Scegli stato prenotazione
-                            </button>
-                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputKitState">
-                                <a class="dropdown-item" href="#" onclick="setKitState('in corso')">in corso</a>
-                                <a class="dropdown-item" href="#" onclick="setKitState('terminata')">terminata</a>
-                                <a class="dropdown-item" href="#" onclick="setKitState('futura')">futura</a>
-                                <a class="dropdown-item" href="#" onclick="setKitState('non completabile')">non completabile</a>
-                            </div>
-                        </div>   
                     </div>
                 </div>
                 <div class="row">
@@ -160,8 +132,8 @@ aria-hidden="true">
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
-            <button type="button" class="btn btn-success" id="verifyBtnEdit" onclick="verifyAvailability()">Verifica Disponibilità</button>
-            <button type="button" class="btn btn-primary" id="createBtnEdit" onclick="createRent()">Crea</button>
+            <button type="button" class="btn btn-success" id="verifyBtn" onclick="verifyAvailability()">Verifica Disponibilità</button>
+            <button type="button" class="btn btn-primary" id="createBtn" onclick="createRent()">Crea</button>
         </div>
     </div>
 </div>

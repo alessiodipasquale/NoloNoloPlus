@@ -1,5 +1,5 @@
-function createRental(startDate, endDate, objectId, kitId, state, clientId, modifyPrice) { //kitId can be null
-    return httpPost('rentals', {startDate, endDate, objectId, kitId, state, clientId, modifyPrice}, true);
+function createRental(startDate, endDate, objectId, kitId, clientId, modifyPrice) { //kitId can be null
+    return httpPost('rentals', {startDate, endDate, objectId, kitId, clientId, modifyPrice}, true);
 }
 
 function getRentals() {

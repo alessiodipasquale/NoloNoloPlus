@@ -2,7 +2,6 @@ var choice;
 var userId;
 var itemId;
 var kitId;
-var state;
 var price;
 $(document).ready(function() {
     loadAllItems();
@@ -81,7 +80,7 @@ function verifyAvailability() {
     } else {
         const startDate = $('#startKitDate').val();
         const endDate = $('#endKitDate').val();
-        console.log({userId, kitId, state, startDate, endDate})
+        console.log({userId, kitId, startDate, endDate})
         if(kitId && startDate && endDate) {
             checkIfKitAvailables(kitId, startDate, endDate)
             .done(() => {
@@ -106,8 +105,8 @@ function verifyAvailability() {
                             $('.price').append($('<p></p>').text(e))
                     }
                     
-                    $('#verifyBtnEdit').hide();
-                    $('#createBtnEdit').show();
+                    $('#verifyBtn').hide();
+                    $('#createBtn').show();
     
                 })
             }).catch(err => {
@@ -136,7 +135,7 @@ function setChoice() {
         $('.createKitRental').show();
         setUserKitDropdown();
         setKitsDropdown();
-        $('#createBtnEdit').hide();
+        $('#createBtn').hide();
         $('.modal-footer').show();
     }
     
@@ -260,15 +259,7 @@ function setKitsDropdown() {
     })
 }
 
-function setState(stat) {
-    state = stat;
-    $('#inputState').text(state);
-}
 
-function setKitState(stat) {
-    state = stat;
-    $('#inputKitState').text(state);
-}
 
 function addElemToTable(elem) {
     console.log(elem);
@@ -318,12 +309,12 @@ function createRent() {
         modifyPrice = undefined
     //if(userId && (itemId || kitId) && state && startDate && endDate) {
         if (choice == "singolo") {
-            createRental(startDate, endDate,itemId, undefined, state, userId, modifyPrice)
+            createRental(startDate, endDate,itemId, undefined, userId, modifyPrice)
             .done(() => {
                 $('#createRentalModal').modal('hide')
             })
         } else {
-            createRental(startDate, endDate,undefined, kitId, state, userId, modifyPrice)
+            createRental(startDate, endDate,undefined, kitId, userId, modifyPrice)
             .done(() => {
                 $('#createRentalModal').modal('hide')
             })
