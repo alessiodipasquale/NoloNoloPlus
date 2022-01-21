@@ -176,12 +176,14 @@ const editRental = async (rentalId, object) => {
     const rental = await getRentalById(rentalId);
     let secureObject = JSON.stringify(rental);
     secureObject = JSON.parse(secureObject);
-    /*if(object.startDate)
-        await RentalModel.updateOne({_id: rentalId},{ $set: { "startDate": object.startDate} });*/
-    /*if(object.endDate)
-        await RentalModel.updateOne({_id: rentalId},{ $set: { "endDate": object.endDate} });*/
     if(object.rentalType)
         secureObject.rentalType = object.rentalType;
+    if(object.modifyPrice){
+        secureObject.finalPrice = object.finalPrice;
+        secureObject.receipt = ["mofified by an employer"];
+    }
+    if(object.notes)
+        secureObject.notes = object.notes;
     if(object.rentalTarget)
         secureObject.rentalTarget = object.rentalTarget;
     if(object.state)
