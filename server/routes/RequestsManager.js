@@ -191,6 +191,13 @@ const requestManager = async (reqName, req, res) => {
         toReturn = await getUsers();
         break;
       }
+      case "getStaff": {
+        await roleChecker(req.user.user._id, "funzionario", "block");
+        const managers = await getUsersByRole("manager");
+        const employers = await getUsersByRole("funzionario");
+        toReturn = managers.concat(employers);
+        break;
+      }
       case "getManagers": {
         await roleChecker(req.user.user._id, "funzionario", "block");
         toReturn = await getUsersByRole("manager");

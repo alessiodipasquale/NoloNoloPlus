@@ -15,6 +15,7 @@ const router = {
 
         // User
         app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
+        app.get('/users/staff', auth, (req, res) => { requestManager("getStaff", req, res); })
         app.get('/users/managers', auth, (req, res) => { requestManager("getManagers", req, res); })
         app.get('/users/employers', auth, (req, res) => { requestManager("getEmployers", req, res); })
         app.get('/users/clients', auth, (req, res) => { requestManager("getClients", req, res); })
