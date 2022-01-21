@@ -71,7 +71,7 @@ const createRental = async (object, userId, role) => {
         throw BadRequestError;
 
     const start = new Date(object.startDate);
-    if(start == new Date()) {
+    if(start.toLocaleDateString() == new Date().toLocaleDateString()) {
         if(role != 'cliente') {
             object.rentalType = 'istantaneo';
         }
@@ -136,11 +136,11 @@ const createRental = async (object, userId, role) => {
         await associateToItem("array","rentals",rental._id,id);
         await updateRentalsCount(id);
     }
-    if(object.rentalType == "istantaneo"){  //if the employer create an instant rental for one user, the certification is automatically given
-        await createCertification({rentalId: rental._id, certificationType: 'ritiro'},object.employerId) 
+    if(object.rentalType == "istantaneo" || object.state == "terminata"){  //if the employer create an instant rental for one user, the certification is automatically given
+        await createCertification({rentalId: rental._id, certificationType: 'ritiro'},userId) 
     }
-    if(object.state == "terminata"){  //if the employer create an instant rental for one user, the certification is automatically given
-        await createCertification({rentalId: rental._id, certificationType: 'riconsegna'},object.employerId) 
+    if(object.state == "terminata"){  //if the employer create a past rental (special case)
+        await createCertification({rentalId: rental._id, certificationType: 'riconsegna'},userId) 
     }
     if(object.rentalTarget == 'kit'){
         await associateToKit("array","rentals",rental._id,object.kitId);

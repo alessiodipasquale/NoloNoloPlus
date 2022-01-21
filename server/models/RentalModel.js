@@ -66,7 +66,7 @@ const _RentalModel = new mongoose.Schema(
       required: false,
     },
     notes: {
-      type: [String],
+      type: String,
       required: false,
     },
     damage: {
