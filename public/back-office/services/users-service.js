@@ -6,6 +6,11 @@ function getUsers() {
     return httpGet('users', true);
 }
 
+function getAuthorizedUsers() {
+    //staff
+    return httpGet('users', true);
+}
+
 function getUserById(id) {
     return httpGet('users/'+id, true);
 }

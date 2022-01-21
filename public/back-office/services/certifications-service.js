@@ -1,5 +1,5 @@
-function createCertification(rentalId, certificationType) {
-    return httpPost('certifications', {rentalId, certificationType}, true);
+function createCertification(rentalId, employerId, certificationType, commentsFromEmployer) {
+    return httpPost('certifications', {rentalId, employerId, certificationType, commentsFromEmployer}, true);
 }
 
 function getCertifications() {

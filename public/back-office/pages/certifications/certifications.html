@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createCertificationModal">
+<button type="button" class="btn btn-primary" onclick="openCreateCertification()">
     Crea nuova certificazione
 </button>
 
@@ -6,11 +6,11 @@
     <thead>
       <tr>
         <th scope="col">Id</th>
-        <th scope="col">Noleggio associato</th>
-        <th scope="col">Impiegato associato</th>
+        <th scope="col">Noleggio</th>
+        <th scope="col">Impiegato</th>
         <th scope="col">Tipo</th>
         <th scope="col">Data</th>
-        <th scope="col">Commenti</th>
+        <th scope="col">Azioni</th>
       </tr>
     </thead>
     <tbody>
@@ -30,62 +30,38 @@ aria-hidden="true">
         </div>
         <div class="modal-body">
             <form>
-                <div class="row">
+                <div class="row mb-3">
                     <div class="col-4">
                         <div class="dropdown" style="display: flex; flex-direction: column;">
                             <label for="inputType">Stato</label>
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="inputType" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                              Scegli Tipo
                             </button>
                             <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputType">
-                                <a class="dropdown-item" href="#">Avvenuta consegna</a>
-                                <a class="dropdown-item" href="#">Riconsegna e pagamento</a>
+                                <a class="dropdown-item" href="#" onclick='setType("Avvenuta consegna")''>Avvenuta consegna</a>
+                                <a class="dropdown-item" href="#" onclick='setType("Riconsegna e pagamento")'>Riconsegna e pagamento</a>
                             </div>
                         </div>    
                     </div>
                     <div class="col-4">
-                        <div class="dropdown" style="display: flex; flex-direction: column;">
-                            <label for="inputRental">Noleggio</label>
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputRental" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                             Scegli Noleggio a cui associarla
-                            </button>
-                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputRental">
-                              <a class="dropdown-item" href="#">
-                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                <label class="form-check-label" for="dropdownCheck">
-                                  Rental1
-                                </label>
-                              </a>
-                              <a class="dropdown-item" href="#">
-                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                <label class="form-check-label" for="dropdownCheck">
-                                  Rental2
-                                </label>
-                              </a>
-                            </div>
-                        </div>    
+                        <div class="dropdown">
+                            <label for="dropdown-users">Noleggio *</label>
+                            <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="rentalsSearchButton">Scegli Noleggio
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="dropdown-rentals">
+                              <input class="form-control" id="rentalFilter" type="text" placeholder="Cerca..">
+                            </ul>
+                          </div>
                     </div>
                     <div class="col-4">
-                        <div class="dropdown" style="display: flex; flex-direction: column;">
-                            <label for="inputEmployer">Kit</label>
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="inputEmployer" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                             Scegli Impiegato a cui associarla
-                            </button>
-                            <div class="dropdown-menu" id="dropdown-payement" aria-labelledby="inputEmployer">
-                              <a class="dropdown-item" href="#">
-                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                <label class="form-check-label" for="dropdownCheck">
-                                    User1
-                                </label>
-                              </a>
-                              <a class="dropdown-item" href="#">
-                                <input type="checkbox" class="form-check-input" id="dropdownCheck">
-                                <label class="form-check-label" for="dropdownCheck">
-                                    User2
-                                </label>
-                              </a>
-                            </div>
-                        </div>    
+                        <div class="dropdown">
+                            <label for="dropdown-users">Impiegato *</label>
+                            <button class="btn btn-primary dropdown-toggle btn-block" type="button" data-toggle="dropdown" id="clientSearchButton">Scegli Utente
+                            <span class="caret"></span></button>
+                            <ul class="dropdown-menu" id="dropdown-users">
+                              <input class="form-control" id="userFilter" type="text" placeholder="Cerca..">
+                            </ul>
+                          </div>
                     </div>
                 </div>
                 <div class="row">
@@ -144,5 +120,7 @@ aria-hidden="true">
 </div>
 
 
+<script src="../services/users-service.js"></script>
+<script src="../services/rentals-service.js"></script>
 <script src="../services/certifications-service.js"></script>
 <script src="../pages/certifications/certifications.js"></script>

@@ -4,10 +4,10 @@ var itemId;
 var kitId;
 var price;
 $(document).ready(function() {
-    loadAllItems();
+    loadAllRentals();
 });
 
-function loadAllItems() {
+function loadAllRentals() {
     $('tbody').empty();
     getRentals()
     .done(res => {
@@ -164,12 +164,14 @@ function setChoice() {
         $('.createItemRental').show();
         setUserDropdown();
         setItemDropdown();
+        $('#verifyBtn').show();
         $('#createBtn').hide();
         $('.modal-footer').show();
     }else {
         $('.createKitRental').show();
         setUserKitDropdown();
         setKitsDropdown();
+        $('#verifyBtn').show();
         $('#createBtn').hide();
         $('.modal-footer').show();
     }
@@ -346,11 +348,13 @@ function createRent() {
         if (choice == "singolo") {
             createRental(startDate, endDate,itemId, undefined, userId, modifyPrice)
             .done(() => {
+                loadAllRentals();
                 $('#createRentalModal').modal('hide')
             })
         } else {
             createRental(startDate, endDate,undefined, kitId, userId, modifyPrice)
             .done(() => {
+                loadAllRentals();
                 $('#createRentalModal').modal('hide')
             })
         }
