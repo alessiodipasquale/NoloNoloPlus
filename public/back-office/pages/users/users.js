@@ -50,10 +50,8 @@ function addElemToTable(elem) {
     var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     var editIcon = $('')
     editBtn.click(function (elem) {
-        console.log(elem.target)
         getUserById(elem.target.id)
         .done(user => {
-            console.log(user);
             if(user.role)
              setEditRole(user.role);
             if(user.favPaymentMethod)
@@ -90,7 +88,6 @@ function addElemToTable(elem) {
 }
 
 function show(elem) {
-    console.log(elem)
 }
 
 function create() {
@@ -104,7 +101,6 @@ function create() {
     if(name=='' || surname == '' || username == '' || password == '') {
         alert('Inserisci tutti i campi.')
     } else {
-        console.log(role, payment)
        createUser(name, surname, username, password, address, loyaltyPoints, new Date(lastVisit).toLocaleDateString(), role, payment)
         .done((res)=> {
             addElemToTable(res);

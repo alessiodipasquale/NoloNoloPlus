@@ -1,7 +1,6 @@
 $(document).ready(function() {
     getPropertyValues()
     .done(res => {
-        console.log(res);
         for(const elem of res){
             addElemToTable(elem);
         }
@@ -24,10 +23,8 @@ function addElemToTable(elem) {
 
     var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     editBtn.click(function (elem) {
-        console.log(elem.target)
         getPropertyValueById(elem.target.id)
         .done(propertyValue => {
-            console.log(propertyValue);
             $('#inputEditId').val(propertyValue._id)
             $('#inputEditValue').val(propertyValue.value)
             $('#inputEditDescription').val(propertyValue.unitOfMeasure)

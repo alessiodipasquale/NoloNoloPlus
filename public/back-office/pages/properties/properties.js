@@ -1,7 +1,6 @@
 $(document).ready(function() {
     getProperties()
     .done(res => {
-        console.log(res);
         for(const elem of res){
             addElemToTable(elem);
         }
@@ -22,10 +21,8 @@ function addElemToTable(elem) {
 
     var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     editBtn.click(function (elem) {
-        console.log(elem.target)
         getPropertyById(elem.target.id)
         .done(prop => {
-            console.log(prop);
             $('#inputEditId').val(prop._id)
             $('#inputEditName').val(prop.name)
             $('#editPropertyModal').modal('show')
@@ -51,10 +48,8 @@ function addElemToTable(elem) {
 
 function create() {
     const name = $('#inputName').val();
-    console.log(name);
     createProperty(name)
     .done(res => {
-        console.log(res);
         addElemToTable(res);
         $('#createPropertyModal').modal('hide')
     }).catch(err => alert("Errore nella creazione della proprietà."))

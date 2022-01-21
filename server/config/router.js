@@ -48,7 +48,7 @@ const router = {
         app.delete('/rentals/:id', auth, (req, res) => { requestManager("deleteRental", req, res); })
         app.get('/rentals/:id', auth, (req, res) => { requestManager("getRentalById", req, res); })
         app.post('/rentals',auth, (req, res) => { requestManager("createRental", req, res); })
-        app.put('/rentals',auth, (req, res) => { requestManager("editRental", req, res); })
+        app.put('/rentals/:id',auth, (req, res) => { requestManager("editRental", req, res); })
 
         // Certification (ancora faccio su frontoffice)
         app.get('/certifications', auth, (req, res) => { requestManager("getCertifications", req, res); })

@@ -14,6 +14,7 @@ function deleteRental(id) {
     return httpDelete('rentals/'+id, true);
 }
 
-function editRental(_id, startDate, endDate, itemIds, kitId, rentalType, rentalTarget, state, clientId, employerId) {
-    return httpPut('rentals', {_id, startDate, endDate, itemIds, kitId, rentalType, rentalTarget, state, clientId, employerId}, true);
+function editRental(_id, notes, modifyPrice) {
+    console.log({_id, notes, modifyPrice});
+    return httpPut('rentals/'+_id, {_id, notes, modifyPrice}, true);
 }

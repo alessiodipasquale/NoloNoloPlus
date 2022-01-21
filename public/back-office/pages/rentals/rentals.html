@@ -177,13 +177,13 @@ aria-hidden="true">
                     <div class="col-4">
                         <div class="form-group">
                             <label for="startEditDate">Data di inizio</label>
-                            <input type="date" class="form-control" id="startEditDate" placeholder="Inserisci data di inizio">
+                            <input type="date" class="form-control" id="startEditDate" placeholder="Inserisci data di inizio" disabled>
                         </div>
                     </div>
                     <div class="col-4">
                         <div class="form-group">
                             <label for="endEditDate">Data di fine</label>
-                            <input type="date" class="form-control" id="endEditDate" placeholder="Inserisci data di fine">
+                            <input type="date" class="form-control" id="endEditDate" placeholder="Inserisci data di fine" disabled>
                         </div>
                     </div>
                     <div class="col-4">
@@ -209,8 +209,6 @@ aria-hidden="true">
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-danger" data-dismiss="modal" id="dismissBtn">Chiudi</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal" id="dismissBtn">Termina prenotazione</button>
-            <button type="button" class="btn btn-success" id="verifyEditBtn" onclick="verifyEditAvailability()">Verifica Disponibilità</button>
             <button type="button" class="btn btn-warning" id="editBtn" onclick="editRent()">Modifica</button>
         </div>
     </div>

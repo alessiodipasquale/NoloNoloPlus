@@ -1,7 +1,6 @@
 $(document).ready(function() {
     getCategories()
     .done(res => {
-        console.log(res);
         for(const elem of res){
             addElemToTable(elem);
         }
@@ -23,10 +22,8 @@ function addElemToTable(elem) {
 
     var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     editBtn.click(function (elem) {
-        console.log(elem.target)
         getCategoryById(elem.target.id)
         .done(category => {
-            console.log(category);
             $('#inputEditId').val(category._id)
             $('#inputEditName').val(category.name)
             $('#inputEditDescription').val(category.description)

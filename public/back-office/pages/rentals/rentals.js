@@ -3,6 +3,9 @@ var userId;
 var itemId;
 var kitId;
 var price;
+var editRentalId;
+var editPrice;
+
 $(document).ready(function() {
     loadAllRentals();
 });
@@ -11,7 +14,6 @@ function loadAllRentals() {
     $('tbody').empty();
     getRentals()
     .done(res => {
-        console.log(res);
         for(const elem of res){
             addElemToTable(elem);
         }
@@ -23,7 +25,8 @@ function openEditRental(elem) {
 
     getRentalById(elem.target.id)
     .done(rental => {
-        console.log(rental)
+        editRentalId = rental._id;
+        editPrice = rental.finalPrice;
         $('#clientId').val(rental.clientId)
         $('#employerId').val(rental.employerId)
         if (rental.kitId) {
@@ -36,6 +39,7 @@ function openEditRental(elem) {
         $('#startEditDate').val(new Date(rental.startDate).toISOString().substring(0,10));
         $('#endEditDate').val(new Date(rental.endDate).toISOString().substring(0,10));
         $('#finalEditPrice').val(rental.finalPrice);
+        $('#editNotes').val(rental.notes);
         //NOTE COME TESTO SINGOLO DA AGGIUNGERE
 
         if(rental.kitId) {
@@ -115,14 +119,12 @@ function verifyAvailability() {
     } else {
         const startDate = $('#startKitDate').val();
         const endDate = $('#endKitDate').val();
-        console.log({userId, kitId, startDate, endDate})
         if(kitId && startDate && endDate) {
             checkIfKitAvailables(kitId, startDate, endDate)
             .done(() => {
                 $('#alertAvailable').show();
                 calculatePriceforKit(kitId, startDate, endDate)
                 .done(res => {
-                    console.log(res);
                     price = res.finalKitPrice
                     $('.price').show();
                     const row = $('<div style="display: flex; justify-content: space-evenly; margin: 3%"></div>');
@@ -181,7 +183,6 @@ function setChoice() {
 function setUserDropdown(){
     getUsers()
     .done(users => {
-        console.log("utenti: ",users);
         for (elem of users){
             const user = $('<li class="elementDropdown" style="padding: 3px" id="'+elem._id+'"></li>')
             .click(function(elem) {
@@ -211,7 +212,6 @@ function setUserDropdown(){
 function setUserKitDropdown(){
     getUsers()
     .done(users => {
-        console.log("utenti: ",users);
         for (elem of users){
             const user = $('<li class="elementDropdown" style="padding: 3px" id="'+elem._id+'"></li>')
             .click(function(elem) {
@@ -299,7 +299,6 @@ function setKitsDropdown() {
 
 
 function addElemToTable(elem) {
-    console.log(elem);
     var row = $('<tr id='+elem._id+'></tr>');
     var row1 = $('<td></td>').text(elem._id);
     var row2 = $('<td></td>').text(elem.clientId);
@@ -338,13 +337,12 @@ function addElemToTable(elem) {
 }
 
 function createRent() {
-    console.log('creo');
     const startDate = choice == "singolo" ? $('#startDate').val() : $('#startKitDate').val();
     const endDate =  choice == "singolo" ? $('#endDate').val() :$('#endKitDate').val() ;
     var modifyPrice = choice == "singolo" ? $('#finalPrice').val() : $('#finalKitPrice').val();
     if (price == modifyPrice) 
         modifyPrice = undefined
-    //if(userId && (itemId || kitId) && state && startDate && endDate) {
+    if(userId && (itemId || kitId) && startDate && endDate) {
         if (choice == "singolo") {
             createRental(startDate, endDate,itemId, undefined, userId, modifyPrice)
             .done(() => {
@@ -359,7 +357,22 @@ function createRent() {
             })
         }
         
-    /*} else {
+    } else {
         alert("Inserisci tutti i campi.")
-    }*/
+    }
+    
+}
+
+function editRent() {
+    var modifyPrice =  $('#finalEditPrice').val();
+    if (editPrice == modifyPrice) 
+        modifyPrice = undefined
+
+    var notes =  $('#editNotes').val();
+
+    editRental(editRentalId, notes, modifyPrice)
+    .done(() => {
+        loadAllRentals();
+        $('#editRentalModal').modal('hide')
+    })
 }

@@ -77,7 +77,7 @@ const createRental = async (object, userId, role) => {
         }
         object.state = 'in corso'
     }else{
-        const end = new Date(object.startDate);
+        const end = new Date(object.endDate);
         if(end < new Date()){
             object.rentalType = 'prenotazione';
             object.state = 'terminata'
@@ -179,8 +179,8 @@ const editRental = async (rentalId, object) => {
     if(object.rentalType)
         secureObject.rentalType = object.rentalType;
     if(object.modifyPrice){
-        secureObject.finalPrice = object.finalPrice;
-        secureObject.receipt = ["mofified by an employer"];
+        secureObject.finalPrice = object.modifyPrice;
+        secureObject.receipt = ["Modified by an employer"];
     }
     if(object.notes)
         secureObject.notes = object.notes;

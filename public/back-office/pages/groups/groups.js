@@ -3,7 +3,6 @@ var itemsList = [];
 $(document).ready(function() {
     getGroups()
     .done(res => {
-        console.log(res);
         for(const elem of res){
             addElemToTable(elem);
         }
@@ -15,11 +14,9 @@ $(document).ready(function() {
 
         getItems()
         .done(res => {
-            console.log(res);
             for (const elem of res) {
                 const item = $('<li style="padding: 3px" id="'+elem._id+'"></li>')
                 .click(function(elem) {
-                    console.log(elem)
                     getItemById(elem.target.id)
                     .done(res => {
                         const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px"></div>')
@@ -54,7 +51,6 @@ $(document).ready(function() {
 });
 
 function addElemToTable(elem) {
-    console.log(elem);
     var row = $('<tr id='+elem._id+'></tr>');
     var row1 = $('<td></td>').text(elem._id);
     var row2 = $('<td></td>').text(elem.name);
@@ -67,10 +63,8 @@ function addElemToTable(elem) {
 
     var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     editBtn.click(function (elem) {
-        console.log(elem.target)
         getGroupById(elem.target.id)
         .done(group => {
-            console.log(group);
             $('#inputEditId').val(group._id)
             $('#inputEditName').val(group.name)
             $('#editGroupModal').modal('show')
@@ -110,7 +104,6 @@ function addElemToTable(elem) {
 
 function create() {
     const name = $('#inputName').val();
-    console.log(itemsList);
     createGroup(itemsList,name)
     .done(res => {
         addElemToTable(res);

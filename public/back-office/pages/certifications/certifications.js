@@ -10,7 +10,6 @@ function loadAllCertifications() {
     $('tbody').empty();
     getCertifications()
     .done(res => {
-        console.log(res);
         for(const elem of res){
             addElemToTable(elem);
         }
@@ -18,7 +17,6 @@ function loadAllCertifications() {
 }
 
 function addElemToTable(elem) {
-    console.log(elem);
     var row = $('<tr id='+elem._id+'></tr>');
     var row1 = $('<td></td>').text(elem._id);
     var row2 = $('<td></td>').text(elem.rentalId.toString());
@@ -37,11 +35,10 @@ function addElemToTable(elem) {
         getCertificationById(elem.target.id)
         .done(certification => {
             console.log(certification)
-
         })
     })
 
-    var deleteBtn = $('<button type="button" class="btn btn-danger" id="'+elem._id+'"><i class="far fa-trash-alt" id="'+elem._id+'"></i></button>')
+    /*var deleteBtn = $('<button type="button" class="btn btn-danger" id="'+elem._id+'"><i class="far fa-trash-alt" id="'+elem._id+'"></i></button>')
     deleteBtn.click(function (elem) {
         var r = confirm("Sei sicuro di voler eliminare?");
         if (r) {
@@ -50,9 +47,9 @@ function addElemToTable(elem) {
                 $('#'+elem.target.id).remove();
             });
         }
-    })
+    })*/
 
-    row7.append([/*openBtn,*/ editBtn, deleteBtn]);
+    row7.append([/*openBtn,*/ editBtn, /*deleteBtn*/]);
             
     row.append([row1, row2, row3, row4, row5, row7]);
     $('tbody').append(row);
@@ -140,6 +137,6 @@ function create() {
         .done(() => {
             loadAllCertifications();
             $('#createCertificationModal').modal('hide')
-        }).catch(err => console.log(err));
+        }).catch(err => alert("Errore nella creazione."));
     }
 }

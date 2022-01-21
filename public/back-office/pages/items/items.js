@@ -17,7 +17,6 @@ function loadAllItems() {
     $('tbody').empty();
     getItems()
     .done(res => {
-        console.log(res);
         for(const elem of res){
             addElemToTable(elem);
         }
@@ -40,11 +39,9 @@ function openCreateItem() {
 
     getCategories()
     .done(res => {
-        console.log(res);
         for (const category of res) {
             var a = $(`<a class="dropdown-item" href="#"></a>`);
             const input = $('<input type="checkbox" class="form-check-input" name="categorySelected">').attr("id",category._id);
-            console.log(input.attr("id"));
             const label = $('<label class="form-check-label" for="dropdownCheck"></label>').text(category.name);
             a.append(input);
             a.append(label);
@@ -56,11 +53,9 @@ function openCreateItem() {
 
     getKits()
     .done(res => {
-        console.log(res);
         for (const kit of res) {
             var a = $(`<a class="dropdown-item" href="#"></a>`);
             const input = $('<input type="checkbox" class="form-check-input" name="kitSelected">').attr("id",kit._id);
-            console.log(input.attr("id"));
             const label = $('<label class="form-check-label" for="dropdownCheck"></label>').text(kit.name);
             a.append(input);
             a.append(label);
@@ -118,7 +113,6 @@ function addPropertyToList() {
         deleteItemBtn.click(function(elem) {
             $('#prop'+elem.target.id).remove();
             properties = properties.filter(el => el.associatedProperty != elem.target.id);
-            console.log(properties);
         });
 
         secondCol.append(deleteItemBtn);
@@ -148,7 +142,6 @@ function addEditPropertyToList() {
             deleteItemBtn.click(function(elem) {
                 $('#prop'+elem.target.id).remove();
                 propertiesEdit = propertiesEdit.filter(el => el.associatedProperty != elem.target.id);
-                console.log(propertiesEdit);
             });
     
             secondCol.append(deleteItemBtn);
@@ -228,7 +221,6 @@ function confirmEditItem() {
     const editinputDescription = $('#inputEditDescription').val();
     const editinputImageUrl = $('#inputEditImageUrl').val();
 
-    console.log({editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId, propertiesEdit})
     editItem(id, editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId, propertiesEdit)
     .done((res) => {
         loadAllItems();
@@ -238,10 +230,8 @@ function confirmEditItem() {
 
 function openEditItem(elem) {
 
-    console.log(elem.target)
     getItemById(elem.target.id)
     .done(item => {
-        console.log(item);
         editstate = item.state;
 
         $('#inputEditId').val(item._id)
@@ -256,7 +246,6 @@ function openEditItem(elem) {
 
         getCategories()
         .done(res => {
-            console.log(res);
             for (const category of res) {
                 var a = $(`<a class="dropdown-item" href="#"></a>`);
                 const input = $('<input type="checkbox" class="form-check-input" name="categoryEditSelected">').attr("id",category._id);
@@ -264,7 +253,6 @@ function openEditItem(elem) {
                     if (category._id == cat) 
                         input.attr("checked", "true")
                 }
-                console.log(input.attr("id"));
                 const label = $('<label class="form-check-label" for="dropdownCheck"></label>').text(category.name);
                 a.append(input);
                 a.append(label);
@@ -276,7 +264,6 @@ function openEditItem(elem) {
     
         getKits()
         .done(res => {
-            console.log(res);
             for (const kit of res) {
                 var a = $(`<a class="dropdown-item" href="#"></a>`);
                 const input = $('<input type="checkbox" class="form-check-input" name="kitEditSelected">').attr("id",kit._id);
@@ -284,7 +271,6 @@ function openEditItem(elem) {
                     if (kit._id == k) 
                         input.attr("checked", "true")
                 }
-                console.log(input.attr("id"));
                 const label = $('<label class="form-check-label" for="dropdownCheck"></label>').text(kit.name);
                 a.append(input);
                 a.append(label);
@@ -332,7 +318,6 @@ function openEditItem(elem) {
             }
         });
 
-        console.log(propertiesList);
 
         
         propertiesEdit = item.propertiesList;
@@ -347,7 +332,6 @@ function openEditItem(elem) {
             deleteItemBtn.click(function(elem) {
                 $('#prop'+elem.target.id).remove();
                 propertiesEdit = propertiesEdit.filter(el => el.associatedProperty != elem.target.id);
-                console.log(propertiesEdit);
             });
             secondCol.append(deleteItemBtn);
             row.append([firstCol,secondCol])
@@ -359,7 +343,6 @@ function openEditItem(elem) {
 }
 
 function addElemToTable(elem) {
-    console.log(elem);
     var row = $('<tr id='+elem._id+'></tr>');
     var row1 = $('<td></td>').text(elem._id);
     var row2 = $('<td></td>').text(elem.name);

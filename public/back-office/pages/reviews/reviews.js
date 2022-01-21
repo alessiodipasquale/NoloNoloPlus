@@ -4,7 +4,6 @@ var selectedUserId = null;
 $(document).ready(function() {
     getReviews()
     .done(res => {
-        console.log(res);
         for(const elem of res){
             addElemToTable(elem);
         }
@@ -62,10 +61,8 @@ function addElemToTable(elem) {
 
     var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
     editBtn.click(function (elem) {
-        console.log(elem.target)
         getReviewById(elem.target.id)
         .done(review => {
-            console.log(review);
             $('#inputEditId').val(review._id)
             $('#inputEditStars').val(review.stars)
             $('#inputEditComment').val(review.comment)
@@ -93,7 +90,6 @@ function addElemToTable(elem) {
 function create() {
     const stars = $('#inputStars').val();
     const comment = $('#inputComment').val();
-    console.log(stars, comment, selectedItemId, selectedUserId)
     if(stars=='' || comment == '' || selectedItemId == null || selectedUserId == null) {
         alert('Inserisci tutti i campi.')
     } else {

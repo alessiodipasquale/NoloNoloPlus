@@ -22,7 +22,7 @@ const getAuthToken = async (username, clearTextPassword) => {
     const user = await UserModel.findOne({username: username});
 
     if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
-        throw UnauthorizedError;
+        throw BadRequestError;
 
     let usr = JSON.stringify(user)
     usr = JSON.parse(usr)
