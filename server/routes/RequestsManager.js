@@ -31,6 +31,7 @@ const {
   editUserAdvanced,
   getUserDamage,
   getUsersTotalDamage,
+  getUserFavourites,
   getEmployerRevenue,
   getEmployersTotalRevenue,
   getClientsTotalRevenue
@@ -246,6 +247,10 @@ const requestManager = async (reqName, req, res) => {
       case "getUsersTotalDamage": {
         await roleChecker(req.user.user._id, "funzionario", "block");
         toReturn = await getUsersTotalDamage();
+        break;
+      }
+      case "getUserFavourites": {
+        toReturn = await getUserFavourites(req.user.user._id);
         break;
       }
       case "getEmployerRevenue": {

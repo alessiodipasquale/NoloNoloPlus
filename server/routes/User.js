@@ -211,6 +211,15 @@ const getUserDamage = async (userId) => {
     return {tot};
 }
 
+const getUserFavourites = async (id) => {
+    const favIds = await getUserById(id).favItemsId;
+    const toReturn = [];
+    for(let favId of favIds){
+        toReturn.push(await getItemById(favId))
+    }
+    return toReturn
+}
+
 const getUsersTotalDamage = async () => {
     const users = await getUsersByRole("cliente")
     const toReturn = [];
@@ -276,6 +285,7 @@ module.exports = {
     getUsersByRole,
     getUserDamage,
     getUsersTotalDamage,
+    getUserFavourites,
     getEmployerRevenue,
     getEmployersTotalRevenue,
     getClientsTotalRevenue
