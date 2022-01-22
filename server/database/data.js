@@ -198,11 +198,10 @@ const items = [
   },
   {
     _id: "Item5",
-    name: "Ps5",
+    name: "Ps6",
     description: "è gialla",
     standardPrice: 69,
     category: ["Category3"],
-    imgSrc: "https://cdn.autoportal.com/bp-v3/img/models/33/6/sr_150b2.jpg",
     state: "ottimo",
     everBeenRented: false,
     rentalDates: [],
@@ -216,11 +215,10 @@ const items = [
   },
   {
     _id: "Item6",
-    name: "Ps5",
+    name: "Ps6",
     description: "è gialla",
     standardPrice: 69,
     category: ["Category3"],
-    imgSrc: "https://cdn.autoportal.com/bp-v3/img/models/33/6/sr_150b2.jpg",
     state: "ottimo",
     everBeenRented: false,
     rentalDates: [],
@@ -238,7 +236,7 @@ const items = [
     description: "è gialla",
     standardPrice: 69,
     category: ["Category3"],
-    imgSrc: "https://cdn.autoportal.com/bp-v3/img/models/33/6/sr_150b2.jpg",
+    imgSrc: "https://www.citypng.com/public/uploads/preview/-11591925787cggjhepdvq.png",
     state: "buono",
     everBeenRented: false,
     rentalDates: [],
@@ -401,7 +399,6 @@ const propertyValues = [
   },
   {
     _id: "Val9",
-    value: "null",
     associatedItems: ["Item1","Item3"],
     associatedProperty: "Property4",
   },
@@ -428,7 +425,7 @@ const groups = [
   {
    _id:"Group1",
    items:["Item5","Item6"],
-   name:"PS5" 
+   name:"PS6" 
   }
 ]
 

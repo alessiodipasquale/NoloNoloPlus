@@ -182,8 +182,9 @@ const requestManager = async (reqName, req, res) => {
 
       ////////////////////////////////////////////////////////////////////////// User
       case "getUserById": {
-        await roleChecker(req.user.user._id, "funzionario", "block");
-        toReturn = await getUserById(req.params.id);
+        if (await roleChecker(req.user.user._id, "funzionario", "return"))
+          toReturn = await getUserById(req.params.id);
+        else toReturn = await getUserById(req.user.user._id);
         break;
       }
       case "getUsers": {
