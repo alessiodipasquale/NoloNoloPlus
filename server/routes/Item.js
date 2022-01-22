@@ -9,7 +9,7 @@ const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../c
 const { associateToCategory, associateToGroup, associateToPropertyValue, deleteAssociationToGroup, deleteAssociationToCategory } = require('./associations/AssociationManager');
 const { deleteAssociationToKit, associateToKit, deleteAssociationToPropertyValue } = require('./associations/AssociationManager')
 const { getPriceDetail } = require('./PriceDetails');
-const { createPropertyValue, getPropertyValueByAttributes } = require('./PropertyValue')
+const { createPropertyValue, getPropertyValueByAttributes } = require('./PropertyValue');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -403,6 +403,25 @@ const updateRentalsCount = async (itemId) => {
     await ItemModel.updateOne({ _id: itemId }, obj);
 }
 
+const getRecommendedByItemId = async (id) => {
+    const toReturn = [];
+    const idList = [];
+    const kits = await KitModel.find();
+    for(let kit of kits){
+        if(kit.items.includes(id)){
+            for(let it of kit.items){
+                if(it != id && !idList.includes(it)){
+                    idList.push(it);
+                }
+            }
+        }      
+    }
+    for(let elem of idList){
+        toReturn.push(await getItemById(elem))
+    }
+    return toReturn;
+}
+
 module.exports = {
     getItems,
     getItemById,
@@ -416,5 +435,6 @@ module.exports = {
     calculatePriceforItem,
     getCategoriesByItem,
     editItem,
+    getRecommendedByItemId,
     updateRentalsCount
 }

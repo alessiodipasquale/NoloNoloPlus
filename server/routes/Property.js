@@ -39,7 +39,6 @@ const createProperty = async (object) => {
 }
 
 const editProperty = async (propId, object) => {
-    console.log(propId);
     const property = await getPropertyById(propId);
     let secureObject = JSON.stringify(property);
     secureObject = JSON.parse(secureObject);

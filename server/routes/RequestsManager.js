@@ -18,6 +18,7 @@ const {
   getReviewsByItemId,
   calculatePriceforItem,
   editItem,
+  getRecommendedByItemId
 } = require("./Item");
 const {
   getUserById,
@@ -183,6 +184,9 @@ const requestManager = async (reqName, req, res) => {
         else
           toReturn = await calculatePriceforItem(req.body, req.params.id, null);
         break;
+      }
+      case "getRecommendedByItemId": {
+        toReturn = await getRecommendedByItemId(req.params.id);
       }
 
       ////////////////////////////////////////////////////////////////////////// User
