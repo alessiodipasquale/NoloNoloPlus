@@ -8,6 +8,7 @@ var editPrice;
 
 $(document).ready(function() {
     loadAllRentals();
+    setSearch();
 });
 
 function loadAllRentals() {
@@ -17,6 +18,15 @@ function loadAllRentals() {
         for(const elem of res){
             addElemToTable(elem);
         }
+    });
+}
+
+function setSearch() {
+    $("#searchtext").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
     });
 }
 

@@ -7,6 +7,8 @@ $(document).ready(function() {
             addElemToTable(elem);
         }
     });
+    
+    setSearch();
 
     $('#createGroupModalButton').click(function(elem) {
         $('#objectList').empty();
@@ -49,6 +51,15 @@ $(document).ready(function() {
         })
     })
 });
+
+function setSearch() {
+    $("#searchtext").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("tbody tr").filter(function() {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+}
 
 function addElemToTable(elem) {
     var row = $('<tr id='+elem._id+'></tr>');
