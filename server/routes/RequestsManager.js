@@ -49,7 +49,6 @@ const {
   deleteCertification,
   createCertification,
 } = require("./Certification");
-const { getPriceDetail } = require("./PriceDetails");
 const {
   getPropertyById,
   getProperties,
@@ -94,6 +93,11 @@ const {
   createGroup,
   editGroup,
 } = require("./Group");
+const {
+  getPriceDetail,
+  editPriceDetail
+} = require("./PriceDetails")
+
 
 const requestManager = async (reqName, req, res) => {
   //TODO: new attribute to rentals ?
@@ -488,6 +492,18 @@ const requestManager = async (reqName, req, res) => {
       case "editGroup": {
         await roleChecker(req.user.user._id, "funzionario", "block");
         toReturn = await editGroup(req.params.id, req.body);
+        break;
+      }
+
+      ////////////////////////////////////////////////////////////////////////// PriceDetail
+      case "getPriceDetail": {
+        await roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await getPriceDetail();
+        break;
+      }
+      case "editPriceDetail": {
+        await roleChecker(req.user.user._id, "funzionario", "block");
+        toReturn = await editPriceDetail(req.body);
         break;
       }
 

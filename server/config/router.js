@@ -96,12 +96,16 @@ const router = {
         app.post('/reviews',auth, (req, res) => { requestManager("createReview", req, res); })
         app.put('/reviews/:id',auth, (req, res) => { requestManager("editReview", req, res); })
 
-        // Group (Ancora implemento da frontoffice)
+        // Group
         /**/app.get('/groups', (req, res) => { requestManager("getGroups", req, res); })
         app.delete('/groups/:id', auth, (req, res) => { requestManager("deleteGroup", req, res); })
         /**/app.get('/groups/:id', (req, res) => { requestManager("getGroupById", req, res); })
         app.post('/groups',auth, (req, res) => { requestManager("createGroup", req, res); })
         app.put('/groups',auth, (req, res) => { requestManager("editGroup", req, res); })
+
+        // PriceDetail
+        app.get('/priceDetails', auth, (req, res) => { requestManager("getPriceDetail", req, res); })
+        app.put('/priceDetails',auth, (req, res) => { requestManager("editPriceDetail", req, res); })
     }
 }
 
