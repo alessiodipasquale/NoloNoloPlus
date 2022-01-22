@@ -32,6 +32,9 @@ export class RentalSpecComponent implements OnInit {
       this.rental = window.history.state.rental
     )
 
+    if (this.rental == undefined)
+     this.router.navigate(['/pages/rentals/rentals-list']);
+
     console.log(this.rental);
 
   }
@@ -51,10 +54,10 @@ export class RentalSpecComponent implements OnInit {
     })
   }
 
-  deleteReview(review, reviews) {
-    this.reviewService.deleteReview(review._id)
+  deleteReview(review, item) {
+   this.reviewService.deleteReview(review._id)
     .then(() => {
-      reviews = reviews.map(rev => rev._id != review._id)
+      item.reviews =  item.reviews.filter(rev => rev._id != review._id)
       this.notificationsService.success();
     })
   }

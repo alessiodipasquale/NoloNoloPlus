@@ -23,12 +23,19 @@ export class KitSpecComponent implements OnInit {
   endDate;
   days;
   finalPrice;
+  kitReceipt;
+  partialPrices;
+  finalKitPrice;
 
   ngOnInit(): void {
      
     this.activatedRoute.paramMap.pipe(map =>
       this.kit = window.history.state.kit
     )
+
+    if (this.kit == undefined)
+     this.router.navigate(['/pages/dashboard']);
+
     console.log(this.kit);
   }
 
@@ -52,6 +59,13 @@ export class KitSpecComponent implements OnInit {
       const itemIds = this.kit.items.map(item => item._id);
       this.kitsService.checkIfAvailable(this.startDate,this.endDate,this.kit._id,itemIds)
       .then(() => {
+        this.kitsService.calculatePrice(this.kit._id, this.startDate,this.endDate)
+        .then(res => {
+          this.kitReceipt = res.kitReceipt;
+          this.partialPrices = res.partialPrices;
+          this.finalKitPrice = res.finalKitPrice;
+          console.log(res);
+        })
         this.checked = true
         this.finalPrice = this.kit.standardPrice * this.days;
       }).catch(err => {        

@@ -25,13 +25,22 @@ export class ItemSpecComponent implements OnInit {
   endDate;
   days;
   finalPrice;
+  reviews = [];
+  receipt = [];
   ngOnInit(): void {
     
     this.activatedRoute.paramMap.pipe(map =>
       this.item = window.history.state.item
     )
 
-    console.log(this.item);
+    if (this.item == undefined)
+     this.router.navigate(['/pages/dashboard']);
+
+    this.itemsService.getReviewsByItemId(this.item._id)
+    .then(reviews => {
+      this.reviews = reviews;
+      console.log(reviews)
+    });
   }
 
   checkAvailability(){
@@ -54,6 +63,12 @@ export class ItemSpecComponent implements OnInit {
       //da aggiustare
       this.itemsService.checkIfAvailable(this.startDate,this.endDate,this.item._id)
       .then(() => {
+        this.itemsService.calculatePrice(this.item._id, this.startDate,this.endDate)
+        .then(res => {
+          this.finalPrice = res.finalPrice;
+          this.receipt = res.receipt;
+          console.log(res);
+        })
         this.checked = true
         this.finalPrice = this.item.standardPrice * this.days;
       }).catch(err => {

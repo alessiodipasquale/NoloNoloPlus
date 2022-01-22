@@ -18,9 +18,17 @@ export class ItemsService {
         return this.http.get('/items/filtered') 
     }
 
+    calculatePrice(id, startDate, endDate) {
+        return this.http.post('/items/'+id+'/calculatePrice', {startDate, endDate}); 
+    }
+
     getItemById(id) {
         return this.http.get('/items/'+id);
     }
+    getReviewsByItemId(id) {
+        return this.http.get('/items/'+id+'/getReviewsByItemId');
+    }
+    
 
     checkIfAvailable(startDate, endDate, objectId) {
         if (this.tokenService.isTokenSet())  

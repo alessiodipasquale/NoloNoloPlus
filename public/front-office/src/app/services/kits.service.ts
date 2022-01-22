@@ -22,6 +22,10 @@ export class KitsService {
         return this.http.get('/Kits/'+id);
     }
 
+    calculatePrice(id, startDate, endDate) {
+        return this.http.post('/Kits/'+id+'/calculatePrice', {startDate, endDate}); 
+    }
+
     checkIfAvailable(startDate, endDate,kitId, objectId) {
         if (this.tokenService.isTokenSet())  
             return this.http.post('/Kits/'+kitId+'/checkIfAvailable', {startDate, endDate, objectId})

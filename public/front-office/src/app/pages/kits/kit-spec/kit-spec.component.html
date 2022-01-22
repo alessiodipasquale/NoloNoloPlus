@@ -25,7 +25,7 @@
                 <div class="col-6" style="padding-left: 10px; padding-right: 10px;">
                     <h5 class="card-title" >{{item.name}}</h5>
                     <ul style="padding-left: 15%;">
-                        <li *ngFor="let property of item.propertiesList">{{property.name}}: {{property.value}} {{property.unitOfMeasure ? property.unitOfMeasure : ''}}</li>
+                        <li *ngFor="let property of item.propertiesList">{{property.name}}{{property.value ? ': '+property.value : ''}} {{property.unitOfMeasure ? property.unitOfMeasure : ''}}</li>
                         <!--<li>{{item.category}}</li>-->
                         <li>Stato: {{item.state}}</li>
                     </ul>
@@ -48,11 +48,20 @@
             </div>
             <div *ngIf="checked" class="animated fadeIn">
                 <h3 class="text-success">Buone Notizie!</h3>
-                <p>Il tuo oggetto è disponibile per quel periodo.</p>
-                <div style="display: flex; justify-content:space-between;">
-                <p>Prezzo per {{days}} giorn{{days === 1 ? 'o':'i'}}:</p>
-                <strong>{{this.finalPrice}}</strong>
-                </div>
+                <p>Il Kit è disponibile per quel periodo.</p>
+                <div style="display: flex; flex-direction: column;">
+                    <p *ngFor="let receip of kitReceipt">{{receip}}</p>
+                    <!--<div style="margin-bottom: 1%;"></div>
+                    <div class="card" *ngFor="let item of partialPrices" style="margin-bottom: 3%;">
+                        <div class="card-body">
+                            <p *ngFor="let price of item">{{price}}</p>
+                        </div>
+                    </div>-->
+                    <div style="display: flex;">
+                        <p>Il prezzo finale è: </p>
+                        <strong style="margin-left: 1%;">{{this.finalKitPrice}}€</strong>
+                    </div> 
+            </div>
                 <button class="btn btn-success btn-block" (click)="rent()">Prenota</button>
             </div>
 

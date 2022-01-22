@@ -1,4 +1,4 @@
-<div class="animated fadeIn">
+<div class="animated fadeIn" *ngIf="rentals.length != 0">
     <h3 class="mt-3">Le tue prenotazioni</h3>
 
     <div class="mt-3"></div>
@@ -35,4 +35,8 @@
             </div>
         </div>
     </div>
+</div>
+
+<div class="animated fadeIn" *ngIf="rentals.length == 0">
+    <h4 style="text-align: center; margin: 15%; ">Non hai ancora effettuato prenotazioni.</h4>
 </div>
