@@ -19,20 +19,20 @@ export class ItemsService {
     }
 
     calculatePrice(id, startDate, endDate) {
-        return this.http.post('/items/'+id+'/calculatePrice', {startDate, endDate}); 
+        return this.http.post('/items/'+id+'/price', {startDate, endDate}); 
     }
 
     getItemById(id) {
         return this.http.get('/items/'+id);
     }
     getReviewsByItemId(id) {
-        return this.http.get('/items/'+id+'/getReviewsByItemId');
+        return this.http.get('/items/'+id+'/reviews');
     }
     
 
     checkIfAvailable(startDate, endDate, objectId) {
         if (this.tokenService.isTokenSet())  
-            return this.http.post('/items/'+objectId+'/checkIfAvailable', {startDate, endDate, objectId})
+            return this.http.post('/items/'+objectId+'/available', {startDate, endDate, objectId})
             else {
                 this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
                 this.router.navigate(['/login']);

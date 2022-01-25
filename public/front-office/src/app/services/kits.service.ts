@@ -23,12 +23,12 @@ export class KitsService {
     }
 
     calculatePrice(id, startDate, endDate) {
-        return this.http.post('/Kits/'+id+'/calculatePrice', {startDate, endDate}); 
+        return this.http.post('/Kits/'+id+'/price', {startDate, endDate}); 
     }
 
     checkIfAvailable(startDate, endDate,kitId, objectId) {
         if (this.tokenService.isTokenSet())  
-            return this.http.post('/Kits/'+kitId+'/checkIfAvailable', {startDate, endDate, objectId})
+            return this.http.post('/Kits/'+kitId+'/available', {startDate, endDate, objectId})
         else {
             this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
             this.router.navigate(['/login']);

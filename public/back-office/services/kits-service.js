@@ -19,9 +19,9 @@ function editKit(_id, name, description, standardPrice, available, items) {
 }
 
 function checkIfKitAvailables(kitId, startDate, endDate) {
-    return httpPost('kits/'+kitId+'/checkIfAvailable', {startDate, endDate, kitId}, true)
+    return httpPost('kits/'+kitId+'/available', {startDate, endDate, kitId}, true)
 }
 
 function calculatePriceforKit(kitId, startDate, endDate) {
-    return httpPost('kits/'+kitId+'/calculatePrice', {startDate, endDate}, true)
+    return httpPost('kits/'+kitId+'/price', {startDate, endDate}, true)
 }

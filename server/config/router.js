@@ -39,10 +39,10 @@ const router = {
         /**/app.get('/items/:id', (req, res) => { requestManager("getItemById", req, res); })
         app.post('/items',auth, (req, res) => { requestManager("createItem", req, res); })
         app.put('/items/:id',auth, (req, res) => { requestManager("editItem", req, res); })
-        app.post('/items/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
-        /*non uso*/app.get('/items/:id/getReviewsByItemId', (req, res) => { requestManager("getReviewsByItemId", req, res); })
-        /*non uso*/app.post('/items/:id/calculatePrice', (req, res) => { requestManager("calculatePriceforItem", req, res); })
-        app.get('/items/:id/getRecommended',auth, (req, res) => { requestManager("getRecommendedByItemId", req, res); })
+        app.post('/items/:id/available', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
+        /*non uso*/app.get('/items/:id/reviews', (req, res) => { requestManager("getReviewsByItemId", req, res); })
+        /*non uso*/app.post('/items/:id/price', (req, res) => { requestManager("calculatePriceforItem", req, res); })
+        app.get('/items/:id/recommended',auth, (req, res) => { requestManager("getRecommendedByItemId", req, res); })
 
         // Rental
         app.get('/rentals', auth, (req, res) => { requestManager("getRentals", req, res); })
@@ -51,20 +51,20 @@ const router = {
         app.post('/rentals',auth, (req, res) => { requestManager("createRental", req, res); })
         app.put('/rentals/:id',auth, (req, res) => { requestManager("editRental", req, res); })
 
-        // Certification (ancora faccio su frontoffice)
+        // Certification
         app.get('/certifications', auth, (req, res) => { requestManager("getCertifications", req, res); })
         app.delete('/certifications/:id', auth, (req, res) => { requestManager("deleteCertification", req, res); })
         app.get('/certifications/:id', auth, (req, res) => { requestManager("getCertificationById", req, res); })
         app.post('/certifications',auth, (req, res) => { requestManager("createCertification", req, res); })
 
-        // Property (roba tua, non da frontoffice, magari da back)
+        // Property
         /**/app.get('/properties', (req, res) => { requestManager("getProperties", req, res); })
         app.delete('/properties/:id', auth, (req, res) => { requestManager("deleteProperty", req, res); })
         /**/app.get('/properties/:id', (req, res) => { requestManager("getPropertyById", req, res); })
         app.post('/properties',auth, (req, res) => { requestManager("createProperty", req, res); })
         app.put('/properties/:id',auth, (req, res) => { requestManager("editProperty", req, res); })
 
-        // PropertyValue (roba tua, non da frontoffice, magari da back)
+        // PropertyValue
         /**/app.get('/propertyValues', (req, res) => { requestManager("getPropertyValues", req, res); })
         app.delete('/propertyValues/:id', auth, (req, res) => { requestManager("deletePropertyValue", req, res); })
         /**/app.get('/propertyValues/:id', (req, res) => { requestManager("getPropertyValueById", req, res); })
@@ -84,9 +84,9 @@ const router = {
         app.delete('/kits/:id', auth, (req, res) => { requestManager("deleteKit", req, res); })
         /**/app.get('/kits/:id', (req, res) => { requestManager("getKitById", req, res); })
         app.post('/kits',auth, (req, res) => { requestManager("createKit", req, res); })
-        app.post('/kits/:id/checkIfAvailable', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
-        app.post('/kits/:id/calculatePrice', auth,(req, res) => { requestManager("calculatePriceforKit", req, res); })
-        /*non uso*/app.get('/kits/:id/getReviewsByKitId', (req, res) => { requestManager("getReviewsByKitId", req, res); })
+        app.post('/kits/:id/available', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
+        app.post('/kits/:id/price', auth,(req, res) => { requestManager("calculatePriceforKit", req, res); })
+        /*non uso*/app.get('/kits/:id/reviews', (req, res) => { requestManager("getReviewsByKitId", req, res); })
         app.put('/kits/:id',auth, (req, res) => { requestManager("editKit", req, res); })
 
         // Review

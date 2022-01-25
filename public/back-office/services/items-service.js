@@ -19,9 +19,9 @@ function editItem(_id, name, description, standardPrice, imgSrc, category, kits,
 }
 
 function checkIfAvailables(objectId, startDate, endDate) {
-    return httpPost('items/'+objectId+'/checkIfAvailable', {startDate, endDate, objectId}, true)
+    return httpPost('items/'+objectId+'/available', {startDate, endDate, objectId}, true)
 }
 
 function calculatePriceforItem(itemId, startDate, endDate) {
-    return httpPost('items/'+itemId+'/calculatePrice', {startDate, endDate}, true)
+    return httpPost('items/'+itemId+'/price', {startDate, endDate}, true)
 }
