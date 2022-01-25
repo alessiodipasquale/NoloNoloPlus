@@ -238,7 +238,7 @@ const getEmployeeRevenue = async (userId) => {
     return tot;
 }
 
-const EmployeesTotalRevenue = async () => {
+const getEmployeesTotalRevenue = async () => {
     const users = await getUsersByRole("funzionario")
     const toReturn = [];
     for(let user of users){
@@ -286,6 +286,6 @@ module.exports = {
     getUsersTotalDamage,
     getUserFavourites,
     getEmployeeRevenue,
-    EmployeesTotalRevenue,
+    getEmployeesTotalRevenue,
     getClientsTotalRevenue
 }

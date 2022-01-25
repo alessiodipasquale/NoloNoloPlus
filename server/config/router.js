@@ -17,7 +17,7 @@ const router = {
         app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
         app.get('/users/staff', auth, (req, res) => { requestManager("getStaff", req, res); })
         app.get('/users/managers', auth, (req, res) => { requestManager("getManagers", req, res); })
-        app.get('/users/employees', auth, (req, res) => { requestManager("Employees", req, res); })
+        app.get('/users/employees', auth, (req, res) => { requestManager("getEmployees", req, res); })
         app.get('/users/clients', auth, (req, res) => { requestManager("getClients", req, res); })
         app.get('/users/damage', auth, (req, res) => { requestManager("getUsersTotalDamage", req, res);})
         app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
@@ -29,7 +29,7 @@ const router = {
         app.get('/users/:id/damage', auth, (req, res) => { requestManager("getUserDamage", req, res); })
         app.get('/users/:id/favourites', auth, (req, res) => { requestManager("getUserFavourites", req, res); })
         app.get('/users/employees/:id/revenue', auth, (req, res) => { requestManager("getEmployeeRevenue", req, res); })
-        app.get('/users/employees/revenue', auth, (req, res) => { requestManager("EmployeesTotalRevenue", req, res); })
+        app.get('/users/employees/revenue', auth, (req, res) => { requestManager("getEmployeesTotalRevenue", req, res); })
         app.get('/users/clients/revenue', auth, (req, res) => { requestManager("getClientsTotalRevenue",req, res); })
 
         // Item

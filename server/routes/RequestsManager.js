@@ -34,7 +34,7 @@ const {
   getUsersTotalDamage,
   getUserFavourites,
   getEmployeeRevenue,
-  EmployeesTotalRevenue,
+  getEmployeesTotalRevenue,
   getClientsTotalRevenue
 } = require("./User");
 const {
@@ -213,7 +213,7 @@ const requestManager = async (reqName, req, res) => {
         toReturn = await getUsersByRole("manager");
         break;
       }
-      case "Employees": {
+      case "getEmployees": {
         await roleChecker(req.user.user._id, "funzionario", "block");
         toReturn = await getUsersByRole("funzionario");
         break;
@@ -266,9 +266,9 @@ const requestManager = async (reqName, req, res) => {
         toReturn = await getEmployeeRevenue(req.params.id);
         break;
       }
-      case "EmployeesTotalRevenue": {
+      case "getEmployeesTotalRevenue": {
         await roleChecker(req.user.user._id, "funzionario", "block");
-        toReturn = await EmployeesTotalRevenue();
+        toReturn = await getEmployeesTotalRevenue();
         break;
       }
 
