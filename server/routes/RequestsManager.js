@@ -187,6 +187,7 @@ const requestManager = async (reqName, req, res) => {
       }
       case "getRecommendedByItemId": {
         toReturn = await getRecommendedByItemId(req.params.id);
+        break;
       }
 
       ////////////////////////////////////////////////////////////////////////// User

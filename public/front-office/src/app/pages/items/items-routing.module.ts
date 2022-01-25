@@ -1,3 +1,4 @@
+import { ItemRecommendedComponent } from './item-recommended/item-recommended.component';
 import { ItemSpecComponent } from './item-spec/item-spec.component';
 import { ItemsComponent } from './items.component';
 import { NgModule } from '@angular/core';
@@ -10,6 +11,10 @@ const routes: Routes = [{
     {
         path: 'item-spec',
         component: ItemSpecComponent,
+    },
+    {
+        path: 'item-recommended',
+        component: ItemRecommendedComponent
     }
     ]
 }];

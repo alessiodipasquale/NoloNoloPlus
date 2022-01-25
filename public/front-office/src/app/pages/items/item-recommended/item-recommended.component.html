@@ -1,0 +1,28 @@
+<div class="animated fadeIn" style="padding: 15px 0px;">
+    <h3>Questo oggetto è spesso ordinato insieme a:</h3>
+    <div class="card w-100 mt-3 animated fadeIn" *ngFor="let item of items" >
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6" style="padding-left: 10px; padding-right: 10px;">
+                    <h5 class="card-title" >{{item.name}}</h5>
+                    <ul style="padding-left: 15%;">
+                        <li *ngFor="let property of item.propertiesList">{{property.name}}{{property.value ? ': '+property.value : ''}} {{property.unitOfMeasure ? property.unitOfMeasure : ''}}</li>
+                        <!--<li>{{item.category}}</li>-->
+                        <li>Stato: {{item.state}}</li>
+                    </ul>
+                </div>
+                <div class="col-6" style="display: flex; justify-content: space-around; align-items: center; flex-direction: column;">
+                    <img style="width: 100%; margin-bottom: 10px"[src]="item.imgSrc">
+                    <div>
+                        <p style="margin-bottom: 0; color: grey;" >Prezzo al giorno</p>
+                        <h2 style="font-weight: bold;">{{item.standardPrice}}€</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <button class="btn btn-success btn-block" (click)="openItemSpec(item)">Vedi l'offerta</button>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-block" (click)="goDashboard()">Torna alla home</button>
+</div>

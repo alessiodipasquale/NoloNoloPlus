@@ -81,8 +81,16 @@ export class ItemSpecComponent implements OnInit {
   rent(){
     this.rentalsService.createRental(this.startDate, this.endDate, this.item._id, this.days)
     .then(() => {
-      this.router.navigate(['/pages/dashboard']);
-      this.notificationsService.success("Prenotazione riuscita con successo");
+      this.itemsService.getRecommended(this.item._id)
+      .then(items => {
+        if (items == []) {
+          this.router.navigate(['/pages/dashboard']);
+        } else {
+          this.router.navigate(['/pages/items/item-recommended'], {state: {items: items}});
+        }
+        this.notificationsService.success("Prenotazione riuscita con successo");
+      });
+      
     }).catch(err => this.notificationsService.error(err))
   }
 

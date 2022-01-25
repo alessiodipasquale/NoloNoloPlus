@@ -6,9 +6,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { TableModule } from 'ngx-easy-table';
 import { ItemSpecComponent } from './item-spec/item-spec.component';
+import { ItemRecommendedComponent } from './item-recommended/item-recommended.component';
 
 const components = [
-  ItemsComponent
+  ItemsComponent,
+  ItemSpecComponent,
+  ItemRecommendedComponent
 ];
 
 @NgModule({
@@ -20,8 +23,7 @@ const components = [
         TableModule
     ],
     declarations: [
-        ...components,
-        ItemSpecComponent
+        ...components
     ]
 })
 

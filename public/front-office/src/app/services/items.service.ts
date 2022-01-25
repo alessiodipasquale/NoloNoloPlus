@@ -28,6 +28,10 @@ export class ItemsService {
     getReviewsByItemId(id) {
         return this.http.get('/items/'+id+'/reviews');
     }
+
+    getRecommended(id) {
+        return this.http.get('/items/'+id+'/recommended');
+    }
     
 
     checkIfAvailable(startDate, endDate, objectId) {
