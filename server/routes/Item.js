@@ -243,7 +243,6 @@ const calculatePriceforItem = async (object, itemId, userId) => {
 
     if (userId != null) {
         const user = await UserModel.findById(userId).select("-password -__v")
-        //noleggio per oltre una settimana -> priceDetail.longUsageDiscountMultiplier
         if (diffDays >= 7) {
             discounted = applyDiscount(finalPrice, priceDetail.longUsageDiscountMultiplier);
             receipt.push("Prezzo scontato per prenotazione lunga: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
@@ -306,7 +305,7 @@ const calculatePriceforItem = async (object, itemId, userId) => {
 }
 
 const applyDiscount = (price, multiplier) => {
-    return price * multiplier;
+    return (Math.round(price * multiplier *100)/100);
 }
 
 const getCategoriesByItem = async (id) => {
