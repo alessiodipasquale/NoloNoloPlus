@@ -1,5 +1,5 @@
-function createCertification(rentalId, employerId, certificationType, commentsFromEmployer) {
-    return httpPost('certifications', {rentalId, employerId, certificationType, commentsFromEmployer}, true);
+function createCertification(rentalId, employeeId, certificationType, commentsFromEmployee) {
+    return httpPost('certifications', {rentalId, employeeId, certificationType, commentsFromEmployee}, true);
 }
 
 function getCertifications() {
@@ -14,6 +14,6 @@ function deleteCertification(id) {
     return httpDelete('certifications/'+id, true);
 }
 
-function editCertification(_id, rentalId, certificationType, employerId, certificationDate) {
-    return httpPut('certifications', {_id, rentalId, certificationType, employerId, certificationDate}, true);
+function editCertification(_id, rentalId, certificationType, employeeId, certificationDate) {
+    return httpPut('certifications', {_id, rentalId, certificationType, employeeId, certificationDate}, true);
 }

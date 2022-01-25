@@ -117,7 +117,7 @@ const deleteAssociationToCertification = async (certificationId, toDelete) => {
     let elem = JSON.stringify(certification);
     elem = JSON.parse(elem);
 
-    if (elem.employerId == toDelete) await CertificationModel.updateOne({_id: certificationId},{ $set: { "employerId": null} }); 
+    if (elem.employeeId == toDelete) await CertificationModel.updateOne({_id: certificationId},{ $set: { "employeeId": null} }); 
     if (elem.rentalId == toDelete) await CertificationModel.updateOne({_id: certificationId},{ $set: { "rentalId": null} }); 
 }
 
@@ -282,8 +282,8 @@ const associateToRental = async (type, toModify, value, rentalId) => {
                 await RentalModel.updateOne({_id: rentalId},{ $set: { "returnCertification": value} });
                 break;
             }
-            case "employerId": {
-                await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": value} });
+            case "employeeId": {
+                await RentalModel.updateOne({_id: rentalId},{ $set: { "employeeId": value} });
                 break;
             }
             case "state": {
@@ -301,7 +301,7 @@ const deleteAssociationToRental = async (rentalId, toDelete) => {
 
     if (elem.clientId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "clientId": null} }); 
 
-    if (elem.employerId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "employerId": null} }); 
+    if (elem.employeeId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "employeeId": null} }); 
 
     if (elem.kitId == toDelete) await RentalModel.updateOne({_id: rentalId},{ $set: { "kitId": null} }); 
 

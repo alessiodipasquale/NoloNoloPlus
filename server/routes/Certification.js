@@ -20,17 +20,17 @@ const deleteCertification = async (id) => {
         throw BadRequestError;
 }
 
-const createCertification = async (object, employerId) => {
+const createCertification = async (object, employeeId) => {
     if(!object.rentalId || !object.certificationType)
         throw BadRequestError;
-    if(!object.employerId)
-        object.employerId = employerId
+    if(!object.employeeId)
+        object.employeeId = employeeId
     const certification = await CertificationModel.create(object);
     if(object.certificationType == 'ritiro'){
         await associateToRental("single","state","in corso",object.rentalId)
         await associateToRental("single", "rentalCertification",certification._id, object.rentalId)
-        await associateToRental("single", "employerId", employerId, object.rentalId)
-        await associateToUser("array", "rentals", object.rentalId, object.employerId)
+        await associateToRental("single", "employeeId", employeeId, object.rentalId)
+        await associateToUser("array", "rentals", object.rentalId, object.employeeId)
     }else{
         const rental = await RentalModel.findById(object.rentalId)
         const points = rental.finalPrice;
@@ -51,8 +51,8 @@ const editCertification = async (certId, object) => {
         secureObject.certificationType = object.certificationType;
     if(object.certificationDate)
         secureObject.certificationDate = object.certificationDate;
-    if(object.commentsFromEmployer)
-        secureObject.commentsFromEmployer = object.commentsFromEmployer;
+    if(object.commentsFromEmployee)
+        secureObject.commentsFromEmployee = object.commentsFromEmployee;
     //
     if(object.rentalId) {
         if(secureObject.rentalId != null)
@@ -62,12 +62,12 @@ const editCertification = async (certId, object) => {
             associateToRental("single", secureObject.certificationType, certId, object.rentalId);
         }
     }
-    if(object.employerId) {
-        if(secureObject.employerId != null)
-            deleteAssociationToUser(secureObject.employerId, rentalId)
-        if(object.employerId != "toDelete") {
-            secureObject.employerId = object.employerId;
-            associateToUser("array", "certifications", certId, object.employerId);
+    if(object.employeeId) {
+        if(secureObject.employeeId != null)
+            deleteAssociationToUser(secureObject.employeeId, rentalId)
+        if(object.employeeId != "toDelete") {
+            secureObject.employeeId = object.employeeId;
+            associateToUser("array", "certifications", certId, object.employeeId);
         }
     }
     await CategoryModel.updateOne({_id: catId},secureObject);

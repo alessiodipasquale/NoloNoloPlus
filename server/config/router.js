@@ -17,7 +17,7 @@ const router = {
         app.get('/users', auth, (req, res) => { requestManager("getUsers", req, res); })
         app.get('/users/staff', auth, (req, res) => { requestManager("getStaff", req, res); })
         app.get('/users/managers', auth, (req, res) => { requestManager("getManagers", req, res); })
-        app.get('/users/employers', auth, (req, res) => { requestManager("getEmployers", req, res); })
+        app.get('/users/employees', auth, (req, res) => { requestManager("getemployees", req, res); })
         app.get('/users/clients', auth, (req, res) => { requestManager("getClients", req, res); })
         app.get('/users/damage', auth, (req, res) => { requestManager("getUsersTotalDamage", req, res);})
         app.get('/users/:id', auth, (req, res) => { requestManager("getUserById", req, res); })
@@ -25,11 +25,11 @@ const router = {
         app.post('/users', auth, (req, res) => { requestManager("createUser", req, res); })
         app.put('/users',auth, (req, res) => { requestManager("editUser", req, res); })
         app.get('/users/:userId/rentals',auth, (req, res) => { requestManager("getRentalsByUserId", req, res); })
-        app.get('/users/:id/getReviewsByUserId', auth, (req, res) => { requestManager("getReviewsByUserId", req, res); })
+        app.get('/users/:id/reviews', auth, (req, res) => { requestManager("getReviewsByUserId", req, res); })
         app.get('/users/:id/damage', auth, (req, res) => { requestManager("getUserDamage", req, res); })
         app.get('/users/:id/favourites', auth, (req, res) => { requestManager("getUserFavourites", req, res); })
-        app.get('/users/employers/:id/revenue', auth, (req, res) => { requestManager("getEmployerRevenue", req, res); })
-        app.get('/users/employers/revenue', auth, (req, res) => { requestManager("getEmployersTotalRevenue", req, res); })
+        app.get('/users/employees/:id/revenue', auth, (req, res) => { requestManager("getEmployeeRevenue", req, res); })
+        app.get('/users/employees/revenue', auth, (req, res) => { requestManager("getemployeesTotalRevenue", req, res); })
         app.get('/users/clients/revenue', auth, (req, res) => { requestManager("getClientsTotalRevenue",req, res); })
 
         // Item

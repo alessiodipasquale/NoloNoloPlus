@@ -38,7 +38,7 @@ function openEditRental(elem) {
         editRentalId = rental._id;
         editPrice = rental.finalPrice;
         $('#clientId').val(rental.clientId)
-        $('#employerId').val(rental.employerId)
+        $('#employeeId').val(rental.employeeId)
         if (rental.kitId) {
             $('#itemOrKitLabel').text("Id Kit");
             $('#itemOrKitId').val(rental.kitId);
