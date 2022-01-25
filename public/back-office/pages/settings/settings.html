@@ -1,12 +1,66 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Settings</title>
-</head>
-<body>
-    Settings works.
-</body>
-</html>
+<div class="card">
+    <div class="card-header">
+        Modifica Bonus Prezzi
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="fidelityPriceMultiplier">Sconto per occorrenze di acquisto</label>
+                    <input type="number" class="form-control" id="fidelityPriceMultiplier" >
+                </div>   
+            </div>
+            
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="longUsageDiscountMultiplier">Sconto per lungo periodo di utilizzo</label>
+                    <input type="number" class="form-control" id="longUsageDiscountMultiplier" >
+                </div>   
+            </div>
+            
+        </div>
+        <div class="row mt-3">
+            <div class="col-2 mr-3">
+                <div class="form-group">
+                    <label for="unusable_state">Sconto per stato inutilizzabile di un oggetto</label>
+                    <input type="number" class="form-control" id="unusable_state" max="1" min="0">
+                </div>   
+            </div>
+            <div class="col-2 mr-3">
+                <div class="form-group">
+                    <label for="veryworn_state">Sconto per stato molto usurato di un oggetto</label>
+                    <input type="number" class="form-control" id="veryworn_state" max="1" min="0">
+                </div>   
+            </div>
+            <div class="col-2 mr-3">
+                <div class="form-group">
+                    <label for="worn_state">Sconto per stato usurato di un oggetto</label>
+                    <input type="number" class="form-control" id="worn_state" max="1" min="0">
+                </div>   
+            </div>
+            <div class="col-2 mr-3">
+                <div class="form-group">
+                    <label for="good_state">Sconto per stato buono di un oggetto</label>
+                    <input type="number" class="form-control" id="good_state" max="1" min="0">
+                </div>   
+            </div>
+            <div class="col-2">
+                <div class="form-group">
+                    <label for="verygood_state">Sconto per stato ottimo di un oggetto</label>
+                    <input type="number" class="form-control" id="verygood_state" max="1" min="0">
+                </div>   
+            </div>
+           
+            
+            
+        </div>
+        <p class="text-muted">Nota: Tutti i valori sono espressi in percentuali.</p>
+    </div>
+    <div class="card-footer" style="text-align: right">
+        <button class="btn btn-warning" onclick="editSettings()">Modifica</button>
+    </div>
+</div>
+
+
+<script src="../pages/settings/settings.js"></script>
+<script src="../services/price-details-service.js"></script>
