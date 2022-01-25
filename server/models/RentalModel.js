@@ -13,7 +13,7 @@ const _RentalModel = new mongoose.Schema(
       required: true,
       ref: "User",
     },
-    employerId: {
+    employeeId: {
       type: String,
       ref: "User",
     },

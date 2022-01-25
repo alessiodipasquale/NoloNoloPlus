@@ -33,8 +33,8 @@ const {
   getUserDamage,
   getUsersTotalDamage,
   getUserFavourites,
-  getEmployerRevenue,
-  getEmployersTotalRevenue,
+  getEmployeeRevenue,
+  EmployeesTotalRevenue,
   getClientsTotalRevenue
 } = require("./User");
 const {
@@ -204,8 +204,8 @@ const requestManager = async (reqName, req, res) => {
       case "getStaff": {
         await roleChecker(req.user.user._id, "funzionario", "block");
         const managers = await getUsersByRole("manager");
-        const employers = await getUsersByRole("funzionario");
-        toReturn = managers.concat(employers);
+        const employees = await getUsersByRole("funzionario");
+        toReturn = managers.concat(employees);
         break;
       }
       case "getManagers": {
@@ -213,7 +213,7 @@ const requestManager = async (reqName, req, res) => {
         toReturn = await getUsersByRole("manager");
         break;
       }
-      case "getEmployers": {
+      case "Employees": {
         await roleChecker(req.user.user._id, "funzionario", "block");
         toReturn = await getUsersByRole("funzionario");
         break;
@@ -261,14 +261,14 @@ const requestManager = async (reqName, req, res) => {
         toReturn = await getUserFavourites(req.user.user._id);
         break;
       }
-      case "getEmployerRevenue": {
+      case "getEmployeeRevenue": {
         await roleChecker(req.user.user._id, "funzionario", "block");
-        toReturn = await getEmployerRevenue(req.params.id);
+        toReturn = await getEmployeeRevenue(req.params.id);
         break;
       }
-      case "getEmployersTotalRevenue": {
+      case "EmployeesTotalRevenue": {
         await roleChecker(req.user.user._id, "funzionario", "block");
-        toReturn = await getEmployersTotalRevenue();
+        toReturn = await EmployeesTotalRevenue();
         break;
       }
 

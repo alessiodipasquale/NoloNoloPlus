@@ -21,7 +21,7 @@ const getRentals = async () => {
 const deleteRental = async (id) => {
     const functionalObj = {
         clientId: "toDelete",
-        employerId: "toDelete",
+        employeeId: "toDelete",
         kitId: "toDelete",
         itemId: []
     }
@@ -59,7 +59,7 @@ const fixDates = async (rentalId) => {
 const createRental = async (object, userId, role) => {
     /*
     Important note: userId is related to the user that make the request.
-    If an employer create a rental for one user the clientId must be passed in the object    
+    If an employee create a rental for one user the clientId must be passed in the object    
     */
     if(object.kitId){
         object.rentalTarget = 'kit';
@@ -115,7 +115,7 @@ const createRental = async (object, userId, role) => {
 
     if(object.modifyPrice && role != "cliente"){
         object.finalPrice = object.modifyPrice;
-        object.receipt = ["Modified by an employer"];
+        object.receipt = ["Modified by an employee"];
     }
 
     const dates = getDatesFromARange(object.startDate, object.endDate);
@@ -136,10 +136,10 @@ const createRental = async (object, userId, role) => {
         await associateToItem("array","rentals",rental._id,id);
         await updateRentalsCount(id);
     }
-    if(object.rentalType == "istantaneo" || object.state == "terminata"){  //if the employer create an instant rental for one user, the certification is automatically given
+    if(object.rentalType == "istantaneo" || object.state == "terminata"){  //if the employee create an instant rental for one user, the certification is automatically given
         await createCertification({rentalId: rental._id, certificationType: 'ritiro'},userId) 
     }
-    if(object.state == "terminata"){  //if the employer create a past rental (special case)
+    if(object.state == "terminata"){  //if the employee create a past rental (special case)
         await createCertification({rentalId: rental._id, certificationType: 'riconsegna'},userId) 
     }
     if(object.rentalTarget == 'kit'){
@@ -180,7 +180,7 @@ const editRental = async (rentalId, object) => {
         secureObject.rentalType = object.rentalType;
     if(object.modifyPrice){
         secureObject.finalPrice = object.modifyPrice;
-        secureObject.receipt = ["Modified by an employer"];
+        secureObject.receipt = ["Modified by an employee"];
     }
     if(object.notes)
         secureObject.notes = object.notes;
@@ -197,12 +197,12 @@ const editRental = async (rentalId, object) => {
             associateToUser("array", "rentals", rentalId, object.clientId);
         }
     }
-    if(object.employerId) {
-        if(secureObject.employerId != null)
-            deleteAssociationToUser(secureObject.employerId, rentalId)
-        if(object.employerId != "toDelete") {
-            secureObject.employerId = object.employerId;
-            associateToUser("array", "rentals", rentalId, object.employerId);
+    if(object.employeeId) {
+        if(secureObject.employeeId != null)
+            deleteAssociationToUser(secureObject.employeeId, rentalId)
+        if(object.employeeId != "toDelete") {
+            secureObject.employeeId = object.employeeId;
+            associateToUser("array", "rentals", rentalId, object.employeeId);
         }
     }
     if(object.kitId) {

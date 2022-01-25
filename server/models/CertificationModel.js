@@ -9,7 +9,7 @@ const _CertificationModel = new mongoose.Schema({
         required: true,
         ref: 'Rental'
     },
-    employerId: {
+    employeeId: {
         type: String,
         required: true,
         ref: 'User'
@@ -20,7 +20,7 @@ const _CertificationModel = new mongoose.Schema({
         enum: ['ritiro','riconsegna']
     },
     certificationDate: {type: Date, default: new Date()},
-    commentsFromEmployer: {type: String, required: false}
+    commentsFromEmployee: {type: String, required: false}
     
 },  { collection: "Certification"});
 

@@ -20,7 +20,7 @@ interface Rental {
   startDate: string;
   endDate: Date;
   clientId: string;
-  employerId: string;
+  employeeId: string;
   itemId: string[];
   kitId: string;
   timeInDays: number;

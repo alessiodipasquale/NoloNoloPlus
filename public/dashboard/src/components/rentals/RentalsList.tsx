@@ -21,7 +21,7 @@ export default function RentalsList({
   const data = useMemo(
     () =>
       employeeId !== undefined
-        ? rentals.filter((rental) => rental.employerId === employeeId)
+        ? rentals.filter((rental) => rental.employeeId === employeeId)
         : rentals,
     [employeeId, rentals]
   );

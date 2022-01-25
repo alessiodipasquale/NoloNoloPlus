@@ -1,6 +1,6 @@
 var type;
 var rentalId;
-var employerId;
+var employeeId;
 
 $(document).ready(function() {
     loadAllCertifications()
@@ -30,7 +30,7 @@ function addElemToTable(elem) {
     var row = $('<tr id='+elem._id+'></tr>');
     var row1 = $('<td></td>').text(elem._id);
     var row2 = $('<td></td>').text(elem.rentalId.toString());
-    var row3 = $('<td></td>').text(elem.employerId.toString());
+    var row3 = $('<td></td>').text(elem.employeeId.toString());
     var row4 = $('<td></td>').text(elem.certificationType);
     var row5 = $('<td></td>').text(new Date(elem.certificationDate).toLocaleDateString());
     var row7 = $('<td></td>');
@@ -91,7 +91,7 @@ function openCreateCertification() {
             .click(function(elem) {
                 getUserById(elem.target.id)
                 .done(res => {
-                    employerId = res._id
+                    employeeId = res._id
                     $('#clientSearchButton').text(res.name+' '+res.surname);
                 })
             })
@@ -138,12 +138,12 @@ function setType(ty) {
 }
 
 function create() {
-    const commentsFromEmployer =  $('#inputComment').val() !== "" ? $('#inputComment').val() : undefined;
+    const commentsFromEmployee =  $('#inputComment').val() !== "" ? $('#inputComment').val() : undefined;
 
-    if(!type || !rentalId || !employerId) {
+    if(!type || !rentalId || !employeeId) {
         alert("Inserisci tutti i campi.")
     } else {
-        createCertification(rentalId, employerId, type, commentsFromEmployer)
+        createCertification(rentalId, employeeId, type, commentsFromEmployee)
         .done(() => {
             loadAllCertifications();
             $('#createCertificationModal').modal('hide')
