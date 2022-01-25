@@ -82,6 +82,7 @@
           </div>
       </div>
 
+      <button *ngIf="rental.state == 'futura'" class="btn btn-danger btn-block mb-3" (click)="deleteRental()">Annulla prenotazione</button>
     
 </div>
 

@@ -54,6 +54,14 @@ export class RentalSpecComponent implements OnInit {
     })
   }
 
+  deleteRental() {
+    this.rentalsService.deleteRental(this.rental._id)
+    .then(() => {
+      this.notificationsService.success();
+      this.router.navigate(['/pages/rentals/rentals-list']);
+    }).catch(err => this.notificationsService.error());
+  }
+
   deleteReview(review, item) {
    this.reviewService.deleteReview(review._id)
     .then(() => {

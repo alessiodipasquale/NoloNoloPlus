@@ -49,4 +49,13 @@ export class RentalsService {
             this.router.navigate(['/login']);
         }    
     }
+
+    deleteRental(id) {
+        if (this.tokenService.isTokenSet())  
+            return this.http.delete('/rentals/'+id)
+        else {
+            this.notificationsService.error("Devi essere autenticato per effettuare questa operazione.")
+            this.router.navigate(['/login']);
+        }    
+    }
 }
