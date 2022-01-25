@@ -97,7 +97,8 @@ const {
 const {
   getPriceDetail,
   editPriceDetail
-} = require("./PriceDetails")
+} = require("./PriceDetails");
+const { BadRequestError, UnauthorizedError } = require('../config/errors');
 
 
 const requestManager = async (reqName, req, res) => {
@@ -289,8 +290,14 @@ const requestManager = async (reqName, req, res) => {
         break;
       }
       case "deleteRental": {
-        await roleChecker(req.user.user._id, "funzionario", "block");
-        await deleteRental(req.params.id);
+        if (await roleChecker(req.user.user._id, "funzionario", "return")) {
+          await deleteRental(req.params.id);
+        }else{
+          const rental = await getRentalById(req.params.id);
+          if(rental.clientId == req.user.user._id)
+            await deleteRental(req.params.id);
+          else throw UnauthorizedError;
+        }
         break;
       }
       case "createRental": {
