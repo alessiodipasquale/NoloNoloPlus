@@ -388,9 +388,15 @@ const associateToUser = async (type, toModify, value, userId) => {
                 break;
             }
         }
-    }/* else {
-
-    }*/
+    } else {
+        switch(toModify){
+            case "loyaltyPoints":{
+                const old = user.loyaltyPoints;
+                await UserModel.updateOne({_id: userId},{ $set: { "loyaltyPoints": (old+value)} });
+                break;
+            }
+        }
+    }
 }
 
 /////////////////////////////////////////////////////////////////////////////////////

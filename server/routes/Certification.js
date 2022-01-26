@@ -35,7 +35,7 @@ const createCertification = async (object, employeeId) => {
         const rental = await RentalModel.findById(object.rentalId)
         const points = rental.finalPrice;
         const client = rental.clientId;
-        await UserModel.updateOne({ _id: client }, { $set: { "loyaltyPoints": points } });
+        await associateToUser("single", "loyaltyPoints", points, client)
         await associateToRental("single","state","terminata",object.rentalId)
         await associateToRental("single", "returnCertification",certification._id, object.rentalId)
     }

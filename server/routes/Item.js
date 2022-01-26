@@ -255,8 +255,10 @@ const calculatePriceforItem = async (object, itemId, userId) => {
         } else {
             discounted = Math.round((finalPrice - (finalPrice / 100 * (user.loyaltyPoints / 1000)))*100)/100;
         }
-        receipt.push("Prezzo scontato per punti fedeltà: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
-        finalPrice = discounted;
+        if(finalPrice - discounted >= 0.1){
+            receipt.push("Prezzo scontato per punti fedeltà: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
+            finalPrice = discounted;
+        }
 
         //se è nei preferiti
         if (user.favItemsId.includes(item._id)) {

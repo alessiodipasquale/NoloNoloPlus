@@ -140,11 +140,20 @@ const createRental = async (object, userId, role) => {
         await associateToItem("array","rentals",rental._id,id);
         await updateRentalsCount(id);
     }
-    if(object.rentalType == "istantaneo" || object.state == "terminata"){  //if the employee create an instant rental for one user, the certification is automatically given
-        await createCertification({rentalId: rental._id, certificationType: 'ritiro'},userId) 
-    }
-    if(object.state == "terminata"){  //if the employee create a past rental (special case)
-        await createCertification({rentalId: rental._id, certificationType: 'riconsegna'},userId) 
+    if(role != "cliente"){       //necessary for project-related motivations    (TODO: REMOVE)
+        if(object.rentalType == "istantaneo" || object.state == "terminata"){  //if the employee create an instant rental for one user, the certification is automatically given
+            await createCertification({rentalId: rental._id, certificationType: 'ritiro'},userId) 
+        }
+        if(object.state == "terminata"){  //if the employee create a past rental (special case)
+            await createCertification({rentalId: rental._id, certificationType: 'riconsegna'},userId) 
+        }
+    }else{
+        if(object.rentalType == "istantaneo" || object.state == "terminata"){  //if the employee create an instant rental for one user, the certification is automatically given
+            await createCertification({rentalId: rental._id, certificationType: 'ritiro'},"Funzionario-ID") 
+        }
+        if(object.state == "terminata"){  //if the employee create a past rental (special case)
+            await createCertification({rentalId: rental._id, certificationType: 'riconsegna'},"Funzionario-ID") 
+        }
     }
     if(object.rentalTarget == 'kit'){
         await associateToKit("array","rentals",rental._id,object.kitId);
