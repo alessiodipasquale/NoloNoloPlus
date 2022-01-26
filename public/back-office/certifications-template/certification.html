@@ -22,8 +22,11 @@
     <div class="logoContainer" style="width: 100%; display: flex; justify-content: center;">
         <img src="../assets/LogoAlt.png" alt="Logo NoloNolo" style="height: 200px">
     </div>
-    <div class="content">
-        
+    <div class="content" style="height: 80%;">
+        Si attesta che l'utente <a id="user"></a> ha effettuato <a id="tipo"></a> <a id="singleormulti"></a> <a id="oggetto"></a>il giorno <a id="giorno"></a>.
+    </div>
+    <div class="funzionario" style="text-align: right;">
+        Certificato dal <a id="role"></a> <a id="managerName"></a>
     </div>
 </body>
 </html>
@@ -31,6 +34,26 @@
 <script>
 
     $(document).ready(function() {
-        console.log(window.certification)
+        const certification = window.certification
+        $('#user').text(certification.client.name+' '+certification.client.surname);
+        $('#giorno').text(new Date(certification.certificationDate).toLocaleDateString())
+
+        if(certification.rental.items.length > 1) {
+            $('#singleormulti').text('degli oggetti');
+            $('#oggetto').text(certification.rental.items.map(item => item.name+', '));
+        } else {
+            $('#singleormulti').text("dell'oggetto");
+            $('#oggetto').text(certification.rental.items[0].name+' ');
+        }
+
+
+        if(certification.certificationType == "ritiro") {
+            $('#tipo').text('il ritiro')
+        }else {
+            $('#tipo').text('la riconsegna')
+        }
+
+        $('#role').text(certification.employee.role)
+        $('#managerName').text(certification.employee.name+' '+certification.employee.surname);
     });
 </script>
