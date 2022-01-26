@@ -320,27 +320,27 @@ const properties = [
   {
     _id: "Property2",
     name: "Porte",
-    associatedItems: ["Val3","Val4"],
+    associatedValues: ["Val3","Val4"],
   },
   {
     _id: "Property3",
     name: "Cilindrata",
-    associatedItems: ["Val5","Val6","Val7","Val8"],
+    associatedValues: ["Val5","Val6","Val7","Val8"],
   },
   {
     _id: "Property4",
     name: "Airbag",
-    associatedItems: ["Val9"],
+    associatedValues: ["Val9"],
   },
   {
     _id: "Property5",
     name: "RAM",
-    associatedItems: ["Val10"],
+    associatedValues: ["Val10"],
   },
   {
     _id: "Property6",
     name: "SSD",
-    associatedItems: ["Val11"],
+    associatedValues: ["Val11"],
   },
 ];
 

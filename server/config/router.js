@@ -83,6 +83,7 @@ const router = {
         /**/app.get('/kits', (req, res) => { requestManager("getKits", req, res); })
         app.delete('/kits/:id', auth, (req, res) => { requestManager("deleteKit", req, res); })
         /**/app.get('/kits/:id', (req, res) => { requestManager("getKitById", req, res); })
+        /**/app.get('/kits/filtered', (req, res) => { requestManager("getFilteredKits", req, res); })
         app.post('/kits',auth, (req, res) => { requestManager("createKit", req, res); })
         app.post('/kits/:id/available', auth, (req, res) => { requestManager("checkIfKitIsAvailable", req, res); })
         app.post('/kits/:id/price', auth,(req, res) => { requestManager("calculatePriceforKit", req, res); })

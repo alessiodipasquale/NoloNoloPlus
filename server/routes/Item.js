@@ -32,11 +32,22 @@ const filterGroups = (arrayOfItems) => {
     return toReturn;
 }
 
+const filterAvailable = (arrayOfItems) => {
+    const toReturn = [];
+    for (let item of arrayOfItems) {
+        if(item.available)
+            toReturn.push(item);
+    }
+    return toReturn;
+}
+
 const getItems = async (filter) => {
     const toReturn = [];
     let items = await ItemModel.find();
-    if(filter)
+    if(filter){
+        items = filterAvailable(items);
         items = filterGroups(items);
+    }
     for (let item of items) {
         toReturn.push(await generateFullItem(item));
     }
@@ -126,6 +137,7 @@ const getItemsByCategoryId = async (id) => {
         const item = await getItemById(itemId);
         items.push(item);
     }
+    items = filterAvailable(items)
     items = filterGroups(items);
     for (let item of items) {
         const props = [];
@@ -390,8 +402,47 @@ const editItem = async (itemId, object) => {
         }
         secureObject.properties = object.properties;
     }
+    if(object.available != undefined){
+        if(object.available != secureObject.available){
+            if(object.available == 'true'){
+                await setRelatedKitsToAvailable(secureObject._id)
+                secureObject.available = true;
+            }else{
+                await setRelatedKitsToNotAvailable(secureObject._id)
+                secureObject.available = false;
+            }
+        }    
+    }
     await ItemModel.updateOne({ _id: itemId }, secureObject);
     return null;
+}
+
+const setRelatedKitsToAvailable = async (itemId) => {
+    const kits = await KitModel.find();
+    for(let kit of kits){
+        if(!kit.available && kit.items.includes(itemId)){
+            let okToProceed = true
+            for(let id of kit.items){
+                if(id != itemId){
+                    const elem = await getItemById(id)
+                    if(!elem.available)
+                        okToProceed = false
+                }
+            }
+            if(okToProceed){
+                await KitModel.updateOne({ _id: kit._id }, { $set: { "available": true } })
+            }
+        }
+    }
+}
+
+const setRelatedKitsToNotAvailable = async (itemId) => {
+    const kits = await KitModel.find();
+    for(let kit of kits){
+        if(kit.available && kit.items.includes(itemId)){
+            await KitModel.updateOne({ _id: kit._id }, { $set: { "available": false } })
+        }
+    }
 }
 
 const updateRentalsCount = async (itemId) => {

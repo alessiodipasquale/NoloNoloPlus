@@ -32,13 +32,16 @@ const getKitById = async (id) => {
     return elem;
 }
 
-const getKits = async () => {
+const getKits = async (filtered) => {
     const kits =  await KitModel.find();
     toReturn = [];
     for(let kit of kits){
         const k = await getKitById(kit.id)
         toReturn.push(k)
     }
+    if(filtered)
+        toReturn = filterAvailable(toReturn)
+        
     return toReturn;
 }
 
@@ -123,6 +126,8 @@ const editKit = async (kitId, object) => {
         secureObject.description = object.description; 
     if(object.standardPrice)
         secureObject.standardPrice = object.standardPrice; 
+    if(object.available != undefined)
+        secureObject.available = object.available; 
     if(object.items){
         let oldAssociated = secureObject.items;
         let toRemove = oldAssociated.filter(x => !object.items.includes(x));
@@ -137,6 +142,15 @@ const editKit = async (kitId, object) => {
     }
     await KitModel.updateOne({_id: kitId},secureObject);
     return null;
+}
+
+const filterAvailable = (arrayOfKits) => {
+    const toReturn = [];
+    for (let kit of arrayOfKits) {
+        if(kit.available)
+            toReturn.push(kit);
+    }
+    return toReturn;
 }
 
 module.exports = {

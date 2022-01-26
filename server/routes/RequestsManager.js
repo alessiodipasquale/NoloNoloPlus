@@ -430,7 +430,11 @@ const requestManager = async (reqName, req, res) => {
         break;
       }
       case "getKits": {
-        toReturn = await getKits();
+        toReturn = await getKits(false);
+        break;
+      }
+      case "getFilteredKits": {
+        toReturn = await getKits(true);
         break;
       }
       case "deleteKit": {
