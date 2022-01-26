@@ -6,6 +6,8 @@ const priceDetails = [
     _id: "PriceDetail1",
     longUsageDiscountMultiplier: 0.95,
     fidelityPriceMultiplier: 0.95,
+    kitDiscount: 0.9,
+    favouritesTreshold: 4,
     verygood_state: 0.95,
     good_state: 0.9,
     worn_state: 0.8,

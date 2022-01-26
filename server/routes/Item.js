@@ -205,6 +205,7 @@ const checkIfAvailable = async (object) => {
     }
     return isOk;
 }
+
 const getReviewsByItemId = async (itemId) => {
     toReturn = [];
     const item = await getItemById(itemId);
@@ -240,12 +241,11 @@ const calculatePriceforItem = async (object, itemId, userId) => {
 
     finalPrice = diffDays * finalPrice;
     receipt.push("Costo non scontato per l'intero periodo: " + finalPrice + "€");
-
     if (userId != null) {
         const user = await UserModel.findById(userId).select("-password -__v")
         if (diffDays >= 7) {
             discounted = applyDiscount(finalPrice, priceDetail.longUsageDiscountMultiplier);
-            receipt.push("Prezzo scontato per prenotazione lunga: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
+            receipt.push("Prezzo scontato per prenotazione lunga: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
             finalPrice = discounted;
         }
 
@@ -253,15 +253,16 @@ const calculatePriceforItem = async (object, itemId, userId) => {
         if (user.loyaltyPoints >= 50000) {
             discounted = finalPrice / 2;
         } else {
-            discounted = finalPrice - (finalPrice / 100 * (user.loyaltyPoints / 1000))
+            discounted = Math.round((finalPrice - (finalPrice / 100 * (user.loyaltyPoints / 1000)))*100)/100;
         }
-        receipt.push("Prezzo scontato per punti fedeltà: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
+        receipt.push("Prezzo scontato per punti fedeltà: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
         finalPrice = discounted;
 
-        //se è nei preferiti -> priceDetail.discountMultiplier
+        //se è nei preferiti
         if (user.favItemsId.includes(item._id)) {
             discounted = applyDiscount(finalPrice, priceDetail.fidelityPriceMultiplier);
-            receipt.push("Prezzo scontato per ripetizione di noleggio: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
+            receipt.push("Prezzo scontato per ripetizione di noleggio: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
+            finalPrice = discounted;
         }
     }
 
@@ -269,37 +270,37 @@ const calculatePriceforItem = async (object, itemId, userId) => {
     switch (item.state) {
         case "ottimo": {
             discounted = applyDiscount(finalPrice, priceDetail.verygood_state);
-            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
+            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
             finalPrice = discounted;
             break;
         }
         case "buono": {
             discounted = applyDiscount(finalPrice, priceDetail.good_state);
-            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
+            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
             finalPrice = discounted;
             break;
         }
         case "usurato": {
             discounted = applyDiscount(finalPrice, priceDetail.worn_state);
-            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
+            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
             finalPrice = discounted;
             break;
         }
         case "molto usurato": {
             discounted = applyDiscount(finalPrice, priceDetail.veryworn_state);
-            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
+            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
             finalPrice = discounted;
             break;
         }
         case "inutilizzabile": {
             discounted = applyDiscount(finalPrice, priceDetail.unusable_state);
-            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted) + "€");
+            receipt.push("Prezzo scontato per stato dell'oggetto: " + discounted + "€, sconto applicato di " + (finalPrice - discounted).toFixed(2) + "€");
             finalPrice = discounted;
             break;
         }
     }
 
-    toReturn.finalPrice = finalPrice;
+    toReturn.finalPrice = parseFloat(finalPrice.toFixed(2));
     toReturn.receipt = receipt;
     return toReturn;
 }

@@ -171,6 +171,11 @@ const requestManager = async (reqName, req, res) => {
         toReturn = await checkIfAvailable(req.body);
         break;
       }
+      case "checkIfKitIsAvailable": {
+        req.body.kitId = req.params.id;
+        toReturn = await checkIfAvailable(req.body);
+        break;
+      }
       case "getReviewsByItemId": {
         toReturn = await getReviewsByItemId(req.params.id);
         break;

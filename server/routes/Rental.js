@@ -7,6 +7,7 @@ const { associateToUser, associateToKit, associateToCertification, associateToIt
 const { getKitById, calculatePriceforKit } = require("./Kit");
 const { createCertification } = require("./Certification");
 const { updateRentalsCount } = require("./Item");
+const { getPriceDetail } = require("./PriceDetails");
 
 const getRentalById = async (id) => {
     const rental = await RentalModel.findById(id)
@@ -125,8 +126,11 @@ const createRental = async (object, userId, role) => {
 
     await updateItemRentalDates("add", dates, object.objectId);
     await associateToUser("array", "rentals", rental._id, object.clientId);
+
+    const priceDet = await getPriceDetail()
+
     for(let id of object.objectId){
-        if(await countSpecifiedPurchase(object.clientId, id) >= global.config.favouritesTreshold){
+        if(await countSpecifiedPurchase(object.clientId, id) >= priceDet.favouritesTreshold){
             await associateToUser("array", "favItemsId", id, object.clientId);
             const categories = await getCategoriesByItem(id);
             for(let cat of categories){

@@ -5,6 +5,7 @@ const { associateToItem, deleteAssociationToItem } = require("./associations/Ass
 const { getPropertyValueById } = require("./PropertyValue");
 const { getPropertyById } = require("./Property");
 const { arrayUnion } = require("../utils/UtilityFuctions");
+const { getPriceDetail } = require("./PriceDetails");
 
 const getKitById = async (id) => {
     const kit = await KitModel.findById(id);
@@ -73,27 +74,29 @@ const calculatePriceforKit = async (object,kitId,userId) =>{
         throw BadRequestError;
 
     const kit = await getKitById(kitId);
+    const priceDet = await getPriceDetail();
 
     let toReturn = {};
     const partialPrices = [];
     let finalKitPrice = 0;
     const kitReceipt = [];
 
-    for(let itemId of kit.items){
-        itemId = itemId._id;
+    for(let item of kit.items){
+        const itemName = item.name;
+        const itemId = item._id;
         let rec = []
         rec.push("Resoconto item con id "+itemId)
         const fullPriceForItem = await calculatePriceforItem(object, itemId, userId);
         for(let e of fullPriceForItem.receipt)
             rec.push(e);
         partialPrices.push(rec);
-        kitReceipt.push("Prezzo calcolato per l'oggetto con id "+itemId+": "+fullPriceForItem.finalPrice );
+        kitReceipt.push("Prezzo calcolato per l'oggetto con nome "+itemName+": "+fullPriceForItem.finalPrice );
         finalKitPrice += fullPriceForItem.finalPrice;
     }
-    kitReceipt.push("Alla somma viene applicato uno sconto del "+ global.config.kitDiscount+ "% per aver acquistato un kit");
-    finalKitPrice = finalKitPrice - (finalKitPrice/100 * global.config.kitDiscount)
+    kitReceipt.push("Alla somma viene applicato uno sconto del "+ (100-(priceDet.kitDiscount*100))+ "% per aver acquistato un kit");
+    finalKitPrice = (finalKitPrice * priceDet.kitDiscount)
 
-    toReturn.finalKitPrice = finalKitPrice;
+    toReturn.finalKitPrice = parseFloat(finalKitPrice.toFixed(2));
     toReturn.partialPrices = partialPrices;
     toReturn.kitReceipt = kitReceipt;
     return toReturn;

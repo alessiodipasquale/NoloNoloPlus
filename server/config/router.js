@@ -40,8 +40,8 @@ const router = {
         app.post('/items',auth, (req, res) => { requestManager("createItem", req, res); })
         app.put('/items/:id',auth, (req, res) => { requestManager("editItem", req, res); })
         app.post('/items/:id/available', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
-        /*non uso*/app.get('/items/:id/reviews', (req, res) => { requestManager("getReviewsByItemId", req, res); })
-        /*non uso*/app.post('/items/:id/price', (req, res) => { requestManager("calculatePriceforItem", req, res); })
+        /**/app.get('/items/:id/reviews', (req, res) => { requestManager("getReviewsByItemId", req, res); })
+        /**/app.post('/items/:id/price', auth, (req, res) => { requestManager("calculatePriceforItem", req, res); })
         app.get('/items/:id/recommended',auth, (req, res) => { requestManager("getRecommendedByItemId", req, res); })
 
         // Rental
@@ -84,7 +84,7 @@ const router = {
         app.delete('/kits/:id', auth, (req, res) => { requestManager("deleteKit", req, res); })
         /**/app.get('/kits/:id', (req, res) => { requestManager("getKitById", req, res); })
         app.post('/kits',auth, (req, res) => { requestManager("createKit", req, res); })
-        app.post('/kits/:id/available', auth, (req, res) => { requestManager("checkIfAvailable", req, res); })
+        app.post('/kits/:id/available', auth, (req, res) => { requestManager("checkIfKitIsAvailable", req, res); })
         app.post('/kits/:id/price', auth,(req, res) => { requestManager("calculatePriceforKit", req, res); })
         /*non uso*/app.get('/kits/:id/reviews', (req, res) => { requestManager("getReviewsByKitId", req, res); })
         app.put('/kits/:id',auth, (req, res) => { requestManager("editKit", req, res); })

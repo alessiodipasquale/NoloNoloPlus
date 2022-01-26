@@ -6,6 +6,8 @@ const _PriceDetailsModel = new mongoose.Schema({
     _id: String,
     longUsageDiscountMultiplier: { type: Number, required: false},   //higher than a week
     fidelityPriceMultiplier: {type: Number, required: false},
+    kitDiscount: {type: Number, required: false},
+    favouritesTreshold: {type: Number, required:true},
     verygood_state: {type: Number, required: false}, 
     good_state: {type: Number, required: false}, 
     worn_state: {type: Number, required: false}, 

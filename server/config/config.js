@@ -13,8 +13,6 @@ const initialize = async () => {
         force: false,
         seed: false,
         log: !!env,
-        favouritesTreshold: 4,
-        kitDiscount: 10
     };
 };
 
