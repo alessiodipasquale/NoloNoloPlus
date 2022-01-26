@@ -4,20 +4,33 @@
     </div>
     <div class="card-body">
         <div class="row">
-            <div class="col-4">
+            <div class="col-3">
                 <div class="form-group">
                     <label for="fidelityPriceMultiplier">Sconto per occorrenze di acquisto</label>
                     <input type="number" class="form-control" id="fidelityPriceMultiplier" >
                 </div>   
             </div>
             
-            <div class="col-4">
+            <div class="col-3">
                 <div class="form-group">
                     <label for="longUsageDiscountMultiplier">Sconto per lungo periodo di utilizzo</label>
                     <input type="number" class="form-control" id="longUsageDiscountMultiplier" >
                 </div>   
             </div>
             
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="kitDiscount">Sconto per affitto di un Kit</label>
+                    <input type="number" class="form-control" id="kitDiscount" >
+                </div>   
+            </div>
+
+            <div class="col-3">
+                <div class="form-group">
+                    <label for="favouritesTreshold">Soglia preferiti</label>
+                    <input type="number" class="form-control" id="favouritesTreshold" >
+                </div>   
+            </div>
         </div>
         <div class="row mt-3">
             <div class="col-2 mr-3">
@@ -54,7 +67,6 @@
             
             
         </div>
-        <p class="text-muted">Nota: Tutti i valori sono espressi in percentuali.</p>
     </div>
     <div class="card-footer" style="text-align: right">
         <button class="btn btn-warning" onclick="editSettings()">Modifica</button>
