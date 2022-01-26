@@ -69,7 +69,7 @@ const createKit = async (object) => {
     for(let itId of object.items){
         await associateToItem("array", "kits", kit._id, itId);
     }
-    return kit;
+    return await getKitById(kit._id);
 }
 
 const calculatePriceforKit = async (object,kitId,userId) =>{
@@ -152,6 +152,7 @@ const filterAvailable = (arrayOfKits) => {
     }
     return toReturn;
 }
+
 
 module.exports = {
     getKits,

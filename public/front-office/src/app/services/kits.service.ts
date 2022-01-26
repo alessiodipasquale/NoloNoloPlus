@@ -15,7 +15,7 @@ export class KitsService {
                 private router: Router) { }
 
     getKits() {
-        return this.http.get('/Kits');
+        return this.http.get('/Kits/filtered');
     }
 
     getKitById(id) {
