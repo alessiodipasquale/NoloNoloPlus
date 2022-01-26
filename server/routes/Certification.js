@@ -6,7 +6,7 @@ const UserModel = require("../models/UserModel");
 
 const getCertificationById = async (id) => {
     const cert = await CertificationModel.findById(id)
-    return cert;
+    return await generateFullCertification(cert);
 }
 
 const getCertifications = async () => {
@@ -72,6 +72,24 @@ const editCertification = async (certId, object) => {
     }
     await CategoryModel.updateOne({_id: catId},secureObject);
     return null;
+}
+
+const generateFullCertification = async (certification) => {
+    let elem = JSON.stringify(certification)
+    elem = JSON.parse(elem)
+
+    const employee = await UserModel.findById(certification.employeeId).select("-password -__v");
+    let rental = await RentalModel.findById(certification.rentalId);
+    rental.items = [];
+    for(let itemId of rental.itemId){
+        rental.items.push(await ItemModel.findById(itemId))
+    }
+    const client = await UserModel.findById(rental.clientId).select("-password -__v");
+
+    elem.employee = employee;
+    elem.client = client;
+    elem.rental = rental;
+    return elem;
 }
 
 module.exports = {
