@@ -16,7 +16,7 @@ $(document).ready(function() {
                 .click(function(elem) {
                     getItemById(elem.target.id)
                     .done(res => {
-                        const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-around; margin-bottom: 3px"></div>')
+                        const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; border-bottom: 1px solid lightgrey; padding: 1%"></div>')
                         const it = $('<p style="margin-bottom: 0"></p>').text(res._id+' ,'+res.name+', Stato:'+res.state)
                         const deleteItemBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+res._id+'"><i class="fas fa-trash" id="'+res._id+'"></i></button>')
                         .click(function(elem) {
@@ -87,7 +87,7 @@ function addElemToTable(elem) {
     var row2 = $('<td></td>').text(elem.name);
     var row3 = $('<td></td>').text(elem.description);
     var row4 = $('<td></td>').text(elem.category.toString());
-    var row5 = $('<td></td>').text(elem.available);
+    var row5 = $('<td></td>').append(elem.available ? '<span class="dot dot-success"></span>' : '<span class="dot dot-danger"></span>');
     var row6 = $('<td></td>').text(elem.items.map(item => item.name+ ''));
     var row7 = $('<td></td>');
     
@@ -108,7 +108,7 @@ function addElemToTable(elem) {
 
             itemsEditList = kit.items;
             for (var res of itemsEditList) {
-                const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-around; margin-bottom: 3px"></div>')
+                const row = $('<div class="row itemList" id="'+res._id+'" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 3px; border-bottom: 1px solid lightgrey; padding: 1%"></div>')
                 const it = $('<p style="margin-bottom: 0"></p>').text(res._id+' ,'+res.name+', Stato:'+res.state)
                 const deleteItemBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+res._id+'"><i class="fas fa-trash" id="'+res._id+'"></i></button>')
                 .click(function(elem) {
@@ -124,7 +124,12 @@ function addElemToTable(elem) {
             $('#inputEditStandardPrice').val(kit.standardPrice)
             $('#inputEditAvailable').val(kit.available)
             $('#inputEditDescription').val(kit.description)
-            $('#inputEditAvailable').val(kit.available)
+
+            if(kit.available)
+                $('#inputEditAvailable').prop('checked', true);
+             else 
+                $('#inputEditAvailable').prop('checked', false);
+
             
             getItems()
             .done(res => {
@@ -191,7 +196,7 @@ function edit() {
     const description = $('#inputEditDescription').val()
 
     const standardPrice = $('#inputEditStandardPrice').val()
-    const available = $('#inputEditAvailable').val()
+    const available = $('#inputEditAvailable').is(':checked');
 
     editKit(id, name, description, standardPrice, available, itemsEditList)
     .done(() => {

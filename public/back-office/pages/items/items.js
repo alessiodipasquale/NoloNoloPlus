@@ -188,8 +188,9 @@ function confirmCreateItem() {
     const price = $('#inputPrice').val();
     const inputDescription = $('#inputDescription').val();
     const inputImageUrl = $('#inputImageUrl').val() != '' ? $('#inputImageUrl').val() : undefined;
-    
-    createItem(name, inputDescription, price, inputImageUrl, categoriesIds, kitsIds, state, groupId, properties)
+    const available = $('#inputAvailable').is(':checked');
+
+    createItem(name, inputDescription, available, price, inputImageUrl, categoriesIds, kitsIds, state, groupId, properties)
         .done((res) => {
             loadAllItems();
             clearInputs();
@@ -230,8 +231,10 @@ function confirmEditItem() {
     const editprice = $('#inputEditPrice').val();
     const editinputDescription = $('#inputEditDescription').val();
     const editinputImageUrl = $('#inputEditImageUrl').val();
+    const editAvailable = $('#inputEditAvailable').is(':checked');
 
-    editItem(id, editname, editinputDescription, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId, propertiesEdit)
+
+    editItem(id, editname, editinputDescription, editAvailable, editprice, editinputImageUrl, editcategoriesIds, editkitsIds, editstate, groupId, propertiesEdit)
     .done((res) => {
         loadAllItems();
         $('#editItemModal').modal('hide')
@@ -251,6 +254,12 @@ function openEditItem(elem) {
         $('#inputEditImageUrl').val(item.imgSrc)
         $('#inputEditState').text(item.state)
         
+        if(item.available)
+            $('#inputEditAvailable').prop('checked', true);
+        else 
+            $('#inputEditAvailable').prop('checked', false);
+
+
         
         $('#dropdown-edit-category').empty();
 
@@ -360,7 +369,8 @@ function addElemToTable(elem) {
     var row4 = $('<td></td>').text(elem.categoriesList.map(elem => elem.name));
     var row5 = $('<td></td>').text(elem.state);
     var row6 = $('<td></td>').text(elem.rentCount);
-    var row7 = $('<td></td>');
+    var row7 = $('<td></td>').append(elem.available ? '<span class="dot dot-success"></span>' : '<span class="dot dot-danger"></span>');
+    var row8 = $('<td></td>');
     
     /*var openBtn = $('<button type="button" class="btn btn-primary" id='+elem._id+'><i class="far fa-eye"></i></button>')
     openBtn.click(function (elem) {
@@ -383,8 +393,8 @@ function addElemToTable(elem) {
         }
     })
 
-    row7.append([/*openBtn,*/ editBtn, deleteBtn]);
+    row8.append([/*openBtn,*/ editBtn, deleteBtn]);
             
-    row.append([row1, row2, row3, row4, row5, row6, row7]);
+    row.append([row1, row2, row3, row4, row5, row6, row7, row8]);
     $('tbody').append(row);
 }
