@@ -4,7 +4,7 @@ const info = require('../../package.json');
 const options = {
     definition: {
         info,
-        host: 'localhost:3000',
+        host: 'localhost:8000',
         basePath: '/',
         securityDefinitions: {
             BearerAuth: {
@@ -15,7 +15,7 @@ const options = {
             }
         }
     },
-    apis: []
+    apis: ['./openapi.yaml']
 };
 
 const swagger = swaggerJSDoc(options);

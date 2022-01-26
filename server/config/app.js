@@ -43,14 +43,7 @@ const run = async () => {
 
 
     router.initialize(app, passport);
-   /* app.get('/', async function (req, res) { 
-        console.log('arrivo')
-        let sitename = req.hostname.split('.')[0]
-        res.send(await template.generate('index.html', {
-                host: req.hostname,
-                site: sitename
-        }));
-    })*/
+   
     /*if (global.config.swagger) {
         const swaggerUi = require('swagger-ui-express');
         const swaggerSpec = require('./swagger');
