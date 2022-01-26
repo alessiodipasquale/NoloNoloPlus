@@ -3,6 +3,7 @@ const { UnauthorizedError, BadRequestError, AlreadyExistsError } = require('../c
 const { associateToRental, associateToUser } = require('./associations/AssociationManager');
 const RentalModel = require("../models/RentalModel");
 const UserModel = require("../models/UserModel");
+const ItemModel = require("../models/ItemModel")
 
 const getCertificationById = async (id) => {
     const cert = await CertificationModel.findById(id)
@@ -79,7 +80,8 @@ const generateFullCertification = async (certification) => {
     elem = JSON.parse(elem)
 
     const employee = await UserModel.findById(certification.employeeId).select("-password -__v");
-    let rental = await RentalModel.findById(certification.rentalId);
+    let rental = JSON.stringify(await RentalModel.findById(certification.rentalId));
+    rental = JSON.parse(rental);
     rental.items = [];
     for(let itemId of rental.itemId){
         rental.items.push(await ItemModel.findById(itemId))
