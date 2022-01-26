@@ -83,7 +83,8 @@ export class ItemSpecComponent implements OnInit {
     .then(() => {
       this.itemsService.getRecommended(this.item._id)
       .then(items => {
-        if (items == []) {
+        console.log(items);
+        if (items.length == 0) {
           this.router.navigate(['/pages/dashboard']);
         } else {
           this.router.navigate(['/pages/items/item-recommended'], {state: {items: items}});
