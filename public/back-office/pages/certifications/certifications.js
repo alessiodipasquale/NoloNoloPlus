@@ -44,7 +44,10 @@ function addElemToTable(elem) {
     editBtn.click(function (elem) {
         getCertificationById(elem.target.id)
         .done(certification => {
-            console.log(certification)
+            
+            var newWindow = window.open('../../back-office/certifications-template/certification.html')
+            
+            newWindow.certification = certification;
         })
     })
 

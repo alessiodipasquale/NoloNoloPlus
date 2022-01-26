@@ -75,7 +75,7 @@ function create() {
     const description = $('#inputDescription').val();
     createKit(name , description, standardPrice, itemsList, available)
     .done(res => {
-        addElemToTable(res);
+        loadAllKits();
         $('#createKitModal').modal('hide')
     }).catch(err => alert("Errore nella creazione del kit."))
 }
@@ -175,7 +175,7 @@ function addElemToTable(elem) {
     deleteBtn.click(function (elem) {
         var r = confirm("Sei sicuro di voler eliminare?");
         if (r) {
-            deleteItem(elem.target.id)
+            deleteKit(elem.target.id)
             .done( () => {
                 $('#'+elem.target.id).remove();
             });
