@@ -19,10 +19,15 @@ const getUserById = async (id) =>  {
 }
 
 const getAuthToken = async (username, clearTextPassword) => {
-    const user = await UserModel.findOne({username: username});
-
-    if (!user || !bcrypt.compareSync(clearTextPassword, user.password))
+    if (!username || !clearTextPassword) {
         throw BadRequestError;
+    }
+
+    const user = await UserModel.findOne({username: username});
+    if (!user || !bcrypt.compareSync(clearTextPassword, user.password)) {
+        throw UnauthorizedError
+    }
+
 
     let usr = JSON.stringify(user)
     usr = JSON.parse(usr)

@@ -4,6 +4,7 @@ import { useAuth } from '../components/Login/AuthProvider';
 const useExtendedKy = () => {
 	const {token} = useAuth()
 
+
 	const api = ky.extend({
 		hooks: {
 			beforeRequest: [

@@ -6,8 +6,7 @@ interface AuthContextType {
   token: string;
   signin: (
     user: { username: string; password: string },
-    callback: VoidFunction
-  ) => void;
+  ) => Promise<void>;
   signout: (callback: VoidFunction) => void;
 }
 
@@ -18,25 +17,24 @@ interface LoginResponse {
 let AuthContext = React.createContext<AuthContextType>({} as AuthContextType);
 
 function AuthProvider({ children }: { children: ReactNode }) {
-  let [user, setUser] = React.useState<string>("");
-  let [token, setToken] = React.useState<string>("");
+  let [user, setUser] = React.useState<string>(localStorage.getItem("user") ?? "");
+  let [token, setToken] = React.useState<string>(localStorage.getItem("token") ?? "");
 
   let signin = async (
     newUser: { username: string; password: string },
-    callback: VoidFunction
   ) => {
     const { token } = await ky
       .post("/loginDashboard", { json: newUser })
       .json<LoginResponse>();
     setToken(token);
     setUser(newUser.username);
-    callback();
+    localStorage.setItem("token", token)
+    localStorage.setItem("user", newUser.username)
   };
 
   let signout = (callback: VoidFunction) => {
     setUser("");
     setToken("");
-    callback();
   };
 
   let value = { user, token, signin, signout };
