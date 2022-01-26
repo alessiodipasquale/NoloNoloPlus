@@ -17,6 +17,7 @@
         <th scope="col">Categoria</th>
         <th scope="col">Stato</th>
         <th scope="col">Numero di affitti</th>
+        <th scope="col">Disponibile</th>
         <th scope="col">Azioni</th>
       </tr>
     </thead>
@@ -64,11 +65,19 @@ aria-hidden="true">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-8">
                         <div class="form-group">
                             <label for="inputDescription">Descrizione *</label>
                             <textarea type="text" class="form-control" id="inputDescription" placeholder="Inserisci Descrizione"></textarea>
                         </div>
+                    </div>
+                    <div class="col-4" style="display: flex; align-items: center;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="inputAvailable" checked>
+                            <label class="form-check-label" for="inputAvailable">
+                              Disponibile *
+                            </label>
+                          </div>
                     </div>
                 </div> 
                 <div class="row">
@@ -211,11 +220,19 @@ aria-hidden="true">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12">
+                    <div class="col-8">
                         <div class="form-group">
                             <label for="inputDescription">Descrizione *</label>
                             <textarea type="text" class="form-control" id="inputEditDescription" placeholder="Inserisci Descrizione"></textarea>
                         </div>
+                    </div>
+                    <div class="col-4" style="display: flex; align-items: center;">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="inputEditAvailable">
+                            <label class="form-check-label" for="inputEditAvailable">
+                              Disponibile *
+                            </label>
+                          </div>
                     </div>
                 </div> 
                 <div class="row">
@@ -318,3 +335,37 @@ aria-hidden="true">
 <script src="../services/categories-service.js"></script>
 <script src="../services/items-service.js"></script>
 <script src="../pages/items/items.js"></script>
+<style>
+
+    .dots {
+      margin: 40px auto;
+    }
+    
+    .dot {
+      display: inline-block;
+      border-radius: 50%;
+      width: 50%;
+      background-color: #EEE;
+      height: 15px;
+      width: 15px;
+      margin: 0 2px;
+    }
+    .dot.dot-success {
+      background-color: #449D44;
+    }
+    .dot.dot-warning {
+      background-color: #F0AD4E;
+    }
+    .dot.dot-danger {
+      background-color: #D9534F;
+    }
+    .dot.dot-sm {
+      height: 10px;
+      width: 10px;
+    }
+    .dot.dot-lg {
+      margin: 0 4px;
+      height: 20px;
+      width: 20px;
+    }
+</style>

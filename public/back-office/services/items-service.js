@@ -1,5 +1,5 @@
-function createItem(name, description, standardPrice, imgSrc,category, kits, state, groupId, propertiesList) {
-    return httpPost('items', {name, description, standardPrice, category, state, imgSrc, kits, groupId, propertiesList}, true);
+function createItem(name, description, available, standardPrice, imgSrc,category, kits, state, groupId, propertiesList) {
+    return httpPost('items', {name, description, available, standardPrice, category, state, imgSrc, kits, groupId, propertiesList}, true);
 }
 
 function getItems() {
@@ -14,8 +14,8 @@ function deleteItem(id) {
     return httpDelete('items/'+id, true);
 }
 
-function editItem(_id, name, description, standardPrice, imgSrc, category, kits, state, groupId, propertiesList) {
-    return httpPut('items/'+_id, {name, description, standardPrice, imgSrc, category, kits, state, groupId, propertiesList}, true);
+function editItem(_id, name, description, available, standardPrice, imgSrc, category, kits, state, groupId, propertiesList) {
+    return httpPut('items/'+_id, {name, description, available, standardPrice, imgSrc, category, kits, state, groupId, propertiesList}, true);
 }
 
 function checkIfAvailables(objectId, startDate, endDate) {

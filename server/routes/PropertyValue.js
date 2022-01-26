@@ -43,8 +43,8 @@ const getPropertyValueByAttributes = async (property) =>{
     for(let id of propertyValuesIds){
         const propVal = await getPropertyValueById(id)
         if(propVal){
-            if(propVal.value == property.value ){
-                if(property.unitOfMeasure){
+            if(propVal.value == property.value || (propVal.value == null && property.value == '')){
+                if(property.unitOfMeasure != undefined){
                     if(propVal.unitOfMeasure){
                         if(property.unitOfMeasure.toLowerCase() == propVal.unitOfMeasure.toLowerCase()){
                             return propVal;

@@ -10,6 +10,7 @@ const { associateToCategory, associateToGroup, associateToPropertyValue, deleteA
 const { deleteAssociationToKit, associateToKit, deleteAssociationToPropertyValue } = require('./associations/AssociationManager')
 const { getPriceDetail } = require('./PriceDetails');
 const { createPropertyValue, getPropertyValueByAttributes } = require('./PropertyValue');
+const GroupModel = require('../models/GroupModel');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -32,11 +33,22 @@ const filterGroups = (arrayOfItems) => {
     return toReturn;
 }
 
+const filterAvailable = (arrayOfItems) => {
+    const toReturn = [];
+    for (let item of arrayOfItems) {
+        if(item.available)
+            toReturn.push(item);
+    }
+    return toReturn;
+}
+
 const getItems = async (filter) => {
     const toReturn = [];
     let items = await ItemModel.find();
-    if(filter)
+    if(filter){
+        items = filterAvailable(items);
         items = filterGroups(items);
+    }
     for (let item of items) {
         toReturn.push(await generateFullItem(item));
     }
@@ -126,6 +138,7 @@ const getItemsByCategoryId = async (id) => {
         const item = await getItemById(itemId);
         items.push(item);
     }
+    items = filterAvailable(items)
     items = filterGroups(items);
     for (let item of items) {
         const props = [];
@@ -199,11 +212,31 @@ const checkIfAvailable = async (object) => {
         for (let e of item.rentalDates) {
             const elem = new Date(e)
             if (elem >= start && elem <= end) {
-                throw BadRequestError;
+                if(item.groupId != '' && item.groupId != undefined && !object.kitId)
+                    await checkIfAvailableInGroup(item.groupId, start, end)
+                else{
+                    throw BadRequestError;
+                }
             }
         }
     }
     return isOk;
+}
+
+const checkIfAvailableInGroup = async (groupId, start, end) => {
+    const itemIds = (await GroupModel.findById(groupId)).items;
+    for(let itemId of itemIds){
+        const item = await getItemById(itemId);
+        let ok = true;
+        for (let e of item.rentalDates) {
+            const elem = new Date(e)
+            if (elem >= start && elem <= end) {
+                ok = false;
+            }
+        }
+        if(ok) return true;
+    }
+    throw BadRequestError;
 }
 
 const getReviewsByItemId = async (itemId) => {
@@ -390,8 +423,47 @@ const editItem = async (itemId, object) => {
         }
         secureObject.properties = object.properties;
     }
+    if(object.available != undefined){
+        if(object.available != secureObject.available){
+            if(object.available == 'true'){
+                await setRelatedKitsToAvailable(secureObject._id)
+                secureObject.available = true;
+            }else{
+                await setRelatedKitsToNotAvailable(secureObject._id)
+                secureObject.available = false;
+            }
+        }    
+    }
     await ItemModel.updateOne({ _id: itemId }, secureObject);
     return null;
+}
+
+const setRelatedKitsToAvailable = async (itemId) => {
+    const kits = await KitModel.find();
+    for(let kit of kits){
+        if(!kit.available && kit.items.includes(itemId)){
+            let okToProceed = true
+            for(let id of kit.items){
+                if(id != itemId){
+                    const elem = await getItemById(id)
+                    if(!elem.available)
+                        okToProceed = false
+                }
+            }
+            if(okToProceed){
+                await KitModel.updateOne({ _id: kit._id }, { $set: { "available": true } })
+            }
+        }
+    }
+}
+
+const setRelatedKitsToNotAvailable = async (itemId) => {
+    const kits = await KitModel.find();
+    for(let kit of kits){
+        if(kit.available && kit.items.includes(itemId)){
+            await KitModel.updateOne({ _id: kit._id }, { $set: { "available": false } })
+        }
+    }
 }
 
 const updateRentalsCount = async (itemId) => {
@@ -406,7 +478,7 @@ const updateRentalsCount = async (itemId) => {
 }
 
 const getRecommendedByItemId = async (id) => {
-    const toReturn = [];
+    let toReturn = [];
     const idList = [];
     const kits = await KitModel.find();
     for(let kit of kits){
@@ -421,6 +493,7 @@ const getRecommendedByItemId = async (id) => {
     for(let elem of idList){
         toReturn.push(await getItemById(elem))
     }
+    toReturn = filterAvailable(toReturn)
     return toReturn;
 }
 
