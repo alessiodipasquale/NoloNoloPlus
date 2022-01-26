@@ -10,6 +10,7 @@ const { associateToCategory, associateToGroup, associateToPropertyValue, deleteA
 const { deleteAssociationToKit, associateToKit, deleteAssociationToPropertyValue } = require('./associations/AssociationManager')
 const { getPriceDetail } = require('./PriceDetails');
 const { createPropertyValue, getPropertyValueByAttributes } = require('./PropertyValue');
+const GroupModel = require('../models/GroupModel');
 
 const getItemById = async (id) => {
     const item = await ItemModel.findById(id)
@@ -211,11 +212,31 @@ const checkIfAvailable = async (object) => {
         for (let e of item.rentalDates) {
             const elem = new Date(e)
             if (elem >= start && elem <= end) {
-                throw BadRequestError;
+                if(item.groupId != '' && item.groupId != undefined && !object.kitId)
+                    await checkIfAvailableInGroup(item.groupId, start, end)
+                else{
+                    throw BadRequestError;
+                }
             }
         }
     }
     return isOk;
+}
+
+const checkIfAvailableInGroup = async (groupId, start, end) => {
+    const itemIds = (await GroupModel.findById(groupId)).items;
+    for(let itemId of itemIds){
+        const item = await getItemById(itemId);
+        let ok = true;
+        for (let e of item.rentalDates) {
+            const elem = new Date(e)
+            if (elem >= start && elem <= end) {
+                ok = false;
+            }
+        }
+        if(ok) return true;
+    }
+    throw BadRequestError;
 }
 
 const getReviewsByItemId = async (itemId) => {
@@ -457,7 +478,7 @@ const updateRentalsCount = async (itemId) => {
 }
 
 const getRecommendedByItemId = async (id) => {
-    const toReturn = [];
+    let toReturn = [];
     const idList = [];
     const kits = await KitModel.find();
     for(let kit of kits){
@@ -472,6 +493,7 @@ const getRecommendedByItemId = async (id) => {
     for(let elem of idList){
         toReturn.push(await getItemById(elem))
     }
+    toReturn = filterAvailable(toReturn)
     return toReturn;
 }
 
