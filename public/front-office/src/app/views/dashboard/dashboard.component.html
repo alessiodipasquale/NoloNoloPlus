@@ -12,7 +12,7 @@
     <button (click)="this.selectCategory(category, i)" *ngFor="let category of this.categories, let i = index" type="button" [ngClass]="{'btn-primary': selectedCategory === i, 'btn-light': selectedCategory !== i}" class="btn" style="padding: 2% 5%; margin-right: 2%;">{{category.name}}</button>
 </div>
 <div *ngIf="areItems">
-<div class="card w-100 mt-3 animated fadeIn" *ngFor="let item of items | filter: searchtext" >
+<div class="card w-100 mt-3 animated fadeIn" *ngFor="let item of items | filter: searchtext" tabindex="0" [aria-label]="item">
     <div class="card-body">
         <div class="row">
             <div class="col-6" style="padding-left: 10px; padding-right: 10px;">
@@ -24,7 +24,7 @@
                 </ul>
             </div>
             <div class="col-6" style="display: flex; justify-content: space-around; align-items: center; flex-direction: column;">
-                <img style="width: 100%; margin-bottom: 10px"[src]="item.imgSrc">
+                <img style="width: 100%; margin-bottom: 10px"[src]="item.imgSrc" alt="foto oggetto">
                 <div>
                     <p style="margin-bottom: 0; color: grey;" >Prezzo al giorno</p>
                     <h2 style="font-weight: bold;">{{item.standardPrice}}€</h2>
@@ -39,7 +39,7 @@
 </div>
 
 <div *ngIf="!areItems">
-  <div class="card w-100 mt-3 animated fadeIn" *ngFor="let kit of kits">
+  <div class="card w-100 mt-3 animated fadeIn" *ngFor="let kit of kits" tabindex="0" [aria-label]="kit">
     <div class="card-body">
         <div class="row">
             <div class="col-6" style="padding-left: 10px; padding-right: 10px;">
@@ -51,7 +51,7 @@
             <div class="col-6" style="display: flex; justify-content: space-around; align-items: center; flex-direction: column;">
                 <div class="images">
                     <div>
-                        <img *ngFor="let item of kit.items" style="width: 50%; margin-bottom: 10px; padding: 1%;"[src]="item.imgSrc">
+                        <img *ngFor="let item of kit.items" style="width: 50%; margin-bottom: 10px; padding: 1%;"[src]="item.imgSrc" alt="foto oggetti">
                     </div>
                 </div>                
                 <div>
