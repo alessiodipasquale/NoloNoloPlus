@@ -171,6 +171,12 @@ paths:
       description: edit user by id
       parameters:
         - $ref: "#/components/parameters/id"
+      requestBody:
+        required: true
+        content: 
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserBody"
       responses:
         204:
           description: user edited successfully
@@ -391,7 +397,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Rental"
+              $ref: "#/components/schemas/RentalBody"
       responses:
         204:
           description: rental edited successfully
@@ -516,7 +522,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Property"
+              $ref: "#/components/schemas/PropertyBody"
               not:
                 type: "object"
                 required:
@@ -576,7 +582,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Category"
+              $ref: "#/components/schemas/CategoryBody"
       responses:
         204:
           description: category edited successfully
@@ -636,7 +642,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Kit"
+              $ref: "#/components/schemas/KitBody"
       responses:
         204: 
           description: kit edited successfully
@@ -775,7 +781,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Review"
+              $ref: "#/components/schemas/ReviewBody"
 
       responses:
         204:
@@ -840,7 +846,7 @@ paths:
        content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Group"
+                $ref: "#/components/schemas/GroupBody"
       responses:
         204: 
           description: group edit succesfully
@@ -871,12 +877,23 @@ paths:
 
 components:
   schemas:
-    User:
+    id: 
       type: object
       properties:
         _id:
           type: string
           example: id1
+
+
+
+    User:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/UserBody"
+
+    UserBody:
+      type: object
+      properties:
         username:
           type: string
           example: hitchhiker42
@@ -928,7 +945,6 @@ components:
           items:
             type: string
       required:
-        - _id
         - username
         - password
         - name
@@ -936,11 +952,15 @@ components:
         - role
         - registration date
 
+
     Rental:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/Rental"
+
+    RentalBody:
       type: object
       properties:
-        _id:
-          type: string
         client id:
           type: string
         employee id:
@@ -1001,10 +1021,13 @@ components:
         - receipt
 
     Review:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/ReviewBody"
+
+    ReviewBody:
       type: object
       properties:
-        _id:
-          type: string
         stars:
           type: integer
           minimum: 0
@@ -1019,10 +1042,13 @@ components:
       required: [_id, stars, client id, item id]
 
     Item:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/ItemBody"
+
+    ItemBody:
       type: object
       properties:
-        _id:
-          type: string
         name:
           type: string
         description:
@@ -1080,10 +1106,14 @@ components:
         ]
 
     Certification:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/CertificationBody"
+
+
+    CertificationBody:
       type: object
       properties:
-        _id:
-          type: string
         rentaldId:
           type: string
         employeeId:
@@ -1102,6 +1132,11 @@ components:
         - certificationType
 
     Property:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/PropertyBody"
+
+    PropertyBody:
       type: object
       properties:
         _id:
@@ -1115,6 +1150,12 @@ components:
       required: [_id, associatedValues]
 
     Category:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/CategoryBody"
+    
+
+    CategoryBody:
       type: object
       properties:
         _id:
@@ -1130,10 +1171,13 @@ components:
       required: [name, description]
 
     Kit:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/KitBody"
+
+    KitBody:
       type: object
       properties:
-        _id:
-          type: string
         name:
           type: string
         description:
@@ -1155,6 +1199,11 @@ components:
             type: string
 
     Group:
+      allOf:
+        - $ref: "#/components/schemas/id"
+        - $ref: "#/components/schemas/GroupBody"
+
+    GroupBody:
       type: object
       properties:
         _id:
