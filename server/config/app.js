@@ -44,11 +44,11 @@ const run = async () => {
 
     router.initialize(app, passport);
    
-    /*if (global.config.swagger) {
+    if (global.config.swagger) {
         const swaggerUi = require('swagger-ui-express');
         const swaggerSpec = require('./swagger');
         app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    }*/
+    }
 
     app.listen(port, () => {
         global.startDate = new Date() ; 
