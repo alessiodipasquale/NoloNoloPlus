@@ -15,6 +15,7 @@ import {
   TabPanels,
   TabPanel,
   Icon,
+  Flex,
 } from "@chakra-ui/react";
 
 import { MdBarChart, MdScatterPlot } from "react-icons/md";
@@ -89,15 +90,23 @@ function InventoryDash() {
         </GridItem>
 
         <GridItem colSpan={{ base: 1, lg: 2 }} rowSpan={2} as={Card}>
-          <Tabs size="sm" align="end" width="full" h="full">
-            <TabList>
-              <Tab>
-                <Icon as={MdScatterPlot} aria-label="Show scatter-plot" />
-              </Tab>
-              <Tab>
-                <Icon as={MdBarChart} aria-label="Show bar-chart" />
-              </Tab>
-            </TabList>
+          {/* <Tabs size="sm" align="end" width="full" h="full">
+            <Flex justify-content="space-between">
+              <CardHeader>
+                <Text variant="card-header">
+                  Base price and number of rentals per item
+                </Text>
+              </CardHeader>
+
+              <TabList>
+                <Tab>
+                  <Icon as={MdScatterPlot} aria-label="Show scatter-plot" />
+                </Tab>
+                <Tab>
+                  <Icon as={MdBarChart} aria-label="Show bar-chart" />
+                </Tab>
+              </TabList>
+            </Flex>
 
             <TabPanels w="full" h="full">
               <TabPanel w="full" h="full">
@@ -107,7 +116,13 @@ function InventoryDash() {
                 <p>two!</p>
               </TabPanel>
             </TabPanels>
-          </Tabs>
+          </Tabs> */}
+          <CardHeader>
+            <Text variant="card-header">
+              Base price and number of rentals per item
+            </Text>
+          </CardHeader>
+          <ItemScatterPlot items={filtered} />
         </GridItem>
       </Grid>
     </>
