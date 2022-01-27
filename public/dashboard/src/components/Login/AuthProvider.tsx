@@ -7,7 +7,7 @@ interface AuthContextType {
   signin: (
     user: { username: string; password: string },
   ) => Promise<void>;
-  signout: (callback: VoidFunction) => void;
+  signout: () => void;
 }
 
 interface LoginResponse {
@@ -32,7 +32,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem("user", newUser.username)
   };
 
-  let signout = (callback: VoidFunction) => {
+  let signout = () => {
     setUser("");
     setToken("");
   };
