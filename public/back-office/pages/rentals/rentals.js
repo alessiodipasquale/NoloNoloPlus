@@ -339,6 +339,8 @@ function addElemToTable(elem) {
             });
         }
     })
+    editBtn.attr("aria-label", "pulsante di modifica")
+    deleteBtn.attr("aria-label", "pulsante di eliminazione")
 
     row8.append([/*openBtn,*/ editBtn, deleteBtn]);
             

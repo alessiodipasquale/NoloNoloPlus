@@ -182,6 +182,8 @@ function addElemToTable(elem) {
         }
     })
 
+    editBtn.attr("aria-label", "pulsante di modifica")
+    deleteBtn.attr("aria-label", "pulsante di eliminazione")
     
 
     row7.append([/*openBtn,*/ editBtn, deleteBtn]);

@@ -378,11 +378,15 @@ function addElemToTable(elem) {
     })*/
 
     var editBtn = $('<button type="button" class="btn btn-primary mr-3" id="'+elem._id+'"><i class="fas fa-eye" id="'+elem._id+'"></i></button>')
+    editBtn.attr("aria-label", "pulsante di modifica")
     editBtn.click(function (elem) {
         openEditItem(elem);
     })
 
     var deleteBtn = $('<button type="button" class="btn btn-danger" id="'+elem._id+'"><i class="far fa-trash-alt" id="'+elem._id+'"></i></button>')
+
+
+
     deleteBtn.click(function (elem) {
         var r = confirm("Sei sicuro di voler eliminare?");
         if (r) {
@@ -392,6 +396,9 @@ function addElemToTable(elem) {
             });
         }
     })
+
+    editBtn.attr("aria-label", "pulsante di modifica")
+    deleteBtn.attr("aria-label", "pulsante di eliminazione")
 
     row8.append([/*openBtn,*/ editBtn, deleteBtn]);
             
