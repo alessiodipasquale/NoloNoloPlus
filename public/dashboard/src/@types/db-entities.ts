@@ -32,7 +32,7 @@ interface Rental {
   finalPrice: number;
   receipt: string[];
   partialPrices: string[][];
-  notes: Note[];
+  notes: string;
   tags: string[];
   damaged: boolean;
 }

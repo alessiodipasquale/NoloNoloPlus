@@ -90,7 +90,7 @@ function EmployeesDash() {
       </>
     );
     content =
-      selectedRental && rentalsQuery.data ? (
+      ((selectedRental || selectedRental === 0)  && rentalsQuery.data) ? (
         <RentalDetails rental={rentalsQuery.data[selectedRental]} />
       ) : undefined;
   }

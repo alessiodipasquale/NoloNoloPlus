@@ -6,7 +6,7 @@ import {
   UnorderedList,
   ListItem,
 } from "@chakra-ui/react";
-import {Text} from "@chakra-ui/layout"
+import { Text } from "@chakra-ui/layout";
 import { format } from "date-fns";
 import React from "react";
 import { Rental } from "../../@types/db-entities";
@@ -40,8 +40,8 @@ function RentalDetails({ rental }: { rental: Rental }) {
     },
   ];
 
-  const notes = rental.notes.filter((note) => note.text && note.text.trim());
-  console.log(notes)
+  //const notes = rental.notes.filter((note) => note.text && note.text.trim());
+  //console.log(notes)
 
   return (
     <Flex width="full" marginTop="1rem">
@@ -55,7 +55,7 @@ function RentalDetails({ rental }: { rental: Rental }) {
             sx={{ gap: "1rem" }}
           >
             {details.map(({ header, value }) => (
-              <ListItem key={`key-${header}`}  >
+              <ListItem key={`key-${header}`}>
                 <Text
                   fontWeight="600"
                   color="gray.500"
@@ -67,17 +67,30 @@ function RentalDetails({ rental }: { rental: Rental }) {
                 <Text as="span">{value}</Text>
               </ListItem>
             ))}
+            {rental.notes && (
+              <ListItem key={"key-notes"}>
+                <Text
+                  fontWeight="600"
+                  color="gray.500"
+                  w="12rem"
+                  display="inline-block"
+                >
+                  Notes
+                </Text>
+                <Note>{rental.notes}</Note>
+              </ListItem>
+            )}
           </UnorderedList>
         </VStack>
       </Box>
 
-      <VStack flex="1" spacing="12px">
+      {/* <VStack flex="1" spacing="12px">
         {notes.length ? (
           notes.map((note) => <Note author={note.author}>{note.text}</Note>)
         ) : (
           <Text>No notes to display</Text>
         )}
-      </VStack>
+      </VStack> */}
     </Flex>
   );
 }
