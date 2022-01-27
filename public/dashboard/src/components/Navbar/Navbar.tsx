@@ -9,17 +9,16 @@ export function Sidebar({ children }: { children: ReactNode }) {
       width={{ base: "100vw", md: "5rem" }}
       height={{ base: "5rem", md: "100vh" }}
       position="fixed"
-      bottom={{base: 0, md: undefined}}
+      bottom={{ base: 0, md: undefined }}
       _hover={{
         md: {
           width: "16rem",
         },
       }}
-      sx={
-        {
-          "&:hover .link-text": {
-            display: {md: "block"}
-        }
+      sx={{
+        "&:hover .link-text": {
+          display: { md: "block" },
+        },
       }}
       transition="width 200ms ease"
       zIndex="1"
@@ -33,10 +32,16 @@ export function Sidebar({ children }: { children: ReactNode }) {
         styleType="none"
         direction={{ md: "column" }}
         alignItems="center"
-        justifyContent={{base: "space-around", md: "flex-start"}}
+        justifyContent={{ base: "space-around", md: "flex-start" }}
       >
         {React.Children.map(children, (child) => (
-          <ListItem key={"key-"+child?.toString} width={{base: 'auto', md: "full"}}>{child}</ListItem>
+          <ListItem
+            key={"key-" + child?.toString}
+            _last={{ mt: "auto" }}
+            width={{ base: "auto", md: "full" }}
+          >
+            {child}
+          </ListItem>
         ))}
       </Flex>
     </Box>
