@@ -2,7 +2,7 @@
     <h3 class="mt-3">Le tue prenotazioni</h3>
 
     <div class="mt-3"></div>
-    <div class="card" *ngFor="let rental of rentals" (click)="openSpecRental(rental)">
+    <div class="card" *ngFor="let rental of rentals" (click)="openSpecRental(rental)" role="button" [aria-label]="'Prenotazione'+rental.items" tabindex="0">
         <div class="card-body" >      
             <div class="row">
                 <div class="col-4" style="display: flex;align-items: center;justify-content: center;">

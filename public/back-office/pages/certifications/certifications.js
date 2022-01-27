@@ -51,6 +51,8 @@ function addElemToTable(elem) {
         })
     })
 
+    editBtn.attr("aria-label", "pulsante di visualizzazione della certificazione")
+
     /*var deleteBtn = $('<button type="button" class="btn btn-danger" id="'+elem._id+'"><i class="far fa-trash-alt" id="'+elem._id+'"></i></button>')
     deleteBtn.click(function (elem) {
         var r = confirm("Sei sicuro di voler eliminare?");

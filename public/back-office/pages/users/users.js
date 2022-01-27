@@ -94,6 +94,9 @@ function addElemToTable(elem) {
         }
     })
 
+    editBtn.attr("aria-label", "pulsante di modifica")
+    deleteBtn.attr("aria-label", "pulsante di eliminazione")
+
     row6.append([/*openBtn,*/ editBtn, deleteBtn]);
             
     row.append([row1, row2, row3, row4, row5,row6]);

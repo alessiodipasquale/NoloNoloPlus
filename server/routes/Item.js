@@ -212,11 +212,7 @@ const checkIfAvailable = async (object) => {
         for (let e of item.rentalDates) {
             const elem = new Date(e)
             if (elem >= start && elem <= end) {
-                if(item.groupId != '' && item.groupId != undefined && !object.kitId)
-                    await checkIfAvailableInGroup(item.groupId, start, end)
-                else{
-                    throw BadRequestError;
-                }
+                throw BadRequestError;
             }
         }
     }
