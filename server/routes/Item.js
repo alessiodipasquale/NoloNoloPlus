@@ -504,6 +504,7 @@ module.exports = {
     checkIfAvailable,
     getReviewsByItemId,
     calculatePriceforItem,
+    checkIfAvailableInGroup,
     getCategoriesByItem,
     editItem,
     getRecommendedByItemId,

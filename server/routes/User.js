@@ -28,7 +28,6 @@ const getAuthToken = async (username, clearTextPassword) => {
         throw UnauthorizedError
     }
 
-
     let usr = JSON.stringify(user)
     usr = JSON.parse(usr)
     const payload = { type:'user', user: _.omit(usr, ['password', '__v'])}
